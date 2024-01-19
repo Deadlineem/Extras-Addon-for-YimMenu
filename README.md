@@ -9,20 +9,20 @@ If there is a bug please report it on the Issues tab and we will try to work it 
 Working Features:
 Player Options
   - Movement -> With some help from Loled, got this looking clean and working, its not super fast yet, but its smooth.
-      Run Speed 0-10 (0 is default)
-      Swim Speed 0-10 - This doesn't seem like it does too much for swimming yet.
+  -   Run Speed 0-10 (0 is default)
+  -   Swim Speed 0-10 - This doesn't seem like it does too much for swimming yet.
   - Money -> YimCEO sourced from Alestarov_Menu
-      Drops -> Sourced from Ultimate Menu by L7Neg modified to run in a loop on click
-          Princess Robot Bubblegum
+  -   Drops -> Sourced from Ultimate Menu by L7Neg modified to run in a loop on click
+  -        Princess Robot Bubblegum
           Alien 
           Casino Cards
           Fake Cash
-      Casino -> Sourced from gir489returns
-          Bypass for Slots + Slot rigging (Working, Detected, Risky)
+  -    Casino -> Sourced from gir489returns
+   -       Bypass for Slots + Slot rigging (Working, Detected, Risky)
           Rig Poker (Payout is Ehh)
           Rig Blackjack (Still Ehh)
           Rig Roulette (Bet MAX on 18 and 2 to 1 in the same row)
-    - Stats -> Sourced from Alestarov_Menu
+  - Stats -> Sourced from Alestarov_Menu
           Reset Stats (Only Multiplayer Player 1 for now, will most likely make it do both characters at once.)
 
 
