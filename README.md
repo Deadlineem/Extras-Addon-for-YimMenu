@@ -2,8 +2,9 @@
 This addon features extra tools for YimMenu that aren't already a part of the stand alone base version.
 They are intended to be COMPLETELY free and public, built by the community, for the community.
 
-This addons current working features are listed below, If you have ideas youd like to share, please submit a pull request
-If there is a bug please report it on the Issues tab and we will try to work it out as soon as possible
+This addons current working features are listed below, If you have ideas youd like to share, please submit them in the Discussions tab.
+
+If there is a bug please report it on the Issues tab and we will try to work it out as soon as possible.
 
 
 Working Features:
