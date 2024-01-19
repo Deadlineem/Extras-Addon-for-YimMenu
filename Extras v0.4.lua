@@ -49,30 +49,37 @@ local Mvmt = Pla:add_tab("Movement")
 runSpeed = 0
 Mvmt:add_imgui(function()
     runSpeed, used = ImGui.SliderInt("Run Speed", runSpeed, 0, 10)
+	out = "Speed set to "..tostring(runSpeed).."x"
     if used then
         PLAYER.SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), runSpeed/7)
+		gui.show_message('Run Speed Modified!', out)
     end
 end)
 
 swimSpeed = 0
 Mvmt:add_imgui(function()
     swimSpeed, used = ImGui.SliderInt("Swim Speed", swimSpeed, 0, 10)
+    out = "Speed set to "..tostring(swimSpeed).."x"
     if used then
         PLAYER.SET_SWIM_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), swimSpeed/7)
+		gui.show_message('Swim Speed Modified!', out)
     end
 end)
 
 
 -- Health Tab
-createTab(Pla, "Health", {
-    { type = "button", text = "Modify Health", func = modifyPlayerHealth }
-})
+local Hel = Pla:add_tab("Health")
+
+Hel:add_button("Heal Player", function()
+    gui.show_message('Health Modifier', 'Failed! Feature unavailable.')
+end)
+
 
 -- Stat Editor - Alestarov_Menu
 local Stats = Pla:add_tab("Stats")
 
 Stats:add_button("Reset Stats", function()
-    gui.show_message("Stats Reset Successfully!", "Change session to apply changes")
+    gui.show_message("Multiplayer Stats Reset", "Stats reset for both Player 1 and Player 2, Change session to apply changes")
     script.run_in_fiber(function (script)
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_SVC"), 0, true)
@@ -97,6 +104,30 @@ Stats:add_button("Reset Stats", function()
         STATS.STAT_SET_INT(joaat("MP0_CASINO_BAN_TIME"), 0, true)
         STATS.STAT_SET_INT(joaat("MP0_CASINO_CHIPS_PURTIM"), 0, true)
         STATS.STAT_SET_INT(joaat("MP0_CASINO_CHIPS_PUR_GD"), 0, true)
+		-- Player 2 Stats Reset
+		STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
+        STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_SVC"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_BETTING"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_JOBS"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_SHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_SHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_JOBSHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_SELLING_VEH"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_WEAPON_ARMOR"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_VEH_MAINTENANCE"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_STYLE_ENT"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_PROPERTY_UTIL"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_JOB_ACTIVITY"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_BETTING"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_VEHICLE_EXPORT"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_VEHICLE_EXPORT"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_CLUB_DANCING"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_CASINO_CHIPS_WON_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_CASINO_CHIPS_WONTIM"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_CASINO_GMBLNG_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_CASINO_BAN_TIME"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_CASINO_CHIPS_PURTIM"), 0, true)
+        STATS.STAT_SET_INT(joaat("MP1_CASINO_CHIPS_PUR_GD"), 0, true)
     end)
 end)
 Stats:add_separator()
@@ -127,45 +158,41 @@ script.register_looped("yimceoloop", function(script)
     globals.set_int(262145 + 15757, 0)
     script:yield()
 
-    if checkbox:is_enabled() == true then
-        if locals.get_int("gb_contraband_sell", 2) == 1 then
-            locals.set_int("gb_contraband_sell", 543 + 595, 1)
-            locals.set_int("gb_contraband_sell", 543 + 55, 0)
-            locals.set_int("gb_contraband_sell", 543 + 584, 0)
-            locals.set_int("gb_contraband_sell", 543 + 7, 7)
-            script:sleep(500)
-            locals.set_int("gb_contraband_sell", 543 + 1, 99999)
-        end
+    while true do
+        script:sleep(1000)  -- Adjust the sleep duration as needed
 
-        if locals.get_int("appsecuroserv", 2) == 1 then
-            script:sleep(500)
-            locals.set_int("appsecuroserv", 740, 1)
-            script:sleep(200)
-            locals.set_int("appsecuroserv", 739, 1)
-            script:sleep(200)
-            locals.set_int("appsecuroserv", 558, 3012)
-            script:sleep(1000)
-        end
-
-        if locals.get_int("gb_contraband_buy", 2) == 1 then
-            locals.set_int("gb_contraband_buy", 601 + 5, 1)
-            locals.set_int("gb_contraband_buy", 601 + 1, 111)
-            locals.set_int("gb_contraband_buy", 601 + 191, 6)
-            locals.set_int("gb_contraband_buy", 601 + 192, 4)
-            gui.show_message("Warehouse full!")
-        end
-
-        if locals.get_int("gb_contraband_sell", 2) ~= 1 then
-            script:sleep(500)
-            if locals.get_int("am_mp_warehouse", 2) == 1 then
-                SCRIPT.REQUEST_SCRIPT("appsecuroserv")
-                SYSTEM.START_NEW_SCRIPT("appsecuroserv", 8344)
-                SCRIPT.SET_SCRIPT_AS_NO_LONGER_NEEDED("appsecuroserv")
+        if checkbox:is_enabled() == true then
+		gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
+            if locals.get_int("gb_contraband_sell", 2) == 1 then
+                locals.set_int("gb_contraband_sell", 543 + 595, 1)
+                locals.set_int("gb_contraband_sell", 543 + 55, 0)
+                locals.set_int("gb_contraband_sell", 543 + 584, 0)
+                locals.set_int("gb_contraband_sell", 543 + 7, 7)
+                script:sleep(500)
+                locals.set_int("gb_contraband_sell", 543 + 1, 99999)
             end
+
+            if locals.get_int("appsecuroserv", 2) == 1 then
+                script:sleep(500)
+                locals.set_int("appsecuroserv", 740, 1)
+                script:sleep(200)
+                locals.set_int("appsecuroserv", 739, 1)
+                script:sleep(200)
+                locals.set_int("appsecuroserv", 558, 3012)
+                script:sleep(1000)
+            end
+
+            if locals.get_int("gb_contraband_buy", 2) == 1 then
+                locals.set_int("gb_contraband_buy", 601 + 5, 1)
+                locals.set_int("gb_contraband_buy", 601 + 1, 111)
+                locals.set_int("gb_contraband_buy", 601 + 191, 6)
+                locals.set_int("gb_contraband_buy", 601 + 192, 4)
+                gui.show_message("Warehouse full!")
+            end
+
+            
         end
     end
-
-    script:sleep(1000)
 end)
 
 Money:add_separator()
@@ -199,6 +226,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
+		gui.show_message("RP/Cash Drop Started", "Princess Robot Bubblegum Drops inbound!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -261,6 +289,7 @@ Drops:add_button("Alien (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
+		gui.show_message("RP/Cash Drop Started", "Alien Drops inbound!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -323,6 +352,7 @@ Drops:add_button("Casino Cards (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
+		gui.show_message("RP/Cash Drop Started", "Casino Card Drops inbound!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -385,6 +415,7 @@ Drops:add_button("Cash Loop (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
+		gui.show_message("RP/Cash Drop Started", "Fake Cash Drops inbound!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -666,31 +697,59 @@ script.register_looped("Casino Pacino Thread", function (script)
     end
 end)
 
--- Teleports Tab
-createTab(Pla, "Teleports", {
-    { type = "button", text = "Teleport to Location", func = teleportToLocation }
-})
+-- Teleports tab
+local Tel = Pla:add_tab("Teleports")
+
+Tel:add_button("Teleport to Location", function()
+    gui.show_message('Teleport to Location', 'Failed! Feature unavailable.')
+end)
 
 -- Vehicle Options Tab
 local Veh = KAOS:add_tab("Vehicle Options")
 
 -- Sub-tab for Vehicle Options
-createTab(Veh, "Spawn/Delete", {
-    { type = "button", text = "Spawn Vehicle", func = spawnVehicle },
-    { type = "button", text = "Delete Vehicle", func = deleteVehicle },
-    { type = "button", text = "Clone Nearest Vehicle", func = cloneNearestVehicle }
-}, "Sub-tab for Vehicle Options")
 
--- Sub-tab for Gift Options
-createTab(Veh, "Gift", {
-    { type = "button", text = "Gift Vehicle", func = giftVehicle }
-}, "Sub-tab for Gift Options")
+local Spa = Veh:add_tab("Spawn/Delete")
 
--- Sub-tab for Upgrade Options
-createTab(Veh, "Upgrade", {
-    { type = "button", text = "1 Click Benny's", func = oneClickBennys },
-    { type = "button", text = "1 Click F1's", func = oneClickF1s },
-    { type = "button", text = "Max Vehicle Modifications", func = maxVehicleMods },
-    { type = "button", text = "Max Vehicle Performance", func = maxVehiclePerformance },
-    { type = "button", text = "Downgrade Vehicle", func = downgradeVehicle }
-}, "Sub-tab for Upgrade Options")
+Spa:add_button("Spawn Vehicle", function()
+    gui.show_message('Spawn Vehicle', 'Failed! Feature unavailable.')
+end)
+Spa:add_sameline()
+Spa:add_button("Delete Vehicle", function()
+    gui.show_message('Delete Vehicle', 'Failed! Feature unavailable.')
+end)
+Spa:add_button("Clone Vehicle", function()
+    gui.show_message('Clone Vehicle', 'Failed! Feature unavailable.')
+end)
+Spa:add_sameline()
+Spa:add_button("Save Vehicle", function()
+    gui.show_message('Save Vehicle', 'Failed! Feature unavailable.')
+end)
+
+-- Gift Options
+local Gif = Veh:add_tab("Gifting")
+
+Gif:add_button("Gift Vehicle", function()
+    gui.show_message('Gift Vehicle', 'Failed! Feature unavailable.')
+end)
+
+-- Upgrade Options
+local Upg = Veh:add_tab("Upgrades")
+
+Upg:add_button("Apply Benny's Wheels", function()
+    gui.show_message('1 Click Bennys', 'Failed! Feature unavailable.')
+end)
+Upg:add_sameline()
+Upg:add_button("Apply Formula 1 Wheels", function()
+    gui.show_message('1 Click F1s', 'Failed! Feature unavailable.')
+end)
+Upg:add_button("Downgrade Vehicle", function()
+    gui.show_message('Downgrade Vehicle', 'Failed! Feature unavailable.')
+end)
+Upg:add_button("Max Vehicle Performance", function()
+    gui.show_message('Max Performance', 'Failed! Feature unavailable.')
+end)
+Upg:add_sameline()
+Upg:add_button("Max Vehicle Modifications", function()
+    gui.show_message('Max Upgrades', 'Failed! Feature unavailable.')
+end)
