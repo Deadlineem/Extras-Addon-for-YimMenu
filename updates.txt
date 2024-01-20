@@ -1,0 +1,63 @@
+Extras Addon - Features List
+
+Player Options
+_______________________________________________________________________________________________________
+
+
+vv - Movement - vv
+---- Run Speed 0-10
+---- Swim Speed 0-10
+
+vv - Health - vv
+- Not Yet Implemented.
+
+vv - Stats - vv
+---- Reset Stats
+-------- Resets ALL stats for Player 1 and Player 2 Characters
+
+vv - Money - vv
+---- YimCEO
+-------- Activates YimCEO for Automatic Buy/Sell Special Cargo
+
+---- Drops (These are for dropping near you to 1 or 2 people)
+-> Princess Robot Bubblegum Loop (On/Off)
+-> Alien Loop (On/Off)
+-> Casino Card Loop (On/Off)
+-> Fake Cash Loop (On/Off)
+
+---- Casino
+-------- Bypass Casino Cooldown
+-------- Rig Slot Machines
+-> Poker
+-------- Force hand to Royal Flush
+-------- Force dealers hand to Bad Beat
+-> Blackjack
+-------- Dealers Face Down Card (displays also if you are in the casino or not for rigging)
+-------- Set dealers hand to bust
+-> Roulette
+-------- Activate Roulette Rig
+-------- Slider (-1 to 36) for setting the win number of the table
+
+---- Nightclub
+-------- Activates 250k/15s loop while standing in front of nightclub safe.  Meant for AFK money
+
+vv - Teleports - vv
+- Not Yet Implemented.
+
+_______________________________________________________________________________________________________
+
+Vehicle Options
+_______________________________________________________________________________________________________
+
+- Vehicle Options are not yet Implemented.  This will take some time to get working but these
+options will eventually be available, hopefully by the time i hit the v1.0 release and if not
+they will be commented out for the future.
+
+_______________________________________________________________________________________________________
+
+Global Options
+_______________________________________________________________________________________________________
+
+---- Drop Global RP (On/Off)
+-------- Drops Princess Robot Bubblegum figurines to entire lobby
+-------- NOTE: This CAN cause you to lag/freeze/crash in sessions with 10+ players, USE WITH CAUTION!
