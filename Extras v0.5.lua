@@ -407,7 +407,7 @@ Drops:add_button("Cash Loop (On/Off)", function()
         local model = joaat("m23_2_prop_m32_cashwrapped_01a")
         local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
         local player_id = PLAYER.PLAYER_ID()
-        local money_value = 10000
+        local money_value = 0
 
         STREAMING.REQUEST_MODEL(model)
         while STREAMING.HAS_MODEL_LOADED(model) == false do
@@ -576,7 +576,17 @@ end)
 casino_gui:add_separator()
 casino_gui:add_text("Roulette")
 force_roulette_wheel = casino_gui:add_checkbox("Force Roulette Wheel to Land On Red 18")
- 
+
+local player_id = PLAYER.PLAYER_ID()
+
+		casVal = -1
+		casino_gui:add_imgui(function()
+			casVal, used = ImGui.SliderInt("Betting Number", casVal, -1, 36)
+			if used then
+				valz = casVal
+			end
+		end)
+		
 casino_gui:add_separator()
 casino_gui:add_text("Using these options are risky, especially if you use the cooldown bypass")
  
@@ -625,7 +635,7 @@ script.register_looped("Casino Pacino Thread", function (script)
         dealers_card_gui_element:set_value("Not in Casino.")
     end
     if force_roulette_wheel:is_enabled() then
-        local player_id = PLAYER.PLAYER_ID()
+		
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casinoroulette")) ~= 0 then
             while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 3, 0) ~= player_id do 
                 network.force_script_host("casinoroulette")
@@ -633,7 +643,8 @@ script.register_looped("Casino Pacino Thread", function (script)
                 script:sleep(500)
             end
             for tabler_iter = 0, 6, 1 do
-                locals.set_int("casinoroulette", (roulette_master_table) + (roulette_outcomes_table) + (roulette_ball_table) + (tabler_iter), 18)
+                locals.set_int("casinoroulette", (roulette_master_table) + (roulette_outcomes_table) + (roulette_ball_table) + (tabler_iter), valz)
+				gui.show_message("CasinoPacino Activated!", "Winning Number: "..valz)
             end
         end
     end
@@ -697,6 +708,30 @@ script.register_looped("Casino Pacino Thread", function (script)
     end
 end)
 
+-- Nightclub Loop - L7Neg
+local Club = Money:add_tab("Nightclub")
+
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+	MPX = "MP0_"
+else
+	MPX = "MP1_"
+end
+
+checkbox2 = Club:add_checkbox("Enable Nitghtclub $250k/15s (Safe AFK)")
+script.register_looped("nightclubloop", function(script)
+	script:yield()
+	if checkbox2:is_enabled() == true then
+		gui.show_message("Nightclub Loop Activated!", "250k/second in safe")
+		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_PAY_TIME_LEFT"), -1, true)
+		gui.show_message("Nightclub Loop Deactivated!", "Enjoy the money!")
+		script:sleep(2500)
+	end
+end)
+
+
 -- Teleports tab
 local Tel = Pla:add_tab("Teleports")
 
@@ -753,3 +788,78 @@ Upg:add_sameline()
 Upg:add_button("Max Vehicle Modifications", function()
     gui.show_message('Max Upgrades', 'Failed! Feature unavailable.')
 end)
+
+-- Global Player Options
+
+local Global = KAOS:add_tab("Global")
+
+-- Define PRGBGLoop variable outside the function
+local PRGBGLoop = false
+
+-- Define the script variable outside the function
+local dropScript = nil
+
+-- Add Drop Global RP Button under the Global Tab
+Global:add_button("Drop Global RP (On/Off)", function()
+    PRGBGLoop = not PRGBGLoop
+
+    if PRGBGLoop then
+        dropScript = script.register_looped("PRGBGLoop", function(dropScript)
+            local model = joaat("vw_prop_vw_colle_prbubble")
+            local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+            local money_value = 0
+			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
+            STREAMING.REQUEST_MODEL(model)
+            while STREAMING.HAS_MODEL_LOADED(model) == false do
+                dropScript:yield()
+            end
+
+            if STREAMING.HAS_MODEL_LOADED(model) then
+                local localPlayerId = PLAYER.PLAYER_ID()
+                local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
+                gui.show_message("Global RP/Cash Drop Started", "Princess Robot Bubblegum Drops to all Players in session: " .. player_count)
+
+                for i = 0, player_count do
+				SYSTEM.WAIT(5000)
+                    if i ~= localPlayerId then
+                        local player_id = i
+                        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+
+                        local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                            pickup,
+                            coords.x - 0,
+                            coords.y + 0,
+                            coords.z + 1,
+                            3,
+                            money_value,
+                            model,
+                            true,
+                            false
+                        )
+						
+						local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+                        -- Delay for 5 seconds before the next iteration
+                        SYSTEM.WAIT(5000)
+                    end
+                end
+            end
+            if not PRGBGLoop then
+                dropScript.unregister_script("PRGBGLoop")
+            end
+        end)
+		
+    else
+        -- Unregister the script if PRGBGLoop is false
+        dropScript.unregister_script("PRGBGLoop")
+    end
+end)
+
+
+
+
+
+
+
+
+
