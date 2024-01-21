@@ -575,7 +575,7 @@ end)
  
 casino_gui:add_separator()
 casino_gui:add_text("Roulette")
-force_roulette_wheel = casino_gui:add_checkbox("Force Roulette Wheel to Land On Red 18")
+force_roulette_wheel = casino_gui:add_checkbox("Activate Roulette Rig")
 
 local player_id = PLAYER.PLAYER_ID()
 
@@ -806,6 +806,8 @@ Global:add_button("Drop Global RP (On/Off)", function()
     if PRGBGLoop then
         dropScript = script.register_looped("PRGBGLoop", function(dropScript)
             local model = joaat("vw_prop_vw_colle_prbubble")
+			local model = joaat("vw_prop_vw_colle_alien")
+			local model = joaat("vw_prop_vw_colle_pogo")
             local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
             local money_value = 0
 			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
@@ -819,7 +821,7 @@ Global:add_button("Drop Global RP (On/Off)", function()
                 local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
                 gui.show_message("Global RP/Cash Drop Started", "Princess Robot Bubblegum Drops to all Players in session: " .. player_count)
 
-                for i = 0, player_count do
+                for i = 0, player_count -1 do
 				SYSTEM.WAIT(5000)
                     if i ~= localPlayerId then
                         local player_id = i
@@ -854,12 +856,3 @@ Global:add_button("Drop Global RP (On/Off)", function()
         dropScript.unregister_script("PRGBGLoop")
     end
 end)
-
-
-
-
-
-
-
-
-
