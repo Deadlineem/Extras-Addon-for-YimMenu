@@ -805,9 +805,7 @@ Global:add_button("Drop Global RP (On/Off)", function()
 
     if PRGBGLoop then
         dropScript = script.register_looped("PRGBGLoop", function(dropScript)
-            local model = joaat("vw_prop_vw_colle_prbubble")
-			local model = joaat("vw_prop_vw_colle_alien")
-			local model = joaat("vw_prop_vw_colle_pogo")
+	    local model = joaat("vw_prop_vw_colle_pogo")
             local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
             local money_value = 0
 			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
