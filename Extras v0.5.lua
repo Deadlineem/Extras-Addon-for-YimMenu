@@ -581,8 +581,8 @@ local player_id = PLAYER.PLAYER_ID()
 
 		casVal = -1
 		casino_gui:add_imgui(function()
-			casVal, used = ImGui.SliderInt("Betting Number", casVal, -1, 36)
-			if used then
+			casVal, used2 = ImGui.SliderInt("Betting Number", casVal, -1, 36)
+			if used2 then
 				valz = casVal
 			end
 		end)
@@ -635,7 +635,7 @@ script.register_looped("Casino Pacino Thread", function (script)
         dealers_card_gui_element:set_value("Not in Casino.")
     end
     if force_roulette_wheel:is_enabled() then
-		
+		 local player_id = PLAYER.PLAYER_ID()
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casinoroulette")) ~= 0 then
             while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 3, 0) ~= player_id do 
                 network.force_script_host("casinoroulette")
@@ -805,7 +805,7 @@ Global:add_button("Drop Global RP (On/Off)", function()
 
     if PRGBGLoop then
         dropScript = script.register_looped("PRGBGLoop", function(dropScript)
-	    local model = joaat("vw_prop_vw_colle_pogo")
+            local model = joaat("vw_prop_vw_colle_prbubble")
             local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
             local money_value = 0
 			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
@@ -829,7 +829,7 @@ Global:add_button("Drop Global RP (On/Off)", function()
                             pickup,
                             coords.x - 0,
                             coords.y + 0,
-                            coords.z + 1,
+                            coords.z - 0.5,
                             3,
                             money_value,
                             model,
@@ -853,4 +853,184 @@ Global:add_button("Drop Global RP (On/Off)", function()
         -- Unregister the script if PRGBGLoop is false
         dropScript.unregister_script("PRGBGLoop")
     end
+end)
+
+-- Story Mode Options
+
+StoryCharacters = KAOS:add_tab("Story Mode")
+
+	mCash = 0
+	StoryCharacters:add_imgui(function()
+		mCash, used = ImGui.SliderInt("Michael's Cash", mCash, 1, 2147483646)
+		out = "Michael's cash set to $"..tostring(mCash)
+		if used then
+			STATS.STAT_SET_INT(joaat("SP0_TOTAL_CASH"), mCash, true)
+			gui.show_message('Story Mode Cash Updated!', out)
+		end
+	end)
+	
+	fCash = 0
+	StoryCharacters:add_imgui(function()
+		fCash, used = ImGui.SliderInt("Franklin's Cash", fCash, 1, 2147483646)
+		out = "Franklins's cash set to $"..tostring(fCash)
+		if used then
+			STATS.STAT_SET_INT(joaat("SP1_TOTAL_CASH"), fCash, true)
+			gui.show_message('Story Mode Cash Updated!', out)
+		end
+	end)
+	
+	tCash = 0
+	StoryCharacters:add_imgui(function()
+		tCash, used = ImGui.SliderInt("Trevor's Cash", tCash, 1, 2147483646)
+		out = "Trevor's cash set to $"..tostring(tCash)
+		if used then
+			STATS.STAT_SET_INT(joaat("SP2_TOTAL_CASH"), tCash, true)
+			gui.show_message('Story Mode Cash Updated!', out)
+		end
+	end)
+	StoryCharacters:add_separator()
+	mStats = 0
+	StoryCharacters:add_imgui(function()
+		mStats, used = ImGui.SliderInt("Michael's Stats", mStats, 0, 100)
+		out = "Michael's Stats set to "..tostring(mStats).."/100"
+		if used then
+			STATS.STAT_SET_INT(joaat("SP0_SPECIAL_ABILITY"), mStats, true)
+			STATS.STAT_SET_INT(joaat("SP0_STAMINA"), mStats, true)
+			STATS.STAT_SET_INT(joaat("SP0_STRENGTH"), mStats, true)
+			STATS.STAT_SET_INT(joaat("SP0_LUNG_CAPACITY"), mStats, true)
+			STATS.STAT_SET_INT(joaat("SP0_WHEELIE_ABILITY"), mStats, true)
+			STATS.STAT_SET_INT(joaat("SP0_FLYING_ABILITY"), mStats, true)
+			STATS.STAT_SET_INT(joaat("SP0_SHOOTING_ABILITY"), mStats, true)
+			STATS.STAT_SET_INT(joaat("SP0_STEALTH_ABILITY"), mStats, true)
+			gui.show_message('Story Mode Stats Updated!', out)
+		end
+	end)
+	
+	fStats = 0
+	StoryCharacters:add_imgui(function()
+		fStats, used = ImGui.SliderInt("Franklin's Stats", fStats, 0, 100)
+		out = "Franklin's Stats set to "..tostring(fStats).."/100"
+		if used then
+			STATS.STAT_SET_INT(joaat("SP1_SPECIAL_ABILITY"), fStats, true)
+			STATS.STAT_SET_INT(joaat("SP1_STAMINA"), fStats, true)
+			STATS.STAT_SET_INT(joaat("SP1_STRENGTH"), fStats, true)
+			STATS.STAT_SET_INT(joaat("SP1_LUNG_CAPACITY"), fStats, true)
+			STATS.STAT_SET_INT(joaat("SP1_WHEELIE_ABILITY"), fStats, true)
+			STATS.STAT_SET_INT(joaat("SP1_FLYING_ABILITY"), fStats, true)
+			STATS.STAT_SET_INT(joaat("SP1_SHOOTING_ABILITY"), fStats, true)
+			STATS.STAT_SET_INT(joaat("SP1_STEALTH_ABILITY"), fStats, true)
+			gui.show_message('Story Mode Stats Updated!', out)
+		end
+	end)
+	
+	tStats = 0
+	StoryCharacters:add_imgui(function()
+		tStats, used = ImGui.SliderInt("Trevor's Stats", tStats, 0, 100)
+		out = "Trevor's Stats set to "..tostring(tStats).."/100"
+		if used then
+			STATS.STAT_SET_INT(joaat("SP2_SPECIAL_ABILITY"), tStats, true)
+			STATS.STAT_SET_INT(joaat("SP2_STAMINA"), tStats, true)
+			STATS.STAT_SET_INT(joaat("SP2_STRENGTH"), tStats, true)
+			STATS.STAT_SET_INT(joaat("SP2_LUNG_CAPACITY"), tStats, true)
+			STATS.STAT_SET_INT(joaat("SP2_WHEELIE_ABILITY"), tStats, true)
+			STATS.STAT_SET_INT(joaat("SP2_FLYING_ABILITY"), tStats, true)
+			STATS.STAT_SET_INT(joaat("SP2_SHOOTING_ABILITY"), tStats, true)
+			STATS.STAT_SET_INT(joaat("SP2_STEALTH_ABILITY"), tStats, true)
+			gui.show_message('Story Mode Stats Updated!', out)
+		end
+	end)
+	
+local weaponNamesString = {
+    "weapon_dagger", "weapon_bat", "weapon_bottle", "weapon_crowbar",
+    "weapon_unarmed", "weapon_flashlight", "weapon_golfclub", "weapon_hammer",
+    "weapon_hatchet", "weapon_knuckle", "weapon_knife", "weapon_machete",
+    "weapon_switchblade", "weapon_nightstick", "weapon_wrench", "weapon_battleaxe",
+    "weapon_poolcue", "weapon_stone_hatchet", "weapon_pistol", "weapon_pistol_mk2",
+    "weapon_combatpistol", "weapon_appistol", "weapon_stungun", "weapon_pistol50",
+    "weapon_snspistol", "weapon_snspistol_mk2", "weapon_heavypistol", "weapon_vintagepistol",
+    "weapon_flaregun", "weapon_marksmanpistol", "weapon_revolver", "weapon_revolver_mk2",
+    "weapon_doubleaction", "weapon_raypistol", "weapon_ceramicpistol", "weapon_navyrevolver",
+    "weapon_microsmg", "weapon_smg", "weapon_smg_mk2", "weapon_assaultsmg",
+    "weapon_combatpdw", "weapon_machinepistol", "weapon_minismg", "weapon_raycarbine",
+    "weapon_pumpshotgun", "weapon_pumpshotgun_mk2", "weapon_sawnoffshotgun", "weapon_assaultshotgun",
+    "weapon_bullpupshotgun", "weapon_musket", "weapon_heavyshotgun", "weapon_dbshotgun",
+    "weapon_autoshotgun", "weapon_assaultrifle", "weapon_assaultrifle_mk2", "weapon_carbinerifle",
+    "weapon_carbinerifle_mk2", "weapon_advancedrifle", "weapon_specialcarbine", "weapon_specialcarbine_mk2",
+    "weapon_bullpuprifle", "weapon_bullpuprifle_mk2", "weapon_compactrifle", "weapon_mg",
+    "weapon_combatmg", "weapon_combatmg_mk2", "weapon_gusenberg", "weapon_sniperrifle",
+    "weapon_heavysniper", "weapon_heavysniper_mk2", "weapon_marksmanrifle", "weapon_marksmanrifle_mk2",
+    "weapon_rpg", "weapon_grenadelauncher", "weapon_grenadelauncher_smoke", "weapon_minigun",
+    "weapon_firework", "weapon_railgun", "weapon_hominglauncher", "weapon_compactlauncher",
+    "weapon_rayminigun", "weapon_grenade", "weapon_bzgas", "weapon_smokegrenade",
+    "weapon_flare", "weapon_molotov", "weapon_stickybomb", "weapon_proxmine",
+    "weapon_snowball", "weapon_pipebomb", "weapon_ball", "weapon_petrolcan",
+    "weapon_fireextinguisher", "weapon_parachute", "weapon_hazardcan", "weapon_militaryrifle",
+    "weapon_combatshotgun", "weapon_gadgetpistol", "WEAPON_SNOWLAUNCHER", "WEAPON_BATTLERIFLE", 
+	"WEAPON_TECPISTOL", "WEAPON_CANDYCANE", "WEAPON_PISTOLXM3", "WEAPON_RAILGUNXM3", "WEAPON_PRECISIONRIFLE", 
+	"WEAPON_TACTICALRIFLE", "WEAPON_EMPLAUNCHER", "WEAPON_HEAVYRIFLE"
+}
+
+-- Weapon Options
+local Weapons = KAOS:add_tab("Weapons")
+
+Weapons:add_button("Remove All Weapons", function()
+		local playerID = PLAYER.PLAYER_ID()
+		local ent = PLAYER.GET_PLAYER_PED(playerID)
+		out = "Successfully removed all weapons"
+		if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
+			for _, name in ipairs(weaponNamesString) do
+				local weaponHash = MISC.GET_HASH_KEY(name)
+				WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
+				gui.show_message('Story Mode Weapons', out)
+				
+			end
+		end
+end)
+
+Weapons:add_button("Give All Weapons", function()
+		local playerID = PLAYER.PLAYER_ID()
+		local ent = PLAYER.GET_PLAYER_PED(playerID)
+		out = "Successfully given all weapons"
+		if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
+			for _, name in ipairs(weaponNamesString) do
+				local weaponHash = MISC.GET_HASH_KEY(name)
+				WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
+				gui.show_message('Story Mode Weapons', out)
+				
+			end
+		end
+end)
+
+Global:add_button("Give All Weapons to Players", function()
+    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
+
+    for i = 0, player_count - 1 do
+        local playerID = i
+        local ent = PLAYER.GET_PLAYER_PED(playerID)
+        if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
+            for _, name in ipairs(weaponNamesString) do
+                local weaponHash = MISC.GET_HASH_KEY(name)
+                WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
+            end
+        end
+    end
+
+    gui.show_message("Give Weapons", "Successfully given all weapons to all players")
+end)
+
+Global:add_button("Remove All Weapons from Players", function()
+    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
+
+    for i = 0, player_count - 1 do
+        local playerID = i
+        local ent = PLAYER.GET_PLAYER_PED(playerID)
+        if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
+            for _, name in ipairs(weaponNamesString) do
+                local weaponHash = MISC.GET_HASH_KEY(name)
+                WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
+            end
+        end
+    end
+
+    gui.show_message("Remove Weapons", "Successfully removed all weapons from all players")
 end)
