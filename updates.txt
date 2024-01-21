@@ -61,3 +61,43 @@ ________________________________________________________________________________
 ---- Drop Global RP (On/Off)
 -------- Drops Princess Robot Bubblegum figurines to entire lobby
 -------- NOTE: This CAN cause you to lag/freeze/crash in sessions with 10+ players, USE WITH CAUTION!
+
+---- Give all players all weapons
+-------- Does what it says
+
+---- Remove weapons from all players
+-------- Does what it says
+
+__________________________________________________________________________________________________________
+
+Story Mode Options
+__________________________________________________________________________________________________________
+
+---- Michael's Cash
+-------- Sets the value of michael's cash in story mode from $1 to $2147483646 using a slider
+
+---- Franklins's Cash
+-------- Sets the value of franklin's cash in story mode from $1 to $2147483646 using a slider
+
+---- Trevor's Cash
+-------- Sets the value of trevor's cash in story mode from $1 to $2147483646 using a slider
+
+---- Michael's Stats
+-------- Sets the value of michael's stats in story mode from 0 to 100 using a slider
+
+---- Franklins's Stats
+-------- Sets the value of franklin's stats in story mode from 0 to 100 using a slider
+
+---- Trevor's Stats
+-------- Sets the value of trevor's stats in story mode from 0 to 100 using a slider
+
+___________________________________________________________________________________________________________
+
+Weapons
+___________________________________________________________________________________________________________
+
+---- Remove all weapons
+-------- Removes all weapons from yourself (Story mode + Multiplayer)
+
+---- Give all weapons
+-------- Gives all weapons to yourself (Story mode + Multiplayer)
