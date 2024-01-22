@@ -275,7 +275,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-
+		sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not princessBubblegumLoop then
             script.unregister_script("princessbubblegumLoop")
         end
@@ -338,7 +338,7 @@ Drops:add_button("Alien (On/Off)", function()
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-
+		sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not alienfigurineLoop then
             script.unregister_script("alienfigurineLoop")
         end
@@ -397,11 +397,11 @@ Drops:add_button("Casino Cards (On/Off)", function()
                 true,
                 false
             )
-
+		
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-
+		sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not casinocardsLoop then
             script.unregister_script("casinocardsLoop")
         end
@@ -440,7 +440,7 @@ Drops:add_button("Cash Loop (On/Off)", function()
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-
+		sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not kcashLoop then
             script.unregister_script("kcashLoop")
         end
@@ -806,7 +806,7 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
                             pickup,
                             coords.x - 0,
                             coords.y + 0,
-                            coords.z + 0.5,
+                            coords.z + 1,
                             3,
                             money_value,
                             model,
@@ -839,7 +839,7 @@ Global:add_button("Give All Weapons to Players", function()
 
     gui.show_message("Global", "Successfully given all weapons to all players")
 end)
-
+Global:add_sameline()
 Global:add_button("Remove All Weapons from Players", function()
     local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
 
