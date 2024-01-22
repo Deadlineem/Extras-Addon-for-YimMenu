@@ -3,37 +3,6 @@ local function createText(tab, text)
     tab:add_text(text)
 end
 
--- Function to create a tab with buttons and optional text
-local function createTab(parentTab, tabName, elements, text)
-    local newTab = parentTab:add_tab(tabName)
-
-    for _, element in ipairs(elements) do
-        if element.type == "button" then
-            newTab:add_button(element.text, element.func)
-        end
-    end
-
-    if text then
-        createText(newTab, text)
-    end
-end
-
--- Vehicle Options (Assuming these functions are defined elsewhere in your script)
-local function spawnVehicle() end
-local function deleteVehicle() end
-local function cloneNearestVehicle() end
-local function giftVehicle() end
-local function oneClickBennys() end
-local function oneClickF1s() end
-local function maxVehicleMods() end
-local function maxVehiclePerformance() end
-local function downgradeVehicle() end
-
--- Player Options (Assuming these functions are defined elsewhere in your script)
-local function teleportToLocation() end
-local function modifyPlayerMovement(value) end
-local function modifyPlayerHealth() end
-
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras")
 createText(KAOS, "Welcome to the Extras menu, please read the information below before proceeding to use the menu options.")
@@ -708,30 +677,6 @@ script.register_looped("Casino Pacino Thread", function (script)
     end
 end)
 
--- Nightclub Loop - L7Neg
-local Club = Money:add_tab("Nightclub")
-
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-	MPX = "MP0_"
-else
-	MPX = "MP1_"
-end
-
-checkbox2 = Club:add_checkbox("Enable Nitghtclub $250k/15s (Safe AFK)")
-script.register_looped("nightclubloop", function(script)
-	script:yield()
-	if checkbox2:is_enabled() == true then
-		gui.show_message("Nightclub Loop Activated!", "250k/second in safe")
-		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_PAY_TIME_LEFT"), -1, true)
-		gui.show_message("Nightclub Loop Deactivated!", "Enjoy the money!")
-		script:sleep(2500)
-	end
-end)
-
-
 -- Teleports tab
 local Tel = Pla:add_tab("Teleports")
 
@@ -819,7 +764,7 @@ Global:add_button("Drop Global RP (On/Off)", function()
                 local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
                 gui.show_message("Global RP/Cash Drop Started", "Princess Robot Bubblegum Drops to all Players in session: " .. player_count)
 
-                for i = 0, player_count -1 do
+                for i = 0, 32 do
 				SYSTEM.WAIT(5000)
                     if i ~= localPlayerId then
                         local player_id = i
@@ -1034,3 +979,44 @@ Global:add_button("Remove All Weapons from Players", function()
 
     gui.show_message("Remove Weapons", "Successfully removed all weapons from all players")
 end)
+
+-- Business Management
+local Business = KAOS:add_tab("Business Manager")
+local Hangar = Business:add_tab("Hangar")
+
+
+hStock = Hangar:add_checkbox("Toggle Auto Get Hangar Cargo")
+script.register_looped("autoGetHangarCargo", function(script)
+	script:yield()
+	if hStock:is_enabled() == true then
+		autoGetHangarCargo = not autoGetHangarCargo
+		if autoGetHangarCargo then
+			stats.set_packed_stat_bool(36828, true) 
+			gui.show_message("Hangar Restock", "Restocking cargo, please wait...")
+		end
+	end
+end)
+
+-- Nightclub Loop - L7Neg
+local Club = Business:add_tab("Nightclub")
+
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+	MPX = "MP0_"
+else
+	MPX = "MP1_"
+end
+
+nClub = Club:add_checkbox("Enable Nightclub $250k/15s (Safe AFK)")
+script.register_looped("nightclubloop", function(script)
+	script:yield()
+	if nClub:is_enabled() == true then
+		gui.show_message("Nightclub Loop Activated!", "250k/second in safe")
+		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_PAY_TIME_LEFT"), -1, true)
+		gui.show_message("Nightclub Loop Deactivated!", "Enjoy the money!")
+		script:sleep(2500)
+	end
+end)
+
