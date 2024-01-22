@@ -3,6 +3,45 @@ local function createText(tab, text)
     tab:add_text(text)
 end
 
+function sleep(seconds)
+    local start = os.clock()
+    while os.clock() - start < seconds do
+        -- Yield the CPU to avoid high CPU usage during the delay
+        coroutine.yield()
+    end
+end
+
+-- Weapons List
+local weaponNamesString = {
+    "weapon_dagger", "weapon_bat", "weapon_bottle", "weapon_crowbar",
+    "weapon_unarmed", "weapon_flashlight", "weapon_golfclub", "weapon_hammer",
+    "weapon_hatchet", "weapon_knuckle", "weapon_knife", "weapon_machete",
+    "weapon_switchblade", "weapon_nightstick", "weapon_wrench", "weapon_battleaxe",
+    "weapon_poolcue", "weapon_stone_hatchet", "weapon_pistol", "weapon_pistol_mk2",
+    "weapon_combatpistol", "weapon_appistol", "weapon_stungun", "weapon_pistol50",
+    "weapon_snspistol", "weapon_snspistol_mk2", "weapon_heavypistol", "weapon_vintagepistol",
+    "weapon_flaregun", "weapon_marksmanpistol", "weapon_revolver", "weapon_revolver_mk2",
+    "weapon_doubleaction", "weapon_raypistol", "weapon_ceramicpistol", "weapon_navyrevolver",
+    "weapon_microsmg", "weapon_smg", "weapon_smg_mk2", "weapon_assaultsmg",
+    "weapon_combatpdw", "weapon_machinepistol", "weapon_minismg", "weapon_raycarbine",
+    "weapon_pumpshotgun", "weapon_pumpshotgun_mk2", "weapon_sawnoffshotgun", "weapon_assaultshotgun",
+    "weapon_bullpupshotgun", "weapon_musket", "weapon_heavyshotgun", "weapon_dbshotgun",
+    "weapon_autoshotgun", "weapon_assaultrifle", "weapon_assaultrifle_mk2", "weapon_carbinerifle",
+    "weapon_carbinerifle_mk2", "weapon_advancedrifle", "weapon_specialcarbine", "weapon_specialcarbine_mk2",
+    "weapon_bullpuprifle", "weapon_bullpuprifle_mk2", "weapon_compactrifle", "weapon_mg",
+    "weapon_combatmg", "weapon_combatmg_mk2", "weapon_gusenberg", "weapon_sniperrifle",
+    "weapon_heavysniper", "weapon_heavysniper_mk2", "weapon_marksmanrifle", "weapon_marksmanrifle_mk2",
+    "weapon_rpg", "weapon_grenadelauncher", "weapon_grenadelauncher_smoke", "weapon_minigun",
+    "weapon_firework", "weapon_railgun", "weapon_hominglauncher", "weapon_compactlauncher",
+    "weapon_rayminigun", "weapon_grenade", "weapon_bzgas", "weapon_smokegrenade",
+    "weapon_flare", "weapon_molotov", "weapon_stickybomb", "weapon_proxmine",
+    "weapon_snowball", "weapon_pipebomb", "weapon_ball", "weapon_petrolcan",
+    "weapon_fireextinguisher", "weapon_parachute", "weapon_hazardcan", "weapon_militaryrifle",
+    "weapon_combatshotgun", "weapon_gadgetpistol", "WEAPON_SNOWLAUNCHER", "WEAPON_BATTLERIFLE", 
+	"WEAPON_TECPISTOL", "WEAPON_CANDYCANE", "WEAPON_PISTOLXM3", "WEAPON_RAILGUNXM3", "WEAPON_PRECISIONRIFLE", 
+	"WEAPON_TACTICALRIFLE", "WEAPON_EMPLAUNCHER", "WEAPON_HEAVYRIFLE"
+}
+
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras")
 createText(KAOS, "Welcome to the Extras menu, please read the information below before proceeding to use the menu options.")
@@ -737,67 +776,85 @@ end)
 -- Global Player Options
 
 local Global = KAOS:add_tab("Global")
-
--- Define PRGBGLoop variable outside the function
 local PRGBGLoop = false
-
--- Define the script variable outside the function
 local dropScript = nil
 
--- Add Drop Global RP Button under the Global Tab
-Global:add_button("Drop Global RP (On/Off)", function()
-    PRGBGLoop = not PRGBGLoop
+rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
 
-    if PRGBGLoop then
-        dropScript = script.register_looped("PRGBGLoop", function(dropScript)
+        script.register_looped("PRGBGLoop", function()
+		if rpLoop:is_enabled() == true then
             local model = joaat("vw_prop_vw_colle_prbubble")
             local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
             local money_value = 0
 			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
             STREAMING.REQUEST_MODEL(model)
             while STREAMING.HAS_MODEL_LOADED(model) == false do
-                dropScript:yield()
+                rpLoop:yield()
             end
 
             if STREAMING.HAS_MODEL_LOADED(model) then
                 local localPlayerId = PLAYER.PLAYER_ID()
                 local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
-                gui.show_message("Global RP/Cash Drop Started", "Princess Robot Bubblegum Drops to all Players in session: " .. player_count)
+                gui.show_message("Global", "Dropping figurines to ".. player_count.." Players in the session.")
 
                 for i = 0, 32 do
-				SYSTEM.WAIT(5000)
                     if i ~= localPlayerId then
                         local player_id = i
+						
                         local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-
                         local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                             pickup,
                             coords.x - 0,
                             coords.y + 0,
-                            coords.z - 0.5,
+                            coords.z + 0.5,
                             3,
                             money_value,
                             model,
                             true,
                             false
                         )
-						
+
 						local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
 						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-                        -- Delay for 5 seconds before the next iteration
-                        SYSTEM.WAIT(5000)
                     end
                 end
             end
-            if not PRGBGLoop then
-                dropScript.unregister_script("PRGBGLoop")
-            end
+			sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+		end
         end)
-		
-    else
-        -- Unregister the script if PRGBGLoop is false
-        dropScript.unregister_script("PRGBGLoop")
+
+Global:add_button("Give All Weapons to Players", function()
+    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
+
+    for i = 0, player_count - 1 do
+        local playerID = i
+        local ent = PLAYER.GET_PLAYER_PED(playerID)
+        if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
+            for _, name in ipairs(weaponNamesString) do
+                local weaponHash = MISC.GET_HASH_KEY(name)
+                WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
+            end
+        end
     end
+
+    gui.show_message("Global", "Successfully given all weapons to all players")
+end)
+
+Global:add_button("Remove All Weapons from Players", function()
+    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
+
+    for i = 0, player_count - 1 do
+        local playerID = i
+        local ent = PLAYER.GET_PLAYER_PED(playerID)
+        if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
+            for _, name in ipairs(weaponNamesString) do
+                local weaponHash = MISC.GET_HASH_KEY(name)
+                WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
+            end
+        end
+    end
+
+    gui.show_message("Global", "Successfully removed all weapons from all players")
 end)
 
 -- Story Mode Options
@@ -885,37 +942,8 @@ StoryCharacters = KAOS:add_tab("Story Mode")
 		end
 	end)
 	
-local weaponNamesString = {
-    "weapon_dagger", "weapon_bat", "weapon_bottle", "weapon_crowbar",
-    "weapon_unarmed", "weapon_flashlight", "weapon_golfclub", "weapon_hammer",
-    "weapon_hatchet", "weapon_knuckle", "weapon_knife", "weapon_machete",
-    "weapon_switchblade", "weapon_nightstick", "weapon_wrench", "weapon_battleaxe",
-    "weapon_poolcue", "weapon_stone_hatchet", "weapon_pistol", "weapon_pistol_mk2",
-    "weapon_combatpistol", "weapon_appistol", "weapon_stungun", "weapon_pistol50",
-    "weapon_snspistol", "weapon_snspistol_mk2", "weapon_heavypistol", "weapon_vintagepistol",
-    "weapon_flaregun", "weapon_marksmanpistol", "weapon_revolver", "weapon_revolver_mk2",
-    "weapon_doubleaction", "weapon_raypistol", "weapon_ceramicpistol", "weapon_navyrevolver",
-    "weapon_microsmg", "weapon_smg", "weapon_smg_mk2", "weapon_assaultsmg",
-    "weapon_combatpdw", "weapon_machinepistol", "weapon_minismg", "weapon_raycarbine",
-    "weapon_pumpshotgun", "weapon_pumpshotgun_mk2", "weapon_sawnoffshotgun", "weapon_assaultshotgun",
-    "weapon_bullpupshotgun", "weapon_musket", "weapon_heavyshotgun", "weapon_dbshotgun",
-    "weapon_autoshotgun", "weapon_assaultrifle", "weapon_assaultrifle_mk2", "weapon_carbinerifle",
-    "weapon_carbinerifle_mk2", "weapon_advancedrifle", "weapon_specialcarbine", "weapon_specialcarbine_mk2",
-    "weapon_bullpuprifle", "weapon_bullpuprifle_mk2", "weapon_compactrifle", "weapon_mg",
-    "weapon_combatmg", "weapon_combatmg_mk2", "weapon_gusenberg", "weapon_sniperrifle",
-    "weapon_heavysniper", "weapon_heavysniper_mk2", "weapon_marksmanrifle", "weapon_marksmanrifle_mk2",
-    "weapon_rpg", "weapon_grenadelauncher", "weapon_grenadelauncher_smoke", "weapon_minigun",
-    "weapon_firework", "weapon_railgun", "weapon_hominglauncher", "weapon_compactlauncher",
-    "weapon_rayminigun", "weapon_grenade", "weapon_bzgas", "weapon_smokegrenade",
-    "weapon_flare", "weapon_molotov", "weapon_stickybomb", "weapon_proxmine",
-    "weapon_snowball", "weapon_pipebomb", "weapon_ball", "weapon_petrolcan",
-    "weapon_fireextinguisher", "weapon_parachute", "weapon_hazardcan", "weapon_militaryrifle",
-    "weapon_combatshotgun", "weapon_gadgetpistol", "WEAPON_SNOWLAUNCHER", "WEAPON_BATTLERIFLE", 
-	"WEAPON_TECPISTOL", "WEAPON_CANDYCANE", "WEAPON_PISTOLXM3", "WEAPON_RAILGUNXM3", "WEAPON_PRECISIONRIFLE", 
-	"WEAPON_TACTICALRIFLE", "WEAPON_EMPLAUNCHER", "WEAPON_HEAVYRIFLE"
-}
+-- Weapons Tab
 
--- Weapon Options
 local Weapons = KAOS:add_tab("Weapons")
 
 Weapons:add_button("Remove All Weapons", function()
@@ -926,7 +954,7 @@ Weapons:add_button("Remove All Weapons", function()
 			for _, name in ipairs(weaponNamesString) do
 				local weaponHash = MISC.GET_HASH_KEY(name)
 				WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
-				gui.show_message('Story Mode Weapons', out)
+				gui.show_message('Weapons', out)
 				
 			end
 		end
@@ -940,44 +968,10 @@ Weapons:add_button("Give All Weapons", function()
 			for _, name in ipairs(weaponNamesString) do
 				local weaponHash = MISC.GET_HASH_KEY(name)
 				WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
-				gui.show_message('Story Mode Weapons', out)
+				gui.show_message('Weapons', out)
 				
 			end
 		end
-end)
-
-Global:add_button("Give All Weapons to Players", function()
-    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
-
-    for i = 0, player_count - 1 do
-        local playerID = i
-        local ent = PLAYER.GET_PLAYER_PED(playerID)
-        if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
-            for _, name in ipairs(weaponNamesString) do
-                local weaponHash = MISC.GET_HASH_KEY(name)
-                WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
-            end
-        end
-    end
-
-    gui.show_message("Give Weapons", "Successfully given all weapons to all players")
-end)
-
-Global:add_button("Remove All Weapons from Players", function()
-    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
-
-    for i = 0, player_count - 1 do
-        local playerID = i
-        local ent = PLAYER.GET_PLAYER_PED(playerID)
-        if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
-            for _, name in ipairs(weaponNamesString) do
-                local weaponHash = MISC.GET_HASH_KEY(name)
-                WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
-            end
-        end
-    end
-
-    gui.show_message("Remove Weapons", "Successfully removed all weapons from all players")
 end)
 
 -- Business Management
@@ -985,14 +979,14 @@ local Business = KAOS:add_tab("Business Manager")
 local Hangar = Business:add_tab("Hangar")
 
 
-hStock = Hangar:add_checkbox("Toggle Auto Get Hangar Cargo")
+hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
 script.register_looped("autoGetHangarCargo", function(script)
 	script:yield()
 	if hStock:is_enabled() == true then
 		autoGetHangarCargo = not autoGetHangarCargo
 		if autoGetHangarCargo then
 			stats.set_packed_stat_bool(36828, true) 
-			gui.show_message("Hangar Restock", "Restocking cargo, please wait...")
+			gui.show_message("Business Manager", "Restocking cargo, please wait...")
 		end
 	end
 end)
@@ -1012,11 +1006,13 @@ nClub = Club:add_checkbox("Enable Nightclub $250k/15s (Safe AFK)")
 script.register_looped("nightclubloop", function(script)
 	script:yield()
 	if nClub:is_enabled() == true then
-		gui.show_message("Nightclub Loop Activated!", "250k/second in safe")
+		gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe")
 		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
 		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_PAY_TIME_LEFT"), -1, true)
-		gui.show_message("Nightclub Loop Deactivated!", "Enjoy the money!")
 		script:sleep(2500)
 	end
 end)
+
+test = Drops:add_tab("test")
+
 
