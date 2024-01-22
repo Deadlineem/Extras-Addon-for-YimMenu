@@ -1,4 +1,4 @@
-Extras Addon - Features List
+Extras Addon - Features List  (ALL Working/Non-Working Features/Not Implemented)
 
 Player Options
 _______________________________________________________________________________________________________
