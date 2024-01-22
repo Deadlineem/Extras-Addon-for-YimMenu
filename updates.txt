@@ -38,9 +38,6 @@ vv - Money - vv
 -------- Activate Roulette Rig
 -------- Slider (-1 to 36) for setting the win number of the table
 
----- Nightclub
--------- Activates 250k/15s loop while standing in front of nightclub safe.  Meant for AFK money
-
 vv - Teleports - vv
 - Not Yet Implemented.
 
@@ -101,3 +98,14 @@ ________________________________________________________________________________
 
 ---- Give all weapons
 -------- Gives all weapons to yourself (Story mode + Multiplayer)
+
+____________________________________________________________________________________________________________
+
+Business Management
+____________________________________________________________________________________________________________
+
+---- Hangar
+-------- Toggles automatic resupply to hangar when outside (CANNOT BE IN HANGAR)
+
+---- Nightclub
+-------- Activates 250k/15s loop while standing in front of nightclub safe.  Meant for AFK money
