@@ -3,7 +3,7 @@ local function createText(tab, text)
     tab:add_text(text)
 end
 
-function sleep(seconds)
+function sleep(seconds) -- using sleep(seconds) to determine delays as well as coroutine.yield(), dual purpose function
     local start = os.clock()
     while os.clock() - start < seconds do
         -- Yield the CPU to avoid high CPU usage during the delay
@@ -789,7 +789,7 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
 			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
             STREAMING.REQUEST_MODEL(model)
             while STREAMING.HAS_MODEL_LOADED(model) == false do
-                rpLoop:yield()
+                sleep()
             end
 
             if STREAMING.HAS_MODEL_LOADED(model) then
