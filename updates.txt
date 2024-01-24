@@ -16,8 +16,6 @@ vv - Stats - vv
 -------- Resets ALL stats for Player 1 and Player 2 Characters
 
 vv - Money - vv
----- YimCEO
--------- Activates YimCEO for Automatic Buy/Sell Special Cargo
 
 ---- Drops (These are for dropping near you to 1 or 2 people)
 -> Princess Robot Bubblegum Loop (On/Off)
@@ -28,15 +26,18 @@ vv - Money - vv
 ---- Casino
 -------- Bypass Casino Cooldown
 -------- Rig Slot Machines
--> Poker
--------- Force hand to Royal Flush
--------- Force dealers hand to Bad Beat
--> Blackjack
--------- Dealers Face Down Card (displays also if you are in the casino or not for rigging)
--------- Set dealers hand to bust
--> Roulette
--------- Activate Roulette Rig
--------- Slider (-1 to 36) for setting the win number of the table
+  -> Poker
+  -------- Force hand to Royal Flush
+  -------- Force dealers hand to Bad Beat
+  -> Blackjack
+  -------- Dealers Face Down Card (displays also if you are in the casino or not for rigging)
+  -------- Set dealers hand to bust
+  -> Roulette
+  -------- Activate Roulette Rig
+  -------- Slider (-1 to 36) for setting the win number of the table
+
+---- Loops
+-------- 1 Mill to 15 Mill Cash Loops (toggle on/off) *RISKY, DON'T LET THEM RUN TOO LONG AND RESET YOUR STATS ASAP!!!*
 
 vv - Teleports - vv
 - Not Yet Implemented.
@@ -103,6 +104,10 @@ ________________________________________________________________________________
 
 Business Management
 ____________________________________________________________________________________________________________
+---- YimCEO
+-------- Crate Value (10k - 5M)
+-------- Toggle YimCEO On/Off
+-------- Show Computer
 
 ---- Hangar
 -------- Toggles automatic resupply to hangar when outside (CANNOT BE IN HANGAR)
