@@ -693,7 +693,7 @@ end
 
 local millLoop = Money:add_tab("Loops")
 millLoop:add_text("Money Loop Options (SEVERELY RISKY!)")
-oneMillLoop = millLoop:add_checkbox("1M Loop")
+local oneMillLoop = millLoop:add_checkbox("1M Loop")
 script.register_looped("onemLoop", function(script)
 	script:yield()
 	if oneMillLoop:is_enabled() == true then
@@ -706,7 +706,7 @@ script.register_looped("onemLoop", function(script)
 	end
 end)
 millLoop:add_sameline()
-twofiveMillLoop = millLoop:add_checkbox("2.5M Loop")
+local twofiveMillLoop = millLoop:add_checkbox("2.5M Loop")
 script.register_looped("twofmLoop", function(script)
 	script:yield()
 	if twofiveMillLoop:is_enabled() == true then
@@ -719,7 +719,7 @@ script.register_looped("twofmLoop", function(script)
 	end
 end)
 millLoop:add_sameline()
-threesSixMillLoop = millLoop:add_checkbox("3.6M Loop")
+local threeSixMillLoop = millLoop:add_checkbox("3.6M Loop")
 script.register_looped("threesmLoop", function(script)
 	script:yield()
 	if threeSixMillLoop:is_enabled() == true then
@@ -732,7 +732,7 @@ script.register_looped("threesmLoop", function(script)
 	end
 end)
 millLoop:add_sameline()
-sevenMillLoop = millLoop:add_checkbox("7M Loop")
+local sevenMillLoop = millLoop:add_checkbox("7M Loop")
 script.register_looped("sevenmLoop", function(script)
 	script:yield()
 	if sevenMillLoop:is_enabled() == true then
@@ -745,7 +745,7 @@ script.register_looped("sevenmLoop", function(script)
 	end
 end)
 millLoop:add_sameline()
-fifteenMillLoop = millLoop:add_checkbox("15M Loop")
+local fifteenMillLoop = millLoop:add_checkbox("15M Loop")
 script.register_looped("fifteenMLoop", function(script)
 	script:yield()
 	if fifteenMillLoop:is_enabled() == true then
@@ -759,7 +759,6 @@ script.register_looped("fifteenMLoop", function(script)
 end)
 millLoop:add_separator()
 millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL GET BANNED!")
-
 
 -- Teleports tab
 local Tel = Pla:add_tab("Teleports")
@@ -1072,7 +1071,7 @@ script.register_looped("nightclubloop", function(script)
 		gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe")
 		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
 		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_PAY_TIME_LEFT"), -1, true)
-		script:sleep(2500)
+		sleep(2.5)
 	end
 end)
 
