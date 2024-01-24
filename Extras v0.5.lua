@@ -3,7 +3,7 @@ local function createText(tab, text)
     tab:add_text(text)
 end
 
-function sleep(seconds) -- using sleep(seconds) to determine delays as well as coroutine.yield(), dual purpose function
+function sleep(seconds)
     local start = os.clock()
     while os.clock() - start < seconds do
         -- Yield the CPU to avoid high CPU usage during the delay
@@ -142,80 +142,10 @@ Stats:add_separator()
 Stats:add_text("Resets your player stats (Ban time, earned income, sales, etc.)")
 Stats:add_text("*This may glitch some owned properties and reset mission progress in freemode*")
 
--- YimCEO -- Alestarov_Menu
-local Money = Pla:add_tab("Money")
-
-cratevalue = 10000
-Money:add_imgui(function()
-    cratevalue, used = ImGui.SliderInt("Crate Value", cratevalue, 10000, 5000000)
-    if used then
-        globals.set_int(262145 + 15991, cratevalue)
-    end
-end)
-
-checkbox = Money:add_checkbox("Enable YimCeo")
-
-Money:add_button("Show computer", function()
-    SCRIPT.REQUEST_SCRIPT("apparcadebusinesshub")
-    SYSTEM.START_NEW_SCRIPT("apparcadebusinesshub", 8344)
-end)
-
-script.register_looped("yimceoloop", function(script)
-    cratevalue = globals.get_int(262145 + 15991)
-    globals.set_int(262145 + 15756, 0)
-    globals.set_int(262145 + 15757, 0)
-    script:yield()
-
-    while true do
-        script:sleep(1000)  -- Adjust the sleep duration as needed
-
-        if checkbox:is_enabled() == true then
-		gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
-            if locals.get_int("gb_contraband_sell", 2) == 1 then
-                locals.set_int("gb_contraband_sell", 543 + 595, 1)
-                locals.set_int("gb_contraband_sell", 543 + 55, 0)
-                locals.set_int("gb_contraband_sell", 543 + 584, 0)
-                locals.set_int("gb_contraband_sell", 543 + 7, 7)
-                script:sleep(500)
-                locals.set_int("gb_contraband_sell", 543 + 1, 99999)
-            end
-
-            if locals.get_int("appsecuroserv", 2) == 1 then
-                script:sleep(500)
-                locals.set_int("appsecuroserv", 740, 1)
-                script:sleep(200)
-                locals.set_int("appsecuroserv", 739, 1)
-                script:sleep(200)
-                locals.set_int("appsecuroserv", 558, 3012)
-                script:sleep(1000)
-            end
-
-            if locals.get_int("gb_contraband_buy", 2) == 1 then
-                locals.set_int("gb_contraband_buy", 601 + 5, 1)
-                locals.set_int("gb_contraband_buy", 601 + 1, 111)
-                locals.set_int("gb_contraband_buy", 601 + 191, 6)
-                locals.set_int("gb_contraband_buy", 601 + 192, 4)
-                gui.show_message("Warehouse full!")
-            end
-
-            
-        end
-    end
-end)
-
-Money:add_separator()
-Money:add_text("Fast CEO Money (How To)")
-Money:add_separator()
-Money:add_text("1) Click 'Enable YimCeo'")
-Money:add_text("2) Select the desired crate value (10k to 5m)")
-Money:add_text("3) Click 'Show computer', select 'Special Cargo', click 'Sell Cargo' and wait")
-Money:add_text("4) Use the 'Stats' tab to reset your stats and change sessions to apply")
-Money:add_separator()
-Money:add_text("You need to manually click Special/Sell Cargo each time.")
-Money:add_text("You may also get up to 500k more than 5m sometimes.")
 
 -- Autorun Drops
-Drops = Money:add_tab("Drops")
+local Money = Pla:add_tab("Money")
+local Drops = Money:add_tab("Drops")
 
 local princessBubblegumLoop = false
 
@@ -716,6 +646,121 @@ script.register_looped("Casino Pacino Thread", function (script)
     end
 end)
 
+local TransactionManager <const> = {};
+TransactionManager.__index = TransactionManager
+
+function TransactionManager:New()
+    local self = setmetatable({}, TransactionManager);
+-- hashes for other loops in case you wanted to change the ones I added, or add more options.
+    self.m_transactions = {
+        {label = "15M (Bend Job Limited)", hash = 0x176D9D54},
+        {label = "15M (Bend Bonus Limited)", hash = 0xA174F633},
+        {label = "7M (Gang Money Limited)", hash = 0xED97AFC1},
+        {label = "3.6M (Casino Heist Money Limited)", hash = 0xB703ED29},
+        {label = "2.5M (Gang Money Limited)", hash = 0x46521174},
+        {label = "2.5M (Island Heist Money Limited)", hash = 0xDBF39508},
+        {label = "2M (Heist Awards Money Limited)", hash = 0x8107BB89},
+        {label = "2M (Tuner Robbery Money Limited)", hash = 0x921FCF3C},
+        {label = "2M (Business Hub Money Limited)", hash = 0x4B6A869C},
+        {label = "1M (Avenger Operations Money Limited)", hash = 0xE9BBC247},
+        {label = "1M (Daily Objective Event Money Limited)", hash = 0x314FB8B0},
+        {label = "1M (Daily Objective Money Limited)", hash = 0xBFCBE6B6},
+        {label = "680K (Betting Money Limited)", hash = 0xACA75AAE},
+        {label = "500K (Juggalo Story Money Limited)", hash = 0x05F2B7EE},
+        {label = "310K (Vehicle Export Money Limited)", hash = 0xEE884170},
+        {label = "200K (DoomsDay Finale Bonus Money Limited)", hash = 0xBA16F44B},
+        {label = "200K (Action Figures Money Limited)",  hash = 0x9145F938},
+        {label = "200K (Collectibles Money Limited)",    hash = 0xCDCF2380},
+        {label = "190K (Vehicle Sales Money Limited)",   hash = 0xFD389995}
+    }
+
+    return self;
+end
+
+function TransactionManager:GetPrice(hash, category)
+    return tonumber(NETSHOPPING.NET_GAMESERVER_GET_PRICE(hash, category, true))
+end
+
+function TransactionManager:TriggerTransaction(hash, amount)
+    globals.set_int(4537212 + 1, 2147483646)
+    globals.set_int(4537212 + 7, 2147483647)
+    globals.set_int(4537212 + 6, 0)
+    globals.set_int(4537212 + 5, 0)
+    globals.set_int(4537212 + 3, hash)
+    globals.set_int(4537212 + 2, amount or self:GetPrice(hash, 0x57DE404E))
+    globals.set_int(4537212, 1)
+end
+
+local millLoop = Money:add_tab("Loops")
+millLoop:add_text("Money Loop Options (SEVERELY RISKY!)")
+oneMillLoop = millLoop:add_checkbox("1M Loop")
+script.register_looped("onemLoop", function(script)
+	script:yield()
+	if oneMillLoop:is_enabled() == true then
+		onemLoop = not onemLoop
+		if onemLoop then
+			TransactionManager:TriggerTransaction(0x615762F1)
+                script:yield();
+			gui.show_message("Money Loop", "1 Mill loop running, enjoy the easy money!")
+		end
+	end
+end)
+millLoop:add_sameline()
+twofiveMillLoop = millLoop:add_checkbox("2.5M Loop")
+script.register_looped("twofmLoop", function(script)
+	script:yield()
+	if twofiveMillLoop:is_enabled() == true then
+		twofmLoop = not twofmLoop
+		if twofmLoop then
+			TransactionManager:TriggerTransaction(0xDBF39508)
+                script:yield();
+			gui.show_message("Money Loop", "2.5 Mill loop running, enjoy the easy money!")
+		end
+	end
+end)
+millLoop:add_sameline()
+threesSixMillLoop = millLoop:add_checkbox("3.6M Loop")
+script.register_looped("threesmLoop", function(script)
+	script:yield()
+	if threeSixMillLoop:is_enabled() == true then
+		threesmLoop = not threesmLoop
+		if threesmLoop then
+			TransactionManager:TriggerTransaction(0xB703ED29)
+                script:yield();
+			gui.show_message("Money Loop", "3.6 Mill loop running, enjoy the easy money!")
+		end
+	end
+end)
+millLoop:add_sameline()
+sevenMillLoop = millLoop:add_checkbox("7M Loop")
+script.register_looped("sevenmLoop", function(script)
+	script:yield()
+	if sevenMillLoop:is_enabled() == true then
+		sevenmLoop = not sevenmLoop
+		if sevenmLoop then
+			TransactionManager:TriggerTransaction(0xED97AFC1)
+                script:yield();
+			gui.show_message("Money Loop", "7 Mill loop running, enjoy the easy money!")
+		end
+	end
+end)
+millLoop:add_sameline()
+fifteenMillLoop = millLoop:add_checkbox("15M Loop")
+script.register_looped("fifteenMLoop", function(script)
+	script:yield()
+	if fifteenMillLoop:is_enabled() == true then
+		fifteenMLoop = not fifteenMLoop
+		if fifteenMLoop then
+			TransactionManager:TriggerTransaction(0x176D9D54)
+                script:yield();
+			gui.show_message("Money Loop", "15 Mill loop running, enjoy the easy money!")
+		end
+	end
+end)
+millLoop:add_separator()
+millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL GET BANNED!")
+
+
 -- Teleports tab
 local Tel = Pla:add_tab("Teleports")
 
@@ -777,8 +822,7 @@ end)
 
 local Global = KAOS:add_tab("Global")
 local PRGBGLoop = false
-local dropScript = nil
-
+Global:add_text("Global RP Options")
 rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
 
         script.register_looped("PRGBGLoop", function()
@@ -789,9 +833,9 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
 			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
             STREAMING.REQUEST_MODEL(model)
             while STREAMING.HAS_MODEL_LOADED(model) == false do
-                sleep()
+                sleep(1)
             end
-
+		
             if STREAMING.HAS_MODEL_LOADED(model) then
                 local localPlayerId = PLAYER.PLAYER_ID()
                 local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
@@ -822,7 +866,25 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
 			sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
 		end
         end)
+Global:add_sameline()		
+local justRPLoop = false
+justRP = Global:add_checkbox("Give Global RP (On/Off)")
 
+        script.register_looped("justRPLoop", function()
+		if justRP:is_enabled() == true then
+                gui.show_message("Global", "Giving RP to all players in the session.")
+
+                for i = 0, 32 do
+                    network.trigger_script_event(968269233, {1, 1, 4, i, 1, 1, 1})
+					network.trigger_script_event(968269233,  {1, 1, 8, -5, 1, 1, 1})
+                end
+		end
+		sleep(0.4) -- Sets the timer in seconds for how long this should pause
+        end)
+
+Global:add_separator()
+
+Global:add_text("Global Weapons Options")
 Global:add_button("Give All Weapons to Players", function()
     local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
 
@@ -985,6 +1047,7 @@ script.register_looped("autoGetHangarCargo", function(script)
 	if hStock:is_enabled() == true then
 		autoGetHangarCargo = not autoGetHangarCargo
 		if autoGetHangarCargo then
+			globals.set_int(1882413+7, 6)
 			stats.set_packed_stat_bool(36828, true) 
 			gui.show_message("Business Manager", "Restocking cargo, please wait...")
 		end
@@ -1013,6 +1076,76 @@ script.register_looped("nightclubloop", function(script)
 	end
 end)
 
-test = Drops:add_tab("test")
+-- YimCEO -- Alestarov_Menu
+local yimCEO = Business:add_tab("YimCEO")
 
+cratevalue = 10000
+yimCEO:add_imgui(function()
+    cratevalue, used = ImGui.SliderInt("Crate Value", cratevalue, 10000, 5000000)
+    if used then
+        globals.set_int(262145 + 15991, cratevalue)
+    end
+end)
 
+yCEO = yimCEO:add_checkbox("Enable YimCeo")
+
+yimCEO:add_button("Show computer", function()
+    SCRIPT.REQUEST_SCRIPT("apparcadebusinesshub")
+    SYSTEM.START_NEW_SCRIPT("apparcadebusinesshub", 8344)
+end)
+
+script.register_looped("yimceoloop", function(script)
+    cratevalue = globals.get_int(262145 + 15991)
+    globals.set_int(262145 + 15756, 0)
+    globals.set_int(262145 + 15757, 0)
+    script:yield()
+
+    while true do
+        script:sleep(1000)  -- Adjust the sleep duration as needed
+
+        if yCEO:is_enabled() == true then
+		gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
+            if locals.get_int("gb_contraband_sell", 2) == 1 then
+                locals.set_int("gb_contraband_sell", 543 + 595, 1)
+                locals.set_int("gb_contraband_sell", 543 + 55, 0)
+                locals.set_int("gb_contraband_sell", 543 + 584, 0)
+                locals.set_int("gb_contraband_sell", 543 + 7, 7)
+                script:sleep(500)
+                locals.set_int("gb_contraband_sell", 543 + 1, 99999)
+            end
+
+            if locals.get_int("appsecuroserv", 2) == 1 then
+                script:sleep(500)
+                locals.set_int("appsecuroserv", 740, 1)
+                script:sleep(200)
+                locals.set_int("appsecuroserv", 739, 1)
+                script:sleep(200)
+                locals.set_int("appsecuroserv", 558, 3012)
+                script:sleep(1000)
+            end
+
+            if locals.get_int("gb_contraband_buy", 2) == 1 then
+                locals.set_int("gb_contraband_buy", 601 + 5, 1)
+                locals.set_int("gb_contraband_buy", 601 + 1, 111)
+                locals.set_int("gb_contraband_buy", 601 + 191, 6)
+                locals.set_int("gb_contraband_buy", 601 + 192, 4)
+                gui.show_message("Warehouse full!")
+            end
+
+            
+        end
+    end
+end)
+
+yimCEO:add_separator()
+yimCEO:add_text("Fast CEO yimCEO (How To)")
+yimCEO:add_separator()
+yimCEO:add_text("1) Click 'Enable YimCeo'")
+yimCEO:add_text("2) Select the desired crate value (10k to 5m)")
+yimCEO:add_text("3) Click 'Show computer', select 'Special Cargo', click 'Sell Cargo' and wait")
+yimCEO:add_text("4) Use the 'Stats' tab to reset your stats and change sessions to apply")
+yimCEO:add_separator()
+yimCEO:add_text("You need to manually click Special/Sell Cargo each time.")
+yimCEO:add_text("You may also get up to 500k more than 5m sometimes.")
+
+-- Testing Features
