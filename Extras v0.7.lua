@@ -760,12 +760,7 @@ end)
 millLoop:add_separator()
 millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL GET BANNED!")
 
--- Teleports tab
-local Tel = Pla:add_tab("Teleports")
-
-Tel:add_button("Teleport to Location", function()
-    gui.show_message('Teleport to Location', 'Failed! Feature unavailable.')
-end)
+-- Object Spawner (Can be used negatively!) (Originally from Kuter Menu)
 
 local Obje = KAOS:add_tab("Object Options")
 local Objets = Obje:add_tab("Spawner")
@@ -773,18 +768,18 @@ local Objets = Obje:add_tab("Spawner")
 
 local orientation = 0
 Objets:add_imgui(function()
-orientation, used = ImGui.SliderInt("Orientation", orientation, 0, 360) -- 0, 360 is orientation min/max values, change accordingly
+orientation, used = ImGui.SliderInt("Orientation", orientation, 0, 360) -- Orientation does not seem to work to rotate items...
 end)
 
-local spawnDistance = { x = 0, y = 0, z = 0 }
+local spawnDistance = { x = 0, y = 0, z = -1 } -- Z Axis set to -1, usually spawns items on the ground
 Objets:add_imgui(function()
-    spawnDistance.x, used = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -50, 50)
-    spawnDistance.y, used = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -50, 50)
-    spawnDistance.z, used = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -50, 50)
+    spawnDistance.x, used = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -10, 10)
+    spawnDistance.y, used = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -10, 10) -- Sliders for X, Y, Z positions aka How far you want an item to spawn from someone
+    spawnDistance.z, used = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -10, 10)
 end)
 
 Objets:add_separator()
-
+-- Objects hashes/names, add to this list to have more objects in your listbox on YimMenu
 local adultesItems = {
 
 	{ hash = 0xD51B7D9C, nom = "Select an object" },
@@ -815,6 +810,10 @@ local adultesItems = {
 	{ hash = 0xF43C5A15, nom = "Exam Light" },
 	{ hash = 0x4AECE1A5, nom = "Oscillator/Oscillateur" },
 	{ hash = 0xAEB6C823, nom = "Prop Beach Bag" },
+	{ hash = 0x5213D35, nom = "Stunt Tube X" }, -- Semi-Toxic / Can be used to cage players, set to Z:-3 to spawn safely.
+	{ hash = 0x64E33712, nom = "Dog Cage (Closed)" },
+	{ hash = 0x26F2E2E6, nom = "Gas Tank Cage (destroyed)" }, -- Toxic / Can be used to cage players
+	{ hash = 0xAF9E03CD, nom = "Gas Tank Cage" }, 
 }
 
 local selectedObjectIndex = 1 
@@ -838,6 +837,7 @@ Objets:add_separator()
 Objets:add_button("Spawn Selected", function()
     script.run_in_fiber(function()
         local targetPlayerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+		local playerName = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
         local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
 
         playerPos.x = playerPos.x + spawnDistance.x
@@ -859,7 +859,15 @@ Objets:add_button("Spawn Selected", function()
 
         local spawnedObject = OBJECT.CREATE_OBJECT(selectedObjectInfo.hash, playerPos.x, playerPos.y, playerPos.z, true, true, false)
         ENTITY.SET_ENTITY_HEADING(spawnedObject, heading)
+		gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
     end)
+end)
+
+-- Teleports tab
+local Tel = Pla:add_tab("Teleports")
+
+Tel:add_button("Teleport to Location", function()
+    gui.show_message('Teleport to Location', 'Failed! Feature unavailable.')
 end)
 
 -- Vehicle Options Tab
