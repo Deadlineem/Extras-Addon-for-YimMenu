@@ -1,4 +1,3 @@
---
 -- Function to create a text element
 local function createText(tab, text)
     tab:add_text(text)
@@ -868,9 +867,10 @@ Objets:add_separator()
 
 Objets:add_button("Spawn Selected", function()
     script.run_in_fiber(function()
-        local targetPlayerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-        local playerName = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
-        local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
+		local selPlayer = network.get_selected_player()
+        local targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+        local playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
+        local playerPos = ENTITY.GET_ENTITY_COORDS(selPlayer, false)
 
         playerPos.x = playerPos.x + spawnDistance.x
         playerPos.y = playerPos.y + spawnDistance.y
@@ -928,8 +928,29 @@ end)
 local Gif = Veh:add_tab("Gifting")
 
 Gif:add_button("Gift Vehicle", function()
-    gui.show_message('Gift Vehicle', 'Failed! Feature unavailable.')
+    local selectedPlayer = network.get_selected_player()
+
+    if selectedPlayer ~= -1 then -- Check if a player is selected
+        local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+        local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+
+        local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+
+        if targetVehicle ~= 0 then
+            local vehicleNameHash = ENTITY.GET_ENTITY_MODEL(targetVehicle)
+            local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
+
+            local setOwnedCar = VEHICLE.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER(targetVehicle, true)
+			local vehOwner = VEHICLE.GET_VEHICLE_LOCK_ON_TARGET(targetVehicle, targetPlayerPed)
+            gui.show_message('Gift Vehicle', 'Gifted ' .. vehicleDisplayName .. ' to ' .. playerName.." New Owner: "..vehOwner)
+        else
+            gui.show_message('Gift Vehicle', playerName .. ' is not in a vehicle.')
+        end
+    else
+        gui.show_message('Gift Vehicle', 'No player selected.')
+    end
 end)
+
 
 -- Upgrade Options
 local Upg = Veh:add_tab("Upgrades")
