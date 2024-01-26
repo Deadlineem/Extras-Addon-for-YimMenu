@@ -840,6 +840,11 @@ local adultesItems = {
 	{ hash = 0x29CB0F3C, nom = "Body Armor Prop" },
 	{ hash = 0xC0877175, nom = "Casino Chips Pile" },
 	{ hash = 0x23DDE6DB, nom = "RP Space Ranger" },
+	{ hash = 0xCE64EF0B, nom = "Crate" },
+	{ hash = 0x1282769, nom = "Electrical Box" },
+	{ hash = 0x34312619, nom = "Container" }, -- Toxic / Can be used to cage players
+	{ hash = 0x392D62AA, nom = "Gold Cage" }, -- Toxic / Can be used to cage players / Cannot be deleted with Yim's Delete Gun
+	{ hash = 0x6F2FD125, nom = "Casino HR Roulette Table" },
 }
 
 local selectedObjectIndex = 1 
