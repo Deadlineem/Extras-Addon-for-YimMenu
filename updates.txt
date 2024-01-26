@@ -48,7 +48,8 @@ Object Options
 _______________________________________________________________________________________________________
 
 ---- Spawner
--------- Set X/Y/Z (distance from your player) using sliders
+-------- Set X/Y/Z (distance from your player) using sliders and Reset button to reset sliders to 
+default coordiates
 -------- Selectable listbox for items + spawn object button
 _______________________________________________________________________________________________________
 
