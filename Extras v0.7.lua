@@ -1,3 +1,4 @@
+--
 -- Function to create a text element
 local function createText(tab, text)
     tab:add_text(text)
