@@ -868,9 +868,9 @@ Objets:add_separator()
 Objets:add_button("Spawn Selected", function()
     script.run_in_fiber(function()
 		local selPlayer = network.get_selected_player()
-        local targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+        local targetPlayerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         local playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
-        local playerPos = ENTITY.GET_ENTITY_COORDS(selPlayer, false)
+        local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
 
         playerPos.x = playerPos.x + spawnDistance.x
         playerPos.y = playerPos.y + spawnDistance.y
