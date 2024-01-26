@@ -941,7 +941,6 @@ Gif:add_button("Gift Vehicle", function()
             local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
 
             local setOwnedCar = VEHICLE.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER(targetVehicle, true)
-			local vehOwner = VEHICLE.GET_VEHICLE_LOCK_ON_TARGET(targetVehicle, targetPlayerPed)
             gui.show_message('Gift Vehicle', 'Gifted ' .. vehicleDisplayName .. ' to ' .. playerName.." New Owner: "..vehOwner)
         else
             gui.show_message('Gift Vehicle', playerName .. ' is not in a vehicle.')
