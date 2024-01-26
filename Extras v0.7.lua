@@ -765,17 +765,38 @@ millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL 
 local Obje = KAOS:add_tab("Object Options")
 local Objets = Obje:add_tab("Spawner")
 
-
 local orientation = 0
+local spawnDistance = { x = 0, y = 0, z = -1 }
+local defaultOrientation = 0
+local defaultSpawnDistance = { x = 0, y = 0, z = -1 }
+
+-- Function to reset sliders to default values
+local function resetSliders()
+    orientation = defaultOrientation
+    spawnDistance.x = defaultSpawnDistance.x
+    spawnDistance.y = defaultSpawnDistance.y
+    spawnDistance.z = defaultSpawnDistance.z
+end
+
 Objets:add_imgui(function()
-orientation, used = ImGui.SliderInt("Orientation", orientation, 0, 360) -- Orientation does not seem to work to rotate items...
+    orientation, used = ImGui.SliderInt("Orientation", orientation, 0, 360)
 end)
 
-local spawnDistance = { x = 0, y = 0, z = -1 } -- Z Axis set to -1, usually spawns items on the ground
 Objets:add_imgui(function()
     spawnDistance.x, used = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -10, 10)
-    spawnDistance.y, used = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -10, 10) -- Sliders for X, Y, Z positions aka How far you want an item to spawn from someone
+    spawnDistance.y, used = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -10, 10)
     spawnDistance.z, used = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -10, 10)
+end)
+
+-- Save default values
+defaultOrientation = orientation
+defaultSpawnDistance.x = spawnDistance.x
+defaultSpawnDistance.y = spawnDistance.y
+defaultSpawnDistance.z = spawnDistance.z
+
+-- Reset Sliders button
+Objets:add_button("Reset Sliders", function()
+    resetSliders()
 end)
 
 Objets:add_separator()
@@ -814,6 +835,11 @@ local adultesItems = {
 	{ hash = 0x64E33712, nom = "Dog Cage (Closed)" },
 	{ hash = 0x26F2E2E6, nom = "Gas Tank Cage (destroyed)" }, -- Toxic / Can be used to cage players
 	{ hash = 0xAF9E03CD, nom = "Gas Tank Cage" }, 
+	{ hash = 0x8EB05D67, nom = "Casino Wheel" },
+	{ hash = 0x33E46105, nom = "Potted Weed Plant" },
+	{ hash = 0x29CB0F3C, nom = "Body Armor Prop" },
+	{ hash = 0xC0877175, nom = "Casino Chips Pile" },
+	{ hash = 0x23DDE6DB, nom = "RP Space Ranger" },
 }
 
 local selectedObjectIndex = 1 
@@ -826,10 +852,10 @@ Objets:add_imgui(function()
     for _, item in ipairs(adultesItems) do
         table.insert(itemNames, item.nom)
     end
-	ImGui.PushItemWidth(500)
+    ImGui.PushItemWidth(500)
     selectedObjectIndex, used = ImGui.ListBox("", selectedObjectIndex, itemNames, #adultesItems)
     selectedObject = adultesItems[selectedObjectIndex].nom
-	ImGui.PopItemWidth(-1)
+    ImGui.PopItemWidth(-1)
 end)
 
 Objets:add_separator()
@@ -837,7 +863,7 @@ Objets:add_separator()
 Objets:add_button("Spawn Selected", function()
     script.run_in_fiber(function()
         local targetPlayerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-		local playerName = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
+        local playerName = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
         local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
 
         playerPos.x = playerPos.x + spawnDistance.x
@@ -859,7 +885,7 @@ Objets:add_button("Spawn Selected", function()
 
         local spawnedObject = OBJECT.CREATE_OBJECT(selectedObjectInfo.hash, playerPos.x, playerPos.y, playerPos.z, true, true, false)
         ENTITY.SET_ENTITY_HEADING(spawnedObject, heading)
-		gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
+        gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
     end)
 end)
 
