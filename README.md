@@ -1,11 +1,42 @@
-# Extras-Addon-for-YimMenu
-This addon features extra tools for YimMenu that aren't already a part of the stand alone base version.
-They are intended to be COMPLETELY free and public, built by the community, for the community.
+  ______   ______   ______   ______   ______   ______   ______ 
+ /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ 
+        ___________         __                                 
+        \_   _____/__  ____/  |_____________    ______         
+         |    __)_\  \/  /\   __\_  __ \__  \  /  ___/         
+         |        \>    <  |  |  |  | \// __ \_\___ \          
+        /_______  /__/\_ \ |__|  |__|  (____  /____  >         
+                \/      \/                  \/     \/          
+             _____       .___  .___                            
+            /  _  \    __| _/__| _/____   ____                 
+           /  /_\  \  / __ |/ __ |/  _ \ /    \                
+          /    |    \/ /_/ / /_/ (  <_> )   |  \               
+          \____|__  /\____ \____ |\____/|___|  /               
+                  \/      \/    \/           \/                
+                                                               
+                  Extras Addon for YimMenu                                 
+  ______   ______   ______   ______   ______   ______   ______ 
+ /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ 
 
-This addons current working features are listed below, If you have ideas youd like to share, please submit them in the Discussions tab.
+Installation:
 
-If there is a bug please report it on the Issues tab and we will try to work it out as soon as possible.
+First Time Users
+________________
+1) Download YimMenu and a dll injector of your choice, run GTA and inject YimMenu into the gta5.exe process
+2) Update Cache for YimMenu when prompted in GTA
+3) Download Extras-Addon as a zip file from Github and Extract it to a folder
+4) Run update.bat to put the addon in your YimMenu Scripts folder for you
 
-For a showcase of the Addon (v0.4) watch this video --->  https://www.youtube.com/watch?v=GQJFlPqpBGs
+---------------------------------------------------------------------------------------------------------------
 
-New features are added every day or two, but most features are still under development, with more to come in between!
+Users who are updating the Addon
+________________________________
+1) Download the Extras-Addon as a zip file from GitHub and Extract it to a folder
+2) Run update.bat
+3) Play
+
+TIPS:
+
+When youre in YimMenu/GTA, go to Settings > Lua Scripts and Check the box to Automatically Update Scripts, 
+it will get changes as soon as a new change is made.
+
+GUI - Settings > GUI > Show Overlay (Uncheck this to hide the menu completely when you press Insert)
