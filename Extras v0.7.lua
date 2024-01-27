@@ -925,30 +925,124 @@ Spa:add_button("Save Vehicle", function()
 end)
 
 -- Gift Options
+local var
+
+function RequestControl(entity)
+    local tick = 0
+
+    local netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
+
+    while not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) and tick < 50 do
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
+        tick = tick + 1
+    end
+
+    NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
+end
+
+function giftVehToPlayer(vehicle, player)
+RequestControl(vehicle)
+    if vehicle == 0 or player == 0 then
+        -- Invalid vehicle or player, handle the error
+        gui.show_message("Gift Error", "Invalid vehicle or player.")
+        return
+    end
+
+    local success = ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)
+    if not success then
+        gui.show_message("Gift Error", "Failed to set entity as mission entity.")
+        return
+    end
+
+    success = DECORATOR.DECOR_REGISTER("PV_Slot", 3)
+    if not success then
+        gui.show_message("Gift Error", "Failed to register decorator 'PV_Slot'.")
+        return
+    end
+
+    success = DECORATOR.DECOR_REGISTER("Player_Vehicle", 3)
+    if not success then
+        gui.show_message("Gift Error", "Failed to register decorator 'Player_Vehicle'.")
+        return
+    end
+
+    success = DECORATOR.DECOR_REGISTER("Veh_Modded_By_Player", 3)
+    if not success then
+        gui.show_message("Gift Error", "Failed to register decorator 'Veh_Modded_By_Player'.")
+        return
+    end
+
+    -- Add more error handling as needed
+
+    -- If everything is successful up to this point, continue with the rest of the code
+    DECORATOR.DECOR_SET_BOOL(vehicle, "IgnoredByQuickSave", false)
+    DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(player))
+    DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", false)
+    DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(player))
+
+    if DECORATOR.DECOR_EXIST_ON(vehicle, "MPBitset") then
+        var = DECORATOR.DECOR_GET_INT(vehicle, "MPBitset")
+    end
+
+    DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", var)
+    VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
+	gui.show_message("Gift Vehicle Success", "Vehicle Hash: "..vehicle.." Player Hash: "..player) -- If this does not show, the function is broken somewhere, maybe everywhere?
+end
+
+-- Assuming gui provides a 'show_message' method
 local Gif = Veh:add_tab("Gifting")
 
+-- Assuming gui provides a 'add_button' method
 Gif:add_button("Gift Vehicle", function()
     local selectedPlayer = network.get_selected_player()
 
-    if selectedPlayer ~= -1 then -- Check if a player is selected
-        local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
-        local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+    if selectedPlayer ~= -1 then 
+		-- Check if a player is selected
+			local targetPlayerID = PLAYER.PLAYER_PED_ID(selectedPlayer)
+			local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+			local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
 
-        local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+			local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
 
-        if targetVehicle ~= 0 then
-            local vehicleNameHash = ENTITY.GET_ENTITY_MODEL(targetVehicle)
-            local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
+			if targetVehicle ~= 0 then
+				local vehicleNameHash = tonumber(ENTITY.GET_ENTITY_MODEL(targetVehicle))
+				--local vehicleHash = VEHICLE.GET_VEHICLE_LAYOUT_HASH(targetVehicle)
+				local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
+				giftVehToPlayer(vehicleNameHash, selectedPlayer)
 
-            local setOwnedCar = VEHICLE.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER(targetVehicle, true)
-            gui.show_message('Gift Vehicle', 'Gifted ' .. vehicleDisplayName .. ' to ' .. playerName.." New Owner: "..vehOwner)
-        else
-            gui.show_message('Gift Vehicle', playerName .. ' is not in a vehicle.')
-        end
-    else
-        gui.show_message('Gift Vehicle', 'No player selected.')
-    end
+				-- Assuming gui provides a 'show_message' method
+				gui.show_message('Gift Vehicle', 'Gifted ' .. vehicleDisplayName .. ' to ' .. playerName..' Hash: '..vehicleNameHash)
+			else
+				-- Assuming gui provides a 'show_message' method
+				gui.show_message('Gift Vehicle', playerName .. ' is not in a vehicle.')
+			end
+		else
+			-- Assuming gui provides a 'show_message' method
+			gui.show_message('Player Select', 'No player selected, Defaulting to self')
+			
+			local selectedPlayer = PLAYER.PLAYER_ID()
+		-- Check if a player is selected
+			local targetPlayerID = PLAYER.PLAYER_PED_ID(selectedPlayer)
+			local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+			local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+
+			local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+
+			if targetVehicle ~= 0 then
+				local vehicleNameHash = tonumber(ENTITY.GET_ENTITY_MODEL(targetVehicle))
+				--local vehicleHash = VEHICLE.GET_VEHICLE_LAYOUT_HASH(targetVehicle)
+				local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
+				giftVehToPlayer(vehicleNameHash, PLAYER.PLAYER_ID())
+
+				-- Assuming gui provides a 'show_message' method
+				gui.show_message('Gift Vehicle', 'Gifted ' .. vehicleDisplayName .. ' to ' .. playerName..' Hash: '..vehicleNameHash)
+			else
+				-- Assuming gui provides a 'show_message' method
+				gui.show_message('Gift Vehicle', playerName .. ' is not in a vehicle.')
+			end
+	end
 end)
+
 
 
 -- Upgrade Options
