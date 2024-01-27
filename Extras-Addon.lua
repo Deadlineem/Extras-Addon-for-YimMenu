@@ -1,3 +1,30 @@
+--[[
+  ______   ______   ______   ______   ______   ______   ______ 
+ /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ 
+        ___________         __                                 
+        \_   _____/__  ____/  |_____________    ______         
+         |    __)_\  \/  /\   __\_  __ \__  \  /  ___/         
+         |        \>    <  |  |  |  | \// __ \_\___ \          
+        /_______  /__/\_ \ |__|  |__|  (____  /____  >         
+                \/      \/                  \/     \/          
+             _____       .___  .___                            
+            /  _  \    __| _/__| _/____   ____                 
+           /  /_\  \  / __ |/ __ |/  _ \ /    \                
+          /    |    \/ /_/ / /_/ (  <_> )   |  \               
+          \____|__  /\____ \____ |\____/|___|  /               
+                  \/      \/    \/           \/                
+                                                               
+              Extras Addon for YimMenu v1.68
+				   Addon Version: 0.8.0
+		
+				Credits:  Yimura, L7Neg, 
+		    Loled69, Alestarov, gir489returns, 
+						TheKuter                                   
+  ______   ______   ______   ______   ______   ______   ______ 
+ /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ 
+
+]]--
+
 -- Function to create a text element
 local function createText(tab, text)
     tab:add_text(text)
@@ -783,9 +810,9 @@ Objets:add_imgui(function()
 end)
 
 Objets:add_imgui(function()
-    spawnDistance.x, used = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -10, 10)
-    spawnDistance.y, used = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -10, 10)
-    spawnDistance.z, used = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -10, 10)
+    spawnDistance.x, used = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -25, 25)
+    spawnDistance.y, used = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -25, 25)
+    spawnDistance.z, used = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -25, 25)
 end)
 
 -- Save default values
@@ -845,6 +872,17 @@ local adultesItems = {
 	{ hash = 0x34312619, nom = "Container" }, -- Toxic / Can be used to cage players
 	{ hash = 0x392D62AA, nom = "Gold Cage" }, -- Toxic / Can be used to cage players / Cannot be deleted with Yim's Delete Gun
 	{ hash = 0x6F2FD125, nom = "Casino HR Roulette Table" },
+	{ hash = 0x8E7B47A7, nom = "Mini Drone" },
+	{ hash = 0x19AE1F4D, nom = "Mini Drone 2" },
+	{ hash = 0x2DDA37E0, nom = "Money Laundering" }, -- Its an animated clothing dryer filled with money.. lol
+	{ hash = 0xD6BF48A1, nom = "Tunnel Fan" }, -- Toxic / Can be used to cage players
+	{ hash = 0x6B676D83, nom = "Oil Pump" },
+	{ hash = 0x745F3383, nom = "Windmill" }, -- Z: -2 to place on ground.
+	{ hash = 0x4D02ED6A, nom = "Stunt Ramp Spiral" }, -- Z: -1.25 for best placement
+	{ hash = 0x69702115, nom = "Stunt Loop" }, -- Z: -1.5 for best placement
+	{ hash = 0xB8F0B770, nom = "Breakable Glass" },
+	{ hash = 0xDDA3E6D8, nom = "Crane Ladders" },
+	
 }
 
 local selectedObjectIndex = 1 
