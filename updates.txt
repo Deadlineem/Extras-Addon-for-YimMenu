@@ -69,6 +69,10 @@ ________________________________________________________________________________
 -------- Drops Princess Robot Bubblegum figurines to entire lobby
 -------- NOTE: This CAN cause you to lag/freeze/crash in sessions with 10+ players, USE WITH CAUTION!
 
+---- Sound Spam
+-------- 8 togglable sound spam options that spam the session (not including you) with sounds.  Alarm 
+and Phone WILL NOT toggle off, the only way to get rid of them is to restart GTA
+
 ---- Give all players all weapons
 -------- Does what it says
 
