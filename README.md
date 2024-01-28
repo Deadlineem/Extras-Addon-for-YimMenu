@@ -28,7 +28,7 @@ ________________________________
                         Users who are updating the Addon (REPEATING NEW UPDATES)
 ________________________________
 1) Download the Extras-Addon.lua from the repository (just click Extras-Addon.lua)
-2) REPLACE the Extras-Addon.lua in the folder with the update.bat, with the new one you downloaded
+2) REPLACE the Extras-Addon.lua in the folder containing the update.bat, with the new one you downloaded
 2) Run update.bat
 3) Play
 
