@@ -1,27 +1,25 @@
 --[[
-  ______   ______   ______   ______   ______   ______   ______ 
- /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ 
-        ___________         __                                 
-        \_   _____/__  ____/  |_____________    ______         
-         |    __)_\  \/  /\   __\_  __ \__  \  /  ___/         
-         |        \>    <  |  |  |  | \// __ \_\___ \          
-        /_______  /__/\_ \ |__|  |__|  (____  /____  >         
-                \/      \/                  \/     \/          
-             _____       .___  .___                            
-            /  _  \    __| _/__| _/____   ____                 
-           /  /_\  \  / __ |/ __ |/  _ \ /    \                
-          /    |    \/ /_/ / /_/ (  <_> )   |  \               
-          \____|__  /\____ \____ |\____/|___|  /               
-                  \/      \/    \/           \/                
-                                                               
-              Extras Addon for YimMenu v1.68
-				   Addon Version: 0.8.0
+
+
+___________         __                        
+\_   _____/__  ____/  |_____________    ______
+ |    __)_\  \/  /\   __\_  __ \__  \  /  ___/
+ |        \>    <  |  |  |  | \// __ \_\___ \ 
+/_______  /__/\_ \ |__|  |__|  (____  /____  >
+        \/      \/                  \/     \/ 
+     _____       .___  .___                   
+    /  _  \    __| _/__| _/____   ____        
+   /  /_\  \  / __ |/ __ |/  _ \ /    \       
+  /    |    \/ /_/ / /_/ (  <_> )   |  \      
+  \____|__  /\____ \____ |\____/|___|  /      
+          \/      \/    \/           \/       
+
+	Extras Addon for YimMenu v1.68
+		Addon Version: 0.8.0
 		
-				Credits:  Yimura, L7Neg, 
-		    Loled69, Alestarov, gir489returns, 
-						TheKuter                                   
-  ______   ______   ______   ______   ______   ______   ______ 
- /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ 
+		Credits:  Yimura, L7Neg, 
+	Loled69, Alestarov, gir489returns, 
+				TheKuter
 
 ]]--
 
@@ -963,9 +961,7 @@ Spa:add_button("Save Vehicle", function()
 end)
 
 -- Gift Options
-local var
-
-function RequestControl(entity)
+--[[function RequestControl(entity)
     local tick = 0
 
     local netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
@@ -977,110 +973,59 @@ function RequestControl(entity)
 
     NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
 end
-
-function giftVehToPlayer(vehicle, player)
-RequestControl(vehicle)
-    if vehicle == 0 or player == 0 then
-        -- Invalid vehicle or player, handle the error
-        gui.show_message("Gift Error", "Invalid vehicle or player.")
-        return
+function set_vehicle_decorator(vehicle, decorator_name, value)
+    if not DECORATOR.DECOR_SET_INT(vehicle, decorator_name, value) then
+		gui.show_message("Gifting Error", "DECOR_SET_INT("..vehicle..", "..decorator_name..", "..value..") was not set")
+		--error("Error setting decorator " .. decorator_name .. " for vehicle")
+		local MPBit = DECORATOR.DECOR_GET_INT(vehicle, "MPBitSet")
+		local Prev = DECORATOR.DECOR_GET_INT(vehicle, "Previous_Owner")
+		local pvSlot = DECORATOR.DECOR_GET_INT(vehicle, "PV_Slot")
+		local VmbP = DECORATOR.DECOR_GET_INT(vehicle, "Veh_Modded_By_Player")
+		local NAASV = DECORATOR.DECOR_GET_INT(vehicle, "Not_Allow_As_Saved_Veh")
+		local PlayerVeh = DECORATOR.DECOR_GET_INT(vehicle, "Player_Vehicle")
+		
+		gui.show_message("Retrieving Decorators", "MPBitSet: "..MPBit.." Previous Owner: "..Prev.." PV Slot: "..pvSlot.." Veh Modded by Player: "..VmbP.." Not Allow as Saved: "..NAASV.." Player Veh: "..PlayerVeh)
     end
-
-    local success = ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)
-    if not success then
-        gui.show_message("Gift Error", "Failed to set entity as mission entity.")
-        return
-    end
-
-    success = DECORATOR.DECOR_REGISTER("PV_Slot", 3)
-    if not success then
-        gui.show_message("Gift Error", "Failed to register decorator 'PV_Slot'.")
-        return
-    end
-
-    success = DECORATOR.DECOR_REGISTER("Player_Vehicle", 3)
-    if not success then
-        gui.show_message("Gift Error", "Failed to register decorator 'Player_Vehicle'.")
-        return
-    end
-
-    success = DECORATOR.DECOR_REGISTER("Veh_Modded_By_Player", 3)
-    if not success then
-        gui.show_message("Gift Error", "Failed to register decorator 'Veh_Modded_By_Player'.")
-        return
-    end
-
-    -- Add more error handling as needed
-
-    -- If everything is successful up to this point, continue with the rest of the code
-    DECORATOR.DECOR_SET_BOOL(vehicle, "IgnoredByQuickSave", false)
-    DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(player))
-    DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", false)
-    DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(player))
-
-    if DECORATOR.DECOR_EXIST_ON(vehicle, "MPBitset") then
-        var = DECORATOR.DECOR_GET_INT(vehicle, "MPBitset")
-    end
-
-    DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", var)
-    VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
-	gui.show_message("Gift Vehicle Success", "Vehicle Hash: "..vehicle.." Player Hash: "..player) -- If this does not show, the function is broken somewhere, maybe everywhere?
 end
 
+function giftVehToPlayer(vehicle, player, playerName, vehName)
+RequestControl(vehicle)
+	if PED.IS_PED_IN_ANY_VEHICLE(player, true) then
+		local netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(network.get_selected_player())
+		gui.show_message("Gift Vehicle Running", "Trying to gift "..vehName.." Hash: "..vehicle.." to Name: "..playerName.." Hash: "..netHash)
+		gui.show_message("Retrieved Network Hash", "Network Hash: "..netHash.." Attempting to gift.")
+
+		set_vehicle_decorator(vehicle, "MPBitset", 0)
+		set_vehicle_decorator(vehicle, "Previous_Owner", 3)
+		set_vehicle_decorator(vehicle, "PV_Slot", 3)
+		set_vehicle_decorator(vehicle, "Veh_Modded_By_Player", netHash)
+		set_vehicle_decorator(vehicle, "Not_Allow_As_Saved_Veh", 3)
+		set_vehicle_decorator(vehicle, "Player_Vehicle", netHash)
+
+		VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
+		
+		gui.show_message("Gift Vehicle Success", "Gifted "..vehName..":"..vehicle.." to "..playerName..":"..netHash )
+	else
+		gui.show_message("Gifting Error", playerName.." is not in a vehicle")
+	end
+end
 -- Assuming gui provides a 'show_message' method
 local Gif = Veh:add_tab("Gifting")
 
 -- Assuming gui provides a 'add_button' method
 Gif:add_button("Gift Vehicle", function()
-    local selectedPlayer = network.get_selected_player()
+		local selectedPlayer = network.get_selected_player()
 
-    if selectedPlayer ~= -1 then 
 		-- Check if a player is selected
-			local targetPlayerID = PLAYER.PLAYER_PED_ID(selectedPlayer)
-			local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
-			local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+		local targetPlayerID = PLAYER.PLAYER_PED_ID(selectedPlayer)
+		local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+		local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
 
-			local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
-
-			if targetVehicle ~= 0 then
-				local vehicleNameHash = tonumber(ENTITY.GET_ENTITY_MODEL(targetVehicle))
-				--local vehicleHash = VEHICLE.GET_VEHICLE_LAYOUT_HASH(targetVehicle)
-				local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
-				giftVehToPlayer(vehicleNameHash, selectedPlayer)
-
-				-- Assuming gui provides a 'show_message' method
-				gui.show_message('Gift Vehicle', 'Gifted ' .. vehicleDisplayName .. ' to ' .. playerName..' Hash: '..vehicleNameHash)
-			else
-				-- Assuming gui provides a 'show_message' method
-				gui.show_message('Gift Vehicle', playerName .. ' is not in a vehicle.')
-			end
-		else
-			-- Assuming gui provides a 'show_message' method
-			gui.show_message('Player Select', 'No player selected, Defaulting to self')
-			
-			local selectedPlayer = PLAYER.PLAYER_ID()
-		-- Check if a player is selected
-			local targetPlayerID = PLAYER.PLAYER_PED_ID(selectedPlayer)
-			local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
-			local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
-
-			local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
-
-			if targetVehicle ~= 0 then
-				local vehicleNameHash = tonumber(ENTITY.GET_ENTITY_MODEL(targetVehicle))
-				--local vehicleHash = VEHICLE.GET_VEHICLE_LAYOUT_HASH(targetVehicle)
-				local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
-				giftVehToPlayer(vehicleNameHash, PLAYER.PLAYER_ID())
-
-				-- Assuming gui provides a 'show_message' method
-				gui.show_message('Gift Vehicle', 'Gifted ' .. vehicleDisplayName .. ' to ' .. playerName..' Hash: '..vehicleNameHash)
-			else
-				-- Assuming gui provides a 'show_message' method
-				gui.show_message('Gift Vehicle', playerName .. ' is not in a vehicle.')
-			end
-	end
-end)
-
+		local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+		local vehicleNameHash = tonumber(ENTITY.GET_ENTITY_MODEL(targetVehicle))
+		local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
+		giftVehToPlayer(vehicleNameHash, targetPlayerPed, playerName, vehicleDisplayName)
+end)]]--
 
 
 -- Upgrade Options
@@ -1189,7 +1134,112 @@ script.register_looped("justRPLoop", function()
 end)
 
 Global:add_separator()
+Global:add_text("Global Sound Options")
+local sSpam = Global:add_checkbox("Jet Spam")
+script.register_looped("soundSpamLoop", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+	if sSpam:is_enabled() then
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+                local player_id = i
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Jet_Explosions", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "exile_1", true, 0)
+			end
+		end
+	end
+end)
+Global:add_sameline()
+local sSpam2 = Global:add_checkbox("Pickup Spam")
+script.register_looped("soundSpam2Loop", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+	if sSpam2:is_enabled() then
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+                local player_id = i
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "PICKUP_DEFAULT", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "HUD_FRONTEND_STANDARD_PICKUPS_SOUNDSET", true, 0)
+			end
+		end
+	end
+end)
+Global:add_sameline()
+local sSpam3 = Global:add_checkbox("Phone Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
+script.register_looped("soundSpam3Loop", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+	if sSpam3:is_enabled() then
+	gui.show_message("Phonecall Spam", "This sound cannot be toggled off once its on.  The only way to stop it is to exit the game")
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+                local player_id = i
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "Phone_SoundSet_Michael", true, 0)
+			end
+		end
+	end
+end)
+Global:add_sameline()
+local sSpam4 = Global:add_checkbox("Wasted Spam")
+script.register_looped("soundSpam4Loop", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+	if sSpam4:is_enabled() then
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+                local player_id = i
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "ScreenFlash", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "WastedSounds", true, 0)
+			end
+		end
+	end
+end)
+local sSpam5 = Global:add_checkbox("Bodies Spam")
+script.register_looped("soundSpam5Loop", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+	if sSpam5:is_enabled() then
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+                local player_id = i
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Architect_Fall", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "FBI_HEIST_SOUNDSET", true, 0)
+			end
+		end
+	end
+end)
+Global:add_sameline()
+local sSpam6 = Global:add_checkbox("Yacht Spam")
+script.register_looped("soundSpam6Loop", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+	if sSpam6:is_enabled() then
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+                local player_id = i
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "HORN", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_Apt_Yacht_Ambient_Soundset", true, 0)
+			end
+		end
+	end
+end)
+Global:add_sameline()
+local sSpam7 = Global:add_checkbox("Whistle Spam")
+script.register_looped("soundSpam7Loop", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+	if sSpam7:is_enabled() then
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+                local player_id = i
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Franklin_Whistle_For_Chop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "SPEECH_RELATED_SOUNDS", true, 0)
+			end
+		end
+	end
+end)
+Global:add_sameline()
+local sSpam8 = Global:add_checkbox("Alarm Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
+script.register_looped("soundSpam8Loop", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+	if sSpam8:is_enabled() then
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+                local player_id = i
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 0)
+			end
+		end
+	end
+end)
 
+Global:add_separator()
 Global:add_text("Global Weapons Options")
 Global:add_button("Give All Weapons to Players", function()
     local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
