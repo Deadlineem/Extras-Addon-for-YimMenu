@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.0
+		Addon Version: 0.8.2
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -70,8 +70,22 @@ local weaponNamesString = {
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras")
 createText(KAOS, "Welcome to the Extras menu, please read the information below before proceeding to use the menu options.")
-createText(KAOS, "These options are considered Recovery based options, use them at your own risk!")
-createText(KAOS, "YimMenu or Extras Addon does not take responsibility for bans from using these features.")
+KAOS:add_separator()
+createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
+KAOS:add_separator()
+createText(KAOS, "This menu is a mashup of multiple menu features, some altered, some not.  It was created with the intent")
+createText(KAOS, "of having as many options as possible for everything you can imagine, but to allow complete mod freedom")
+createText(KAOS, "without needing to compile your own version of YimMenu yet still being able to use its base features in")
+createText(KAOS, "one small dropdown tab without needing multiple lua scripts to do so.  The project is open source and I")
+createText(KAOS, "encourage everyone to create this with me, lend your ideas, submit PR's, make discussions and lets make")
+createText(KAOS, "YimMenu next generation!")
+KAOS:add_separator()
+createText(KAOS, "Creator Credits: Yimura, L7Neg, Loled69, TeaTimeTea, CSYON, Adventure Box, gir489returns, abuazizv,")
+createText(KAOS, "Alestarov")
+KAOS:add_separator()
+createText(KAOS, "Thanks to all my testers, your time is appreciated.  Thanks to all of the above for your scripts and")
+createText(KAOS, "for your inputs on my comments, I have done alot of reading, scrolling, testing and learning from it all")
+createText(KAOS, "- DeadlineEm")
 
 -- Player Options Tab
 local Pla = KAOS:add_tab("Player Options")
@@ -99,14 +113,111 @@ Mvmt:add_imgui(function()
     end
 end)
 
+-- Fun Random Things
+local Fun = Pla:add_tab("Fun Self Options")
+Fun:add_text("PTFX")
+local fireworkLoop3 = Fun:add_checkbox("Firework (On/Off)")
 
--- Health Tab
-local Hel = Pla:add_tab("Health")
+function load_fireworks()
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_indep_firework")
+    
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("proj_indep_firework") then
+        return false
+    end
 
-Hel:add_button("Heal Player", function()
-    gui.show_message('Health Modifier', 'Failed! Feature unavailable.')
+
+    return true
+end
+
+function random_color()
+    return math.random(0, 255), math.random(0, 255), math.random(0, 255)
+end
+
+script.register_looped("FireworkLoop3", function()
+    if fireworkLoop3:is_enabled() == true then
+        if load_fireworks() then
+            local localPlayerId = PLAYER.PLAYER_ID()
+				local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
+
+				-- Get random color values
+				local colorR, colorG, colorB = random_color()
+				test = player_coords.z - 1
+				GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework")
+				GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+				GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_grd_burst", player_coords.x, player_coords.y, test, 0, 0, 0, 1, false, false, false, false)
+			sleep(0.2)
+		end
+    end
 end)
 
+Fun:add_sameline()
+local smokeLoop = Fun:add_checkbox("Smoke (On/Off)")
+function load_smoke()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_sum2_hal")
+    
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_sum2_hal") then
+        return false
+    end
+
+    return true
+end
+
+function random_color()
+    return math.random(0, 255), math.random(0, 255), math.random(0, 255)
+end
+
+script.register_looped("SmokeLoop", function()
+    if smokeLoop:is_enabled() == true then
+        if load_smoke() then
+            local localPlayerId = PLAYER.PLAYER_ID()
+				local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
+
+				-- Get random color values
+				local colorR, colorG, colorB = random_color()
+				test = player_coords.z - 1
+				GRAPHICS.USE_PARTICLE_FX_ASSET("scr_sum2_hal")
+				GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+				GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_sum2_hal_rider_death_blue", player_coords.x, player_coords.y, test, 0, 0, 0, 1, false, false, false, false)
+			sleep(0.2)
+		end
+    end
+end)
+
+Fun:add_sameline()
+local flameLoop = Fun:add_checkbox("Flames (On/Off)")
+function load_flame()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_bike_adversary")
+    
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_bike_adversary") then
+        return false
+    end
+
+    return true
+end
+
+function random_color()
+    return math.random(0, 255), math.random(0, 255), math.random(0, 255)
+end
+
+script.register_looped("FlameLoop", function()
+    if flameLoop:is_enabled() == true then
+        if load_flame() then
+            local localPlayerId = PLAYER.PLAYER_ID()
+				local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
+
+				-- Get random color values
+				local colorR, colorG, colorB = random_color()
+				test = player_coords.z - 1
+				GRAPHICS.USE_PARTICLE_FX_ASSET("scr_bike_adversary")
+				GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+				GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_adversary_foot_flames", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
+			sleep(0.2)
+		end
+    end
+end)
+Fun:add_separator()
 
 -- Stat Editor - Alestarov_Menu
 local Stats = Pla:add_tab("Stats")
@@ -671,6 +782,8 @@ script.register_looped("Casino Pacino Thread", function (script)
     end
 end)
 
+
+-- Instant Money Loops - Pessi v2
 local TransactionManager <const> = {};
 TransactionManager.__index = TransactionManager
 
@@ -1052,6 +1165,8 @@ end)
 -- Global Player Options
 
 local Global = KAOS:add_tab("Global")
+
+-- Global RP Loop Options
 local PRGBGLoop = false
 Global:add_text("Global RP Options")
 rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
@@ -1133,6 +1248,8 @@ script.register_looped("justRPLoop", function()
     sleep(0.4) -- Sets the timer in seconds for how long this should pause
 end)
 
+
+-- Global Sound Spam Options
 Global:add_separator()
 Global:add_text("Global Sound Options")
 local sSpam = Global:add_checkbox("Jet Spam")
@@ -1239,6 +1356,66 @@ local localPlayerId = PLAYER.PLAYER_ID()
 	end
 end)
 
+-- Global Particle Effects
+
+Global:add_separator()
+Global:add_text("PTFX")
+local fireworkLoop = Global:add_checkbox("Fireworks (On/Off)")
+
+function load_fireworks()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_indep_firework")
+    
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("proj_indep_firework") then
+        return false
+    end
+	
+	STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_indep_fireworks")
+    
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_indep_fireworks") then
+        return false
+    end
+
+    return true
+end
+
+function random_color()
+    return math.random(0, 200), math.random(0, 255), math.random(0, 255)
+end
+
+script.register_looped("FireworkLoop", function()
+    if fireworkLoop:is_enabled() == true then
+        if load_fireworks() then
+            local localPlayerId = PLAYER.PLAYER_ID()
+			for i = 0, 32 do
+				if i ~= localPlayerId then
+					local player_id = i
+					local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+
+					-- Get random color values
+					local colorR, colorG, colorB = random_color()
+					player_coords.z = player_coords.z - 1
+					setExp1 = player_coords.z + 25
+					setExp2 = player_coords.z + 35
+					-- Play the explosion particle effect with random color
+					GRAPHICS.USE_PARTICLE_FX_ASSET("scr_indep_fireworks")
+					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_trailburst", player_coords.x, player_coords.y, player_coords.z, 0, 0, 0, math.random(1, 5), false, false, false, false)
+					sleep(0.05)
+					GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework")
+					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_grd_burst", player_coords.x, player_coords.y, setExp1, 0, 0, 0, math.random(1, 5), false, false, false, false)
+					
+					GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework_v2")
+					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_firework_indep_burst_rwb", player_coords.x, player_coords.y, setExp2, 0, 0, 0, math.random(1, 5), false, false, false, false)
+				end
+			end
+		end
+    end
+end)
+
+-- Global Weapons
 Global:add_separator()
 Global:add_text("Global Weapons Options")
 Global:add_button("Give All Weapons to Players", function()
@@ -1403,7 +1580,7 @@ script.register_looped("autoGetHangarCargo", function(script)
 	if hStock:is_enabled() == true then
 		autoGetHangarCargo = not autoGetHangarCargo
 		if autoGetHangarCargo then
-			globals.set_int(1882413+7, 6)
+			globals.set_int(1882413+7, 6) -- remove this to get crates, its set to narcotics.
 			stats.set_packed_stat_bool(36828, true) 
 			gui.show_message("Business Manager", "Restocking cargo, please wait...")
 		end
