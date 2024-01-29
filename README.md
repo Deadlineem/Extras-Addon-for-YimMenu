@@ -8,6 +8,8 @@ Installation:
   KEEP THE ADDON FOLDER WITH ITS CONTENTS, ALL YOU WILL NEED TO DO TO UPDATE IS REPLACE THE EXTRAS-ADDON.LUA IN
 THAT FOLDER WITH THE NEW ONE FROM GITHUB, YOU'LL NEVER NEED TO DOWNLOAD THE ENTIRE ZIP AGAIN AFTER THE FIRST TIME!!
 
+DO NOT USE THIS ADDON WITH THE OTHERS, TURN IT OFF AND USE THEM AS THE CODES MAY CONFLICT AND CAUSE ISSUES
+
                                              First Time Users
 ________________
 1) Download YimMenu and a dll injector of your choice, run GTA and inject YimMenu into the gta5.exe process
