@@ -68,8 +68,8 @@ local weaponNamesString = {
 }
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
-local KAOS = gui.get_tab("Extras")
-createText(KAOS, "Welcome to the Extras menu, please read the information below before proceeding to use the menu options.")
+local KAOS = gui.get_tab("Extras Addon")
+createText(KAOS, "Welcome to Extras Addon v0.8.2 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -80,7 +80,7 @@ createText(KAOS, "one small dropdown tab without needing multiple lua scripts to
 createText(KAOS, "encourage everyone to create this with me, lend your ideas, submit PR's, make discussions and lets make")
 createText(KAOS, "YimMenu next generation!")
 KAOS:add_separator()
-createText(KAOS, "Creator Credits: Yimura, L7Neg, Loled69, TeaTimeTea, CSYON, Adventure Box, gir489returns, abuazizv,")
+createText(KAOS, "Credits: Yimura, L7Neg, Loled69, TeaTimeTea, CSYON, Adventure Box, gir489returns, abuazizv,")
 createText(KAOS, "Alestarov")
 KAOS:add_separator()
 createText(KAOS, "Thanks to all my testers, your time is appreciated.  Thanks to all of the above for your scripts and")
