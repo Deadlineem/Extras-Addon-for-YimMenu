@@ -8,8 +8,11 @@ vv - Movement - vv
 ---- Run Speed 0-10
 ---- Swim Speed 0-10
 
-vv - Health - vv
-- Not Yet Implemented.
+---- Fun Self Options
+-------- PTFX
+  -> Firework
+  -> Smoke
+  -> Flames
 
 vv - Stats - vv
 ---- Reset Stats
