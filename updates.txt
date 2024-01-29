@@ -76,6 +76,10 @@ ________________________________________________________________________________
 -------- 8 togglable sound spam options that spam the session (not including you) with sounds.  Alarm 
 and Phone WILL NOT toggle off, the only way to get rid of them is to restart GTA
 
+---- PTFX
+-------- Fireworks (On/Off) spawns a sequence of fireworks globally on everyone but you.  Widely Liked
+in sessions since its not invasive on the player.
+
 ---- Give all players all weapons
 -------- Does what it says
 
