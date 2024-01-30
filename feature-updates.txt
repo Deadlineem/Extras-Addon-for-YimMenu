@@ -1,0 +1,146 @@
+Extras Addon - Features List  (ALL Working/Non-Working Features/Not Implemented)
+
+Player Options
+_______________________________________________________________________________________________________
+
+
+---- Movement
+  -> Run Speed 0-10  
+
+  -> Swim Speed 0-10
+These aren't super speed modifiers, it just slightly increases players speed 
+similar to fast run, but faster.
+
+---- Fun Self Options
+  -> PTFX
+      -> Firework
+      -> Smoke
+      -> Flames
+
+---- Stats
+  -> Reset Stats  Resets ALL stats for Player 1 and Player 2 Characters
+
+---- Money
+
+-------- Drops (These are for dropping near you to 1 or 2 people)
+    -> Princess Robot Bubblegum Loop (On/Off)
+    -> Alien Loop (On/Off)
+    -> Casino Card Loop (On/Off)
+    -> Fake Cash Loop (On/Off)
+
+---- Casino
+  -> Bypass Casino Cooldown
+
+  -> Rig Slot Machines
+
+  -> Poker
+  -------- Force hand to Royal Flush
+  -------- Force dealers hand to Bad Beat
+  -> Blackjack
+  -------- Dealers Face Down Card (displays also if you are in the casino or not for rigging)
+  -------- Set dealers hand to bust
+  -> Roulette
+  -------- Activate Roulette Rig
+  -------- Slider (-1 to 36) for setting the win number of the table
+
+---- Loops
+  -> 1 Mill to 15 Mill Cash Loops (toggle on/off) *RISKY, DON'T LET THEM RUN TOO LONG AND RESET YOUR STATS ASAP!!!*
+
+---- Teleports
+  -> Not Yet Implemented.
+
+_______________________________________________________________________________________________________
+
+Object Options
+_______________________________________________________________________________________________________
+
+---- Spawner
+  -> Set X/Y/Z (distance from your player) using sliders and Reset button to reset sliders to 
+default coordiates
+  -> Selectable listbox for items + spawn object button
+
+To spawn on self or other players:
+Click targets name on yimmenu players list
+click Extras Addon > Object Options > Spawner
+Select the item you want to spawn and click Spawn Selected
+_______________________________________________________________________________________________________
+
+Vehicle Options
+_______________________________________________________________________________________________________
+
+  -> Vehicle Options are being worked on, this will take time but youre welcome to test them as they come
+_______________________________________________________________________________________________________
+
+Global Options
+_______________________________________________________________________________________________________
+
+---- Drop Global RP (On/Off)
+  -> Drops Princess Robot Bubblegum figurines  NOTE: This CAN cause you to lag/freeze/crash in 
+sessions with 15+ players, USE WITH CAUTION!
+
+---- Sound Spam
+  -> 8 togglable sound spam options that spam the session (not including you) with sounds.  
+Alarm and Phone WILL NOT toggle off, the only way to get rid of them is to restart GTA
+You can also hear it, but switching sessions will get rid of it for you if you set it.
+
+---- PTFX
+  -> Fireworks (On/Off) spawns a sequence of fireworks.  Widely Liked in sessions since its not 
+invasive on the player.
+
+  -> Flames (On/Off)  Ghost Rider flame trails, pretty neat, does no harm to anyone.
+
+  -> Lightning (On/Off)  Lightning bolts around the players, kinda looks like a super saiyan
+
+  -> Snow (On/Off)  Its literally the effect of getting hit with snowballs
+
+---- Toxic
+  -> Explode (On/Off)  This is self explanatory, its under global, does what it says.
+
+  -> Vehicle Ram (On/Off) Buggy, but works.  Drops cars at high velocity onto everyones heads.
+
+-- Weapons
+
+  -> Give all players all weapons  Does what it says
+
+  -> Remove weapons from all players  Does what it says
+
+__________________________________________________________________________________________________________
+
+Story Mode Options
+__________________________________________________________________________________________________________
+
+  -> Michael's Cash  Sets the value of michael's cash in story mode from $1 to $2147483646 using a slider
+
+  -> Franklins's Cash  Sets the value of franklin's cash in story mode from $1 to $2147483646 using a slider
+
+  -> Trevor's Cash  Sets the value of trevor's cash in story mode from $1 to $2147483646 using a slider
+
+  -> Michael's Stats  Sets the value of michael's stats in story mode from 0 to 100 using a slider
+
+  -> Franklins's Stats  Sets the value of franklin's stats in story mode from 0 to 100 using a slider
+
+  -> Trevor's Stats  Sets the value of trevor's stats in story mode from 0 to 100 using a slider
+
+___________________________________________________________________________________________________________
+
+Weapons
+___________________________________________________________________________________________________________
+
+  -> Remove all weapons  Removes all weapons from yourself (Story mode + Multiplayer)
+
+  -> Give all weapons  Gives all weapons to yourself (Story mode + Multiplayer)
+
+____________________________________________________________________________________________________________
+
+Business Management
+____________________________________________________________________________________________________________
+---- YimCEO
+  -> Crate Value (10k - 5M)
+  -> Toggle YimCEO On/Off
+  -> Show Computer
+
+---- Hangar
+  -> Toggles automatic resupply to hangar when outside (CANNOT BE IN HANGAR)
+
+---- Nightclub
+  -> Activate 250k/15s loop while standing in front of nightclub safe.  Meant for AFK money
