@@ -15,11 +15,11 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.2
+		Addon Version: 0.8.3
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
-				TheKuter
+			TheKuter & More!
 
 ]]--
 
@@ -1074,13 +1074,14 @@ Spa:add_button("Save Vehicle", function()
 end)
 
 -- Gift Options
---[[function RequestControl(entity)
+function RequestControlz(entity)
     local tick = 0
 
     local netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
 
     while not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) and tick < 50 do
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
+		NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
         tick = tick + 1
     end
 
@@ -1102,17 +1103,15 @@ function set_vehicle_decorator(vehicle, decorator_name, value)
 end
 
 function giftVehToPlayer(vehicle, player, playerName, vehName)
-RequestControl(vehicle)
 	if PED.IS_PED_IN_ANY_VEHICLE(player, true) then
 		local netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(network.get_selected_player())
 		gui.show_message("Gift Vehicle Running", "Trying to gift "..vehName.." Hash: "..vehicle.." to Name: "..playerName.." Hash: "..netHash)
 		gui.show_message("Retrieved Network Hash", "Network Hash: "..netHash.." Attempting to gift.")
 
 		set_vehicle_decorator(vehicle, "MPBitset", 0)
-		set_vehicle_decorator(vehicle, "Previous_Owner", 3)
-		set_vehicle_decorator(vehicle, "PV_Slot", 3)
+		set_vehicle_decorator(vehicle, "Previous_Owner", netHash)
 		set_vehicle_decorator(vehicle, "Veh_Modded_By_Player", netHash)
-		set_vehicle_decorator(vehicle, "Not_Allow_As_Saved_Veh", 3)
+		set_vehicle_decorator(vehicle, "Not_Allow_As_Saved_Veh", 0)
 		set_vehicle_decorator(vehicle, "Player_Vehicle", netHash)
 
 		VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
@@ -1137,8 +1136,9 @@ Gif:add_button("Gift Vehicle", function()
 		local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
 		local vehicleNameHash = tonumber(ENTITY.GET_ENTITY_MODEL(targetVehicle))
 		local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
-		giftVehToPlayer(vehicleNameHash, targetPlayerPed, playerName, vehicleDisplayName)
-end)]]--
+		RequestControlz(targetVehicle)
+		giftVehToPlayer(targetVehicle, targetPlayerPed, playerName, vehicleDisplayName)
+end)
 
 
 -- Upgrade Options
@@ -1217,13 +1217,11 @@ local justRP = Global:add_checkbox("Give Global RP (On/Off)")
 
 script.register_looped("justRPLoop", function()
     if justRP:is_enabled() then
-        local localPlayerId = PLAYER.PLAYER_ID() -- Assuming you have a function like this to get the player ID
+        local localPlayerId = network.get_selected_player() -- Assuming you have a function like this to get the player ID
         local eventHash = 968269233
 
-        for i = 0, 32 do
-            if i ~= localPlayerId then
+
                 for j = 0, 24 do
-                    local targetPlayerId = 1 << i
                     local eventArgs = { eventHash, localPlayerId, targetPlayerId, 1, 1, 4, j, 1, 1, 1 }
 
                     -- Ensure localPlayerId is a number, not a table
@@ -1231,10 +1229,10 @@ script.register_looped("justRPLoop", function()
 						
 						gui.show_message("Global", "Triggering Script Event")
 						gui.show_message("WARNING", "Script in BETA and may not work yet!")
-                        SCRIPT.TRIGGER_SCRIPT_EVENT(targetPlayerId, table.unpack(eventArgs))
+                        SCRIPT.TRIGGER_SCRIPT_EVENT(localPlayerId, table.unpack(eventArgs))
                         eventArgs[6] = 8
                         eventArgs[7] = -5
-                        SCRIPT.TRIGGER_SCRIPT_EVENT(targetPlayerId, table.unpack(eventArgs))
+                        SCRIPT.TRIGGER_SCRIPT_EVENT(localPlayerId, table.unpack(eventArgs))
 						gui.show_message("Global", "Script event triggered, restarting.")
                         sleep(0)
                     else
@@ -1242,8 +1240,6 @@ script.register_looped("justRPLoop", function()
                         gui.show_message("Global", "Invalid localPlayerId type")
                     end
                 end
-            end
-        end
     end
     sleep(0.4) -- Sets the timer in seconds for how long this should pause
 end)
@@ -1414,6 +1410,198 @@ script.register_looped("FireworkLoop", function()
 		end
     end
 end)
+Global:add_sameline()
+local flameLoopGlobal = Global:add_checkbox("Flames (On/Off)")
+function load_flame()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_bike_adversary")
+    
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_bike_adversary") then
+        return false
+    end
+
+    return true
+end
+
+function random_color()
+    return math.random(0, 255), math.random(0, 255), math.random(0, 255)
+end
+
+script.register_looped("FlameLoopGlobal", function()
+    if flameLoopGlobal:is_enabled() == true then
+        if load_flame() then
+            local localPlayerId = PLAYER.PLAYER_ID()
+			for i = 0, 32 do
+				if i ~= localPlayerId then
+					local player_id = i
+					local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+
+					-- Get random color values
+					local colorR, colorG, colorB = random_color()
+					test = player_coords.z - 1
+					GRAPHICS.USE_PARTICLE_FX_ASSET("scr_bike_adversary")
+					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_adversary_foot_flames", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
+				end
+			end
+			sleep(0.2)
+		end
+    end
+end)
+
+Global:add_sameline()
+local lightningLoopGlobal = Global:add_checkbox("Lightning (On/Off)")
+function load_lightning()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("des_tv_smash")
+    
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("des_tv_smash") then
+        return false
+    end
+
+    return true
+end
+
+function random_color()
+    return math.random(0, 255), math.random(0, 255), math.random(0, 255)
+end
+
+script.register_looped("lightningLoopGlobal", function()
+    if lightningLoopGlobal:is_enabled() == true then
+        if load_lightning() then
+            local localPlayerId = PLAYER.PLAYER_ID()
+			for i = 0, 32 do
+				if i ~= localPlayerId then
+					local player_id = i
+					local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+
+					-- Get random color values
+					local colorR, colorG, colorB = random_color()
+					test = player_coords.z
+					GRAPHICS.USE_PARTICLE_FX_ASSET("des_tv_smash")
+					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("ent_sht_electrical_box_sp", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
+				end
+			end
+			sleep(0.2)
+		end
+    end
+end)
+
+Global:add_sameline()
+local snowLoopGlobal = Global:add_checkbox("Snow (On/Off)")
+function load_snow()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_xmas_snowball")
+    
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("proj_xmas_snowball") then
+        return false
+    end
+
+    return true
+end
+
+function random_color()
+    return math.random(0, 255), math.random(0, 255), math.random(0, 255)
+end
+
+script.register_looped("snowLoopGlobal", function()
+    if snowLoopGlobal:is_enabled() == true then
+        if load_snow() then
+            local localPlayerId = PLAYER.PLAYER_ID()
+			for i = 0, 32 do
+				if i ~= localPlayerId then
+					local player_id = i
+					local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+
+					-- Get random color values
+					local colorR, colorG, colorB = random_color()
+					test = player_coords.z
+					GRAPHICS.USE_PARTICLE_FX_ASSET("proj_xmas_snowball")
+					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("exp_grd_snowball", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
+				end
+			end
+			sleep(0.2)
+		end
+    end
+end)
+
+-- Global Explode
+Global:add_separator()
+local explosionLoop = false
+Global:add_text("Toxic Options")
+explosionLoop = Global:add_checkbox("Explosion (On/Off)")
+
+script.register_looped("explosionLoop", function()
+    if explosionLoop:is_enabled() == true then
+        local explosionType = 1  -- Adjust this according to the explosion type you want (1 = GRENADE, 2 = MOLOTOV, etc.)
+        local explosionFx = "explosion_barrel"
+        local localPlayerId = PLAYER.PLAYER_ID()
+
+        gui.show_message("Global", "Exploding other players in the session.")
+
+        for i = 0, 32 do
+            if i ~= localPlayerId then
+                local player_id = i
+                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                
+                FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
+                GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
+                GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
+
+                -- Optionally, you can play an explosion sound here using AUDIO.PLAY_SOUND_FROM_COORD
+            end
+        end
+
+        sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
+    end
+end)
+
+-- Global Drop Vehicles on Players
+Global:add_sameline()
+local ramLoop = false
+ramLoop = Global:add_checkbox("Vehicle Ram (On/Off)")
+
+-- Define a list of vehicle models (you can add or modify as needed)
+local vehicleModels = {
+    "adder",
+    "zentorno",
+    "comet2",
+    -- Add more vehicle models here
+}
+
+script.register_looped("ramLoop", function()
+    if ramLoop:is_enabled() == true then
+        local localPlayerId = PLAYER.PLAYER_ID()
+
+        gui.show_message("Global", "Ramming other players in the session.")
+
+        for i = 0, 32 do
+          if i ~= localPlayerId and NETWORK.NETWORK_IS_PLAYER_ACTIVE(i) then
+                local player_id = i
+                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+
+                -- Get a random vehicle model from the list
+                local randomModel = vehicleModels[math.random(#vehicleModels, #vehicleModels)]
+
+                -- Convert the string vehicle model to its hash value
+                local modelHash = MISC.GET_HASH_KEY(randomModel)
+
+                -- Create the vehicle without the last boolean argument (keepTrying)
+                local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 15, 0.0, true, true, true)
+
+                -- Set the falling velocity (adjust the value as needed)
+                ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000)
+
+                -- Optionally, you can play a sound or customize the ramming effect here
+          end
+        end
+
+        sleep(0.2)  -- Sets the timer in seconds for how long this should pause before ramming another player
+    end
+end)
+
 
 -- Global Weapons
 Global:add_separator()
