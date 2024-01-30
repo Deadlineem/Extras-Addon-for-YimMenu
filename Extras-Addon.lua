@@ -69,7 +69,7 @@ local weaponNamesString = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.8.2 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.8.3 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
