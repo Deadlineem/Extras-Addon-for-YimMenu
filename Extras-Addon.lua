@@ -15,11 +15,11 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.3
+		Addon Version: 0.8.4
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
-			TheKuter & More!
+		TheKuter & More!
 
 ]]--
 
@@ -35,7 +35,12 @@ function sleep(seconds)
         coroutine.yield()
     end
 end
+-- Vehicle List
 
+local vehicleModels = {
+    "adder", "zentorno", "comet2", "apc", "arbitergt", "ardent", "autarch", "BUS", "cheetah", "chernobog", "champion", "cyclone", "cyclone2",
+    -- Add more vehicle models here
+}
 -- Weapons List
 local weaponNamesString = {
     "weapon_dagger", "weapon_bat", "weapon_bottle", "weapon_crowbar",
@@ -61,11 +66,24 @@ local weaponNamesString = {
     "weapon_rayminigun", "weapon_grenade", "weapon_bzgas", "weapon_smokegrenade",
     "weapon_flare", "weapon_molotov", "weapon_stickybomb", "weapon_proxmine",
     "weapon_snowball", "weapon_pipebomb", "weapon_ball", "weapon_petrolcan",
-    "weapon_fireextinguisher", "weapon_parachute", "weapon_hazardcan", "weapon_militaryrifle",
+    "weapon_fireextinguisher", "weapon_hazardcan", "weapon_militaryrifle",
     "weapon_combatshotgun", "weapon_gadgetpistol", "WEAPON_SNOWLAUNCHER", "WEAPON_BATTLERIFLE", 
 	"WEAPON_TECPISTOL", "WEAPON_CANDYCANE", "WEAPON_PISTOLXM3", "WEAPON_RAILGUNXM3", "WEAPON_PRECISIONRIFLE", 
 	"WEAPON_TACTICALRIFLE", "WEAPON_EMPLAUNCHER", "WEAPON_HEAVYRIFLE"
 }
+
+local weaponModels = {
+    "prop_w_me_dagger", "prop_baseball_bat", "prop_ld_flow_bottle", "prop_tool_crowbar", "prop_ld_ammo_pack_01", "prop_ld_shovel", "prop_golf_iron_01", "prop_tool_hammer", "prop_ld_fireaxe", "prop_ld_handbag", "prop_knife", "prop_ld_w_me_machette", "prop_ld_w_me_switchblade",
+    "prop_ld_bat_01", "prop_tool_wrench", "prop_tool_fireaxe", "prop_pool_cue", "prop_melee_rock", "w_pi_pistol", "w_pi_pistol_mk2", "w_pi_combatpistol", "w_pi_appistol", "w_pi_stungun", "w_pi_pistol50", "w_pi_sns_pistol", "w_pi_sns_pistol_mk2", "w_pi_heavy_pistol",
+    "w_pi_vintage_pistol", "w_pi_flaregun", "w_pi_marksmanpistol", "w_pi_revolver", "w_pi_revolver_mk2", "w_pi_doubleaction", "w_pi_ray_pistol", "w_pi_ceramic_pistol", "w_pi_navy_revolver", "w_sb_microsmg", "w_sb_smg", "w_sb_smg_mk2", "w_sb_assaultsmg", "w_sb_pdw",
+    "w_sb_machinepistol", "w_sb_minismg", "w_sb_ray_carbine", "w_sg_pumpshotgun", "w_sg_pumpshotgun_mk2", "w_sg_sawnoff", "w_sg_assaultshotgun", "w_sg_bullpupshotgun", "w_ar_musket", "w_sg_heavyshotgun", "w_sg_doublebarrel", "w_sg_autoshotgun", "w_ar_assaultrifle",
+    "w_ar_assaultrifle_mk2", "w_ar_carbinerifle", "w_ar_carbinerifle_mk2", "w_ar_advancedrifle", "w_ar_specialcarbine", "w_ar_specialcarbine_mk2", "w_ar_bullpuprifle", "w_ar_bullpuprifle_mk2", "w_ar_compactrifle", "w_mg_mg", "w_mg_combatmg", "w_mg_combatmg_mk2", "w_sb_gusenberg",
+    "w_sr_sniperrifle", "w_sr_heavysniper", "w_sr_heavysniper_mk2", "w_sr_marksmanrifle", "w_sr_marksmanrifle_mk2", "w_lr_rpg", "w_lr_grenadelauncher", "w_lr_grenadelauncher_smoke", "w_mg_minigun", "w_lr_firework", "w_lr_railgun", "w_lr_homing", "w_lr_grenadelauncher", "w_mg_rayminigun",
+    "w_ex_grenadethrow", "w_ex_bzgas", "w_ex_grenadesmoke", "w_ex_flare", "w_ex_molotov", "w_ex_stickybomb", "w_ex_proxmine", "w_ex_snowball", "w_ex_pipebomb", "prop_snow_flower_01", "w_me_petrolcan", "prop_fire_exting_1a", "w_lr_hazard", "w_ar_militaryrifle",
+    "w_sg_combatshotgun", "w_pi_gadget_pistol", "w_ar_snowball", "w_ar_battlerifle", "w_pi_tecpistol", "w_me_candy_cane", "w_pi_pistolxm3", "w_ar_railgunxm3", "w_ar_precisionrifle", "w_ar_tacticalrifle", "w_lr_emplauncher", "w_ar_heavyrifle"
+}
+
+
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
@@ -81,7 +99,7 @@ createText(KAOS, "encourage everyone to create this with me, lend your ideas, su
 createText(KAOS, "YimMenu next generation!")
 KAOS:add_separator()
 createText(KAOS, "Credits: Yimura, L7Neg, Loled69, TeaTimeTea, CSYON, Adventure Box, gir489returns, abuazizv,")
-createText(KAOS, "Alestarov")
+createText(KAOS, "Alestarov & the UC community")
 KAOS:add_separator()
 createText(KAOS, "Thanks to all my testers, your time is appreciated.  Thanks to all of the above for your scripts and")
 createText(KAOS, "for your inputs on my comments, I have done alot of reading, scrolling, testing and learning from it all")
@@ -292,7 +310,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
         local model = joaat("vw_prop_vw_colle_prbubble")
         local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
         local player_id = PLAYER.PLAYER_ID()
-        local money_value = 5
+        local money_value = 0
 
         STREAMING.REQUEST_MODEL(model)
         while STREAMING.HAS_MODEL_LOADED(model) == false do
@@ -347,7 +365,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
         end
     end)
 end)
-
+Drops:add_sameline()
 Drops:add_button("Alien (On/Off)", function()
    alienfigurineLoop = not alienfigurineLoop
 
@@ -410,7 +428,7 @@ Drops:add_button("Alien (On/Off)", function()
         end
     end)
 end)
-
+Drops:add_sameline()
 Drops:add_button("Casino Cards (On/Off)", function()
    casinocardsLoop = not casinocardsLoop
 
@@ -473,15 +491,15 @@ Drops:add_button("Casino Cards (On/Off)", function()
         end
     end)
 end)
-
+Drops:add_sameline()
 Drops:add_button("Cash Loop (On/Off)", function()
    kcashLoop = not kcashLoop
 
     script.register_looped("kcashLoop", function(script)
-        local model = joaat("m23_2_prop_m32_cashwrapped_01a")
-        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = PLAYER.PLAYER_ID()
-        local money_value = 0
+        local model = joaat("prop_cash_pile_01")
+        local pickup = joaat("PICKUP_MONEY_VARIABLE")
+        local player_id = network.get_selected_player()
+        local money_value = 2000
 
         STREAMING.REQUEST_MODEL(model)
         while STREAMING.HAS_MODEL_LOADED(model) == false do
@@ -489,13 +507,37 @@ Drops:add_button("Cash Loop (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-		gui.show_message("RP/Cash Drop Started", "Fake Cash Drops inbound!")
+		gui.show_message("Cash Drop Started", "LOCAL CASH WORKS ON PICKUP but other players cannot see it!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
+                coords.x,
+                coords.y,
+                coords.z + 1,
+                3,
+                money_value,
+                model,
+                true,
+                false
+            )
+			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                pickup,
+                coords.x,
+                coords.y,
+                coords.z + 1,
+                3,
+                money_value,
+                model,
+                true,
+                false
+            )
+			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                pickup,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -506,7 +548,7 @@ Drops:add_button("Cash Loop (On/Off)", function()
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-		sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+		sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not kcashLoop then
             script.unregister_script("kcashLoop")
         end
@@ -514,7 +556,7 @@ Drops:add_button("Cash Loop (On/Off)", function()
 end)
 
 Drops:add_separator()
-Drops:add_text("Cash loop is Fake, it gives nothing on pickup, future plans to get it working.");
+Drops:add_text("Cash loop is REAL but only for you, other players cannot see it at all");
 Drops:add_text("You CAN run multiple at once (like Robot bubblegum/Alien)")
 Drops:add_text("just make sure someone is collecting it or you can lag severely or freeze.");
 
@@ -898,6 +940,106 @@ end)
 millLoop:add_separator()
 millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL GET BANNED!")
 
+-- Griefing Drop Vehicles on Players
+local grief = KAOS:add_tab("Grief Options")
+local ramLoopz = false
+ramLoopz = grief:add_checkbox("Vehicle Ram (On/Off)")
+
+script.register_looped("ramLoopz", function()
+    if ramLoopz:is_enabled() == true then
+
+			local player_id = network.get_selected_player()
+			if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
+                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+
+                -- Get a random vehicle model from the list
+                local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+
+                -- Convert the string vehicle model to its hash value
+                local modelHash = MISC.GET_HASH_KEY(randomModel)
+
+                -- Create the vehicle without the last boolean argument (keepTrying)
+                local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, false, true)
+				
+				if vehicle then
+					-- Set the falling velocity (adjust the value as needed)
+					ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -10000)
+				end
+				
+				gui.show_message("Grief", "Ramming "..PLAYER.GET_PLAYER_NAME(player_id).." with vehicles")
+				--ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)  Use these to delete the vehicle after spawning.  Needs some type of delay between spawning and deleting to function properly
+				--VEHICLE.DELETE_VEHICLE(vehicle)
+                -- Optionally, you can play a sound or customize the ramming effect here
+          end
+
+        sleep(0.2)  -- Sets the timer in seconds for how long this should pause before ramming another player
+    end
+end)
+
+-- Griefing Explode Player
+grief:add_sameline()
+local explodeLoop = false
+explodeLoop = grief:add_checkbox("Explosion (On/Off)")
+
+script.register_looped("explodeLoop", function()
+    if explodeLoop:is_enabled() == true then
+        local explosionType = 1  -- Adjust this according to the explosion type you want (1 = GRENADE, 2 = MOLOTOV, etc.)
+        local explosionFx = "explosion_barrel"
+
+                local player_id = network.get_selected_player()
+                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                
+                FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
+                GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
+                GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
+				
+				gui.show_message("Grief", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
+                -- Optionally, you can play an explosion sound here using AUDIO.PLAY_SOUND_FROM_COORD
+
+        sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
+    end
+end)
+
+-- Figurine Crash
+grief:add_sameline()
+local prCrash = false
+prCrash = grief:add_checkbox("PR Crash (On/Off)")
+
+script.register_looped("prCrash", function()
+    if prCrash:is_enabled() == true then
+
+        local model = joaat("vw_prop_vw_colle_prbubble")
+        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+        local player_id = network.get_selected_player()
+        local money_value = 1000000
+
+        STREAMING.REQUEST_MODEL(model)
+        while STREAMING.HAS_MODEL_LOADED(model) == false do
+            script:yield()
+        end
+
+        if STREAMING.HAS_MODEL_LOADED(model) then
+		gui.show_message("PR Crash", "Crashing player")
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                pickup,
+                coords.x,
+                coords.y,
+                coords.z + 0.5,
+                3,
+                money_value,
+                model,
+                true,
+                false
+            )
+
+            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+        end
+		sleep(0) -- Sets the timer in seconds for how long this should pause before sending another figure
+    end
+end)
+
 -- Object Spawner (Can be used negatively!) (Originally from Kuter Menu)
 
 local Obje = KAOS:add_tab("Object Options")
@@ -1104,7 +1246,9 @@ end
 
 function giftVehToPlayer(vehicle, player, playerName, vehName)
 	if PED.IS_PED_IN_ANY_VEHICLE(player, true) then
-		local netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(network.get_selected_player())
+		--local netHash = network.get_selected_player()
+		local netHash = MISC.GET_HASH_KEY(PLAYER.GET_PLAYER_NAME(network.get_selected_player()))
+		gui.show_message("Player Hash", playerName.."'s hash is "..netHash)
 		gui.show_message("Gift Vehicle Running", "Trying to gift "..vehName.." Hash: "..vehicle.." to Name: "..playerName.." Hash: "..netHash)
 		gui.show_message("Retrieved Network Hash", "Network Hash: "..netHash.." Attempting to gift.")
 
@@ -1140,6 +1284,29 @@ Gif:add_button("Gift Vehicle", function()
 		giftVehToPlayer(targetVehicle, targetPlayerPed, playerName, vehicleDisplayName)
 end)
 
+Gif:add_button("Spawn Vehicle", function()
+    -- Assuming vehicleModels is a valid array of vehicle model names
+    local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+    
+    -- Get the player's ID
+    local player_id = network.get_selected_player()
+    
+    -- Get the player's coordinates
+    local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+    
+    -- Convert the string vehicle model to its hash value
+    local modelHash = MISC.GET_HASH_KEY(randomModel)
+
+    -- Create the vehicle
+    local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x + 5, coords.y, coords.z, 0.0, true, true, true)
+
+    -- Check if the vehicle creation was successful
+    if vehicle ~= 0 then
+        gui.show_message("Vehicle Spawner", "Vehicle spawned successfully!")
+    else
+        gui.show_message("Vehicle Spawner", "Failed to spawn vehicle.")
+    end
+end)
 
 -- Upgrade Options
 local Upg = Veh:add_tab("Upgrades")
@@ -1213,33 +1380,48 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
 		end
         end)
 Global:add_sameline()		
-local justRP = Global:add_checkbox("Give Global RP (On/Off)")
+local moneyLoop = Global:add_checkbox("Give Global Money (On/Off)")
 
-script.register_looped("justRPLoop", function()
-    if justRP:is_enabled() then
+script.register_looped("moneyLoop", function()
+    if moneyLoop:is_enabled() then
         local localPlayerId = network.get_selected_player() -- Assuming you have a function like this to get the player ID
-        local eventHash = 968269233
+        local model = joaat("prop_cash_pile_01")
+            local pickup = joaat("PICKUP_MONEY_VARIABLE")
+            local money_value = 100
+			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
+            STREAMING.REQUEST_MODEL(model)
+            while STREAMING.HAS_MODEL_LOADED(model) == false do
+                sleep(1)
+            end
+		
+            if STREAMING.HAS_MODEL_LOADED(model) then
+                local localPlayerId = PLAYER.PLAYER_ID()
+                local player_count = PLAYER.GET_NUMBER_OF_PLAYERS() - 1 -- Minus 1 player (yourself) from the drop count.
+                gui.show_message("Global", "Dropping money to ".. player_count.." Players in the session.")
 
-
-                for j = 0, 24 do
-                    local eventArgs = { eventHash, localPlayerId, targetPlayerId, 1, 1, 4, j, 1, 1, 1 }
-
-                    -- Ensure localPlayerId is a number, not a table
-                    if type(localPlayerId) == "number" then
+                for i = 0, 32 do
+                    if i ~= localPlayerId then
+                        local player_id = i
 						
-						gui.show_message("Global", "Triggering Script Event")
-						gui.show_message("WARNING", "Script in BETA and may not work yet!")
-                        SCRIPT.TRIGGER_SCRIPT_EVENT(localPlayerId, table.unpack(eventArgs))
-                        eventArgs[6] = 8
-                        eventArgs[7] = -5
-                        SCRIPT.TRIGGER_SCRIPT_EVENT(localPlayerId, table.unpack(eventArgs))
-						gui.show_message("Global", "Script event triggered, restarting.")
-                        sleep(0)
-                    else
-                        -- Handle the case where localPlayerId is not a number
-                        gui.show_message("Global", "Invalid localPlayerId type")
+                        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                        local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                            pickup,
+                            coords.x - 0,
+                            coords.y + 0,
+                            coords.z + 1,
+                            3,
+                            money_value,
+                            model,
+                            true,
+                            false
+                        )
+
+						local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
                     end
                 end
+            end
+			sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
     end
     sleep(0.4) -- Sets the timer in seconds for how long this should pause
 end)
@@ -1539,7 +1721,7 @@ script.register_looped("explosionLoop", function()
         local explosionFx = "explosion_barrel"
         local localPlayerId = PLAYER.PLAYER_ID()
 
-        gui.show_message("Global", "Exploding other players in the session.")
+        gui.show_message("Global", "Exploding all other players in the session.")
 
         for i = 0, 32 do
             if i ~= localPlayerId then
@@ -1557,51 +1739,6 @@ script.register_looped("explosionLoop", function()
         sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
     end
 end)
-
--- Global Drop Vehicles on Players
-Global:add_sameline()
-local ramLoop = false
-ramLoop = Global:add_checkbox("Vehicle Ram (On/Off)")
-
--- Define a list of vehicle models (you can add or modify as needed)
-local vehicleModels = {
-    "adder",
-    "zentorno",
-    "comet2",
-    -- Add more vehicle models here
-}
-
-script.register_looped("ramLoop", function()
-    if ramLoop:is_enabled() == true then
-        local localPlayerId = PLAYER.PLAYER_ID()
-
-        gui.show_message("Global", "Ramming other players in the session.")
-
-        for i = 0, 32 do
-          if i ~= localPlayerId and NETWORK.NETWORK_IS_PLAYER_ACTIVE(i) then
-                local player_id = i
-                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-
-                -- Get a random vehicle model from the list
-                local randomModel = vehicleModels[math.random(#vehicleModels, #vehicleModels)]
-
-                -- Convert the string vehicle model to its hash value
-                local modelHash = MISC.GET_HASH_KEY(randomModel)
-
-                -- Create the vehicle without the last boolean argument (keepTrying)
-                local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 15, 0.0, true, true, true)
-
-                -- Set the falling velocity (adjust the value as needed)
-                ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000)
-
-                -- Optionally, you can play a sound or customize the ramming effect here
-          end
-        end
-
-        sleep(0.2)  -- Sets the timer in seconds for how long this should pause before ramming another player
-    end
-end)
-
 
 -- Global Weapons
 Global:add_separator()
@@ -1742,7 +1879,7 @@ Weapons:add_button("Remove All Weapons", function()
 			end
 		end
 end)
-
+Weapons:add_sameline()
 Weapons:add_button("Give All Weapons", function()
 		local playerID = PLAYER.PLAYER_ID()
 		local ent = PLAYER.GET_PLAYER_PED(playerID)
@@ -1756,6 +1893,49 @@ Weapons:add_button("Give All Weapons", function()
 			end
 		end
 end)
+
+Weapons:add_tab("Drops")
+Weapons:add_separator()
+Weapons:add_text("Weapon Drops")
+Weapons:add_button("Drop Random Weapon", function()
+    mk2Loop = not mk2Loop
+
+    script.register_looped("mk2Loop", function(script)
+        local weaponName = weaponNamesString[math.random(1, #weaponNamesString)]
+        local money_value = 0
+        local player_id = network.get_selected_player()
+		local model = weaponModels[math.random(1, #weaponModels)]
+
+        local modelHash = joaat(model)
+        STREAMING.REQUEST_MODEL(modelHash)
+        while STREAMING.HAS_MODEL_LOADED(modelHash) == false do
+            script:yield()
+        end
+        if STREAMING.HAS_MODEL_LOADED(modelHash) then
+            gui.show_message("Weapon Drop Started", "Dropping " .. weaponName)
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                joaat("PICKUP_" .. string.upper(weaponName)),
+                coords.x,
+                coords.y,
+                coords.z + 1,
+                3,
+                money_value,
+                modelHash,
+                true,
+                false
+            )
+
+            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+        end
+    end)
+end)
+Weapons:add_separator()
+Weapons:add_text("To use the Random Weapon Dropper, Select a player from the player list")
+Weapons:add_text("then press Drop Random Weapon, you can press it as many times as you want")
+Weapons:add_text("it will drop weapon pickups on the player you selected")
+
 
 -- Business Management
 local Business = KAOS:add_tab("Business Manager")
@@ -1795,6 +1975,10 @@ script.register_looped("nightclubloop", function(script)
 		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_PAY_TIME_LEFT"), -1, true)
 		sleep(2.5)
 	end
+end)
+Club:add_separator()
+Club:add_button("Max Club Popularity", function()
+	STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
 end)
 
 -- YimCEO -- Alestarov_Menu
