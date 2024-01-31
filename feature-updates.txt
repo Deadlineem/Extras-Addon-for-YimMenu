@@ -26,7 +26,7 @@ similar to fast run, but faster.
     -> Princess Robot Bubblegum Loop (On/Off)
     -> Alien Loop (On/Off)
     -> Casino Card Loop (On/Off)
-    -> Fake Cash Loop (On/Off)
+    -> Cash Loop (On/Off) (Drops 2k cash per pickup to yourself only, others cannot see it or pick it up) - PLAYER SELECTABLE
 
 ---- Casino
   -> Bypass Casino Cooldown
@@ -63,12 +63,24 @@ To spawn on self or other players:
 Click targets name on yimmenu players list
 click Extras Addon > Object Options > Spawner
 Select the item you want to spawn and click Spawn Selected
+
+_______________________________________________________________________________________________________
+
+Grief Options
+_______________________________________________________________________________________________________
+
+---- Vehicle Ram
+---- Explode
+---- PR crash (Drops tons of figurines worth $1,000,000 each, immediately freezes victims game
+
+  * Select Player from list, check an option to use
 _______________________________________________________________________________________________________
 
 Vehicle Options
 _______________________________________________________________________________________________________
 
-  -> Vehicle Options are being worked on, this will take time but youre welcome to test them as they come
+  -> Vehicle Options are being worked on, this will take time but youre welcome to test them as they
+come.  Vehicle gifting may or may not work, untested since updating.
 _______________________________________________________________________________________________________
 
 Global Options
@@ -95,8 +107,6 @@ invasive on the player.
 
 ---- Toxic
   -> Explode (On/Off)  This is self explanatory, its under global, does what it says.
-
-  -> Vehicle Ram (On/Off) Buggy, but works.  Drops cars at high velocity onto everyones heads.
 
 -- Weapons
 
@@ -130,6 +140,10 @@ ________________________________________________________________________________
 
   -> Give all weapons  Gives all weapons to yourself (Story mode + Multiplayer)
 
+  -> Drop Random Weapon  
+-------- Select player from list and use, each click picks a random weapon that it drops
+on the player.  As far as I know, the players keep these weapons if you drop them
+
 ____________________________________________________________________________________________________________
 
 Business Management
@@ -144,3 +158,4 @@ ________________________________________________________________________________
 
 ---- Nightclub
   -> Activate 250k/15s loop while standing in front of nightclub safe.  Meant for AFK money
+  -> Max Popularity  Does what it says
