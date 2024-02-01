@@ -19,7 +19,7 @@ ___________         __
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
-		TheKuter & More!
+			TheKuter & More!
 
 ]]--
 
@@ -38,7 +38,15 @@ end
 -- Vehicle List
 
 local vehicleModels = {
-    "adder", "zentorno", "comet2", "apc", "arbitergt", "ardent", "autarch", "BUS", "cheetah", "chernobog", "champion", "cyclone", "cyclone2",
+    "adder",
+	"zentorno",
+	"comet2",
+	"ardent",
+	"autarch",
+	"cheetah",
+	"champion",
+	"cyclone",
+	"cyclone2",
     -- Add more vehicle models here
 }
 -- Weapons List
@@ -87,7 +95,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.8.3 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.8.4 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -942,37 +950,40 @@ millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL 
 
 -- Griefing Drop Vehicles on Players
 local grief = KAOS:add_tab("Grief Options")
-local ramLoopz = false
-ramLoopz = grief:add_checkbox("Vehicle Ram (On/Off)")
+local ramLoopz = grief:add_checkbox("Vehicle Ram (On/Off)")
 
 script.register_looped("ramLoopz", function()
-    if ramLoopz:is_enabled() == true then
+    if ramLoopz:is_enabled() then
+        local player_id = network.get_selected_player()
+        if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
-			local player_id = network.get_selected_player()
-			if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
-                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            -- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
+            local randomModel = vehicleModels[math.random(2, #vehicleModels)]
 
-                -- Get a random vehicle model from the list
-                local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+            -- Convert the string vehicle model to its hash value
+            local modelHash = MISC.GET_HASH_KEY(randomModel)
 
-                -- Convert the string vehicle model to its hash value
-                local modelHash = MISC.GET_HASH_KEY(randomModel)
+            -- Create the vehicle without the last boolean argument (keepTrying)
+            local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 10, 0.0, true, false, true)
 
-                -- Create the vehicle without the last boolean argument (keepTrying)
-                local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, false, true)
-				
-				if vehicle then
-					-- Set the falling velocity (adjust the value as needed)
-					ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -10000)
-				end
-				
-				gui.show_message("Grief", "Ramming "..PLAYER.GET_PLAYER_NAME(player_id).." with vehicles")
-				--ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)  Use these to delete the vehicle after spawning.  Needs some type of delay between spawning and deleting to function properly
-				--VEHICLE.DELETE_VEHICLE(vehicle)
+            if vehicle then
+                -- Set the falling velocity (adjust the value as needed)
+                ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, 100000)
                 -- Optionally, you can play a sound or customize the ramming effect here
-          end
+            end
 
-        sleep(0.2)  -- Sets the timer in seconds for how long this should pause before ramming another player
+            gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+
+            -- Use these lines to delete the vehicle after spawning. 
+            -- Needs some type of delay between spawning and deleting to function properly
+			sleep(0.1)
+             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)
+             VEHICLE.DELETE_VEHICLE(vehicle)
+        end
+
+        -- Sets the timer in seconds for how long this should pause before ramming another player
+        --sleep(0.2)
     end
 end)
 
@@ -1000,8 +1011,58 @@ script.register_looped("explodeLoop", function()
     end
 end)
 
--- Figurine Crash
+-- Griefing Burn Player
 grief:add_sameline()
+local burnLoop = false
+burnLoop = grief:add_checkbox("Burn (On/Off)")
+
+script.register_looped("burnLoop", function()
+    if burnLoop:is_enabled() == true then
+        local player_id = network.get_selected_player()
+        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+		local fxType = 3
+		local ptfxAsset = "scr_bike_adversary"
+		local particle = "scr_adversary_foot_flames"
+		
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, fxType, 100000.0, false, false, 0, false)
+        GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
+        GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
+        
+        gui.show_message("Grief", "Burning "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
+
+        -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
+
+        sleep(0.4)  -- Sets the timer in seconds for how long this should pause before burning another player
+    end
+end)
+
+-- Griefing Water Spray
+grief:add_sameline()
+local waterLoop = false
+waterLoop = grief:add_checkbox("Water (On/Off)")
+
+script.register_looped("waterLoop", function()
+    if waterLoop:is_enabled() == true then
+        local player_id = network.get_selected_player()
+        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+		local fxType = 13
+		local ptfxAsset = "scr_sum_gy"
+		local particle = "scr_sum_gy_exp_water_bomb"
+		
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z - 1, fxType, 100000.0, false, false, 0, false)
+        GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
+        GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z - 1, 0.0, 0.0, 0.0, 1.0, false, true, false)
+        
+        gui.show_message("Grief", "Looping Water on "..PLAYER.GET_PLAYER_NAME(player_id))
+
+        -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
+
+        sleep(0.4)  -- Sets the timer in seconds for how long this should pause before burning another player
+    end
+end)
+
+-- Figurine Crash
+grief:add_separator()
 local prCrash = false
 prCrash = grief:add_checkbox("PR Crash (On/Off)")
 
@@ -1014,9 +1075,6 @@ script.register_looped("prCrash", function()
         local money_value = 1000000
 
         STREAMING.REQUEST_MODEL(model)
-        while STREAMING.HAS_MODEL_LOADED(model) == false do
-            script:yield()
-        end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
 		gui.show_message("PR Crash", "Crashing player")
@@ -1036,7 +1094,7 @@ script.register_looped("prCrash", function()
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-		sleep(0) -- Sets the timer in seconds for how long this should pause before sending another figure
+		sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
     end
 end)
 
@@ -1380,7 +1438,7 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
 		end
         end)
 Global:add_sameline()		
-local moneyLoop = Global:add_checkbox("Give Global Money (On/Off)")
+local moneyLoop = Global:add_checkbox("Give Global Money (On/Off)")  -- Does not work on the session... YET
 
 script.register_looped("moneyLoop", function()
     if moneyLoop:is_enabled() then
