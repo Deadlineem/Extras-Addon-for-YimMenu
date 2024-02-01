@@ -69,9 +69,14 @@ ________________________________________________________________________________
 Grief Options
 _______________________________________________________________________________________________________
 
----- Vehicle Ram
----- Explode
----- PR crash (Drops tons of figurines worth $1,000,000 each, immediately freezes victims game
+---- Kill Options
+  -> Vehicle Ram
+  -> Explode
+  -> Burn
+  -> Water
+---- Crash Options
+  -> PR crash (Drops tons of figurines worth $1,000,000 each, freezes victims game on pickup in 10 
+seconds)
 
   * Select Player from list, check an option to use
 _______________________________________________________________________________________________________
