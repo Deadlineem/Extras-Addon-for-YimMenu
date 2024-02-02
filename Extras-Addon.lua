@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.4
+		Addon Version: 0.8.5
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -95,7 +95,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.8.4 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.8.5 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -557,9 +557,6 @@ Drops:add_button("Cash Loop (On/Off)", function()
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
 		sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-        if not kcashLoop then
-            script.unregister_script("kcashLoop")
-        end
     end)
 end)
 
@@ -1053,7 +1050,7 @@ script.register_looped("waterLoop", function()
         GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
         GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z - 1, 0.0, 0.0, 0.0, 1.0, false, true, false)
         
-        gui.show_message("Grief", "Looping Water on "..PLAYER.GET_PLAYER_NAME(player_id))
+        gui.show_message("Grief", "Drowning? "..PLAYER.GET_PLAYER_NAME(player_id))
 
         -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
 
@@ -1438,7 +1435,7 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
 		end
         end)
 Global:add_sameline()		
-local moneyLoop = Global:add_checkbox("Give Global Money (On/Off)")  -- Does not work on the session... YET
+local moneyLoop = Global:add_checkbox("Give Global Money (On/Off)")
 
 script.register_looped("moneyLoop", function()
     if moneyLoop:is_enabled() then
@@ -2112,3 +2109,123 @@ yimCEO:add_text("IF it tells you your warehouse is empty, turn it off stock 1 it
 yimCEO:add_separator()
 yimCEO:add_text("You need to manually click Special/Sell Cargo each time.")
 yimCEO:add_text("You may also get up to 500k more than 5m sometimes.")
+
+-- Casino Heist Editor - converted from L7Negs Ultimate Menu for Kiddions.
+
+--Required Stats--
+
+local MPX = PI
+local PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+	MPX = "MP0_"
+else
+	MPX = "MP1_"
+end
+
+FMC2020 = "fm_mission_controller_2020"
+HIP = "heist_island_planning"
+
+-- Editor Stuff
+local heisteEditor = KAOS:add_tab("Heist Editor")
+local cayoHeist = heisteEditor:add_tab("Cayo Perico Editor")
+
+local MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+	MPX = "MP0_"
+else
+	MPX = "MP1_"
+end
+
+cayoHeist:add_text("Setup Heist")
+
+cayoHeist:add_button("Panther Only (Hard)", function()
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 5, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
+	
+	gui.show_message("Cayo Heist", "Panther Hard Mode has been set up!")
+	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+end)
+cayoHeist:add_sameline()
+cayoHeist:add_button("Reset Kosatka Board", function()
+        locals.set_int(HIP, 1544, 2)
+		gui.show_message("Cayo Heist", "Planning board has been reset!")
+end)
+
+cayoHeist:add_separator()
+cayoHeist:add_text("During Heist")
+cayoHeist:add_button("Skip Drainage Cut", function()
+    locals.set_int(FMC2020, 29118, 6)
+	gui.show_message("Cayo Heist", "Bypassed Drainage Cut")
+end)
+cayoHeist:add_sameline()
+cayoHeist:add_button("Skip Fingerprint Scanner", function()
+   locals.set_int(FMC2020, 24333, 5)
+   gui.show_message("Cayo Heist", "Bypassed Fingerprint Scanner")
+end)
+cayoHeist:add_sameline()
+cayoHeist:add_button("Skip Glass Cut", function()
+    locals.set_float(FMC2020, 30357 + 3, 100.0)
+	gui.show_message("Cayo Heist", "Bypassed Plasma Cutter")
+end)
+cayoHeist:add_separator()
+cayoHeist:add_text("After Heist")
+cayoHeist:add_button("Skip Cooldown", function()
+	-- Solo Skip
+	STATS.STAT_SET_INT(joaat("MP0_H4_TARGET_POSIX"), 1659643454, true)
+	STATS.STAT_SET_INT(joaat("MP0_H4_COOLDOWN"), 0, true)
+	STATS.STAT_SET_INT(joaat("MP0_H4_COOLDOWN_HARD"), 0, true)
+	-- Multiplayer Skip
+	STATS.STAT_SET_INT(joaat("MP0_H4_TARGET_POSIX"), 1659429119, true)
+	STATS.STAT_SET_INT(joaat("MP0_H4_COOLDOWN"), 0, true)
+	STATS.STAT_SET_INT(joaat("MP0_H4_COOLDOWN_HARD"), 0, true)
+	-- Solo Skip (Second Character)
+	STATS.STAT_SET_INT(joaat("MP1_H4_TARGET_POSIX"), 1659643454, true)
+	STATS.STAT_SET_INT(joaat("MP1_H4_COOLDOWN"), 0, true)
+	STATS.STAT_SET_INT(joaat("MP1_H4_COOLDOWN_HARD"), 0, true)
+	-- Multiplayer Skip (Second Character)
+	STATS.STAT_SET_INT(joaat("MP1_H4_TARGET_POSIX"), 1659429119, true)
+	STATS.STAT_SET_INT(joaat("MP1_H4_COOLDOWN"), 0, true)
+	STATS.STAT_SET_INT(joaat("MP1_H4_COOLDOWN_HARD"), 0, true)
+	
+	gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters")
+	gui.show_message("Cayo Heist", "Go to story mode and come back to apply the reset")
+end)
+cayoHeist:add_separator()
+cayoHeist:add_text("How to Set Up or Bypass Cooldown:")
+cayoHeist:add_text("Make sure you have completed the heist and you are standing in front of the planning screen with the option to set up the heist.")
+cayoHeist:add_text("If you need to bypass the cooldown, use the bypass button, go to story mode, come back to gta online and go inside your kosatka.")
+cayoHeist:add_text("Click your desired setup from the options and press Reset Kosatka Board, these options currently have NO SECONDARIES.")
+cayoHeist:add_separator()
+cayoHeist:add_text("How to Skip Things:")
+cayoHeist:add_text("Wait for the screen to get to the point you are cutting/hacking and press the button to skip that portion.  Super easy")
