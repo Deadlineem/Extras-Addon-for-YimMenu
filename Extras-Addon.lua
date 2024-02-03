@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.5
+		Addon Version: 0.8.6
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -95,7 +95,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.8.5 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.8.6 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -201,7 +201,7 @@ script.register_looped("SmokeLoop", function()
 
 				-- Get random color values
 				local colorR, colorG, colorB = random_color()
-				test = player_coords.z - 1
+				test = player_coords.z - 2.5
 				GRAPHICS.USE_PARTICLE_FX_ASSET("scr_sum2_hal")
 				GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
 				GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_sum2_hal_rider_death_blue", player_coords.x, player_coords.y, test, 0, 0, 0, 1, false, false, false, false)
@@ -1271,72 +1271,51 @@ Spa:add_button("Save Vehicle", function()
 end)
 
 -- Gift Options
-function RequestControlz(entity)
+function RequestControl(entity)
     local tick = 0
-
+ 
     local netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
-
+ 
+    NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
     while not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) and tick < 50 do
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
-		NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
         tick = tick + 1
     end
-
-    NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
+ 
+    return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
 end
-function set_vehicle_decorator(vehicle, decorator_name, value)
-    if not DECORATOR.DECOR_SET_INT(vehicle, decorator_name, value) then
-		gui.show_message("Gifting Error", "DECOR_SET_INT("..vehicle..", "..decorator_name..", "..value..") was not set")
-		--error("Error setting decorator " .. decorator_name .. " for vehicle")
-		local MPBit = DECORATOR.DECOR_GET_INT(vehicle, "MPBitSet")
-		local Prev = DECORATOR.DECOR_GET_INT(vehicle, "Previous_Owner")
-		local pvSlot = DECORATOR.DECOR_GET_INT(vehicle, "PV_Slot")
-		local VmbP = DECORATOR.DECOR_GET_INT(vehicle, "Veh_Modded_By_Player")
-		local NAASV = DECORATOR.DECOR_GET_INT(vehicle, "Not_Allow_As_Saved_Veh")
-		local PlayerVeh = DECORATOR.DECOR_GET_INT(vehicle, "Player_Vehicle")
-		
-		gui.show_message("Retrieving Decorators", "MPBitSet: "..MPBit.." Previous Owner: "..Prev.." PV Slot: "..pvSlot.." Veh Modded by Player: "..VmbP.." Not Allow as Saved: "..NAASV.." Player Veh: "..PlayerVeh)
+ 
+function giftVehToPlayer(vehicle, playerId, playerName)
+    if RequestControl(vehicle) then
+        local netHash = MISC.GET_HASH_KEY(playerId)
+ 
+        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 0)
+        DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
+        DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
+        DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
+        DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
+ 
+        gui.show_message("Gift Vehicle Success", "Gifted "..vehicle.." to "..playerName..":"..netHash..":"..playerId)
+    else
+        gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
     end
 end
-
-function giftVehToPlayer(vehicle, player, playerName, vehName)
-	if PED.IS_PED_IN_ANY_VEHICLE(player, true) then
-		--local netHash = network.get_selected_player()
-		local netHash = MISC.GET_HASH_KEY(PLAYER.GET_PLAYER_NAME(network.get_selected_player()))
-		gui.show_message("Player Hash", playerName.."'s hash is "..netHash)
-		gui.show_message("Gift Vehicle Running", "Trying to gift "..vehName.." Hash: "..vehicle.." to Name: "..playerName.." Hash: "..netHash)
-		gui.show_message("Retrieved Network Hash", "Network Hash: "..netHash.." Attempting to gift.")
-
-		set_vehicle_decorator(vehicle, "MPBitset", 0)
-		set_vehicle_decorator(vehicle, "Previous_Owner", netHash)
-		set_vehicle_decorator(vehicle, "Veh_Modded_By_Player", netHash)
-		set_vehicle_decorator(vehicle, "Not_Allow_As_Saved_Veh", 0)
-		set_vehicle_decorator(vehicle, "Player_Vehicle", netHash)
-
-		VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
-		
-		gui.show_message("Gift Vehicle Success", "Gifted "..vehName..":"..vehicle.." to "..playerName..":"..netHash )
-	else
-		gui.show_message("Gifting Error", playerName.." is not in a vehicle")
-	end
-end
+ 
 -- Assuming gui provides a 'show_message' method
 local Gif = Veh:add_tab("Gifting")
-
+ 
 -- Assuming gui provides a 'add_button' method
 Gif:add_button("Gift Vehicle", function()
-		local selectedPlayer = network.get_selected_player()
-
-		-- Check if a player is selected
-		local targetPlayerID = PLAYER.PLAYER_PED_ID(selectedPlayer)
-		local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
-		local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
-
-		local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
-		local vehicleNameHash = tonumber(ENTITY.GET_ENTITY_MODEL(targetVehicle))
-		local vehicleDisplayName = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleNameHash)
-		RequestControlz(targetVehicle)
-		giftVehToPlayer(targetVehicle, targetPlayerPed, playerName, vehicleDisplayName)
+    local selectedPlayer = network.get_selected_player()
+ 
+    -- Check if a player is selected
+    local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+    local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+ 
+    if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
+        local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+        giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
+    end 
 end)
 
 Gif:add_button("Spawn Vehicle", function()
@@ -2114,14 +2093,6 @@ yimCEO:add_text("You may also get up to 500k more than 5m sometimes.")
 
 --Required Stats--
 
-local MPX = PI
-local PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-	MPX = "MP0_"
-else
-	MPX = "MP1_"
-end
-
 FMC2020 = "fm_mission_controller_2020"
 HIP = "heist_island_planning"
 
@@ -2129,49 +2100,48 @@ HIP = "heist_island_planning"
 local heisteEditor = KAOS:add_tab("Heist Editor")
 local cayoHeist = heisteEditor:add_tab("Cayo Perico Editor")
 
-local MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-	MPX = "MP0_"
-else
-	MPX = "MP1_"
-end
-
 cayoHeist:add_text("Setup Heist")
 
-cayoHeist:add_button("Panther Only (Hard)", function()
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 5, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
+cayoHeist:add_button("Panther + Gold (Hard)", function()
+	PlayerIndex = globals.get_int(1574918)
+	if PlayerIndex == 0 then
+		mpx = "MP0_"
+	else
+		mpx = "MP1_"
+	end
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_ENTR"), 63, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_ABIL"), 63, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_WEAPONS"), 5, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_ARM_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_HEL_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_TARGET"), 5, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_APPROACH"), -1, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_C"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_C"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_C"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_I"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_PROGRESS"), 131055, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_C_SCOPED"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_C_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_C_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_V"), 1191817, true) -- assuming you can set the value for the rest, probably H4LOOT_CASH_V, so on and so forth?
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_MISSIONS"), 65535, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 	
 	gui.show_message("Cayo Heist", "Panther Hard Mode has been set up!")
 	gui.show_message("Cayo Heist", "Reset the board to see the changes")
@@ -2198,6 +2168,39 @@ cayoHeist:add_button("Skip Glass Cut", function()
     locals.set_float(FMC2020, 30357 + 3, 100.0)
 	gui.show_message("Cayo Heist", "Bypassed Plasma Cutter")
 end)
+
+cayoHeist:add_button("Remove All CCTV's", function()
+	for _, ent in pairs(entities.get_all_objects_as_handles()) do
+		for __, cam in pairs(CamList) do
+			if ENTITY.GET_ENTITY_MODEL(ent) == cam then
+				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
+				ENTITY.DELETE_ENTITY(ent)
+			end
+		end
+	end
+end)
+CamList = { --credits heist control
+	joaat("prop_cctv_cam_01a"), joaat("prop_cctv_cam_01b"), joaat("prop_cctv_cam_02a"), joaat("prop_cctv_cam_03a"),
+	joaat("prop_cctv_cam_04a"), joaat("prop_cctv_cam_04c"), joaat("prop_cctv_cam_05a"), joaat("prop_cctv_cam_06a"),
+	joaat("prop_cctv_cam_07a"), joaat("prop_cs_cctv"), joaat("p_cctv_s"), joaat("hei_prop_bank_cctv_01"),
+	joaat("hei_prop_bank_cctv_02"), joaat("ch_prop_ch_cctv_cam_02a"), joaat("xm_prop_x17_server_farm_cctv_01"),
+}
+
+bagSizeVal = 1800
+cayoHeist:add_imgui(function()
+bagSizeVal, used = ImGui.SliderInt("Bag Size", bagSizeVal, 1800, 7200)
+    out = "Bag Size set to " .. tostring(bagSizeVal)
+    
+    if used then
+        globals.set_int(262145 + 30009, bagSizeVal)
+        gui.show_message('Bag Size Modified!', out)
+		gui.show_message("Bag Size Info", "This appears to work properly but unsure")
+    end
+end)
+--CPVMenu:add_button("Max Bag Size", function()
+--	globals.set_int(262145 + 30009, 2147483647)
+--end)
+
 cayoHeist:add_separator()
 cayoHeist:add_text("After Heist")
 cayoHeist:add_button("Skip Cooldown", function()
