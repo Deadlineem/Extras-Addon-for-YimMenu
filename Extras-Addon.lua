@@ -2147,6 +2147,51 @@ cayoHeist:add_button("Panther + Gold (Hard)", function()
 	gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 cayoHeist:add_sameline()
+cayoHeist:add_button("Diamond + Gold (Hard)", function()
+	PlayerIndex = globals.get_int(1574918)
+	if PlayerIndex == 0 then
+		mpx = "MP0_"
+	else
+		mpx = "MP1_"
+	end
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_ENTR"), 63, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_ABIL"), 63, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_WEAPONS"), 5, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_ARM_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_HEL_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_TARGET"), 3, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_APPROACH"), -1, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_C"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_C"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_C"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_I"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_PROGRESS"), 131055, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_C_SCOPED"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_C_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_C_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_V"), 1191817, true) -- assuming you can set the value for the rest, probably H4LOOT_CASH_V, so on and so forth?
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_MISSIONS"), 65535, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_PLAYTHROUGH_STATUS"), 32, true)
+	
+	gui.show_message("Cayo Heist", "Diamond Hard Mode has been set up!")
+	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+end)
+cayoHeist:add_sameline()
 cayoHeist:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
 		gui.show_message("Cayo Heist", "Planning board has been reset!")
@@ -2185,6 +2230,16 @@ CamList = { --credits heist control
 	joaat("prop_cctv_cam_07a"), joaat("prop_cs_cctv"), joaat("p_cctv_s"), joaat("hei_prop_bank_cctv_01"),
 	joaat("hei_prop_bank_cctv_02"), joaat("ch_prop_ch_cctv_cam_02a"), joaat("xm_prop_x17_server_farm_cctv_01"),
 }
+
+cayoHeist:add_sameline()
+cayoHeist:add_button("Remove NPC's", function()
+    for _, ent in pairs(entities.get_all_peds_as_handles()) do
+        if ENTITY.GET_ENTITY_MODEL(ent) == 193469166 then
+            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent,true,true)
+            ENTITY.DELETE_ENTITY(ent)
+        end
+    end
+end)
 
 bagSizeVal = 1800
 cayoHeist:add_imgui(function()
@@ -2226,9 +2281,5 @@ cayoHeist:add_button("Skip Cooldown", function()
 end)
 cayoHeist:add_separator()
 cayoHeist:add_text("How to Set Up or Bypass Cooldown:")
-cayoHeist:add_text("Make sure you have completed the heist and you are standing in front of the planning screen with the option to set up the heist.")
-cayoHeist:add_text("If you need to bypass the cooldown, use the bypass button, go to story mode, come back to gta online and go inside your kosatka.")
-cayoHeist:add_text("Click your desired setup from the options and press Reset Kosatka Board, these options currently have NO SECONDARIES.")
-cayoHeist:add_separator()
-cayoHeist:add_text("How to Skip Things:")
-cayoHeist:add_text("Wait for the screen to get to the point you are cutting/hacking and press the button to skip that portion.  Super easy")
+cayoHeist:add_text("Make sure you have completed the heist and you are standing in front of the planning screen")
+cayoHeist:add_text("Click Skip Cooldown, then click on your Preset and click Reset Kosatka Board")
