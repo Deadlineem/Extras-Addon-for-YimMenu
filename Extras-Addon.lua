@@ -2231,16 +2231,6 @@ CamList = { --credits heist control
 	joaat("hei_prop_bank_cctv_02"), joaat("ch_prop_ch_cctv_cam_02a"), joaat("xm_prop_x17_server_farm_cctv_01"),
 }
 
-cayoHeist:add_sameline()
-cayoHeist:add_button("Remove NPC's", function()
-    for _, ent in pairs(entities.get_all_peds_as_handles()) do
-        if ENTITY.GET_ENTITY_MODEL(ent) == 193469166 then
-            ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent,true,true)
-            ENTITY.DELETE_ENTITY(ent)
-        end
-    end
-end)
-
 bagSizeVal = 1800
 cayoHeist:add_imgui(function()
 bagSizeVal, used = ImGui.SliderInt("Bag Size", bagSizeVal, 1800, 7200)
@@ -2252,9 +2242,7 @@ bagSizeVal, used = ImGui.SliderInt("Bag Size", bagSizeVal, 1800, 7200)
 		gui.show_message("Bag Size Info", "This appears to work properly but unsure")
     end
 end)
---CPVMenu:add_button("Max Bag Size", function()
---	globals.set_int(262145 + 30009, 2147483647)
---end)
+
 
 cayoHeist:add_separator()
 cayoHeist:add_text("After Heist")
