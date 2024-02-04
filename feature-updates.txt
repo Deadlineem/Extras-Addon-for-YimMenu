@@ -28,6 +28,8 @@ similar to fast run, but faster.
     -> Casino Card Loop (On/Off)
     -> Cash Loop (On/Off) (Drops 2k cash per pickup to yourself only, others cannot see it or pick it up) - PLAYER SELECTABLE
 
+Drop options are player selectable drops, select a player from the list and run.
+
 ---- Casino
   -> Bypass Casino Cooldown
 
@@ -175,5 +177,6 @@ ________________________________________________________________________________
   -> Reset Kosatka Board
   -> Skip Drainage cut/Fingerprint Scanner/Glass Cut
   -> Remove All CCTV's
+  -> Delete Mission NPC's
   -> Bag Size Slider (1800 - Default - 1 Player) to (7200 - 4 Players)
   -> Skip Cooldown
