@@ -48,7 +48,24 @@ similar to fast run, but faster.
 
 ---- Teleports
   -> Not Yet Implemented.
+_______________________________________________________________________________________________________
 
+Grief Options
+_______________________________________________________________________________________________________
+
+---- Kill Options
+  -> Vehicle Ram
+  -> Explode
+  -> Burn
+  -> Water
+---- Crash Options
+  -> PR crash (Drops tons of figurines worth $1,000,000 each, freezes victims game on pickup in 10 
+seconds)
+---- Sound Options
+  -> Phone Spam
+  -> Alarm Spam
+
+  * Select Player from list, check an option to use
 _______________________________________________________________________________________________________
 
 Object Options
@@ -64,21 +81,6 @@ Click targets name on yimmenu players list
 click Extras Addon > Object Options > Spawner
 Select the item you want to spawn and click Spawn Selected
 
-_______________________________________________________________________________________________________
-
-Grief Options
-_______________________________________________________________________________________________________
-
----- Kill Options
-  -> Vehicle Ram
-  -> Explode
-  -> Burn
-  -> Water
----- Crash Options
-  -> PR crash (Drops tons of figurines worth $1,000,000 each, freezes victims game on pickup in 10 
-seconds)
-
-  * Select Player from list, check an option to use
 _______________________________________________________________________________________________________
 
 Vehicle Options
@@ -164,3 +166,14 @@ ________________________________________________________________________________
 ---- Nightclub
   -> Activate 250k/15s loop while standing in front of nightclub safe.  Meant for AFK money
   -> Max Popularity  Does what it says
+____________________________________________________________________________________________________________
+
+Heist Editor
+____________________________________________________________________________________________________________
+---- Cayo Perico Editor
+  -> Presets (Panther + Compound Gold) (Diamond + Compound Gold)
+  -> Reset Kosatka Board
+  -> Skip Drainage cut/Fingerprint Scanner/Glass Cut
+  -> Remove All CCTV's
+  -> Bag Size Slider (1800 - Default - 1 Player) to (7200 - 4 Players)
+  -> Skip Cooldown
