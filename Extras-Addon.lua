@@ -15,11 +15,11 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.6
+		Addon Version: 0.8.7
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
-			TheKuter & More!
+	  TheKuter, RazorGamerX & More!
 
 ]]--
 
@@ -95,7 +95,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.8.6 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.8.7 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -107,7 +107,7 @@ createText(KAOS, "encourage everyone to create this with me, lend your ideas, su
 createText(KAOS, "YimMenu next generation!")
 KAOS:add_separator()
 createText(KAOS, "Credits: Yimura, L7Neg, Loled69, TeaTimeTea, CSYON, Adventure Box, gir489returns, abuazizv,")
-createText(KAOS, "Alestarov & the UC community")
+createText(KAOS, "Alestarov, RazorGamerX & the UC community")
 KAOS:add_separator()
 createText(KAOS, "Thanks to all my testers, your time is appreciated.  Thanks to all of the above for your scripts and")
 createText(KAOS, "for your inputs on my comments, I have done alot of reading, scrolling, testing and learning from it all")
@@ -1049,7 +1049,7 @@ script.register_looped("waterLoop", function()
         GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
         GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z - 1, 0.0, 0.0, 0.0, 1.0, false, true, false)
         
-        gui.show_message("Grief", "Drowning? "..PLAYER.GET_PLAYER_NAME(player_id))
+        gui.show_message("Grief", "Spraying "..PLAYER.GET_PLAYER_NAME(player_id).." with Water")
 
         -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
 
@@ -2215,6 +2215,68 @@ cayoHeist:add_button("Diamond + Gold (Hard)", function()
 	gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
+cayoHeist:add_button("Panther + Gold (Hard - Legit Prices)", function()
+	PlayerIndex = globals.get_int(1574918)
+	panther = 262145 + 30264
+	if PlayerIndex == 0 then
+		mpx = "MP0_"
+	else
+		mpx = "MP1_"
+	end
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_ENTR"), 63, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_ABIL"), 63, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_WEAPONS"), 5, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_ARM_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_HEL_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_TARGET"), 5, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_APPROACH"), -1, true)
+		-- Island Loot // -1 shows all, 0 shows none
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_I"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_I"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_I"), 0, true)
+		
+		-- Compound Loot // -1 shows all, 0 shows none
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_C"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_C"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_C"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
+		
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_C_SCOPED"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_C_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_C_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT_SCOPED"), 0, true)
+		
+		-- Payout Values // Set to "Normal" values.  Max allowed cayo payout is 2.4-2.5m solo leave these commented for normal pay?
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_V"), 600000, true)
+		--STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_V"), 175000, true)
+		--STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_V"), 262526, true)
+		--STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_V"), 350000, true)
+		--STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT_V"), 190000, true)
+		--globals.set_int(panther, 2090000) -- Panther Value
+		--globals.set_int(diamond, 1090000) -- Diamond Value
+		--globals.set_int(bonds, 1090000) -- Bonds Value
+		--globals.set_int(necklace, 1090000) -- Necklace Value
+		--globals.set_int(tequila, 1090000) -- Tequila Value
+		
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_MISSIONS"), 65535, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_PLAYTHROUGH_STATUS"), 32, true)
+	
+	gui.show_message("Cayo Heist", "Panther Hard Mode (Legit) has been set up!")
+	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+end)
+
+
 cayoHeist:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
 		gui.show_message("Cayo Heist", "Planning board has been reset!")
@@ -2257,6 +2319,16 @@ CamList = {
 	joaat("prop_cctv_cam_07a"), joaat("prop_cs_cctv"), joaat("p_cctv_s"), joaat("hei_prop_bank_cctv_01"),
 	joaat("hei_prop_bank_cctv_02"), joaat("ch_prop_ch_cctv_cam_02a"), joaat("xm_prop_x17_server_farm_cctv_01"),
 }
+cayoHeist:add_sameline()
+cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX for the help on this
+	for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
+		local model = ENTITY.GET_ENTITY_MODEL(ped)
+		if model == 0x7ED5AD78 or model == 0x6C8C08E5 or model == 0x995B3F9F or model == 0xB881AEE then 
+				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
+				PED.DELETE_PED(ped)
+		end
+	end
+end)
 
 bagSizeVal = 1800
 cayoHeist:add_imgui(function()
@@ -2268,6 +2340,7 @@ bagSizeVal, used = ImGui.SliderInt("Bag Size", bagSizeVal, 1800, 7200) -- 7200 =
         gui.show_message('Bag Size Modified!', out)
     end
 end)
+
 
 
 cayoHeist:add_separator()
