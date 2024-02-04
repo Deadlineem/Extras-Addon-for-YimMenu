@@ -317,7 +317,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
     script.register_looped("princessbubblegumLoop", function(script)
         local model = joaat("vw_prop_vw_colle_prbubble")
         local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = PLAYER.PLAYER_ID()
+        local player_id = network.get_selected_player()
         local money_value = 0
 
         STREAMING.REQUEST_MODEL(model)
@@ -330,9 +330,9 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -342,9 +342,9 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
 			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -354,9 +354,9 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
 			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -380,7 +380,7 @@ Drops:add_button("Alien (On/Off)", function()
     script.register_looped("alienfigurineLoop", function(script)
         local model = joaat("vw_prop_vw_colle_alien")
         local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = PLAYER.PLAYER_ID()
+        local player_id = network.get_selected_player()
         local money_value = 0
 
         STREAMING.REQUEST_MODEL(model)
@@ -393,9 +393,9 @@ Drops:add_button("Alien (On/Off)", function()
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -405,9 +405,9 @@ Drops:add_button("Alien (On/Off)", function()
 			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -417,10 +417,9 @@ Drops:add_button("Alien (On/Off)", function()
 			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
-                3,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 money_value,
                 model,
                 true,
@@ -443,7 +442,7 @@ Drops:add_button("Casino Cards (On/Off)", function()
     script.register_looped("casinocardsLoop", function(script)
         local model = joaat("vw_prop_vw_lux_card_01a")
         local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = PLAYER.PLAYER_ID()
+        local player_id = network.get_selected_player()
         local money_value = 0
 
         STREAMING.REQUEST_MODEL(model)
@@ -456,9 +455,9 @@ Drops:add_button("Casino Cards (On/Off)", function()
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -468,9 +467,9 @@ Drops:add_button("Casino Cards (On/Off)", function()
 			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -480,9 +479,9 @@ Drops:add_button("Casino Cards (On/Off)", function()
 			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
-                coords.x + 5,
-                coords.y - 5,
-                coords.z,
+                coords.x,
+                coords.y,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -501,12 +500,11 @@ Drops:add_button("Casino Cards (On/Off)", function()
 end)
 Drops:add_sameline()
 Drops:add_button("Cash Loop (On/Off)", function()
-   kcashLoop = not kcashLoop
-
     script.register_looped("kcashLoop", function(script)
         local model = joaat("prop_cash_pile_01")
         local pickup = joaat("PICKUP_MONEY_VARIABLE")
         local player_id = network.get_selected_player()
+
         local money_value = 2000
 
         STREAMING.REQUEST_MODEL(model)
@@ -563,7 +561,7 @@ end)
 Drops:add_separator()
 Drops:add_text("Cash loop is REAL but only for you, other players cannot see it at all");
 Drops:add_text("You CAN run multiple at once (like Robot bubblegum/Alien)")
-Drops:add_text("just make sure someone is collecting it or you can lag severely or freeze.");
+Drops:add_text("Select a Player from the list and toggle");
 
 -- CasinoPacino - gir489returns
 
@@ -947,6 +945,7 @@ millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL 
 
 -- Griefing Drop Vehicles on Players
 local grief = KAOS:add_tab("Grief Options")
+grief:add_text("Kill Options")
 local ramLoopz = grief:add_checkbox("Vehicle Ram (On/Off)")
 
 script.register_looped("ramLoopz", function()
@@ -1060,6 +1059,7 @@ end)
 
 -- Figurine Crash
 grief:add_separator()
+grief:add_text("Crash Options")
 local prCrash = false
 prCrash = grief:add_checkbox("PR Crash (On/Off)")
 
@@ -1094,6 +1094,29 @@ script.register_looped("prCrash", function()
 		sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
     end
 end)
+
+grief:add_separator()
+-- Griefing Sound Spam Targetable
+grief:add_text("Sound Spams")
+local sSpamAlarm = grief:add_checkbox("Alarm Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
+script.register_looped("sSpamAlarm", function()
+local targetPlayer = network.get_selected_player()
+	if sSpamAlarm:is_enabled() then
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 0)
+				gui.show_message("Sound Spam", "Alarm spamming "..targetPlayer)
+	end
+end)
+grief:add_sameline()
+local pSpamAlarm = grief:add_checkbox("Phone Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
+script.register_looped("pSpamAlarm", function()
+local targetPlayer = network.get_selected_player()
+	if pSpamAlarm:is_enabled() then
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "Phone_SoundSet_Michael", true, 0)
+				gui.show_message("Sound Spam", "Phone spamming "..targetPlayer)
+	end
+end)
+
+grief:add_text("Select a player from the list and activate.")
 
 -- Object Spawner (Can be used negatively!) (Originally from Kuter Menu)
 
@@ -2089,7 +2112,7 @@ yimCEO:add_separator()
 yimCEO:add_text("You need to manually click Special/Sell Cargo each time.")
 yimCEO:add_text("You may also get up to 500k more than 5m sometimes.")
 
--- Casino Heist Editor - converted from L7Negs Ultimate Menu for Kiddions.
+-- Casino Heist Editor - converted from L7Negs Ultimate Menu for Kiddions and some features like remove CCTV from Alestarov.
 
 --Required Stats--
 
@@ -2191,7 +2214,7 @@ cayoHeist:add_button("Diamond + Gold (Hard)", function()
 	gui.show_message("Cayo Heist", "Diamond Hard Mode has been set up!")
 	gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
-cayoHeist:add_sameline()
+
 cayoHeist:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
 		gui.show_message("Cayo Heist", "Planning board has been reset!")
@@ -2203,12 +2226,16 @@ cayoHeist:add_button("Skip Drainage Cut", function()
     locals.set_int(FMC2020, 29118, 6)
 	gui.show_message("Cayo Heist", "Bypassed Drainage Cut")
 end)
+
 cayoHeist:add_sameline()
+
 cayoHeist:add_button("Skip Fingerprint Scanner", function()
    locals.set_int(FMC2020, 24333, 5)
    gui.show_message("Cayo Heist", "Bypassed Fingerprint Scanner")
 end)
+
 cayoHeist:add_sameline()
+
 cayoHeist:add_button("Skip Glass Cut", function()
     locals.set_float(FMC2020, 30357 + 3, 100.0)
 	gui.show_message("Cayo Heist", "Bypassed Plasma Cutter")
@@ -2224,7 +2251,7 @@ cayoHeist:add_button("Remove All CCTV's", function()
 		end
 	end
 end)
-CamList = { --credits heist control
+CamList = {
 	joaat("prop_cctv_cam_01a"), joaat("prop_cctv_cam_01b"), joaat("prop_cctv_cam_02a"), joaat("prop_cctv_cam_03a"),
 	joaat("prop_cctv_cam_04a"), joaat("prop_cctv_cam_04c"), joaat("prop_cctv_cam_05a"), joaat("prop_cctv_cam_06a"),
 	joaat("prop_cctv_cam_07a"), joaat("prop_cs_cctv"), joaat("p_cctv_s"), joaat("hei_prop_bank_cctv_01"),
@@ -2233,13 +2260,12 @@ CamList = { --credits heist control
 
 bagSizeVal = 1800
 cayoHeist:add_imgui(function()
-bagSizeVal, used = ImGui.SliderInt("Bag Size", bagSizeVal, 1800, 7200)
+bagSizeVal, used = ImGui.SliderInt("Bag Size", bagSizeVal, 1800, 7200) -- 7200 = 4 players, this works if you want more money solo and it adjusts so you can always have full bags
     out = "Bag Size set to " .. tostring(bagSizeVal)
     
     if used then
         globals.set_int(262145 + 30009, bagSizeVal)
         gui.show_message('Bag Size Modified!', out)
-		gui.show_message("Bag Size Info", "This appears to work properly but unsure")
     end
 end)
 
