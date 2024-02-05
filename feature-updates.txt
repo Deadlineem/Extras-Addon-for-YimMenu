@@ -88,8 +88,10 @@ ________________________________________________________________________________
 Vehicle Options
 _______________________________________________________________________________________________________
 
-  -> Vehicle Options are being worked on, this will take time but youre welcome to test them as they
-come.  Vehicle gifting may or may not work, untested since updating.
+  -> Gift Vehicles  Yes, it works.  
+
+Full garage of burner cars, spawn the vehicle, have them get in, spam gift and
+when it says success, tell them to drive inside and replace a burner car.
 _______________________________________________________________________________________________________
 
 Global Options
