@@ -178,5 +178,19 @@ ________________________________________________________________________________
   -> Skip Drainage cut/Fingerprint Scanner/Glass Cut
   -> Remove All CCTV's
   -> Delete Mission NPC's
-  -> Bag Size Slider (1800 - Default - 1 Player) to (7200 - 4 Players)
   -> Skip Cooldown
+  ---- Size/Value Editor
+    -> Bag Size
+------- Primary Targets
+    -> Panther Value
+    -> Diamond Value
+    -> Bonds Value
+    -> Necklace Value
+    -> Tequila Value
+------- Secondary Targets
+    -> Gold Value
+    -> Cocaine Value
+    -> Paintings Value
+    -> Weed Value
+    -> Cash Value
+---- Reset Kosatka Board
