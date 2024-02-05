@@ -500,6 +500,7 @@ Drops:add_button("Casino Cards (On/Off)", function()
 end)
 Drops:add_sameline()
 Drops:add_button("Cash Loop (On/Off)", function()
+kcashLoop = not kcashLoop
     script.register_looped("kcashLoop", function(script)
         local model = joaat("prop_cash_pile_01")
         local pickup = joaat("PICKUP_MONEY_VARIABLE")
@@ -555,6 +556,9 @@ Drops:add_button("Cash Loop (On/Off)", function()
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
 		sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+		if not kcashLoop then
+            script.unregister_script("kcashLoop")
+        end
     end)
 end)
 
@@ -1049,7 +1053,7 @@ script.register_looped("waterLoop", function()
         GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
         GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z - 1, 0.0, 0.0, 0.0, 1.0, false, true, false)
         
-        gui.show_message("Grief", "Spraying "..PLAYER.GET_PLAYER_NAME(player_id).." with Water")
+        gui.show_message("Grief", "Drowning? "..PLAYER.GET_PLAYER_NAME(player_id))
 
         -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
 
@@ -2215,6 +2219,8 @@ cayoHeist:add_button("Diamond + Gold (Hard)", function()
 	gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
+cayoHeist:add_sameline()
+
 cayoHeist:add_button("Panther + Gold (Hard - Legit Prices)", function()
 	PlayerIndex = globals.get_int(1574918)
 	panther = 262145 + 30264
@@ -2275,7 +2281,6 @@ cayoHeist:add_button("Panther + Gold (Hard - Legit Prices)", function()
 	gui.show_message("Cayo Heist", "Panther Hard Mode (Legit) has been set up!")
 	gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
-
 
 cayoHeist:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
