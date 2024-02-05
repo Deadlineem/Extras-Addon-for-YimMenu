@@ -2806,7 +2806,7 @@ end)
 
 necklaceSizeVal = 700000
 cayoSizeEditor:add_imgui(function()
-necklaceSizeVal, used = ImGui.SliderInt("Bonds Value", necklaceSizeVal, 700000, 1400000) -- Double the original price
+necklaceSizeVal, used = ImGui.SliderInt("Necklace Value", necklaceSizeVal, 700000, 1400000) -- Double the original price
     out = "Reset the board to see changes"
     
     if used then
@@ -2817,7 +2817,7 @@ end)
 
 tequilaSizeVal = 693000
 cayoSizeEditor:add_imgui(function()
-tequilaSizeVal, used = ImGui.SliderInt("Bonds Value", tequilaSizeVal, 693000, 1400000) -- Double the original price
+tequilaSizeVal, used = ImGui.SliderInt("Tequila Value", tequilaSizeVal, 693000, 1400000) -- Double the original price
     out = "Reset the board to see changes"
     
     if used then
