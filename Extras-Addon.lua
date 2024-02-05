@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.7
+		Addon Version: 0.8.8
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -95,7 +95,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.8.7 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.8.8 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -420,6 +420,7 @@ Drops:add_button("Alien (On/Off)", function()
                 coords.x,
                 coords.y,
                 coords.z + 1,
+                3,
                 money_value,
                 model,
                 true,
@@ -502,7 +503,7 @@ Drops:add_sameline()
 Drops:add_button("Cash Loop (On/Off)", function()
 kcashLoop = not kcashLoop
     script.register_looped("kcashLoop", function(script)
-        local model = joaat("prop_cash_pile_01")
+        local model = joaat("ch_prop_ch_cashtrolley_01a")
         local pickup = joaat("PICKUP_MONEY_VARIABLE")
         local player_id = network.get_selected_player()
 
@@ -1217,6 +1218,7 @@ local adultesItems = {
 	{ hash = 0x69702115, nom = "Stunt Loop" }, -- Z: -1.5 for best placement
 	{ hash = 0xB8F0B770, nom = "Breakable Glass" },
 	{ hash = 0xDDA3E6D8, nom = "Crane Ladders" },
+	{ hash = 0x6373EEF4, nom = "Stunt Jump XL" },
 	
 }
 
@@ -1314,7 +1316,7 @@ end
  
 function giftVehToPlayer(vehicle, playerId, playerName)
     if RequestControl(vehicle) then
-        local netHash = MISC.GET_HASH_KEY(playerId)
+        local netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
  
         DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 0)
         DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
@@ -1343,6 +1345,39 @@ Gif:add_button("Gift Vehicle", function()
         local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
         giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
     end 
+end)
+ 
+Gif:add_button("Remove Vehicle stats", function()
+	local selectedPlayer = network.get_selected_player()
+	local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+	if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then 
+		last_veh = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+	end 
+	if last_veh  then 
+		giftVehToPlayer(last_veh , selectedPlayer, 0)
+	end
+end)
+ 
+Gif:add_button("Get Vehicle Stats", function()
+	local selectedPlayer = network.get_selected_player()
+	local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+ 
+	if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
+		last_veh = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+	end 
+ 
+ 
+	if last_veh  then 
+		local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+		gui.show_message("Info", 
+			"user :"..PLAYER.GET_PLAYER_NAME(selectedPlayer).."->"..NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(selectedPlayer).."->".. joaat(playerName).."\n".. --NETWORK.GET_HASH_KEY(playerName).."\n"..
+			" Previous_Owner:"..DECORATOR.DECOR_GET_INT(last_veh , "Previous_Owner").."\n"..
+			" Vehicle Model:"..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(last_veh)).."\n"..
+			" Player_Vehicle:"..DECORATOR.DECOR_GET_INT(last_veh , "Player_Vehicle").."\n"..
+			" MPBitset:"..DECORATOR.DECOR_GET_INT(last_veh , "MPBitset").."\n"..
+			" Veh_Modded_By_Player:"..DECORATOR.DECOR_GET_INT(last_veh , "Veh_Modded_By_Player").."\n"..
+			" Not_Allow_As_Saved_Veh:"..DECORATOR.DECOR_GET_INT(last_veh , "Not_Allow_As_Saved_Veh"))
+	end  
 end)
 
 Gif:add_button("Spawn Vehicle", function()
