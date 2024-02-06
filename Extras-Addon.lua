@@ -1299,7 +1299,7 @@ Spa:add_button("Save Vehicle", function()
     gui.show_message('Save Vehicle', 'Failed! Feature unavailable.')
 end)
 
--- Gift Options
+-- Vehicle Gifting
 function RequestControl(entity)
     local tick = 0
  
@@ -1318,8 +1318,8 @@ function giftVehToPlayer(vehicle, playerId, playerName)
     if RequestControl(vehicle) then
         local netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
  
-        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 0)
-        DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
+        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 3)
+        DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", 3)
         DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
         DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
@@ -1345,17 +1345,6 @@ Gif:add_button("Gift Vehicle", function()
         local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
         giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
     end 
-end)
- 
-Gif:add_button("Remove Vehicle stats", function()
-	local selectedPlayer = network.get_selected_player()
-	local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
-	if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then 
-		last_veh = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
-	end 
-	if last_veh  then 
-		giftVehToPlayer(last_veh , selectedPlayer, 0)
-	end
 end)
  
 Gif:add_button("Get Vehicle Stats", function()
