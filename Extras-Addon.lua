@@ -1299,7 +1299,7 @@ Spa:add_button("Save Vehicle", function()
     gui.show_message('Save Vehicle', 'Failed! Feature unavailable.')
 end)
 
--- Vehicle Gifting
+-- Gift Options
 function RequestControl(entity)
     local tick = 0
  
@@ -1318,13 +1318,13 @@ function giftVehToPlayer(vehicle, playerId, playerName)
     if RequestControl(vehicle) then
         local netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
  
-        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 3)
-        DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", 3)
+        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 0)
+        DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
         DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
  
-        gui.show_message("Gift Vehicle Success", "Gifted "..vehicle.." to "..playerName..":"..netHash..":"..playerId)
+        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName..":"..netHash..":"..playerId)
     else
         gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
     end
@@ -1346,6 +1346,8 @@ Gif:add_button("Gift Vehicle", function()
         giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
     end 
 end)
+ 
+ 
  
 Gif:add_button("Get Vehicle Stats", function()
 	local selectedPlayer = network.get_selected_player()
