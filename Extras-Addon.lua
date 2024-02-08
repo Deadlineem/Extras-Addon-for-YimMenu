@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.8
+		Addon Version: 0.8.9
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -35,21 +35,12 @@ function sleep(seconds)
         coroutine.yield()
     end
 end
--- Vehicle List
+-- Vehicle List - Used for the vehicle ram or other vehicle related features
 
 local vehicleModels = {
-    "adder",
-	"zentorno",
-	"comet2",
-	"ardent",
-	"autarch",
-	"cheetah",
-	"champion",
-	"cyclone",
-	"cyclone2",
-    -- Add more vehicle models here
+"adder", "Airbus", "Airtug", "akula", "akuma", "aleutian", "alkonost", "alpha", "alphaz1", "AMBULANCE", "annihilator", "annihilator2", "apc", "arbitergt", "ardent", "armytanker", "armytrailer", "armytrailer2", "asbo", "asea", "asea2", "asterope", "asterope2", "astron", "astron2", "autarch", "avarus", "avenger", "avenger2", "avenger3", "avenger4", "avisa", "bagger", "baletrailer", "Baller", "baller2", "baller3", "baller4", "baller5", "baller6", "baller7", "baller8", "banshee", "banshee2", "BARRACKS", "BARRACKS2", "BARRACKS3", "barrage", "bati", "bati2", "Benson", "benson2", "besra", "bestiagts", "bf400", "BfInjection", "Biff", "bifta", "bison", "Bison2", "Bison3", "BjXL", "blade", "blazer", "blazer2", "blazer3", "blazer4", "blazer5", "BLIMP", "BLIMP2", "blimp3", "blista", "blista2", "blista3", "BMX", "boattrailer", "boattrailer2", "boattrailer3", "bobcatXL", "Bodhi2", "bombushka", "boor", "boxville", "boxville2", "boxville3", "boxville4", "boxville5", "boxville6", "brawler", "brickade", "brickade2", "brigham", "brioso", "brioso2", "brioso3", "broadway", "bruiser", "bruiser2", "bruiser3", "brutus", "brutus2", "brutus3", "btype", "btype2", "btype3", "buccaneer", "buccaneer2", "buffalo", "buffalo2", "buffalo3", "buffalo4", "buffalo5", "bulldozer", "bullet", "Burrito", "burrito2", "burrito3", "Burrito4", "burrito5", "BUS", "buzzard", "Buzzard2", "cablecar", "caddy", "Caddy2", "caddy3", "calico", "CAMPER", "caracara", "caracara2", "carbonizzare", "carbonrs", "Cargobob", "cargobob2", "Cargobob3", "Cargobob4", "cargoplane", "cargoplane2", "casco", "cavalcade", "cavalcade2", "cavalcade3", "cerberus", "cerberus2", "cerberus3", "champion", "cheburek", "cheetah", "cheetah2", "chernobog", "chimera", "chino", "chino2", "cinquemila", "cliffhanger", "clique", "clique2", "club", "coach", "cog55", "cog552", "cogcabrio", "cognoscenti", "cognoscenti2", "comet2", "comet3", "comet4", "comet5", "comet6", "comet7", "conada", "conada2", "contender", "coquette", "coquette2", "coquette3", "coquette4", "corsita", "coureur", "cruiser", "CRUSADER", "cuban800", "cutter", "cyclone", "cyclone2", "cypher", "daemon", "daemon2", "deathbike", "deathbike2", "deathbike3", "defiler", "deity", "deluxo", "deveste", "deviant", "diablous", "diablous2", "dilettante", "dilettante2", "Dinghy", "dinghy2", "dinghy3", "dinghy4", "dinghy5", "dloader", "docktrailer", "docktug", "dodo", "Dominator", "dominator2", "dominator3", "dominator4", "dominator5", "dominator6", "dominator7", "dominator8", "dominator9", "dorado", "double", "drafter", "draugur", "drifteuros", "driftfr36", "driftfuto", "driftjester", "driftremus", "drifttampa", "driftyosemite", "driftzr350", "dubsta", "dubsta2", "dubsta3", "dukes", "dukes2", "dukes3", "dump", "dune", "dune2", "dune3", "dune4", "dune5", "duster", "Dynasty", "elegy", "elegy2", "ellie", "emerus", "emperor", "Emperor2", "emperor3", "enduro", "entity2", "entity3", "entityxf", "esskey", "eudora", "Euros", "everon", "everon2", "exemplar", "f620", "faction", "faction2", "faction3", "fagaloa", "faggio", "faggio2", "faggio3", "FBI", "FBI2", "fcr", "fcr2", "felon", "felon2", "feltzer2", "feltzer3", "firetruk", "fixter", "flashgt", "FLATBED", "fmj", "FORKLIFT", "formula", "formula2", "fq2", "fr36", "freecrawler", "freight", "freight2", "freightcar", "freightcar2", "freightcont1", "freightcont2", "freightgrain", "freighttrailer", "Frogger", "frogger2", "fugitive", "furia", "furoregt", "fusilade", "futo", "futo2", "gargoyle", "Gauntlet", "gauntlet2", "gauntlet3", "gauntlet4", "gauntlet5", "gauntlet6", "gb200", "gburrito", "gburrito2", "glendale", "glendale2", "gp1", "graintrailer", "GRANGER", "granger2", "greenwood", "gresley", "growler", "gt500", "guardian", "habanero", "hakuchou", "hakuchou2", "halftrack", "handler", "Hauler", "Hauler2", "havok", "hellion", "hermes", "hexer", "hotknife", "hotring", "howard", "hunter", "huntley", "hustler", "hydra", "ignus", "ignus2", "imorgon", "impaler", "impaler2", "impaler3", "impaler4", "impaler5", "impaler6", "imperator", "imperator2", "imperator3", "inductor", "inductor2", "infernus", "infernus2", "ingot", "innovation", "insurgent", "insurgent2", "insurgent3", "intruder", "issi2", "issi3", "issi4", "issi5", "issi6", "issi7", "issi8", "italigtb", "italigtb2", "italigto", "italirsx", "iwagen", "jackal", "jb700", "jb7002", "jester", "jester2", "jester3", "jester4", "jet", "jetmax", "journey", "journey2", "jubilee", "jugular", "kalahari", "kamacho", "kanjo", "kanjosj", "khamelion", "khanjali", "komoda", "kosatka", "krieger", "kuruma", "kuruma2", "l35", "landstalker", "landstalker2", "Lazer", "le7b", "lectro", "lguard", "limo2", "lm87", "locust", "longfin", "lurcher", "luxor", "luxor2", "lynx", "mamba", "mammatus", "manana", "manana2", "manchez", "manchez2", "manchez3", "marquis", "marshall", "massacro", "massacro2", "maverick", "menacer", "MESA", "mesa2", "MESA3", "metrotrain", "michelli", "microlight", "Miljet", "minitank", "minivan", "minivan2", "Mixer", "Mixer2", "mogul", "molotok", "monroe", "monster", "monster3", "monster4", "monster5", "monstrociti", "moonbeam", "moonbeam2", "Mower", "Mule", "Mule2", "Mule3", "mule4", "mule5", "nebula", "nemesis", "neo", "neon", "nero", "nero2", "nightblade", "nightshade", "nightshark", "nimbus", "ninef", "ninef2", "nokota", "Novak", "omnis", "omnisegt", "openwheel1", "openwheel2", "oppressor", "oppressor2", "oracle", "oracle2", "osiris", "outlaw", "Packer", "panthere", "panto", "paradise", "paragon", "paragon2", "pariah", "patriot", "patriot2", "patriot3", "patrolboat", "pbus", "pbus2", "pcj", "penetrator", "penumbra", "penumbra2", "peyote", "peyote2", "peyote3", "pfister811", "Phantom", "phantom2", "phantom3", "Phantom4", "Phoenix", "picador", "pigalle", "polgauntlet", "police", "police2", "police3", "police4", "police5", "policeb", "policeold1", "policeold2", "policet", "polmav", "pony", "pony2", "postlude", "Pounder", "pounder2", "powersurge", "prairie", "pRanger", "Predator", "premier", "previon", "primo", "primo2", "proptrailer", "prototipo", "pyro", "r300", "radi", "raiden", "raiju", "raketrailer", "rallytruck", "RancherXL", "rancherxl2", "RapidGT", "RapidGT2", "rapidgt3", "raptor", "ratbike", "ratel", "ratloader", "ratloader2", "rcbandito", "reaper", "Rebel", "rebel2", "rebla", "reever", "regina", "remus", "Rentalbus", "retinue", "retinue2", "revolter", "rhapsody", "rhinehart", "RHINO", "riata", "RIOT", "riot2", "Ripley", "rocoto", "rogue", "romero", "rrocket", "rt3000", "Rubble", "ruffian", "ruiner", "ruiner2", "ruiner3", "ruiner4", "rumpo", "rumpo2", "rumpo3", "ruston", "s80", "s95", "sabregt", "sabregt2", "Sadler", "sadler2", "Sanchez", "sanchez2", "sanctus", "sandking", "sandking2", "savage", "savestra", "sc1", "scarab", "scarab2", "scarab3", "schafter2", "schafter3", "schafter4", "schafter5", "schafter6", "schlagen", "schwarzer", "scorcher", "scramjet", "scrap", "seabreeze", "seashark", "seashark2", "seashark3", "seasparrow", "seasparrow2", "seasparrow3", "Seminole", "seminole2", "sentinel", "sentinel2", "sentinel3", "sentinel4", "serrano", "SEVEN70", "Shamal", "sheava", "SHERIFF", "sheriff2", "shinobi", "shotaro", "skylift", "slamtruck", "slamvan", "slamvan2", "slamvan3", "slamvan4", "slamvan5", "slamvan6", "sm722", "sovereign", "SPECTER", "SPECTER2", "speeder", "speeder2", "speedo", "speedo2", "speedo4", "speedo5", "squaddie", "squalo", "stafford", "stalion", "stalion2", "stanier", "starling", "stinger", "stingergt", "stingertt", "stockade", "stockade3", "stratum", "streamer216", "streiter", "stretch", "strikeforce", "stromberg", "Stryder", "Stunt", "submersible", "submersible2", "Sugoi", "sultan", "sultan2", "sultan3", "sultanrs", "Suntrap", "superd", "supervolito", "supervolito2", "Surano", "SURFER", "Surfer2", "surfer3", "surge", "swift", "swift2", "swinger", "t20", "Taco", "tahoma", "tailgater", "tailgater2", "taipan", "tampa", "tampa2", "tampa3", "tanker", "tanker2", "tankercar", "taxi", "technical", "technical2", "technical3", "tempesta", "tenf", "tenf2", "terbyte", "terminus", "tezeract", "thrax", "thrust", "thruster", "tigon", "TipTruck", "TipTruck2", "titan", "toreador", "torero", "torero2", "tornado", "tornado2", "tornado3", "tornado4", "tornado5", "tornado6", "toro", "toro2", "toros", "TOURBUS", "TOWTRUCK", "Towtruck2", "towtruck3", "towtruck4", "tr2", "tr3", "tr4", "TRACTOR", "tractor2", "tractor3", "trailerlarge", "trailerlogs", "trailers", "trailers2", "trailers3", "trailers4", "trailers5", "trailersmall", "trailersmall2", "Trash", "trash2", "trflat", "tribike", "tribike2", "tribike3", "trophytruck", "trophytruck2", "tropic", "tropic2", "tropos", "tug", "tula", "tulip", "tulip2", "turismo2", "turismo3", "turismor", "tvtrailer", "tvtrailer2", "tyrant", "tyrus", "utillitruck", "utillitruck2", "Utillitruck3", "vacca", "Vader", "vagner", "vagrant", "valkyrie", "valkyrie2", "vamos", "vectre", "velum", "velum2", "verlierer2", "verus", "vestra", "vetir", "veto", "veto2", "vigero", "vigero2", "vigero3", "vigilante", "vindicator", "virgo", "virgo2", "virgo3", "virtue", "viseris", "visione", "vivanite", "volatol", "volatus", "voltic", "voltic2", "voodoo", "voodoo2", "vortex", "vstr", "warrener", "warrener2", "washington", "wastelander", "weevil", "weevil2", "windsor", "windsor2", "winky", "wolfsbane", "xa21", "xls", "xls2", "yosemite", "yosemite2", "yosemite3", "youga", "youga2", "youga3", "youga4", "z190", "zeno", "zentorno", "zhaba", "zion", "zion2", "zion3", "zombiea", "zombieb", "zorrusso", "zr350", "zr380", "zr3802", "zr3803", "Ztype",
 }
--- Weapons List
+-- Weapons List - All weapons
 local weaponNamesString = {
     "weapon_dagger", "weapon_bat", "weapon_bottle", "weapon_crowbar",
     "weapon_unarmed", "weapon_flashlight", "weapon_golfclub", "weapon_hammer",
@@ -95,7 +86,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.8.8 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.8.9 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -960,17 +951,21 @@ script.register_looped("ramLoopz", function()
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
             -- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
-            local randomModel = vehicleModels[math.random(2, #vehicleModels)]
+            local randomModel = vehicleModels[math.random(1, #vehicleModels)]
 
             -- Convert the string vehicle model to its hash value
             local modelHash = MISC.GET_HASH_KEY(randomModel)
 
             -- Create the vehicle without the last boolean argument (keepTrying)
-            local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 10, 0.0, true, false, true)
+            local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, false, false)
+			local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x + 20, coords.y, coords.z, 0.0, true, false, false)
+			local vehicle3 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y + 20, coords.z, 0.0, true, false, false)
 
             if vehicle then
                 -- Set the falling velocity (adjust the value as needed)
-                ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, 100000)
+                ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000)
+				ENTITY.SET_ENTITY_VELOCITY(vehicle2, -100000, 0, 0)
+				ENTITY.SET_ENTITY_VELOCITY(vehicle3, 0, -100000, 0)
                 -- Optionally, you can play a sound or customize the ramming effect here
             end
 
@@ -978,9 +973,13 @@ script.register_looped("ramLoopz", function()
 
             -- Use these lines to delete the vehicle after spawning. 
             -- Needs some type of delay between spawning and deleting to function properly
-			sleep(0.1)
+			sleep(0.2)
              ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)
              VEHICLE.DELETE_VEHICLE(vehicle)
+			 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle2, true, true)
+             VEHICLE.DELETE_VEHICLE(vehicle2)
+			 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle3, true, true)
+             VEHICLE.DELETE_VEHICLE(vehicle3)
         end
 
         -- Sets the timer in seconds for how long this should pause before ramming another player
@@ -1062,6 +1061,24 @@ script.register_looped("waterLoop", function()
     end
 end)
 
+-- Troll Options
+grief:add_separator()
+grief:add_text("Troll Options")
+local trollLoop = false
+trollLoop = grief:add_checkbox("Teleport Troll")
+
+script.register_looped("trollLoop", function(script)
+	script:yield()
+	if trollLoop:is_enabled() == true then
+		local localPlayer = PLAYER.PLAYER_ID()
+		local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
+		coords = ENTITY.GET_ENTITY_COORDS(player, true)
+		gui.show_message("Teleport Troll", "Teleporting randomly around "..PLAYER.GET_PLAYER_NAME(network.get_selected_player()))
+		PLAYER.START_PLAYER_TELEPORT(localPlayer, coords.x + math.random(-5, 5), coords.y + math.random(-5, 5), coords.z, 0, true, true, true)
+		sleep(0.1)
+	end
+end)
+
 -- Figurine Crash
 grief:add_separator()
 grief:add_text("Crash Options")
@@ -1108,7 +1125,7 @@ script.register_looped("sSpamAlarm", function()
 local targetPlayer = network.get_selected_player()
 	if sSpamAlarm:is_enabled() then
 				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 0)
-				gui.show_message("Sound Spam", "Alarm spamming "..targetPlayer)
+				gui.show_message("Sound Spam", "Alarm spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
 	end
 end)
 grief:add_sameline()
@@ -1117,7 +1134,16 @@ script.register_looped("pSpamAlarm", function()
 local targetPlayer = network.get_selected_player()
 	if pSpamAlarm:is_enabled() then
 				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "Phone_SoundSet_Michael", true, 0)
-				gui.show_message("Sound Spam", "Phone spamming "..targetPlayer)
+				gui.show_message("Sound Spam", "Phone spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
+	end
+end)
+grief:add_sameline()
+local altitudeSpam = grief:add_checkbox("Altitude Spam")
+script.register_looped("altitudeSpam", function()
+local player_id = network.get_selected_player()
+	if altitudeSpam:is_enabled() then
+		AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 0)
+		gui.show_message("Sound Spam", "Altitude spamming "..PLAYER.GET_PLAYER_NAME(player_id))
 	end
 end)
 
@@ -1280,25 +1306,6 @@ end)
 -- Vehicle Options Tab
 local Veh = KAOS:add_tab("Vehicle Options")
 
--- Sub-tab for Vehicle Options
-
-local Spa = Veh:add_tab("Spawn/Delete")
-
-Spa:add_button("Spawn Vehicle", function()
-    gui.show_message('Spawn Vehicle', 'Failed! Feature unavailable.')
-end)
-Spa:add_sameline()
-Spa:add_button("Delete Vehicle", function()
-    gui.show_message('Delete Vehicle', 'Failed! Feature unavailable.')
-end)
-Spa:add_button("Clone Vehicle", function()
-    gui.show_message('Clone Vehicle', 'Failed! Feature unavailable.')
-end)
-Spa:add_sameline()
-Spa:add_button("Save Vehicle", function()
-    gui.show_message('Save Vehicle', 'Failed! Feature unavailable.')
-end)
-
 -- Gift Options
 function RequestControl(entity)
     local tick = 0
@@ -1318,13 +1325,13 @@ function giftVehToPlayer(vehicle, playerId, playerName)
     if RequestControl(vehicle) then
         local netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
  
-        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 0)
+        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 8)
         DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
         DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
  
-        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName..":"..netHash..":"..playerId)
+        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName)
     else
         gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
     end
@@ -1346,9 +1353,7 @@ Gif:add_button("Gift Vehicle", function()
         giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
     end 
 end)
- 
- 
- 
+
 Gif:add_button("Get Vehicle Stats", function()
 	local selectedPlayer = network.get_selected_player()
 	local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
@@ -1369,51 +1374,6 @@ Gif:add_button("Get Vehicle Stats", function()
 			" Veh_Modded_By_Player:"..DECORATOR.DECOR_GET_INT(last_veh , "Veh_Modded_By_Player").."\n"..
 			" Not_Allow_As_Saved_Veh:"..DECORATOR.DECOR_GET_INT(last_veh , "Not_Allow_As_Saved_Veh"))
 	end  
-end)
-
-Gif:add_button("Spawn Vehicle", function()
-    -- Assuming vehicleModels is a valid array of vehicle model names
-    local randomModel = vehicleModels[math.random(1, #vehicleModels)]
-    
-    -- Get the player's ID
-    local player_id = network.get_selected_player()
-    
-    -- Get the player's coordinates
-    local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-    
-    -- Convert the string vehicle model to its hash value
-    local modelHash = MISC.GET_HASH_KEY(randomModel)
-
-    -- Create the vehicle
-    local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x + 5, coords.y, coords.z, 0.0, true, true, true)
-
-    -- Check if the vehicle creation was successful
-    if vehicle ~= 0 then
-        gui.show_message("Vehicle Spawner", "Vehicle spawned successfully!")
-    else
-        gui.show_message("Vehicle Spawner", "Failed to spawn vehicle.")
-    end
-end)
-
--- Upgrade Options
-local Upg = Veh:add_tab("Upgrades")
-
-Upg:add_button("Apply Benny's Wheels", function()
-    gui.show_message('1 Click Bennys', 'Failed! Feature unavailable.')
-end)
-Upg:add_sameline()
-Upg:add_button("Apply Formula 1 Wheels", function()
-    gui.show_message('1 Click F1s', 'Failed! Feature unavailable.')
-end)
-Upg:add_button("Downgrade Vehicle", function()
-    gui.show_message('Downgrade Vehicle', 'Failed! Feature unavailable.')
-end)
-Upg:add_button("Max Vehicle Performance", function()
-    gui.show_message('Max Performance', 'Failed! Feature unavailable.')
-end)
-Upg:add_sameline()
-Upg:add_button("Max Vehicle Modifications", function()
-    gui.show_message('Max Upgrades', 'Failed! Feature unavailable.')
 end)
 
 -- Global Player Options
@@ -1517,6 +1477,19 @@ end)
 -- Global Sound Spam Options
 Global:add_separator()
 Global:add_text("Global Sound Options")
+local altSpam = Global:add_checkbox("Altitude Spam")
+script.register_looped("altSpamLoop", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+	if altSpam:is_enabled() then
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+                local player_id = i
+				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 0)
+			end
+		end
+	end
+end)
+Global:add_sameline()
 local sSpam = Global:add_checkbox("Jet Spam")
 script.register_looped("soundSpamLoop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
@@ -1679,7 +1652,6 @@ script.register_looped("FireworkLoop", function()
 		end
     end
 end)
-Global:add_sameline()
 local flameLoopGlobal = Global:add_checkbox("Flames (On/Off)")
 function load_flame()
 
@@ -1808,13 +1780,12 @@ script.register_looped("explosionLoop", function()
         local explosionFx = "explosion_barrel"
         local localPlayerId = PLAYER.PLAYER_ID()
 
-        gui.show_message("Global", "Exploding all other players in the session.")
-
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
                 local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-                
+                gui.show_message("Global (Toxic)", "Exploding " .. PLAYER.GET_PLAYER_NAME(player_id) .. " repeatedly")
+				
                 FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
@@ -1826,6 +1797,101 @@ script.register_looped("explosionLoop", function()
         sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
     end
 end)
+Global:add_sameline()
+local ramGlobal = Global:add_checkbox("Vehicle Ram (On/Off)")
+
+script.register_looped("ramGlobal", function()
+    if ramGlobal:is_enabled() then
+	local localPlayerId = PLAYER.PLAYER_ID()
+         for i = 0, 32 do
+            if i ~= localPlayerId then
+                local player_id = i
+					if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
+						local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+
+						-- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
+						local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+
+						-- Convert the string vehicle model to its hash value
+						local modelHash = MISC.GET_HASH_KEY(randomModel)
+
+						-- Create the vehicle without the last boolean argument (keepTrying)
+						local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, false, false)
+						local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x + 20, coords.y, coords.z, 0.0, true, false, false)
+						local vehicle3 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y + 20, coords.z, 0.0, true, false, false)
+
+						if vehicle then
+							-- Set the falling velocity (adjust the value as needed)
+							ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000)
+							ENTITY.SET_ENTITY_VELOCITY(vehicle2, -100000, 0, 0)
+							ENTITY.SET_ENTITY_VELOCITY(vehicle3, 0, -100000, 0)
+							-- Optionally, you can play a sound or customize the ramming effect here
+						end
+
+						gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+
+						-- Use these lines to delete the vehicle after spawning. 
+						-- Needs some type of delay between spawning and deleting to function properly
+						sleep(0.2)
+						 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)
+						 VEHICLE.DELETE_VEHICLE(vehicle)
+						 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle2, true, true)
+						 VEHICLE.DELETE_VEHICLE(vehicle2)
+						 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle3, true, true)
+						 VEHICLE.DELETE_VEHICLE(vehicle3)
+					end
+			end
+		end
+
+        -- Sets the timer in seconds for how long this should pause before ramming another player
+        --sleep(0.2)
+    end
+end)
+
+
+-- Global Figurine Crash - DISABLED BECAUSE IT IS EXTREMELY TOXIC and because it can also cause your game to crash as well.
+Global:add_sameline()
+local crashGlobal = Global:add_checkbox("Crash Everyone (On/Off)")
+
+script.register_looped("crashGlobal", function()
+    if crashGlobal:is_enabled() then
+	local localPlayerId = PLAYER.PLAYER_ID()
+         for i = 0, 32 do
+            if i ~= localPlayerId then
+                local player_id = i
+				local model = joaat("vw_prop_vw_colle_prbubble")
+				local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+				local money_value = 100000000000
+
+				STREAMING.REQUEST_MODEL(model)
+
+				if STREAMING.HAS_MODEL_LOADED(model) then
+				gui.show_message("Global (Toxic)", "Crashing " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with figurines")
+					local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+					local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+						pickup,
+						coords.x,
+						coords.y,
+						coords.z + 0.5,
+						3,
+						money_value,
+						model,
+						true,
+						false
+					)
+
+					local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+					NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+				end
+				 sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+			end
+		end
+
+        -- Sets the timer in seconds for how long this should pause before ramming another player
+        --sleep(0.2)
+    end
+end)
+
 
 -- Global Weapons
 Global:add_separator()
@@ -2947,3 +3013,7 @@ cayoSizeEditor:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
 		gui.show_message("Cayo Heist", "Planning board has been reset!")
 end)
+
+
+
+
