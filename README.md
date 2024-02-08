@@ -1,4 +1,8 @@
-    
+This submenu CAN BE USED without the provided YimMenu.dll, the vehicle gifting is the ONLY feature that requires this
+custom dll file.  You may compile this yourself directly from YimMenu's Source at https://github.com/YimMenu/YimMenu
+
+Open in Visual Studio > Open these two files and comment the lines shown in green in the screenshots below:
+https://imgur.com/a/4dMx3mc    
                                                                
                                          Extras Addon for YimMenu                                 
 
