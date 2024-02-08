@@ -90,8 +90,9 @@ ________________________________________________________________________________
 
   -> Gift Vehicles  Yes, it works.  
 
-Full garage of burner cars, spawn the vehicle, have them get in, spam gift and
-when it says success, tell them to drive inside and replace a burner car.
+Full garage of burner cars, have them drive one out/back into their garage, spawn the vehicle, 
+have them get in, spam gift and when it says success, tell them to drive inside and replace a burner 
+car.
 _______________________________________________________________________________________________________
 
 Global Options
