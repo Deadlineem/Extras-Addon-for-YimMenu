@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.9
+		Addon Version: 0.9.0
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -91,7 +91,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.8.9 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.9.0 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -1272,7 +1272,8 @@ Objets:add_button("Spawn Selected", function()
         playerPos.y = playerPos.y + spawnDistance.y
         playerPos.z = playerPos.z + spawnDistance.z
 
-        local selectedObjectInfo = filteredItems[selectedObjectIndex]
+        -- Adjust selectedObjectIndex by subtracting 1
+        local selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
         if selectedObjectInfo then
             while not STREAMING.HAS_MODEL_LOADED(selectedObjectInfo.hash) do
                 STREAMING.REQUEST_MODEL(selectedObjectInfo.hash)
@@ -1297,6 +1298,132 @@ end)
 
 -- Vehicle Options Tab
 local Veh = KAOS:add_tab("Vehicle Options")
+local vSpawn = Veh:add_tab("Vehicle Spawner")
+
+-- Orientation sliders and Spawn X Y Z sliders
+local orientationPitch = 0
+local orientationYaw = 0
+local orientationRoll = 0
+local spawnDistance = { x = 0, y = 0, z = -1 }
+local defaultOrientationPitch = 0
+local defaultOrientationYaw = 0
+local defaultOrientationRoll = 0
+local defaultSpawnDistance = { x = 0, y = 0, z = -1 }
+
+-- Function to reset sliders to default values
+local function resetVehicleSliders()
+    orientationPitch = defaultOrientationPitch
+    orientationYaw = defaultOrientationYaw
+    orientationRoll = defaultOrientationRoll
+    spawnDistance.x = defaultSpawnDistance.x
+    spawnDistance.y = defaultSpawnDistance.y
+    spawnDistance.z = defaultSpawnDistance.z
+end
+
+vSpawn:add_imgui(function()
+    orientationPitch, _ = ImGui.SliderInt("Pitch", orientationPitch, 0, 360)
+    orientationYaw, _ = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
+    orientationRoll, _ = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
+end)
+
+vSpawn:add_imgui(function()
+    spawnDistance.x, _ = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -25, 25)
+    spawnDistance.y, _ = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -25, 25)
+    spawnDistance.z, _ = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -25, 25)
+end)
+
+-- Save default values
+defaultOrientationPitch = orientationPitch
+defaultOrientationYaw = orientationYaw
+defaultOrientationRoll = orientationRoll
+defaultSpawnDistance.x = spawnDistance.x
+defaultSpawnDistance.y = spawnDistance.y
+defaultSpawnDistance.z = spawnDistance.z
+
+-- Reset Sliders button
+vSpawn:add_button("Reset Sliders", function()
+    resetVehicleSliders()
+end)
+
+vSpawn:add_separator()
+
+-- Function to spawn the vehicle with specified orientation and spawn position
+function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
+    script.run_in_fiber(function (script)
+        local load_counter = 0
+        while STREAMING.HAS_MODEL_LOADED(vehicle_joaat) == false do
+            STREAMING.REQUEST_MODEL(vehicle_joaat)
+            script:yield()
+            if load_counter > 100 then
+                return
+            else
+                load_counter = load_counter + 1
+            end
+        end
+        local veh = VEHICLE.CREATE_VEHICLE(vehicle_joaat, pos.x, pos.y, pos.z, yaw, true, true, false)
+        -- Set vehicle orientation
+        ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 2, true)
+        local networkId = NETWORK.VEH_TO_NET(veh)
+        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+        end
+        --ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh)
+    end)
+end
+
+-- Function to display the list of vehicle models with search functionality
+local searchQuery = ""
+local filteredVehicleModels = {}
+
+local function updateFilteredVehicleModels()
+    filteredVehicleModels = {}
+    for _, model in ipairs(vehicleModels) do
+        if string.find(string.lower(model), string.lower(searchQuery)) then
+            table.insert(filteredVehicleModels, model)
+        end
+    end
+end
+
+local function displayVehicleModelsList()
+    updateFilteredVehicleModels()
+    local vehicleModelNames = {}
+    for _, item in ipairs(filteredVehicleModels) do
+        table.insert(vehicleModelNames, item)
+    end
+    selectedObjectIndex, _ = ImGui.ListBox("Vehicle Models", selectedObjectIndex, vehicleModelNames, #vehicleModelNames)
+end
+
+-- Add search input field
+vSpawn:add_imgui(function()
+    searchQuery, _ = ImGui.InputText("Search Vehicles", searchQuery, 128)
+end)
+
+vSpawn:add_imgui(displayVehicleModelsList)
+
+-- Add separator
+vSpawn:add_separator()
+
+-- Spawn Selected button with orientation and spawn position
+vSpawn:add_button("Spawn Selected", function()
+    local selectedModelIndex = selectedObjectIndex + 1
+    if selectedModelIndex > 0 then
+        local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
+        if selectedVehicleModel then
+            local vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
+			local selPlayer = network.get_selected_player()
+			local targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+			local playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
+			local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
+            playerPos.x = playerPos.x + spawnDistance.x
+            playerPos.y = playerPos.y + spawnDistance.y
+            playerPos.z = playerPos.z + spawnDistance.z
+            spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
+			gui.show_message("Vehicle Spawner", "Spawned "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicleHash).." for "..playerName)
+        end
+    else
+        gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
+    end
+end)
 
 -- Gift Options
 function RequestControl(entity)
@@ -1893,7 +2020,7 @@ Global:add_text("Global Weapons Options")
 Global:add_button("Give All Weapons to Players", function()
     local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
 
-    for i = 0, player_count - 1 do
+    for i = 0, 32 do
         local playerID = i
         local ent = PLAYER.GET_PLAYER_PED(playerID)
         if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
@@ -1910,7 +2037,7 @@ Global:add_sameline()
 Global:add_button("Remove All Weapons from Players", function()
     local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
 
-    for i = 0, player_count - 1 do
+    for i = 0, 32 do
         local playerID = i
         local ent = PLAYER.GET_PLAYER_PED(playerID)
         if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
@@ -3007,3 +3134,7 @@ cayoSizeEditor:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
 		gui.show_message("Cayo Heist", "Planning board has been reset!")
 end)
+
+
+
+
