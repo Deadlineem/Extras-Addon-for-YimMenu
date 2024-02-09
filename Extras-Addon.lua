@@ -1172,21 +1172,29 @@ local objectHashes = getObjectHashes(objectNames)
 local Obje = KAOS:add_tab("Object Options")
 local Objets = Obje:add_tab("Spawner")
 
-local orientation = 0
+local orientationPitch = 0
+local orientationYaw = 0
+local orientationRoll = 0
 local spawnDistance = { x = 0, y = 0, z = -1 }
-local defaultOrientation = 0
+local defaultOrientationPitch = 0
+local defaultOrientationYaw = 0
+local defaultOrientationRoll = 0
 local defaultSpawnDistance = { x = 0, y = 0, z = -1 }
 
 -- Function to reset sliders to default values
 local function resetSliders()
-    orientation = defaultOrientation
+    orientationPitch = defaultOrientationPitch
+	orientationYaw = defaultOrientationYaw
+	orientationRoll = defaultOrientationRoll
     spawnDistance.x = defaultSpawnDistance.x
     spawnDistance.y = defaultSpawnDistance.y
     spawnDistance.z = defaultSpawnDistance.z
 end
 
 Objets:add_imgui(function()
-    orientation, used = ImGui.SliderInt("Orientation", orientation, 0, 360)
+    orientationPitch, used = ImGui.SliderInt("Pitch", orientationPitch, 0, 360)
+	orientationYaw, used = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
+	orientationRoll, used = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
 end)
 
 Objets:add_imgui(function()
@@ -1196,7 +1204,9 @@ Objets:add_imgui(function()
 end)
 
 -- Save default values
-defaultOrientation = orientation
+defaultOrientationPitch = orientationPitch
+defaultOrientationYaw = orientationYaw
+defaultOrientationRoll = orientationRoll
 defaultSpawnDistance.x = spawnDistance.x
 defaultSpawnDistance.y = spawnDistance.y
 defaultSpawnDistance.z = spawnDistance.z
@@ -1270,9 +1280,7 @@ Objets:add_button("Spawn Selected", function()
             end
 
             local spawnedObject = OBJECT.CREATE_OBJECT(selectedObjectInfo.hash, playerPos.x, playerPos.y, playerPos.z, true, true, false)
-			ENTITY.SET_ENTITY_ROTATION(spawnedObject, 0, 0, orientation, 2, true) -- Rotate the object
-			local net_id = NETWORK.OBJ_TO_NET(spawnedObject)
-			NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+			ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationPitch, orientationYaw, orientationRoll, 2, true) -- Rotate the object
             gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
         else
             gui.show_message("Object Spawner", "Selected object not found.")
