@@ -88,11 +88,18 @@ ________________________________________________________________________________
 Vehicle Options
 _______________________________________________________________________________________________________
 
-  -> Gift Vehicles  Yes, it works.  
+  -> Gift Vehicles  Yes, it works. 
+  -> Vehicle Spawner  -- Use this to spawn and gift vehicles using Yimmenus default DLL just dont use
+                         the buttons 'Max Vehicle Mods/Performance' in LS Customs on the menu, it will
+                         kick the player when you gift, does not happen with the custom DLL 
 
 Full garage of burner cars, have them drive one out/back into their garage, spawn the vehicle, 
 have them get in, spam gift and when it says success, tell them to drive inside and replace a burner 
 car.
+
+Use the Delete gun to delete invisible vehicles after gifting!!  Self > Weapons > Custom Gun dropdown >
+DELETE_GUN
+
 _______________________________________________________________________________________________________
 
 Global Options
@@ -119,6 +126,8 @@ invasive on the player.
 
 ---- Toxic
   -> Explode (On/Off)  This is self explanatory, its under global, does what it says.
+  -> Vehicle Ram
+  -> Crash All (PR Invalid model crash)
 
 -- Weapons
 
@@ -161,7 +170,7 @@ ________________________________________________________________________________
 Business Management
 ____________________________________________________________________________________________________________
 ---- YimCEO
-  -> Crate Value (10k - 5M)
+  -> Crate Value (10k - 6M)
   -> Toggle YimCEO On/Off
   -> Show Computer
 
