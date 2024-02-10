@@ -1,5 +1,9 @@
-This submenu CAN BE USED without the provided YimMenu.dll, the vehicle gifting is the ONLY feature that requires this
-custom dll file.  You may compile this yourself directly from YimMenu's Source at https://github.com/YimMenu/YimMenu
+This submenu CAN BE USED without the provided YimMenu.dll, the vehicle gifting is the ONLY feature that uses this DLL.
+
+IF YOU CHOOSE NOT TO USE THE DLL PROVIDED, DO NOT USE MAX MODS/PERFORMANCE IN YIMS LS CUSTOMS SECTION AND SPAWN THE
+VEHICLE WITH EXTRAS ADDON VEHICLE SPAWNER!
+
+You may compile this yourself directly from YimMenu's Source at https://github.com/YimMenu/YimMenu
 
 Open in Visual Studio > Open these two files and comment the lines shown in green in the screenshots below:
 https://imgur.com/a/4dMx3mc    
