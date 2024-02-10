@@ -74,8 +74,9 @@ Object Options
 _______________________________________________________________________________________________________
 
 ---- Spawner
+  -> Set Pitch/Yaw/Roll Orientation of the object
   -> Set X/Y/Z (distance from your player) using sliders and Reset button to reset sliders to 
-default coordiates
+default coordinates
   -> Selectable listbox for items + spawn object button
 
 To spawn on self or other players:
@@ -100,6 +101,8 @@ car.
 Use the Delete gun to delete invisible vehicles after gifting!!  Self > Weapons > Custom Gun dropdown >
 DELETE_GUN
 
+Vehicle spawner uses the same mechanics as the object spawner with X/Y/Z coordinates and Pitch/Yaw/Roll
+Orientation.
 _______________________________________________________________________________________________________
 
 Global Options
