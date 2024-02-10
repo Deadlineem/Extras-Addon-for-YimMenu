@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.9.0
+		Addon Version: 0.8.9
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -91,7 +91,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.9.0 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.8.9 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -1367,7 +1367,7 @@ function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
         end
-        --ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh)
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh)
     end)
 end
 
@@ -2939,7 +2939,7 @@ cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX
 		end
 	end
 end)
-
+		
 cayoHeist:add_separator()
 cayoHeist:add_text("After Heist")
 cayoHeist:add_button("Skip Cooldown", function()
