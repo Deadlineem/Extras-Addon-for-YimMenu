@@ -947,45 +947,59 @@ millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL 
 -- Griefing Drop Vehicles on Players
 local grief = KAOS:add_tab("Grief Options")
 grief:add_text("Kill Options")
-local ramLoopz = grief:add_checkbox("Vehicle Ram (On/Off)")
+local ramLoopz = grief:add_checkbox("Vehicle Sandwich (On/Off)")
 
 script.register_looped("ramLoopz", function()
     if ramLoopz:is_enabled() then
         local player_id = network.get_selected_player()
         if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+						local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
-            -- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
-            local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+						-- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
+						local randomModel = vehicleModels[math.random(1, #vehicleModels)]
 
-            -- Convert the string vehicle model to its hash value
-            local modelHash = MISC.GET_HASH_KEY(randomModel)
+						-- Convert the string vehicle model to its hash value
+						local modelHash = MISC.GET_HASH_KEY(randomModel)
 
-            -- Create the vehicle without the last boolean argument (keepTrying)
-            local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, false, false)
-			local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x + 20, coords.y, coords.z, 0.0, true, false, false)
-			local vehicle3 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y + 20, coords.z, 0.0, true, false, false)
+						-- Create the vehicle without the last boolean argument (keepTrying)
+						local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
+						-- Set vehicle orientation
+						ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
+						local networkId = NETWORK.VEH_TO_NET(vehicle)
+						if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
+							NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+						end
 
-            if vehicle then
-                -- Set the falling velocity (adjust the value as needed)
-                ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000)
-				ENTITY.SET_ENTITY_VELOCITY(vehicle2, -100000, 0, 0)
-				ENTITY.SET_ENTITY_VELOCITY(vehicle3, 0, -100000, 0)
-                -- Optionally, you can play a sound or customize the ramming effect here
-            end
+						if vehicle then
+							-- Set the falling velocity (adjust the value as needed)
+							ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000000)
+							-- Optionally, you can play a sound or customize the ramming effect here
+							VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
+						end
+						
+						local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
+						-- Set vehicle orientation
+						ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
+						local networkId = NETWORK.VEH_TO_NET(vehicle2)
+						if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
+							NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+						end
 
-            gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+						if vehicle2 then
+							-- Set the falling velocity (adjust the value as needed)
+							ENTITY.SET_ENTITY_VELOCITY(vehicle2, 0, 0, 100000000)
+							-- Optionally, you can play a sound or customize the ramming effect here
+							VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
+						end
 
-            -- Use these lines to delete the vehicle after spawning. 
-            -- Needs some type of delay between spawning and deleting to function properly
-			sleep(0.2)
-             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)
-             VEHICLE.DELETE_VEHICLE(vehicle)
-			 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle2, true, true)
-             VEHICLE.DELETE_VEHICLE(vehicle2)
-			 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle3, true, true)
-             VEHICLE.DELETE_VEHICLE(vehicle3)
-        end
+						gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+
+						-- Use these lines to delete the vehicle after spawning. 
+						-- Needs some type of delay between spawning and deleting to function properly
+						
+						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
+						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
+		end
 
         -- Sets the timer in seconds for how long this should pause before ramming another player
         --sleep(0.2)
@@ -1282,6 +1296,8 @@ Objets:add_button("Spawn Selected", function()
 
             local spawnedObject = OBJECT.CREATE_OBJECT(selectedObjectInfo.hash, playerPos.x, playerPos.y, playerPos.z, true, true, false)
 			ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationPitch, orientationYaw, orientationRoll, 2, true) -- Rotate the object
+			local net_id = NETWORK.OBJ_TO_NET(spawnedObject)
+			NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(spawnedObject, true)
             gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
         else
             gui.show_message("Object Spawner", "Selected object not found.")
@@ -1367,7 +1383,7 @@ function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
         end
-        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh)
+        --ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh)
     end)
 end
 
@@ -1432,6 +1448,7 @@ function RequestControl(entity)
     local netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
  
     NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
+	NETWORK.NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID)
     while not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) and tick < 50 do
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
         tick = tick + 1
@@ -1919,7 +1936,7 @@ script.register_looped("explosionLoop", function()
     end
 end)
 Global:add_sameline()
-local ramGlobal = Global:add_checkbox("Vehicle Ram (On/Off)")
+local ramGlobal = Global:add_checkbox("Vehicle Sandwich (On/Off)")
 
 script.register_looped("ramGlobal", function()
     if ramGlobal:is_enabled() then
@@ -1937,29 +1954,43 @@ script.register_looped("ramGlobal", function()
 						local modelHash = MISC.GET_HASH_KEY(randomModel)
 
 						-- Create the vehicle without the last boolean argument (keepTrying)
-						local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, false, false)
-						local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x + 20, coords.y, coords.z, 0.0, true, false, false)
-						local vehicle3 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y + 20, coords.z, 0.0, true, false, false)
+						local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
+						-- Set vehicle orientation
+						ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
+						local networkId = NETWORK.VEH_TO_NET(vehicle)
+						if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
+							NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+						end
 
 						if vehicle then
 							-- Set the falling velocity (adjust the value as needed)
-							ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000)
-							ENTITY.SET_ENTITY_VELOCITY(vehicle2, -100000, 0, 0)
-							ENTITY.SET_ENTITY_VELOCITY(vehicle3, 0, -100000, 0)
+							ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000000)
 							-- Optionally, you can play a sound or customize the ramming effect here
+							VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
+						end
+						
+						local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
+						-- Set vehicle orientation
+						ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
+						local networkId = NETWORK.VEH_TO_NET(vehicle2)
+						if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
+							NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+						end
+
+						if vehicle2 then
+							-- Set the falling velocity (adjust the value as needed)
+							ENTITY.SET_ENTITY_VELOCITY(vehicle2, 0, 0, 100000000)
+							-- Optionally, you can play a sound or customize the ramming effect here
+							VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
 						end
 
 						gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
 
 						-- Use these lines to delete the vehicle after spawning. 
 						-- Needs some type of delay between spawning and deleting to function properly
-						sleep(0.2)
-						 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true)
-						 VEHICLE.DELETE_VEHICLE(vehicle)
-						 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle2, true, true)
-						 VEHICLE.DELETE_VEHICLE(vehicle2)
-						 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(vehicle3, true, true)
-						 VEHICLE.DELETE_VEHICLE(vehicle3)
+						
+						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
+						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
 					end
 			end
 		end
@@ -2285,12 +2316,12 @@ script.register_looped("yimceoloop", function(script)
         if yCEO:is_enabled() == true then
 		gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
             if locals.get_int("gb_contraband_sell", 2) == 1 then
-                locals.set_int("gb_contraband_sell", 543 + 595, 1)
-                locals.set_int("gb_contraband_sell", 543 + 55, 0)
-                locals.set_int("gb_contraband_sell", 543 + 584, 0)
-                locals.set_int("gb_contraband_sell", 543 + 7, 7)
+                locals.set_int("gb_contraband_sell", 540 + 595, 1)
+                locals.set_int("gb_contraband_sell", 540 + 55, 0)
+                locals.set_int("gb_contraband_sell", 540 + 584, 0)
+                locals.set_int("gb_contraband_sell", 540 + 7, 7)
                 script:sleep(500)
-                locals.set_int("gb_contraband_sell", 543 + 1, 99999)
+                locals.set_int("gb_contraband_sell", 540 + 1, 99999)
             end
 
             if locals.get_int("appsecuroserv", 2) == 1 then
@@ -2304,10 +2335,10 @@ script.register_looped("yimceoloop", function(script)
             end
 
             if locals.get_int("gb_contraband_buy", 2) == 1 then
-                locals.set_int("gb_contraband_buy", 601 + 5, 1)
-                locals.set_int("gb_contraband_buy", 601 + 1, 111)
-                locals.set_int("gb_contraband_buy", 601 + 191, 6)
-                locals.set_int("gb_contraband_buy", 601 + 192, 4)
+                locals.set_int("gb_contraband_buy", 598 + 5, 1)
+                locals.set_int("gb_contraband_buy", 598 + 1, 1)
+                locals.set_int("gb_contraband_buy", 598 + 191, 6)
+                locals.set_int("gb_contraband_buy", 598 + 192, 4)
                 gui.show_message("Warehouse full!")
             end
 
@@ -3134,7 +3165,3 @@ cayoSizeEditor:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
 		gui.show_message("Cayo Heist", "Planning board has been reset!")
 end)
-
-
-
-
