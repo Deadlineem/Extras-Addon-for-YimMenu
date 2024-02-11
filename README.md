@@ -6,7 +6,8 @@ Open in Visual Studio > Open these two files and comment the lines shown in gree
 https://imgur.com/a/4dMx3mc    
 ----------------------------------------------
 OR
-you can compile/download the custom dll from here -> https://github.com/Deadlineem/YimMenu   
+You can view/compile/download the custom dll from here 
+https://github.com/Deadlineem/YimMenu   
 ----------------------------------------------                                             
                                          Extras Addon for YimMenu                                 
 
