@@ -56,7 +56,7 @@ Grief Options
 _______________________________________________________________________________________________________
 
 ---- Kill Options
-  -> Vehicle Ram
+  -> Vehicle Sandwich  Sandwiches the player between 2 high velocity vehicles, one above, one below.
   -> Explode
   -> Burn
   -> Water
@@ -129,7 +129,7 @@ invasive on the player.
 
 ---- Toxic
   -> Explode (On/Off)  This is self explanatory, its under global, does what it says.
-  -> Vehicle Ram
+  -> Vehicle Sandwich  Sandwiches all players between 2 high velocity vehicles, one above, one below.
   -> Crash All (PR Invalid model crash)
 
 -- Weapons
