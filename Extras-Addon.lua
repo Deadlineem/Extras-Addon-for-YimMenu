@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.9
+		Addon Version: 0.9.0
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -2246,19 +2246,144 @@ Weapons:add_text("it will drop weapon pickups on the player you selected")
 local Business = KAOS:add_tab("Business Manager")
 local Hangar = Business:add_tab("Hangar")
 
-
 hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
 script.register_looped("autoGetHangarCargo", function(script)
 	script:yield()
 	if hStock:is_enabled() == true then
 		autoGetHangarCargo = not autoGetHangarCargo
 		if autoGetHangarCargo then
-			globals.set_int(1882413+7, 6) -- remove this to get crates, its set to narcotics.
-			stats.set_packed_stat_bool(36828, true) 
-			gui.show_message("Business Manager", "Restocking cargo, please wait...")
+			stats.set_bool_masked("MP0_DLC22022PSTAT_BOOL3", true, 9)
+			gui.show_message("Hangar", "Restocking hangar cargo, please wait...")
+			sleep(5)
 		end
 	end
 end)
+
+local mcBus = Business:add_tab("Motorcycle Club")
+mcBus:add_text("Resupply your stock in your MC businesses so production stays running")
+acidLab = mcBus:add_checkbox("Resupply Acid Lab (Looped)")
+script.register_looped("autoGetAcidCargo", function(script)
+	script:yield()
+	if acidLab:is_enabled() == true then
+		autoGetAcidCargo = not autoGetAcidCargo
+		if autoGetAcidCargo then
+			globals.set_int(1662873 + 1 + 6, 1)
+			gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...")
+			sleep(5)
+		end
+	end
+end)
+
+mcBus:add_sameline()
+bunker = mcBus:add_checkbox("Resupply Bunker (Looped)")
+script.register_looped("autoGetBunkerCargo", function(script)
+	script:yield()
+	if bunker:is_enabled() == true then
+		autoGetBunkerCargo = not autoGetBunkerCargo
+		if autoGetBunkerCargo then
+			globals.set_int(1662873 + 1 + 5, 1)
+			gui.show_message("Bunker", "Resupplying your bunker stock, please wait...")
+			sleep(5)
+		end
+	end
+end)
+
+mcBus:add_sameline()
+docForge = mcBus:add_checkbox("Resupply Document Forge (Looped)")
+script.register_looped("autoGetDocForgeCargo", function(script)
+	script:yield()
+	if docForge:is_enabled() == true then
+		autoGetDocForgeCargo = not autoGetDocForgeCargo
+		if autoGetDocForgeCargo then
+			globals.set_int(1662873 + 1 + 1, 1)
+			gui.show_message("Document Forge", "Resupplying your document forge, please wait...")
+			sleep(5)
+		end
+	end
+end)
+
+weed = mcBus:add_checkbox("Resupply Weed (Looped)")
+script.register_looped("autoGetWeedCargo", function(script)
+	script:yield()
+	if weed:is_enabled() == true then
+		autoGetWeedCargo = not autoGetWeedCargo
+		if autoGetWeedCargo then
+			globals.set_int(1662873 + 1 + 2, 1)
+			gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...")
+			sleep(5)
+		end
+	end
+end)
+
+mcBus:add_sameline()
+meth = mcBus:add_checkbox("Resupply Meth (Looped)")
+script.register_looped("autoGetMethCargo", function(script)
+	script:yield()
+	if meth:is_enabled() == true then
+		autoGetMethCargo = not autoGetMethCargo
+		if autoGetMethCargo then
+			globals.set_int(1662873 + 1 + 3, 1)
+			gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...")
+			sleep(5)
+		end
+	end
+end)
+
+mcBus:add_sameline()
+cocaine = mcBus:add_checkbox("Resupply Cocaine (Looped)")
+script.register_looped("autoGetCokeCargo", function(script)
+	script:yield()
+	if cocaine:is_enabled() == true then
+		autoGetCokeCargo = not autoGetCokeCargo
+		if autoGetCokeCargo then
+			globals.set_int(1662873 + 1 + 4, 1)
+			gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...")
+			sleep(5)
+		end
+	end
+end)
+
+fakeCash = mcBus:add_checkbox("Resupply Counterfeit Cash (Looped)")
+script.register_looped("autoGetCashCargo", function(script)
+	script:yield()
+	if fakeCash:is_enabled() == true then
+		autoGetCashCargo = not autoGetCashCargo
+		if autoGetCashCargo then
+			globals.set_int(1662873 + 1 + 0, 1)
+			gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...")
+			sleep(5)
+		end
+	end
+end)
+mcBus:add_separator()
+mcBus:add_button("Resupply All", function()
+globals.set_int(1662873 + 1 + 6, 1)
+globals.set_int(1662873 + 1 + 6, 1)
+globals.set_int(1662873 + 1 + 6, 1) -- Acid Lab Supplies
+gui.show_message("Acid Lab", "Resupplying your Acid Lab")
+globals.set_int(1662873 + 1 + 5, 1)
+globals.set_int(1662873 + 1 + 5, 1)
+globals.set_int(1662873 + 1 + 5, 1) -- Bunker Supplies
+gui.show_message("Bunker", "Resupplying your Bunker")
+globals.set_int(1662873 + 1 + 1, 1)
+globals.set_int(1662873 + 1 + 1, 1)
+globals.set_int(1662873 + 1 + 1, 1) -- Document Forge Supplies
+gui.show_message("Document Forge", "Resupplying your Document Forge")
+globals.set_int(1662873 + 1 + 2, 1)
+globals.set_int(1662873 + 1 + 2, 1)
+globals.set_int(1662873 + 1 + 2, 1) -- Weed Farm Supplies
+gui.show_message("Weed Farm", "Resupplying your Weed Farm")
+globals.set_int(1662873 + 1 + 3, 1)
+globals.set_int(1662873 + 1 + 3, 1)
+globals.set_int(1662873 + 1 + 3, 1) -- Meth Lab Suplies
+gui.show_message("Meth Lab", "Resupplying your Meth Lab")
+globals.set_int(1662873 + 1 + 4, 1)
+globals.set_int(1662873 + 1 + 4, 1)
+globals.set_int(1662873 + 1 + 4, 1) -- Cocaine Lockup Supplies
+gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
+end)
+mcBus:add_separator()
+mcBus:add_text("You can tick these on and back off for instant resupply, toggles are there for afk constant resupplying.")
 
 -- Nightclub Loop - L7Neg
 local Club = Business:add_tab("Nightclub")
@@ -2315,16 +2440,7 @@ script.register_looped("yimceoloop", function(script)
 
         if yCEO:is_enabled() == true then
 		gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
-            if locals.get_int("gb_contraband_sell", 2) == 1 then
-                locals.set_int("gb_contraband_sell", 540 + 595, 1)
-                locals.set_int("gb_contraband_sell", 540 + 55, 0)
-                locals.set_int("gb_contraband_sell", 540 + 584, 0)
-                locals.set_int("gb_contraband_sell", 540 + 7, 7)
-                script:sleep(500)
-                locals.set_int("gb_contraband_sell", 540 + 1, 99999)
-            end
-
-            if locals.get_int("appsecuroserv", 2) == 1 then
+			if locals.get_int("appsecuroserv", 2) == 1 then
                 script:sleep(500)
                 locals.set_int("appsecuroserv", 740, 1)
                 script:sleep(200)
@@ -2332,17 +2448,21 @@ script.register_looped("yimceoloop", function(script)
                 script:sleep(200)
                 locals.set_int("appsecuroserv", 558, 3012)
                 script:sleep(1000)
+            end 
+            if locals.get_int("gb_contraband_sell", 2) == 1 then
+                locals.set_int("gb_contraband_sell", 543 + 595, 1)
+                locals.set_int("gb_contraband_sell", 543 + 55, 0)
+                locals.set_int("gb_contraband_sell", 543 + 584, 0)
+                locals.set_int("gb_contraband_sell", 543 + 7, 7)
+                script:sleep(500)
+                locals.set_int("gb_contraband_sell", 543 + 1, 99999)
             end
-
-            if locals.get_int("gb_contraband_buy", 2) == 1 then
-                locals.set_int("gb_contraband_buy", 598 + 5, 1)
-                locals.set_int("gb_contraband_buy", 598 + 1, 1)
-                locals.set_int("gb_contraband_buy", 598 + 191, 6)
-                locals.set_int("gb_contraband_buy", 598 + 192, 4)
+			if locals.get_int("gb_contraband_buy", 2) == 1 then
+                locals.set_int("gb_contraband_buy", 601 + 5, 1)
+                locals.set_int("gb_contraband_buy", 601 + 191, 6)
+                locals.set_int("gb_contraband_buy", 601 + 192, 4)
                 gui.show_message("Warehouse full!")
             end
-
-            
         end
     end
 end)
@@ -2360,16 +2480,98 @@ yimCEO:add_separator()
 yimCEO:add_text("You need to manually click Special/Sell Cargo each time.")
 yimCEO:add_text("You may also get up to 500k more than 5m sometimes.")
 
--- Casino Heist Editor - converted from L7Negs Ultimate Menu for Kiddions and some features like remove CCTV from Alestarov.
 
 --Required Stats--
 
 FMC2020 = "fm_mission_controller_2020"
 HIP = "heist_island_planning"
 
--- Editor Stuff
-local heisteEditor = KAOS:add_tab("Heist Editor")
-local cayoHeist = heisteEditor:add_tab("Cayo Perico Editor")
+-- Editor Stuff // Mashup Scripts L7Neg/Alestarov
+local heistEditor = KAOS:add_tab("Heist Editor")
+
+local casinoHeist = heistEditor:add_tab("Casino Editor")
+casinoHeist:add_text("Casino Heist Setups")
+casinoHeist:add_button("Silent & Sneaky", function()
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_TARGET"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 127, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWWEAP"), 4, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWDRIVER"), 5, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWHACKER"), 5, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 2, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 262399, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_MASKS"), 2, true)
+end)
+casinoHeist:add_sameline()
+casinoHeist:add_button("Big Con", function()
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 2, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_TARGET"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 799, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWWEAP"), 4, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWDRIVER"), 5, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWHACKER"), 5, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 2, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 913623, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_MASKS"), 2, true)
+end)
+casinoHeist:add_sameline()
+casinoHeist:add_button("Aggressive", function()
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_TARGET"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 799, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWWEAP"), 4, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWDRIVER"), 5, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWHACKER"), 5, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 2, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 1835223, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_MASKS"), 2, true)
+end)
+
+casinoHeist:add_separator()
+local deleteNPCs = false
+local deleteNPCs = casinoHeist:add_checkbox("Delete Mission NPC's")
+	script.register_looped("deleteNPCsLoopScript", function(script)
+		if deleteNPCs:is_enabled() then
+			for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
+				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
+				PED.DELETE_PED(ped)
+				sleep(0)
+				PED.DELETE_PED(ped)
+				sleep(0)
+				PED.DELETE_PED(ped)
+				sleep(0)
+				PED.DELETE_PED(ped)
+				sleep(0)
+			end
+		end
+	end)
+
+casinoHeist:add_button("Refresh Arcade Boards", function()
+PlayerIndex = globals.get_int(1574925)
+if PlayerIndex == 0 then
+		mpx = "MP0_"
+	else
+		mpx = "MP1_"
+	end
+	STATS.STAT_SET_INT(joaat(mpx .. "H3_COMPLETEDPOSIX"), -1, true)
+	STATS.STAT_SET_INT(joaat(mpx .. "MPPLY_H3_COOLDOWN"), -1, true)
+	STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET1"), 0, true)
+	STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET0"), 0, true)
+end)
+-- Cayo Heist Editor - converted from L7Negs Ultimate Menu for Kiddions and some features like remove CCTV from Alestarov.
+local cayoHeist = heistEditor:add_tab("Cayo Perico Editor")
 
 cayoHeist:add_text("Non-Legit Presets")
 
@@ -3165,3 +3367,164 @@ cayoSizeEditor:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
 		gui.show_message("Cayo Heist", "Planning board has been reset!")
 end)
+
+local xmen = Fun:add_tab("Magnet/Forcefield")
+xmen:add_text("Magnetic field attracts all peds/vehicles")
+local blackHoleLoopCheckbox = xmen:add_checkbox("Magnet")
+local blackHoleRadius = 2.0
+local blackHoleMarkerVisible = false
+local magnitude = 1.0 -- Initialize the magnitude variable
+
+xmen:add_imgui(function()
+    blackHoleRadius, used = ImGui.SliderFloat("Magnet Radius", blackHoleRadius, 0.0, 100.0)
+    out = "Radius set to " .. tostring(blackHoleRadius)
+    if used then
+        gui.show_message('Magnet Radius Modified!', out)
+    end
+    
+    magnitude, used = ImGui.SliderFloat("Magnitude", magnitude, 0.0, 50.0) -- Add the magnitude slider
+    out = "Magnitude set to " .. tostring(magnitude)
+    if used then
+        gui.show_message('Magnitude Modified!', out)
+    end
+    
+    blackHoleMarkerVisible = blackHoleLoopCheckbox:is_enabled()
+    
+    -- Draw black hole marker
+    if blackHoleMarkerVisible then
+        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+        local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+        GRAPHICS.DRAW_MARKER_SPHERE(playerCoords.x, playerCoords.y, playerCoords.z, blackHoleRadius, 255, 0, 0, 0.3)
+    end
+end)
+
+local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Include magnitude parameter
+    local vehicles = entities.get_all_vehicles_as_handles()
+    local peds = entities.get_all_peds_as_handles()
+    local blackHoleRadiusSquared = blackHoleRadius * blackHoleRadius
+
+    for _, entity in ipairs(vehicles) do
+        if entities.take_control_of(entity) then
+            local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+            local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+            if distanceSquared <= blackHoleRadiusSquared then
+                local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
+                local forceY = (playerCoords.y - entityCoord.y) * magnitude
+                local forceZ = (playerCoords.z - entityCoord.z) * magnitude
+                ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+            end
+        end
+    end
+
+    for _, entity in ipairs(peds) do
+        if entities.take_control_of(entity) then
+            local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+            local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+            if distanceSquared <= blackHoleRadiusSquared then
+                local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
+                local forceY = (playerCoords.y - entityCoord.y) * magnitude
+                local forceZ = (playerCoords.z - entityCoord.z) * magnitude
+                ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+            end
+        end
+    end
+end
+
+script.register_looped("blackHoleLoopScript", function(script)
+    script:yield()
+    if blackHoleLoopCheckbox:is_enabled() == true then
+        local player = PLAYER.PLAYER_ID()
+        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
+        local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+        applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Pass magnitude
+		sleep(0.2)
+    end
+end)
+
+function V3_DISTANCE_SQUARED(v1, v2)
+    local dx = v1.x - v2.x
+    local dy = v1.y - v2.y
+    local dz = v1.z - v2.z
+    return dx * dx + dy * dy + dz * dz
+end
+
+xmen:add_text("Forcefield surrounds your player in a barrier")
+xmen:add_text("Works with magnet to create a vehicle/ped barrier")
+local forceFieldLoopCheckbox = xmen:add_checkbox("Forcefield")
+local forceFieldRadius = 5.0
+local forceFieldMagnitude = 10.0
+local forceFieldMarkerVisible = false
+
+xmen:add_imgui(function()
+    forceFieldRadius, used = ImGui.SliderFloat("Force Field Radius", forceFieldRadius, 0.0, 100.0)
+    out = "Radius set to " .. tostring(forceFieldRadius)
+    if used then
+        gui.show_message('Force Field Radius Modified!', out)
+    end
+    
+    forceFieldMagnitude, used = ImGui.SliderFloat("Force Field Magnitude", forceFieldMagnitude, 0.0, 100.0)
+    out = "Magnitude set to " .. tostring(forceFieldMagnitude)
+    if used then
+        gui.show_message('Force Field Magnitude Modified!', out)
+    end
+    
+    forceFieldMarkerVisible = forceFieldLoopCheckbox:is_enabled()
+    
+    -- Draw force field marker
+    if forceFieldMarkerVisible then
+        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+        local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+        GRAPHICS.DRAW_MARKER_SPHERE(playerCoords.x, playerCoords.y, playerCoords.z, forceFieldRadius, 0, 255, 0, 0.3)
+    end
+end)
+
+local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
+    local vehicles = entities.get_all_vehicles_as_handles()
+    local peds = entities.get_all_peds_as_handles()
+    local forceFieldRadiusSquared = forceFieldRadius * forceFieldRadius
+
+    -- Apply forces to vehicles
+    for _, entity in ipairs(vehicles) do
+        if entities.take_control_of(entity) then
+            local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+            local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+            if distanceSquared <= forceFieldRadiusSquared then
+                local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
+                local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
+                local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
+                ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+            end
+        end
+    end
+
+    -- Apply forces to peds
+    for _, entity in ipairs(peds) do
+        if entities.take_control_of(entity) then
+            local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+            local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+            if distanceSquared <= forceFieldRadiusSquared then
+                local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
+                local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
+                local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
+                ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+            end
+        end
+    end
+end
+
+script.register_looped("forceFieldLoopScript", function(script)
+    script:yield()
+    if forceFieldLoopCheckbox:is_enabled() == true then
+        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+        local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+        applyForceField(playerCoords, forceFieldRadius, forceFieldMagnitude)
+        sleep(0.2)
+    end
+end)
+
+function V3_DISTANCE_SQUARED(v1, v2)
+    local dx = v1.x - v2.x
+    local dy = v1.y - v2.y
+    local dz = v1.z - v2.z
+    return dx * dx + dy * dy + dz * dz
+end
