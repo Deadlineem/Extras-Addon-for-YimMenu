@@ -16,6 +16,11 @@ similar to fast run, but faster.
       -> Firework
       -> Smoke
       -> Flames
+  --> Make Me Drunk  makes your character walk around drunk
+      -> Show VFX  Shows drunk visual effects
+      -> Drunk Driving  Randomly steers your car around to simulate a "Drunk Driver"
+      -> Remove Impairments  Untoggle Make Me Drunk and press to remove all impairments.
+
   -> Magnet/Forcefield
       -> Magnet  Pulls all Vehicles/Peds towards you
       -> Forcefield  Pushes all vehicles/peds away from you
@@ -65,9 +70,11 @@ ________________________________________________________________________________
   -> Explode
   -> Burn
   -> Water
+
 ---- Crash Options
   -> PR crash (Drops tons of figurines worth $1,000,000 each, freezes victims game on pickup in 10 
 seconds)
+
 ---- Sound Options
   -> Phone Spam
   -> Alarm Spam
@@ -183,6 +190,10 @@ ________________________________________________________________________________
 ---- Motorcycle Club
   -> Toggleables for all businesses (Acid lab, Bunker, all MC businesses)
   -> 1 click "Resupply All"
+
+---- Arcade
+  -> Arcade Safe Loop  Quickly fills up your arcade safe (max capacity is 100k)  Can be used for SLOW
+  AFK Money
 
 ---- Nightclub
   -> Activate 250k/15s loop while standing in front of nightclub safe.  Meant for AFK money
