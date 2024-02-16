@@ -18,7 +18,7 @@ echo "          \____|__  /\____ \____ |\____/|___|  /               ";
 echo "                  \/      \/    \/           \/                ";
 echo "                                                               ";
 echo "                Extras Addon for YimMenu                       ";
-echo "                  Addon Version: 0.8.9                         ";
+echo "                  Addon Version: 0.9.0                         ";
 echo "  ______   ______   ______   ______   ______   ______   ______ ";
 echo " /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ ";
 :: Set environment variables for source and destination paths
