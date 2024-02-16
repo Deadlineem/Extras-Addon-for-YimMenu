@@ -240,6 +240,63 @@ script.register_looped("FlameLoop", function()
     end
 end)
 Fun:add_separator()
+Fun:add_text("Movement Altering")
+local drunkLoop = Fun:add_checkbox("Make Me Drunk")
+Fun:add_sameline()
+local acidTripCheckbox = Fun:add_checkbox("Show Drunk VFX")
+Fun:add_sameline()
+local drunkDrivingCheckbox = Fun:add_checkbox("Drunk Driving")
+
+script.register_looped("drunkLoop", function()
+    if drunkLoop:is_enabled() == true then
+        local ped = PLAYER.PLAYER_PED_ID()
+        if not STREAMING.HAS_CLIP_SET_LOADED(ped, "move_m@drunk@verydrunk", 1.0) then
+            STREAMING.REQUEST_CLIP_SET("move_m@drunk@verydrunk")
+        end
+        PED.SET_PED_MOVEMENT_CLIPSET(ped, "move_m@drunk@verydrunk", 1.0)
+        gui.show_message("Impairment Success", "You are always drunk")
+
+        -- Apply drunk visual effects if the checkbox is enabled
+        if acidTripCheckbox:is_enabled() == true then
+            -- Apply acid trip visual effects
+            -- Adjust these effects based on your preferences and available native functions
+            GRAPHICS.SET_TIMECYCLE_MODIFIER("Drunk") -- Apply drunk timecycle modifier (you can change this to an acid trip modifier if available)
+            GRAPHICS.SET_TIMECYCLE_MODIFIER_STRENGTH(1.3) -- Adjust strength of distortion
+            -- Add additional visual effects here (e.g., screen distortions, color shifts, etc.)
+            -- You may need to experiment with different native functions to achieve the desired effect
+        end
+
+        -- Enable drunk driving if the checkbox is enabled
+        if drunkDrivingCheckbox:is_enabled() == true then
+            local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false)
+        if vehicle ~= 0 then
+            -- Apply random steering inputs
+            local randomSteering = math.random(-1, 1) -- Random value between -1 and 1
+            VEHICLE.SET_VEHICLE_STEER_BIAS(vehicle, randomSteering)
+			sleep(math.random(0, 5))
+            -- Reduce vehicle control
+            VEHICLE.SET_VEHICLE_HANDLING_OVERRIDE(vehicle, MISC.GET_HASH_KEY(vehicle))
+        end
+        end
+    end
+end)
+
+Fun:add_button("Remove Impairments", function()
+    if acidTripCheckbox:is_enabled() == true or acidTripCheckbox:is_enabled() == false then
+        if drunkLoop:is_enabled() == false then
+            local ped = PLAYER.PLAYER_PED_ID()
+            PED.RESET_PED_MOVEMENT_CLIPSET(ped, 0.0)
+            gui.show_message("Impairment Removed", "You are no longer impaired. Visual and movement effects removed unless toggled.")
+
+            -- Reset acid trip visual effects when removing drunk movement
+            GRAPHICS.CLEAR_TIMECYCLE_MODIFIER()
+        else
+            gui.show_message("Impairment Error", "Toggle the Drunk Loop off first!")
+        end
+    end
+end)
+
+
 
 -- Stat Editor - Alestarov_Menu
 local Stats = Pla:add_tab("Stats")
@@ -2384,6 +2441,27 @@ gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
 end)
 mcBus:add_separator()
 mcBus:add_text("You can tick these on and back off for instant resupply, toggles are there for afk constant resupplying.")
+
+local arcade = Business:add_tab("Arcade")
+
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+	MPX = "MP0_"
+else
+	MPX = "MP1_"
+end
+
+local arcadeSafe = arcade:add_checkbox("Arcade Safe Loop")
+script.register_looped("arcadeloop", function(script)
+	script:yield()
+	if arcadeSafe:is_enabled() == true then
+		gui.show_message("Business Manager", "Supplying Arcade Safe with money")
+		STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_PAY_TIME_LEFT"), -1, true)
+		sleep(0)
+	end
+end)
 
 -- Nightclub Loop - L7Neg
 local Club = Business:add_tab("Nightclub")
