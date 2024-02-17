@@ -2319,10 +2319,22 @@ Weapons:add_text("it will drop weapon pickups on the player you selected")
 local Business = KAOS:add_tab("Business Manager")
 
 local agency = Business:add_tab("Agency")
+
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+	MPX = "MP0_"
+else
+	MPX = "MP1_"
+end
+
 agency:add_text("Mission Selector")
 agency:add_button("None", function()
 gui.show_message("Business Manager", "Agency mission progress reset!")
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), 3, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COUNT"), 500, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), -1, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_GENERAL_BS"), -1, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_STRAND"), -1, true)
 end)
 
 agency:add_sameline()
@@ -2353,13 +2365,7 @@ gui.show_message("Business Manager", "Agency 'Dont F With Dre' mission active!")
 end)
 
 agency:add_separator()
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-	MPX = "MP0_"
-else
-	MPX = "MP1_"
-end
+
 
 local agencySafe = agency:add_checkbox("Agency Safe Loop")
 script.register_looped("agencyloop", function(script)
