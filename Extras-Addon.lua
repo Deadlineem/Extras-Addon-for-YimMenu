@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.8.9
+		Addon Version: 0.9.2
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -91,7 +91,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.8.9 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.9.2 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -2328,45 +2328,44 @@ else
 	MPX = "MP1_"
 end
 
-agency:add_text("Mission Selector")
-agency:add_button("None", function()
-gui.show_message("Business Manager", "Agency mission progress reset!")
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COUNT"), 500, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), 3, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_GENERAL_BS"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_STRAND"), -1, true)
+local contract_id = {3, 4, 12, 28, 60, 124, 252, 508, 2044, 4095, -1}
+local contract_names = {"The Nightclub", "The Marina", "Nightlife Leak", "The Country Club", "Guest List", "High Society Leak", "Davis", "The Ballas", "The South Central Leak", "Studio Time", "Don't Fuck With Dre"}
+local selectedContractIndex = 0
+local selectedContractID = contract_id[selectedContractIndex + 1]
+
+agency:add_text("Agency Contract Selection")
+
+-- Display the listbox
+local contractChanged = false
+
+agency:add_imgui(function()
+    selectedContractIndex, used = ImGui.ListBox("##ContractList", selectedContractIndex, contract_names, #contract_names) -- Display the listbox
+    if used then
+        selectedContractID = contract_id[selectedContractIndex + 1]
+    end
+
+    if ImGui.Button("Select Contract") then
+        local contractIndexToUse = selectedContractIndex + 1  -- Adjusted index for contract names
+        local contractIDToUse = contract_id[contractIndexToUse]
+        STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), contractIDToUse, true)
+        gui.show_message("Agency", "Contract: " .. contract_names[contractIndexToUse] .. " ID: " .. contractIDToUse .. " Selected")
+    end
 end)
 
 agency:add_sameline()
-agency:add_button("Nightlife Leak", function()
-gui.show_message("Business Manager", "Agency 'Nightlife Leak' mission active!")
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), 15, true)
-end)
 
-agency:add_sameline()
-agency:add_button("High Society Leak", function()
-gui.show_message("Business Manager", "Agency 'High Society Leak' mission active!")
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), 127, true)
-end)
-
-agency:add_button("South Central Leak", function()
-gui.show_message("Business Manager", "Agency 'South Central Leak' mission active!")
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), 1023, true)
-end)
-
-agency:add_button("Studio Time", function()
-gui.show_message("Business Manager", "Agency 'Studio Time' mission active!")
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), 2047, true)
+agency:add_button("Complete Preps", function()
+	STATS.STAT_SET_INT(joaat(MPX .. "FIXER_GENERAL_BS"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COMPLETED_BS"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_COOLDOWN_POSIX"), -1, true)
 end)
 agency:add_sameline()
-agency:add_button("Dont F With Dre", function()
-gui.show_message("Business Manager", "Agency 'Dont F With Dre' mission active!")
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), 4095, true)
+agency:add_button("Skip Cooldown", function()
+	STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_COOLDOWN"), -1, true)
 end)
 
 agency:add_separator()
-
-
+agency:add_text("Money")
 local agencySafe = agency:add_checkbox("Agency Safe Loop")
 script.register_looped("agencyloop", function(script)
 	script:yield()
@@ -2388,7 +2387,7 @@ script.register_looped("autoGetHangarCargo", function(script)
 		if autoGetHangarCargo then
 			stats.set_bool_masked("MP0_DLC22022PSTAT_BOOL3", true, 9)
 			gui.show_message("Hangar", "Restocking hangar cargo, please wait...")
-			sleep(5)
+			sleep(2)
 		end
 	end
 end)
@@ -2403,7 +2402,7 @@ script.register_looped("autoGetAcidCargo", function(script)
 		if autoGetAcidCargo then
 			globals.set_int(1662873 + 1 + 6, 1)
 			gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...")
-			sleep(5)
+			sleep(2)
 		end
 	end
 end)
@@ -2417,7 +2416,7 @@ script.register_looped("autoGetBunkerCargo", function(script)
 		if autoGetBunkerCargo then
 			globals.set_int(1662873 + 1 + 5, 1)
 			gui.show_message("Bunker", "Resupplying your bunker stock, please wait...")
-			sleep(5)
+			sleep(2)
 		end
 	end
 end)
@@ -2431,7 +2430,7 @@ script.register_looped("autoGetDocForgeCargo", function(script)
 		if autoGetDocForgeCargo then
 			globals.set_int(1662873 + 1 + 1, 1)
 			gui.show_message("Document Forge", "Resupplying your document forge, please wait...")
-			sleep(5)
+			sleep(2)
 		end
 	end
 end)
@@ -2444,7 +2443,7 @@ script.register_looped("autoGetWeedCargo", function(script)
 		if autoGetWeedCargo then
 			globals.set_int(1662873 + 1 + 2, 1)
 			gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...")
-			sleep(5)
+			sleep(2)
 		end
 	end
 end)
@@ -2458,7 +2457,7 @@ script.register_looped("autoGetMethCargo", function(script)
 		if autoGetMethCargo then
 			globals.set_int(1662873 + 1 + 3, 1)
 			gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...")
-			sleep(5)
+			sleep(2)
 		end
 	end
 end)
@@ -2472,7 +2471,7 @@ script.register_looped("autoGetCokeCargo", function(script)
 		if autoGetCokeCargo then
 			globals.set_int(1662873 + 1 + 4, 1)
 			gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...")
-			sleep(5)
+			sleep(2)
 		end
 	end
 end)
@@ -2485,7 +2484,7 @@ script.register_looped("autoGetCashCargo", function(script)
 		if autoGetCashCargo then
 			globals.set_int(1662873 + 1 + 0, 1)
 			gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...")
-			sleep(5)
+			sleep(2)
 		end
 	end
 end)
@@ -2536,7 +2535,7 @@ script.register_looped("arcadeloop", function(script)
 		gui.show_message("Business Manager", "Supplying Arcade Safe with money")
 		STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
 		STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_PAY_TIME_LEFT"), -1, true)
-		sleep(0)
+		sleep(2.5)
 	end
 end)
 
@@ -2635,7 +2634,6 @@ yimCEO:add_separator()
 yimCEO:add_text("You need to manually click Special/Sell Cargo each time.")
 yimCEO:add_text("You may also get up to 500k more than 5m sometimes.")
 
-
 --Required Stats--
 
 FMC2020 = "fm_mission_controller_2020"
@@ -2643,9 +2641,17 @@ HIP = "heist_island_planning"
 
 -- Editor Stuff // Mashup Scripts L7Neg/Alestarov
 local heistEditor = KAOS:add_tab("Heist Editor")
-
+	MPX = PI
+	PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+	if PI == 0 then
+		MPX = "MP0_"
+	else
+		MPX = "MP1_"
+	end
+	
 local casinoHeist = heistEditor:add_tab("Casino Editor")
 casinoHeist:add_text("Casino Heist Setups")
+
 casinoHeist:add_button("Silent & Sneaky", function()
 	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 1, true)
 	STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 3, true)
@@ -2695,37 +2701,45 @@ casinoHeist:add_button("Aggressive", function()
 end)
 
 casinoHeist:add_separator()
+
+casinoHeist:add_button("Complete Preps", function()	
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 3, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_COMPLETEDPOSIX"), -1, true)
+	gui.show_message("Casino Heist", "Preps Completed!")
+end)
+
+casinoHeist:add_sameline()
+casinoHeist:add_button("Skip Cooldown", function()
+	STATS.STAT_SET_INT(joaat(MPX .. "H3_COMPLETEDPOSIX"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "MPPLY_H3_COOLDOWN"), -1, true)
+end)
 local deleteNPCs = casinoHeist:add_checkbox("Delete Mission NPC's")
 	script.register_looped("deleteNPCsLoopScript", function(script)
 		if deleteNPCs:is_enabled() then
 			for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
 				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
 				PED.DELETE_PED(ped)
-				sleep(0)
+				sleep(0.1)
 				PED.DELETE_PED(ped)
-				sleep(0)
+				sleep(0.1)
 				PED.DELETE_PED(ped)
-				sleep(0)
+				sleep(0.1)
 				PED.DELETE_PED(ped)
-				sleep(0)
+				sleep(0.1)
+				gui.show_message("Casino Heist", "Deleting All NPC's from the mission.")
 			end
 		end
 	end)
+casinoHeist:add_separator()
+casinoHeist:add_text("How to:")
+casinoHeist:add_text("Click Skip cooldown (if applicable), then pay the 25k")
+casinoHeist:add_text("After that back off the board and press a preset.")
 
-casinoHeist:add_button("Refresh Arcade Boards", function()
-PlayerIndex = globals.get_int(1574925)
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-	MPX = "MP0_"
-else
-	MPX = "MP1_"
-end
-	STATS.STAT_SET_INT(joaat(MPX .. "H3_COMPLETEDPOSIX"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "MPPLY_H3_COOLDOWN"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 0, true)
-end)
 -- Cayo Heist Editor - converted from L7Negs Ultimate Menu for Kiddions and some features like remove CCTV from Alestarov.
 local cayoHeist = heistEditor:add_tab("Cayo Perico Editor")
 
