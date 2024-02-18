@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.9.1
+		Addon Version: 0.8.9
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -91,7 +91,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.9.1 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.8.9 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -2332,8 +2332,8 @@ agency:add_text("Mission Selector")
 agency:add_button("None", function()
 gui.show_message("Business Manager", "Agency mission progress reset!")
 		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COUNT"), 500, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_GENERAL_BS"), -1, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), 3, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_GENERAL_BS"), 0, true)
 		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_STRAND"), -1, true)
 end)
 
