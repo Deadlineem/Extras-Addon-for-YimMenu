@@ -184,6 +184,13 @@ ________________________________________________________________________________
 
 Business Management
 ____________________________________________________________________________________________________________
+---- Agency
+  -> Mission Selector
+  -> Select Contract (after selecting from the listbox)
+  -> Complete Preps
+  -> Skip Cooldown
+  -> Agency Safe Loop  Fills your agency safe with money
+
 ---- Hangar
   -> Toggles automatic resupply to hangar when outside (CANNOT BE IN HANGAR)
 
@@ -209,9 +216,10 @@ Heist Editor
 ____________________________________________________________________________________________________________
 ---- Casino Editor
   -> Presets
+  ->Complete Prepr
+  -> Skip Cooldown
   -> Delete All NPC's
-  -> Reset Arcade Board (Skips cooldowns/resets the boards)
-In beta, Still adding more to this.
+  -------- In beta, Still adding more to this.
 
 ---- Cayo Perico Editor
   -> Presets (Panther + Compound Gold) (Diamond + Compound Gold)
