@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
 	Extras Addon for YimMenu v1.68
-		Addon Version: 0.9.2
+		Addon Version: 0.9.3
 		
 		Credits:  Yimura, L7Neg, 
 	Loled69, Alestarov, gir489returns, 
@@ -91,7 +91,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.9.2 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.9.3 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -1303,7 +1303,15 @@ Objets:add_text("Object Spawner")
 -- Add search input field
 local searchQuery = ""
 Objets:add_imgui(function()
+	if is_typing then
+		PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+	end
     searchQuery, used = ImGui.InputText("Search Objects", searchQuery, 128)
+	 if ImGui.IsItemActive() then
+		is_typing = true
+	else
+		is_typing = false
+	end
 end)
 
 local filteredItems = {}
@@ -1367,9 +1375,113 @@ end)
 -- Teleports tab
 local Tel = Pla:add_tab("Teleports")
 
-Tel:add_button("Teleport to Location", function()
-    gui.show_message('Teleport to Location', 'Failed! Feature unavailable.')
-end)
+-- Define your array with names and IDs
+local properties = {
+    {name = "Safehouse", id = 40}, {name = "Office", id = 475}, {name = "Arena", id = 643}, {name = "Bunker", id = 557}, {name = "Arcade", id = 740},
+	{name = "Auto Shop", id = 779}, {name = "Agency", id = 826}, {name = "Clubhouse", id = 492}, {name = "Hangar", id = 569}, {name = "Facility", id = 590},
+	{name = "Night Club", id = 614}, {name = "Freakshop", id = 847}, {name = "Salvage Yard", id = 867}, {name = "Eclipse Garage", id = 856}, {name = "Yacht", id = 455},
+	{name = "Kosatka", id = 760},
+    -- Add more properties as needed
+	-- Cayo Drainage = 768
+}
+
+local function findNearestBlip(propertyId)
+    local ped = PLAYER.PLAYER_PED_ID()
+    local minDistanceSquared = math.huge
+    local nearestBlipId = nil
+    local iterator = propertyId
+    local blipId = HUD.GET_FIRST_BLIP_INFO_ID(iterator)
+    while blipId ~= 0 do
+        local blipCoords = HUD.GET_BLIP_COORDS(blipId)
+        local distanceSquared = MISC.GET_DISTANCE_BETWEEN_COORDS(ped, blipCoords.x, blipCoords.y, blipCoords.z, 1, 0, false)
+        if distanceSquared < minDistanceSquared and blipId ~= propertyId then
+            minDistanceSquared = distanceSquared
+            nearestBlipId = blipId
+        end
+        blipId = HUD.GET_NEXT_BLIP_INFO_ID(iterator)
+    end
+    return nearestBlipId
+end
+
+local function createButtons(tab)
+    local buttonsPerRow = 5
+    local buttonCount = 0
+    for _, property in ipairs(properties) do
+        tab:add_button(property.name, function()
+            local ped = PLAYER.PLAYER_PED_ID()
+            local nearestBlipId = findNearestBlip(property.id)
+            if nearestBlipId then
+                local blipCoords = HUD.GET_BLIP_COORDS(nearestBlipId)
+				if property.id == 760 then
+					PED.SET_PED_COORDS_KEEP_VEHICLE(ped, blipCoords.x, blipCoords.y, blipCoords.z + 8)
+				elseif property.id == 740 then
+					PED.SET_PED_COORDS_KEEP_VEHICLE(ped, blipCoords.x + 10, blipCoords.y - 5, blipCoords.z)
+				else
+				    PED.SET_PED_COORDS_KEEP_VEHICLE(ped, blipCoords.x, blipCoords.y, blipCoords.z)
+				end
+            else
+                gui.show_message("error", "No blip found for " .. property.name)
+            end
+        end)
+        buttonCount = buttonCount + 1
+        if buttonCount < buttonsPerRow and _ < #properties then
+            tab:add_sameline()
+        else
+            buttonCount = 0
+        end
+    end
+end
+
+-- Assuming Tel:add_tab returns the created tab
+local tab = Tel:add_tab("Owned Properties")
+
+-- Create buttons on the tab
+createButtons(tab)
+
+-- Custom teleport locations
+local teleportLocations = {
+	-- You can add more to this list if you'd like, just get your coords from YimMenu
+	-- under Self > Teleport > 'Current Coordinates X, Y, Z'
+    { name = "Casino", coords = { x = 922.223938, y = 49.779373, z = 80.764793 }},
+	{ name = "LS Customs", coords = { x = -370.269958, y = -129.910370, z = 38.681633 }},
+	{ name = "Eclipse Towers", coords = { x = -773.640869, y = 305.234619, z = 85.705841 }},
+	{ name = "Record A Studios", coords = { x = -835.250427, y = -226.589691, z = 37.267345 }},
+	{ name = "Luxury Autos", coords = { x = -796.260986, y = -245.412369, z = 37.079193 }},
+	{ name = "Suburban", coords = { x = -1208.171387, y = -782.429016, z = 17.157467 }},
+	{ name = "Mask Shop", coords = { x = -1339.069946, y = -1279.114502, z = 4.866990 }},
+	{ name = "Poisonby's", coords = { x = -719.559692, y = -157.998932, z = 36.998993 }},
+	{ name = "Benny's", coords = { x = -205.040863, y = -1305.484009, z = 31.369892 }},
+
+	--{ name = "Poisonby's", coords = { x = -719.559692, y = -157.998932, z = 36.998993 }},
+    -- Teleport locations for Non-Owned Properties
+}
+
+-- Function to create teleport buttons
+local function createCustomTPButtons()
+    local buttonsPerRow = 5
+    local buttonCount = 0
+    for _, location in ipairs(teleportLocations) do
+		local ped = PLAYER.PLAYER_PED_ID()
+		local player_name = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
+        local buttonName = location.name
+        local coords = location.coords
+        Tel:add_button(buttonName, function()
+		RequestControl(ped)
+            PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x, coords.y, coords.z)
+            gui.show_message("Teleport", "Teleported "..player_name.." to "..buttonName)
+        end)
+        buttonCount = buttonCount + 1
+        if buttonCount < buttonsPerRow then
+            Tel:add_sameline() -- Add next button on the same line
+        else
+            buttonCount = 0 -- Reset button count for the new row
+        end
+    end
+end
+
+-- Call the function to create teleport buttons
+createCustomTPButtons()
+
 
 -- Vehicle Options Tab
 local Veh = KAOS:add_tab("Vehicle Options")
@@ -1470,7 +1582,15 @@ end
 
 -- Add search input field
 vSpawn:add_imgui(function()
+	if is_typing then
+		PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+	end
     searchQuery, _ = ImGui.InputText("Search Vehicles", searchQuery, 128)
+	if ImGui.IsItemActive() then
+		is_typing = true
+	else
+		is_typing = false
+	end
 end)
 
 vSpawn:add_imgui(displayVehicleModelsList)
@@ -2373,7 +2493,7 @@ script.register_looped("agencyloop", function(script)
 		gui.show_message("Business Manager", "Supplying Agency Safe with money")
 		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COUNT"), 500, true)
 		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
-		sleep(0)
+		sleep(0.5)
 	end
 end)
 
@@ -2387,7 +2507,7 @@ script.register_looped("autoGetHangarCargo", function(script)
 		if autoGetHangarCargo then
 			stats.set_bool_masked("MP0_DLC22022PSTAT_BOOL3", true, 9)
 			gui.show_message("Hangar", "Restocking hangar cargo, please wait...")
-			sleep(2)
+			sleep(0.5)
 		end
 	end
 end)
@@ -2402,7 +2522,7 @@ script.register_looped("autoGetAcidCargo", function(script)
 		if autoGetAcidCargo then
 			globals.set_int(1662873 + 1 + 6, 1)
 			gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...")
-			sleep(2)
+			sleep(0.5)
 		end
 	end
 end)
@@ -2416,7 +2536,7 @@ script.register_looped("autoGetBunkerCargo", function(script)
 		if autoGetBunkerCargo then
 			globals.set_int(1662873 + 1 + 5, 1)
 			gui.show_message("Bunker", "Resupplying your bunker stock, please wait...")
-			sleep(2)
+			sleep(0.5)
 		end
 	end
 end)
@@ -2430,7 +2550,7 @@ script.register_looped("autoGetDocForgeCargo", function(script)
 		if autoGetDocForgeCargo then
 			globals.set_int(1662873 + 1 + 1, 1)
 			gui.show_message("Document Forge", "Resupplying your document forge, please wait...")
-			sleep(2)
+			sleep(0.5)
 		end
 	end
 end)
@@ -2443,7 +2563,7 @@ script.register_looped("autoGetWeedCargo", function(script)
 		if autoGetWeedCargo then
 			globals.set_int(1662873 + 1 + 2, 1)
 			gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...")
-			sleep(2)
+			sleep(0.5)
 		end
 	end
 end)
@@ -2457,7 +2577,7 @@ script.register_looped("autoGetMethCargo", function(script)
 		if autoGetMethCargo then
 			globals.set_int(1662873 + 1 + 3, 1)
 			gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...")
-			sleep(2)
+			sleep(0.5)
 		end
 	end
 end)
@@ -2471,7 +2591,7 @@ script.register_looped("autoGetCokeCargo", function(script)
 		if autoGetCokeCargo then
 			globals.set_int(1662873 + 1 + 4, 1)
 			gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...")
-			sleep(2)
+			sleep(0.5)
 		end
 	end
 end)
@@ -2484,7 +2604,7 @@ script.register_looped("autoGetCashCargo", function(script)
 		if autoGetCashCargo then
 			globals.set_int(1662873 + 1 + 0, 1)
 			gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...")
-			sleep(2)
+			sleep(0.5)
 		end
 	end
 end)
@@ -2535,7 +2655,7 @@ script.register_looped("arcadeloop", function(script)
 		gui.show_message("Business Manager", "Supplying Arcade Safe with money")
 		STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
 		STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_PAY_TIME_LEFT"), -1, true)
-		sleep(2.5)
+		sleep(0.5)
 	end
 end)
 
@@ -2557,7 +2677,7 @@ script.register_looped("nightclubloop", function(script)
 		gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe")
 		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
 		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_PAY_TIME_LEFT"), -1, true)
-		sleep(2.5)
+		sleep(0.5)
 	end
 end)
 Club:add_separator()
@@ -3375,6 +3495,42 @@ end
 	gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters")
 	gui.show_message("Cayo Heist", "Go to story mode and come back to apply the reset")
 end)
+
+local properties = {
+    {name = "Drainage", id = 768}, {name = "Gold", id = 618}, {name = "Fingerprint Scanner", id = 619}, {name = "Main Gate", id = 770}, {name = "Kosatka", id = 760},
+    -- Add more properties as needed
+	-- Cayo Drainage = 768
+}
+
+-- Function to create buttons dynamically
+local function createCayoButtons(cayoHeist)
+    local buttonsPerRow = 5
+    local buttonCount = 0
+    for _, property in ipairs(properties) do
+        cayoHeist:add_button(property.name, function()
+            local ped = PLAYER.PLAYER_PED_ID()
+            local blip_info = HUD.GET_FIRST_BLIP_INFO_ID(property.id)
+            local coords = HUD.GET_BLIP_COORDS(blip_info)
+            
+            if HUD.DOES_BLIP_EXIST(blip_info) then
+				if property.id == 740 then
+					PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x + 5, coords.y - 5, coords.z)
+				else 
+					PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x, coords.y, coords.z)
+				end
+            end
+        end)
+        buttonCount = buttonCount + 1
+        if buttonCount < buttonsPerRow and _ < #properties then
+            cayoHeist:add_sameline() -- Add next button on the same line if there are more buttons and haven't reached the limit per row
+        else
+            buttonCount = 0 -- Reset button count for the new row
+        end
+    end
+end
+cayoHeist:add_separator()
+cayoHeist:add_text("Teleports")
+createCayoButtons(cayoHeist)
 cayoHeist:add_separator()
 cayoHeist:add_text("How to Set Up or Bypass Cooldown:")
 cayoHeist:add_text("Make sure you have completed the heist and you are standing in front of the planning screen")
@@ -3595,12 +3751,13 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
                 local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
                 local forceY = (playerCoords.y - entityCoord.y) * magnitude
                 local forceZ = (playerCoords.z - entityCoord.z) * magnitude
+				RequestControl(entity)
                 ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
             end
         end
     end
 
-    for _, entity in ipairs(peds) do
+    --[[for _, entity in ipairs(peds) do
         if entities.take_control_of(entity) then
             local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
             local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
@@ -3608,10 +3765,11 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
                 local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
                 local forceY = (playerCoords.y - entityCoord.y) * magnitude
                 local forceZ = (playerCoords.z - entityCoord.z) * magnitude
+				RequestControl(entity)
                 ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
             end
         end
-    end
+    end]]
 end
 
 script.register_looped("blackHoleLoopScript", function(script)
@@ -3621,7 +3779,7 @@ script.register_looped("blackHoleLoopScript", function(script)
         local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
         local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Pass magnitude
-		sleep(0.2)
+		sleep(0)
     end
 end)
 
@@ -3676,13 +3834,14 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
                 local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
                 local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
                 local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
+				RequestControl(entity)
                 ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
             end
         end
     end
 
     -- Apply forces to peds
-    for _, entity in ipairs(peds) do
+    --[[for _, entity in ipairs(peds) do
         if entities.take_control_of(entity) then
             local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
             local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
@@ -3690,10 +3849,11 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
                 local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
                 local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
                 local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
+				RequestControl(entity)
                 ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
             end
         end
-    end
+    end]]
 end
 
 script.register_looped("forceFieldLoopScript", function(script)
@@ -3702,7 +3862,7 @@ script.register_looped("forceFieldLoopScript", function(script)
         local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
         local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         applyForceField(playerCoords, forceFieldRadius, forceFieldMagnitude)
-        sleep(0.2)
+        sleep(0)
     end
 end)
 
