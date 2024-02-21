@@ -59,7 +59,10 @@ Drop options are player selectable drops, select a player from the list and run.
   -> 1 Mill to 15 Mill Cash Loops (toggle on/off) *RISKY, DON'T LET THEM RUN TOO LONG AND RESET YOUR STATS ASAP!!!*
 
 ---- Teleports
-  -> Not Yet Implemented.
+  -> Copy to Clipboard  copies your current location X/Y/Z coords to clipboard for adding custom locations easily
+  -> Location type (Dropdown) for selecting between owned/custom locations
+  -> Listbox of Locations for each selected type.
+
 _______________________________________________________________________________________________________
 
 Grief Options
@@ -204,6 +207,7 @@ ________________________________________________________________________________
 
 ---- Nightclub
   -> Activate 250k/15s loop while standing in front of nightclub safe.  Meant for AFK money
+  -> Restock Warehouse ** Not yet implemented
   -> Max Popularity  Does what it says
 
 ---- YimCEO
