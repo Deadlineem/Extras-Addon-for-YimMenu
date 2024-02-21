@@ -14,14 +14,16 @@ ___________         __
   \____|__  /\____ \____ |\____/|___|  /      
           \/      \/    \/           \/       
 
-	Extras Addon for YimMenu v1.68
-		Addon Version: 0.9.4
-		
-		Credits:  Yimura, L7Neg, 
-	Loled69, Alestarov, gir489returns, 
-	  TheKuter, RazorGamerX & More!
+    Extras Addon for YimMenu v1.68
+        Addon Version: 0.9.4
+        
+        Credits:  Yimura, L7Neg, 
+    Loled69, Alestarov, gir489returns, 
+      TheKuter, RazorGamerX, USBMenus & More!
 
 ]]--
+
+selectedPlayerTab = gui.get_tab("")
 
 -- Function to create a text element
 local function createText(tab, text)
@@ -72,8 +74,8 @@ local weaponNamesString = {
     "weapon_snowball", "weapon_pipebomb", "weapon_ball", "weapon_petrolcan",
     "weapon_fireextinguisher", "weapon_hazardcan", "weapon_militaryrifle",
     "weapon_combatshotgun", "weapon_gadgetpistol", "WEAPON_SNOWLAUNCHER", "WEAPON_BATTLERIFLE", 
-	"WEAPON_TECPISTOL", "WEAPON_CANDYCANE", "WEAPON_PISTOLXM3", "WEAPON_RAILGUNXM3", "WEAPON_PRECISIONRIFLE", 
-	"WEAPON_TACTICALRIFLE", "WEAPON_EMPLAUNCHER", "WEAPON_HEAVYRIFLE"
+    "WEAPON_TECPISTOL", "WEAPON_CANDYCANE", "WEAPON_PISTOLXM3", "WEAPON_RAILGUNXM3", "WEAPON_PRECISIONRIFLE", 
+    "WEAPON_TACTICALRIFLE", "WEAPON_EMPLAUNCHER", "WEAPON_HEAVYRIFLE"
 }
 
 local weaponModels = {
@@ -118,10 +120,10 @@ local Mvmt = Pla:add_tab("Movement")
 runSpeed = 0
 Mvmt:add_imgui(function()
     runSpeed, used = ImGui.SliderInt("Run Speed", runSpeed, 0, 10)
-	out = "Speed set to "..tostring(runSpeed).."x"
+    out = "Speed set to "..tostring(runSpeed).."x"
     if used then
         PLAYER.SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), runSpeed/7)
-		gui.show_message('Run Speed Modified!', out)
+        gui.show_message('Run Speed Modified!', out)
     end
 end)
 
@@ -131,7 +133,7 @@ Mvmt:add_imgui(function()
     out = "Speed set to "..tostring(swimSpeed).."x"
     if used then
         PLAYER.SET_SWIM_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), swimSpeed/7)
-		gui.show_message('Swim Speed Modified!', out)
+        gui.show_message('Swim Speed Modified!', out)
     end
 end)
 
@@ -159,16 +161,16 @@ script.register_looped("FireworkLoop3", function()
     if fireworkLoop3:is_enabled() == true then
         if load_fireworks() then
             local localPlayerId = PLAYER.PLAYER_ID()
-				local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
+                local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
 
-				-- Get random color values
-				local colorR, colorG, colorB = random_color()
-				test = player_coords.z - 1
-				GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework")
-				GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-				GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_grd_burst", player_coords.x, player_coords.y, test, 0, 0, 0, 1, false, false, false, false)
-			sleep(0.2)
-		end
+                -- Get random color values
+                local colorR, colorG, colorB = random_color()
+                test = player_coords.z - 1
+                GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework")
+                GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+                GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_grd_burst", player_coords.x, player_coords.y, test, 0, 0, 0, 1, false, false, false, false)
+            sleep(0.2)
+        end
     end
 end)
 
@@ -193,16 +195,16 @@ script.register_looped("SmokeLoop", function()
     if smokeLoop:is_enabled() == true then
         if load_smoke() then
             local localPlayerId = PLAYER.PLAYER_ID()
-				local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
+                local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
 
-				-- Get random color values
-				local colorR, colorG, colorB = random_color()
-				test = player_coords.z - 2.5
-				GRAPHICS.USE_PARTICLE_FX_ASSET("scr_sum2_hal")
-				GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-				GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_sum2_hal_rider_death_blue", player_coords.x, player_coords.y, test, 0, 0, 0, 1, false, false, false, false)
-			sleep(0.2)
-		end
+                -- Get random color values
+                local colorR, colorG, colorB = random_color()
+                test = player_coords.z - 2.5
+                GRAPHICS.USE_PARTICLE_FX_ASSET("scr_sum2_hal")
+                GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+                GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_sum2_hal_rider_death_blue", player_coords.x, player_coords.y, test, 0, 0, 0, 1, false, false, false, false)
+            sleep(0.2)
+        end
     end
 end)
 
@@ -227,16 +229,16 @@ script.register_looped("FlameLoop", function()
     if flameLoop:is_enabled() == true then
         if load_flame() then
             local localPlayerId = PLAYER.PLAYER_ID()
-				local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
+                local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
 
-				-- Get random color values
-				local colorR, colorG, colorB = random_color()
-				test = player_coords.z - 1
-				GRAPHICS.USE_PARTICLE_FX_ASSET("scr_bike_adversary")
-				GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-				GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_adversary_foot_flames", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
-			sleep(0.2)
-		end
+                -- Get random color values
+                local colorR, colorG, colorB = random_color()
+                test = player_coords.z - 1
+                GRAPHICS.USE_PARTICLE_FX_ASSET("scr_bike_adversary")
+                GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+                GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_adversary_foot_flames", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
+            sleep(0.2)
+        end
     end
 end)
 Fun:add_separator()
@@ -260,7 +262,7 @@ script.register_looped("drunkLoop", function()
         if acidTripCheckbox:is_enabled() == true then
             -- Apply acid trip visual effects
             -- Adjust these effects based on your preferences and available native functions
-			GRAPHICS.SET_TIMECYCLE_MODIFIER("Drunk") -- Apply drunk timecycle modifier (you can change this to an acid trip modifier or stoned modifier)
+            GRAPHICS.SET_TIMECYCLE_MODIFIER("Drunk") -- Apply drunk timecycle modifier (you can change this to an acid trip modifier or stoned modifier)
             GRAPHICS.SET_TIMECYCLE_MODIFIER_STRENGTH(1.3) -- Adjust strength of distortion
             -- Add additional visual effects here (e.g., screen distortions, color shifts, etc.)
             -- You may need to experiment with different native functions to achieve the desired effect
@@ -273,9 +275,9 @@ script.register_looped("drunkLoop", function()
             -- Apply random steering inputs
             local randomSteering = math.random(-1, 1) -- Random value between -1 and 1
             VEHICLE.SET_VEHICLE_STEER_BIAS(vehicle, randomSteering)
-			VEHICLE.SET_VEHICLE_STEERING_BIAS_SCALAR(vehicle, 100)
-			VEHICLE.SET_VEHICLE_HANDLING_OVERRIDE(vehicle, MISC.GET_HASH_KEY(vehicle))
-			sleep(0.2)
+            VEHICLE.SET_VEHICLE_STEERING_BIAS_SCALAR(vehicle, 100)
+            VEHICLE.SET_VEHICLE_HANDLING_OVERRIDE(vehicle, MISC.GET_HASH_KEY(vehicle))
+            sleep(0.2)
             -- Reduce vehicle control
         end
         end
@@ -328,8 +330,8 @@ Stats:add_button("Reset Stats", function()
         STATS.STAT_SET_INT(joaat("MP0_CASINO_BAN_TIME"), 0, true)
         STATS.STAT_SET_INT(joaat("MP0_CASINO_CHIPS_PURTIM"), 0, true)
         STATS.STAT_SET_INT(joaat("MP0_CASINO_CHIPS_PUR_GD"), 0, true)
-		-- Player 2 Stats Reset
-		STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
+        -- Player 2 Stats Reset
+        STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_SVC"), 0, true)
         STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_BETTING"), 0, true)
         STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_JOBS"), 0, true)
@@ -380,7 +382,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-		gui.show_message("RP/Cash Drop Started", "Princess Robot Bubblegum Drops inbound!")
+        gui.show_message("RP/Cash Drop Started", "Princess Robot Bubblegum Drops inbound!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -393,7 +395,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
                 true,
                 false
             )
-			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
@@ -405,7 +407,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
                 true,
                 false
             )
-			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
@@ -421,7 +423,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-		sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+        sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not princessBubblegumLoop then
             script.unregister_script("princessbubblegumLoop")
         end
@@ -443,7 +445,7 @@ Drops:add_button("Alien (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-		gui.show_message("RP/Cash Drop Started", "Alien Drops inbound!")
+        gui.show_message("RP/Cash Drop Started", "Alien Drops inbound!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -456,7 +458,7 @@ Drops:add_button("Alien (On/Off)", function()
                 true,
                 false
             )
-			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
@@ -468,7 +470,7 @@ Drops:add_button("Alien (On/Off)", function()
                 true,
                 false
             )
-			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
@@ -484,7 +486,7 @@ Drops:add_button("Alien (On/Off)", function()
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-		sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+        sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not alienfigurineLoop then
             script.unregister_script("alienfigurineLoop")
         end
@@ -506,7 +508,7 @@ Drops:add_button("Casino Cards (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-		gui.show_message("RP/Cash Drop Started", "Casino Card Drops inbound!")
+        gui.show_message("RP/Cash Drop Started", "Casino Card Drops inbound!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -519,7 +521,7 @@ Drops:add_button("Casino Cards (On/Off)", function()
                 true,
                 false
             )
-			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
@@ -531,7 +533,7 @@ Drops:add_button("Casino Cards (On/Off)", function()
                 true,
                 false
             )
-			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
@@ -543,11 +545,11 @@ Drops:add_button("Casino Cards (On/Off)", function()
                 true,
                 false
             )
-		
+        
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-		sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+        sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not casinocardsLoop then
             script.unregister_script("casinocardsLoop")
         end
@@ -569,7 +571,7 @@ kcashLoop = not kcashLoop
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-		gui.show_message("Cash Drop Started", "LOCAL CASH WORKS ON PICKUP but other players cannot see it!")
+        gui.show_message("Cash Drop Started", "LOCAL CASH WORKS ON PICKUP but other players cannot see it!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -582,7 +584,7 @@ kcashLoop = not kcashLoop
                 true,
                 false
             )
-			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
@@ -594,7 +596,7 @@ kcashLoop = not kcashLoop
                 true,
                 false
             )
-			local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
@@ -610,8 +612,8 @@ kcashLoop = not kcashLoop
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-		sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-		if not kcashLoop then
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+        if not kcashLoop then
             script.unregister_script("kcashLoop")
         end
     end)
@@ -679,15 +681,15 @@ locationTypes = {"Custom", "Owned"}
 
 customCoords = {
     {"Eclipse Towers Front Door", -774.77, 312.19, 85.70},
-	{"Casino", 922.223938, 49.779373, 80.764793},
-	{"LS Customs", -370.269958, -129.910370, 38.681633},
-	{"Eclipse Towers", -773.640869, 305.234619, 85.705841},
-	{"Record A Studios", -835.250427, -226.589691, 37.267345},
-	{"Luxury Autos", -796.260986, -245.412369, 37.079193},
-	{"Suburban", -1208.171387, -782.429016, 17.157467},
-	{"Mask Shop", -1339.069946, -1279.114502, 4.866990},
-	{"Poisonby's", -719.559692, -157.998932, 36.998993},
-	{"Benny's", -205.040863, -1305.484009, 31.369892},
+    {"Casino", 922.223938, 49.779373, 80.764793},
+    {"LS Customs", -370.269958, -129.910370, 38.681633},
+    {"Eclipse Towers", -773.640869, 305.234619, 85.705841},
+    {"Record A Studios", -835.250427, -226.589691, 37.267345},
+    {"Luxury Autos", -796.260986, -245.412369, 37.079193},
+    {"Suburban", -1208.171387, -782.429016, 17.157467},
+    {"Mask Shop", -1339.069946, -1279.114502, 4.866990},
+    {"Poisonby's", -719.559692, -157.998932, 36.998993},
+    {"Benny's", -205.040863, -1305.484009, 31.369892},
 }
 
 ownedCoords = {}
@@ -849,14 +851,14 @@ force_roulette_wheel = casino_gui:add_checkbox("Activate Roulette Rig")
 
 local player_id = PLAYER.PLAYER_ID()
 
-		casVal = -1
-		casino_gui:add_imgui(function()
-			casVal, used2 = ImGui.SliderInt("Betting Number", casVal, -1, 36)
-			if used2 then
-				valz = casVal
-			end
-		end)
-		
+        casVal = -1
+        casino_gui:add_imgui(function()
+            casVal, used2 = ImGui.SliderInt("Betting Number", casVal, -1, 36)
+            if used2 then
+                valz = casVal
+            end
+        end)
+        
 casino_gui:add_separator()
 casino_gui:add_text("Using these options are risky, especially if you use the cooldown bypass")
  
@@ -905,7 +907,7 @@ script.register_looped("Casino Pacino Thread", function (script)
         dealers_card_gui_element:set_value("Not in Casino.")
     end
     if force_roulette_wheel:is_enabled() then
-		 local player_id = PLAYER.PLAYER_ID()
+         local player_id = PLAYER.PLAYER_ID()
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casinoroulette")) ~= 0 then
             while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 3, 0) ~= player_id do 
                 network.force_script_host("casinoroulette")
@@ -914,7 +916,7 @@ script.register_looped("Casino Pacino Thread", function (script)
             end
             for tabler_iter = 0, 6, 1 do
                 locals.set_int("casinoroulette", (roulette_master_table) + (roulette_outcomes_table) + (roulette_ball_table) + (tabler_iter), valz)
-				gui.show_message("CasinoPacino Activated!", "Winning Number: "..valz)
+                gui.show_message("CasinoPacino Activated!", "Winning Number: "..valz)
             end
         end
     end
@@ -1028,67 +1030,67 @@ local millLoop = Money:add_tab("Loops")
 millLoop:add_text("Money Loop Options (SEVERELY RISKY!)")
 local oneMillLoop = millLoop:add_checkbox("1M Loop")
 script.register_looped("onemLoop", function(script)
-	script:yield()
-	if oneMillLoop:is_enabled() == true then
-		onemLoop = not onemLoop
-		if onemLoop then
-			TransactionManager:TriggerTransaction(0x615762F1)
+    script:yield()
+    if oneMillLoop:is_enabled() == true then
+        onemLoop = not onemLoop
+        if onemLoop then
+            TransactionManager:TriggerTransaction(0x615762F1)
                 script:yield();
-			gui.show_message("Money Loop", "1 Mill loop running, enjoy the easy money!")
-		end
-	end
+            gui.show_message("Money Loop", "1 Mill loop running, enjoy the easy money!")
+        end
+    end
 end)
 millLoop:add_sameline()
 local twofiveMillLoop = millLoop:add_checkbox("2.5M Loop")
 script.register_looped("twofmLoop", function(script)
-	script:yield()
-	if twofiveMillLoop:is_enabled() == true then
-		twofmLoop = not twofmLoop
-		if twofmLoop then
-			TransactionManager:TriggerTransaction(0xDBF39508)
+    script:yield()
+    if twofiveMillLoop:is_enabled() == true then
+        twofmLoop = not twofmLoop
+        if twofmLoop then
+            TransactionManager:TriggerTransaction(0xDBF39508)
                 script:yield();
-			gui.show_message("Money Loop", "2.5 Mill loop running, enjoy the easy money!")
-		end
-	end
+            gui.show_message("Money Loop", "2.5 Mill loop running, enjoy the easy money!")
+        end
+    end
 end)
 millLoop:add_sameline()
 local threeSixMillLoop = millLoop:add_checkbox("3.6M Loop")
 script.register_looped("threesmLoop", function(script)
-	script:yield()
-	if threeSixMillLoop:is_enabled() == true then
-		threesmLoop = not threesmLoop
-		if threesmLoop then
-			TransactionManager:TriggerTransaction(0xB703ED29)
+    script:yield()
+    if threeSixMillLoop:is_enabled() == true then
+        threesmLoop = not threesmLoop
+        if threesmLoop then
+            TransactionManager:TriggerTransaction(0xB703ED29)
                 script:yield();
-			gui.show_message("Money Loop", "3.6 Mill loop running, enjoy the easy money!")
-		end
-	end
+            gui.show_message("Money Loop", "3.6 Mill loop running, enjoy the easy money!")
+        end
+    end
 end)
 millLoop:add_sameline()
 local sevenMillLoop = millLoop:add_checkbox("7M Loop")
 script.register_looped("sevenmLoop", function(script)
-	script:yield()
-	if sevenMillLoop:is_enabled() == true then
-		sevenmLoop = not sevenmLoop
-		if sevenmLoop then
-			TransactionManager:TriggerTransaction(0xED97AFC1)
+    script:yield()
+    if sevenMillLoop:is_enabled() == true then
+        sevenmLoop = not sevenmLoop
+        if sevenmLoop then
+            TransactionManager:TriggerTransaction(0xED97AFC1)
                 script:yield();
-			gui.show_message("Money Loop", "7 Mill loop running, enjoy the easy money!")
-		end
-	end
+            gui.show_message("Money Loop", "7 Mill loop running, enjoy the easy money!")
+        end
+    end
 end)
 millLoop:add_sameline()
 local fifteenMillLoop = millLoop:add_checkbox("15M Loop")
 script.register_looped("fifteenMLoop", function(script)
-	script:yield()
-	if fifteenMillLoop:is_enabled() == true then
-		fifteenMLoop = not fifteenMLoop
-		if fifteenMLoop then
-			TransactionManager:TriggerTransaction(0x176D9D54)
+    script:yield()
+    if fifteenMillLoop:is_enabled() == true then
+        fifteenMLoop = not fifteenMLoop
+        if fifteenMLoop then
+            TransactionManager:TriggerTransaction(0x176D9D54)
                 script:yield();
-			gui.show_message("Money Loop", "15 Mill loop running, enjoy the easy money!")
-		end
-	end
+            gui.show_message("Money Loop", "15 Mill loop running, enjoy the easy money!")
+        end
+    end
 end)
 millLoop:add_separator()
 millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL GET BANNED!")
@@ -1102,53 +1104,53 @@ script.register_looped("ramLoopz", function()
     if ramLoopz:is_enabled() then
         local player_id = network.get_selected_player()
         if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
-						local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
-						-- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
-						local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+                        -- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
+                        local randomModel = vehicleModels[math.random(1, #vehicleModels)]
 
-						-- Convert the string vehicle model to its hash value
-						local modelHash = MISC.GET_HASH_KEY(randomModel)
+                        -- Convert the string vehicle model to its hash value
+                        local modelHash = MISC.GET_HASH_KEY(randomModel)
 
-						-- Create the vehicle without the last boolean argument (keepTrying)
-						local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
-						-- Set vehicle orientation
-						ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
-						local networkId = NETWORK.VEH_TO_NET(vehicle)
-						if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
-							NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-						end
+                        -- Create the vehicle without the last boolean argument (keepTrying)
+                        local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
+                        -- Set vehicle orientation
+                        ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
+                        local networkId = NETWORK.VEH_TO_NET(vehicle)
+                        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
+                            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+                        end
 
-						if vehicle then
-							-- Set the falling velocity (adjust the value as needed)
-							ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000000)
-							-- Optionally, you can play a sound or customize the ramming effect here
-							VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
-						end
-						
-						local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
-						-- Set vehicle orientation
-						ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
-						local networkId = NETWORK.VEH_TO_NET(vehicle2)
-						if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
-							NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-						end
+                        if vehicle then
+                            -- Set the falling velocity (adjust the value as needed)
+                            ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000000)
+                            -- Optionally, you can play a sound or customize the ramming effect here
+                            VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
+                        end
+                        
+                        local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
+                        -- Set vehicle orientation
+                        ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
+                        local networkId = NETWORK.VEH_TO_NET(vehicle2)
+                        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
+                            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+                        end
 
-						if vehicle2 then
-							-- Set the falling velocity (adjust the value as needed)
-							ENTITY.SET_ENTITY_VELOCITY(vehicle2, 0, 0, 100000000)
-							-- Optionally, you can play a sound or customize the ramming effect here
-							VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
-						end
+                        if vehicle2 then
+                            -- Set the falling velocity (adjust the value as needed)
+                            ENTITY.SET_ENTITY_VELOCITY(vehicle2, 0, 0, 100000000)
+                            -- Optionally, you can play a sound or customize the ramming effect here
+                            VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
+                        end
 
-						gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+                        gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
 
-						-- Use these lines to delete the vehicle after spawning. 
-						-- Needs some type of delay between spawning and deleting to function properly
-						
-						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
-						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
-		end
+                        -- Use these lines to delete the vehicle after spawning. 
+                        -- Needs some type of delay between spawning and deleting to function properly
+                        
+                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
+                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
+        end
 
         -- Sets the timer in seconds for how long this should pause before ramming another player
         --sleep(0.2)
@@ -1171,8 +1173,8 @@ script.register_looped("explodeLoop", function()
                 FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
-				
-				gui.show_message("Grief", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
+                
+                gui.show_message("Grief", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
                 -- Optionally, you can play an explosion sound here using AUDIO.PLAY_SOUND_FROM_COORD
 
         sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
@@ -1188,10 +1190,10 @@ script.register_looped("burnLoop", function()
     if burnLoop:is_enabled() == true then
         local player_id = network.get_selected_player()
         local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-		local fxType = 3
-		local ptfxAsset = "scr_bike_adversary"
-		local particle = "scr_adversary_foot_flames"
-		
+        local fxType = 3
+        local ptfxAsset = "scr_bike_adversary"
+        local particle = "scr_adversary_foot_flames"
+        
         FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, fxType, 100000.0, false, false, 0, false)
         GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
         GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
@@ -1213,10 +1215,10 @@ script.register_looped("waterLoop", function()
     if waterLoop:is_enabled() == true then
         local player_id = network.get_selected_player()
         local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-		local fxType = 13
-		local ptfxAsset = "scr_sum_gy"
-		local particle = "scr_sum_gy_exp_water_bomb"
-		
+        local fxType = 13
+        local ptfxAsset = "scr_sum_gy"
+        local particle = "scr_sum_gy_exp_water_bomb"
+        
         FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z - 1, fxType, 100000.0, false, false, 0, false)
         GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
         GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z - 1, 0.0, 0.0, 0.0, 1.0, false, true, false)
@@ -1236,15 +1238,15 @@ local trollLoop = false
 trollLoop = grief:add_checkbox("Teleport Troll")
 
 script.register_looped("trollLoop", function(script)
-	script:yield()
-	if trollLoop:is_enabled() == true then
-		local localPlayer = PLAYER.PLAYER_ID()
-		local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
-		coords = ENTITY.GET_ENTITY_COORDS(player, true)
-		gui.show_message("Teleport Troll", "Teleporting randomly around "..PLAYER.GET_PLAYER_NAME(network.get_selected_player()))
-		PLAYER.START_PLAYER_TELEPORT(localPlayer, coords.x + math.random(-5, 5), coords.y + math.random(-5, 5), coords.z, 0, true, true, true)
-		sleep(0.1)
-	end
+    script:yield()
+    if trollLoop:is_enabled() == true then
+        local localPlayer = PLAYER.PLAYER_ID()
+        local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
+        coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        gui.show_message("Teleport Troll", "Teleporting randomly around "..PLAYER.GET_PLAYER_NAME(network.get_selected_player()))
+        PLAYER.START_PLAYER_TELEPORT(localPlayer, coords.x + math.random(-5, 5), coords.y + math.random(-5, 5), coords.z, 0, true, true, true)
+        sleep(0.1)
+    end
 end)
 
 -- Figurine Crash
@@ -1264,7 +1266,7 @@ script.register_looped("prCrash", function()
         STREAMING.REQUEST_MODEL(model)
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-		gui.show_message("PR Crash", "Crashing player")
+        gui.show_message("PR Crash", "Crashing player")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -1281,7 +1283,7 @@ script.register_looped("prCrash", function()
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-		sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
     end
 end)
 
@@ -1291,28 +1293,28 @@ grief:add_text("Sound Spams")
 local sSpamAlarm = grief:add_checkbox("Alarm Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
 script.register_looped("sSpamAlarm", function()
 local targetPlayer = network.get_selected_player()
-	if sSpamAlarm:is_enabled() then
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 0)
-				gui.show_message("Sound Spam", "Alarm spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
-	end
+    if sSpamAlarm:is_enabled() then
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 0)
+                gui.show_message("Sound Spam", "Alarm spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
+    end
 end)
 grief:add_sameline()
 local pSpamAlarm = grief:add_checkbox("Phone Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
 script.register_looped("pSpamAlarm", function()
 local targetPlayer = network.get_selected_player()
-	if pSpamAlarm:is_enabled() then
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "Phone_SoundSet_Michael", true, 0)
-				gui.show_message("Sound Spam", "Phone spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
-	end
+    if pSpamAlarm:is_enabled() then
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "Phone_SoundSet_Michael", true, 0)
+                gui.show_message("Sound Spam", "Phone spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
+    end
 end)
 grief:add_sameline()
 local altitudeSpam = grief:add_checkbox("Altitude Spam")
 script.register_looped("altitudeSpam", function()
 local player_id = network.get_selected_player()
-	if altitudeSpam:is_enabled() then
-		AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 0)
-		gui.show_message("Sound Spam", "Altitude spamming "..PLAYER.GET_PLAYER_NAME(player_id))
-	end
+    if altitudeSpam:is_enabled() then
+        AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 0)
+        gui.show_message("Sound Spam", "Altitude spamming "..PLAYER.GET_PLAYER_NAME(player_id))
+    end
 end)
 
 grief:add_text("Select a player from the list and activate.")
@@ -1346,8 +1348,8 @@ local defaultSpawnDistance = { x = 0, y = 0, z = -1 }
 -- Function to reset sliders to default values
 local function resetSliders()
     orientationPitch = defaultOrientationPitch
-	orientationYaw = defaultOrientationYaw
-	orientationRoll = defaultOrientationRoll
+    orientationYaw = defaultOrientationYaw
+    orientationRoll = defaultOrientationRoll
     spawnDistance.x = defaultSpawnDistance.x
     spawnDistance.y = defaultSpawnDistance.y
     spawnDistance.z = defaultSpawnDistance.z
@@ -1355,8 +1357,8 @@ end
 
 Objets:add_imgui(function()
     orientationPitch, used = ImGui.SliderInt("Pitch", orientationPitch, 0, 360)
-	orientationYaw, used = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
-	orientationRoll, used = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
+    orientationYaw, used = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
+    orientationRoll, used = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
 end)
 
 Objets:add_imgui(function()
@@ -1393,15 +1395,15 @@ Objets:add_text("Object Spawner")
 -- Add search input field
 local searchQuery = ""
 Objets:add_imgui(function()
-	if is_typing then
-		PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
-	end
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
     searchQuery, used = ImGui.InputText("Search Objects", searchQuery, 128)
-	 if ImGui.IsItemActive() then
-		is_typing = true
-	else
-		is_typing = false
-	end
+     if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
 end)
 
 local filteredItems = {}
@@ -1451,11 +1453,11 @@ Objets:add_button("Spawn Selected", function()
             end
 
             local spawnedObject = OBJECT.CREATE_OBJECT(selectedObjectInfo.hash, playerPos.x, playerPos.y, playerPos.z, true, true, false)
-			ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationPitch, orientationYaw, orientationRoll, 2, true) -- Rotate the object
-			local net_id = NETWORK.OBJ_TO_NET(spawnedObject)
-			NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(spawnedObject, true)
+            ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationPitch, orientationYaw, orientationRoll, 2, true) -- Rotate the object
+            local net_id = NETWORK.OBJ_TO_NET(spawnedObject)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(spawnedObject, true)
             gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
-			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(spawnedObject)
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(spawnedObject)
         else
             gui.show_message("Object Spawner", "Selected object not found.")
         end
@@ -1563,15 +1565,15 @@ end
 
 -- Add search input field
 vSpawn:add_imgui(function()
-	if is_typing then
-		PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
-	end
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
     searchQuery, _ = ImGui.InputText("Search Vehicles", searchQuery, 128)
-	if ImGui.IsItemActive() then
-		is_typing = true
-	else
-		is_typing = false
-	end
+    if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
 end)
 
 vSpawn:add_imgui(displayVehicleModelsList)
@@ -1586,15 +1588,15 @@ vSpawn:add_button("Spawn Selected", function()
         local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
         if selectedVehicleModel then
             local vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
-			local selPlayer = network.get_selected_player()
-			local targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
-			local playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
-			local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
+            local selPlayer = network.get_selected_player()
+            local targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+            local playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
+            local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
             playerPos.x = playerPos.x + spawnDistance.x
             playerPos.y = playerPos.y + spawnDistance.y
             playerPos.z = playerPos.z + spawnDistance.z
             spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
-			gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
+            gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
         end
     else
         gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
@@ -1608,7 +1610,7 @@ function RequestControl(entity)
     local netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
  
     NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
-	NETWORK.NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID)
+    NETWORK.NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID)
     while not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) and tick < 50 do
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
         tick = tick + 1
@@ -1647,31 +1649,31 @@ Gif:add_button("Gift Vehicle", function()
     if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
         local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
         giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
-		--sleep(5)
-		--ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(targetVehicle)
+        --sleep(5)
+        --ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(targetVehicle)
     end 
 end)
 
 Gif:add_button("Get Vehicle Stats", function()
-	local selectedPlayer = network.get_selected_player()
-	local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+    local selectedPlayer = network.get_selected_player()
+    local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
  
-	if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
-		last_veh = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
-	end 
+    if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
+        last_veh = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+    end 
  
  
-	if last_veh  then 
-		local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
-		gui.show_message("Info", 
-			"user :"..PLAYER.GET_PLAYER_NAME(selectedPlayer).."->"..NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(selectedPlayer).."->".. joaat(playerName).."\n".. --NETWORK.GET_HASH_KEY(playerName).."\n"..
-			" Previous_Owner:"..DECORATOR.DECOR_GET_INT(last_veh , "Previous_Owner").."\n"..
-			" Vehicle Model:"..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(last_veh)).."\n"..
-			" Player_Vehicle:"..DECORATOR.DECOR_GET_INT(last_veh , "Player_Vehicle").."\n"..
-			" MPBitset:"..DECORATOR.DECOR_GET_INT(last_veh , "MPBitset").."\n"..
-			" Veh_Modded_By_Player:"..DECORATOR.DECOR_GET_INT(last_veh , "Veh_Modded_By_Player").."\n"..
-			" Not_Allow_As_Saved_Veh:"..DECORATOR.DECOR_GET_INT(last_veh , "Not_Allow_As_Saved_Veh"))
-	end  
+    if last_veh  then 
+        local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+        gui.show_message("Info", 
+            "user :"..PLAYER.GET_PLAYER_NAME(selectedPlayer).."->"..NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(selectedPlayer).."->".. joaat(playerName).."\n".. --NETWORK.GET_HASH_KEY(playerName).."\n"..
+            " Previous_Owner:"..DECORATOR.DECOR_GET_INT(last_veh , "Previous_Owner").."\n"..
+            " Vehicle Model:"..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(last_veh)).."\n"..
+            " Player_Vehicle:"..DECORATOR.DECOR_GET_INT(last_veh , "Player_Vehicle").."\n"..
+            " MPBitset:"..DECORATOR.DECOR_GET_INT(last_veh , "MPBitset").."\n"..
+            " Veh_Modded_By_Player:"..DECORATOR.DECOR_GET_INT(last_veh , "Veh_Modded_By_Player").."\n"..
+            " Not_Allow_As_Saved_Veh:"..DECORATOR.DECOR_GET_INT(last_veh , "Not_Allow_As_Saved_Veh"))
+    end  
 end)
 
 -- Global Player Options
@@ -1684,16 +1686,16 @@ Global:add_text("Global RP Options")
 rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
 
         script.register_looped("PRGBGLoop", function()
-		if rpLoop:is_enabled() == true then
+        if rpLoop:is_enabled() == true then
             local model = joaat("vw_prop_vw_colle_prbubble")
             local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
             local money_value = 0
-			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
+            gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
             STREAMING.REQUEST_MODEL(model)
             while STREAMING.HAS_MODEL_LOADED(model) == false do
                 sleep(1)
             end
-		
+        
             if STREAMING.HAS_MODEL_LOADED(model) then
                 local localPlayerId = PLAYER.PLAYER_ID()
                 local player_count = PLAYER.GET_NUMBER_OF_PLAYERS() - 1 -- Minus 1 player (yourself) from the drop count.
@@ -1702,7 +1704,7 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
                 for i = 0, 32 do
                     if i ~= localPlayerId then
                         local player_id = i
-						
+                        
                         local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                         local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                             pickup,
@@ -1716,15 +1718,15 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
                             false
                         )
 
-						local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+                        local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+                        NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
                     end
                 end
             end
-			sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
-		end
+            sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+        end
         end)
-Global:add_sameline()		
+Global:add_sameline()       
 local moneyLoop = Global:add_checkbox("Give Global Money (On/Off)")
 
 script.register_looped("moneyLoop", function()
@@ -1733,12 +1735,12 @@ script.register_looped("moneyLoop", function()
         local model = joaat("prop_cash_pile_01")
             local pickup = joaat("PICKUP_MONEY_VARIABLE")
             local money_value = 100
-			gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
+            gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
             STREAMING.REQUEST_MODEL(model)
             while STREAMING.HAS_MODEL_LOADED(model) == false do
                 sleep(1)
             end
-		
+        
             if STREAMING.HAS_MODEL_LOADED(model) then
                 local localPlayerId = PLAYER.PLAYER_ID()
                 local player_count = PLAYER.GET_NUMBER_OF_PLAYERS() - 1 -- Minus 1 player (yourself) from the drop count.
@@ -1747,7 +1749,7 @@ script.register_looped("moneyLoop", function()
                 for i = 0, 32 do
                     if i ~= localPlayerId then
                         local player_id = i
-						
+                        
                         local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                         local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                             pickup,
@@ -1761,12 +1763,12 @@ script.register_looped("moneyLoop", function()
                             false
                         )
 
-						local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+                        local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+                        NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
                     end
                 end
             end
-			sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+            sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
     end
     sleep(0.4) -- Sets the timer in seconds for how long this should pause
 end)
@@ -1778,118 +1780,118 @@ Global:add_text("Global Sound Options")
 local altSpam = Global:add_checkbox("Altitude Spam")
 script.register_looped("altSpamLoop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
-	if altSpam:is_enabled() then
-		for i = 0, 32 do
-			if i ~= localPlayerId then
+    if altSpam:is_enabled() then
+        for i = 0, 32 do
+            if i ~= localPlayerId then
                 local player_id = i
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 0)
-			end
-		end
-	end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 0)
+            end
+        end
+    end
 end)
 Global:add_sameline()
 local sSpam = Global:add_checkbox("Jet Spam")
 script.register_looped("soundSpamLoop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
-	if sSpam:is_enabled() then
-		for i = 0, 32 do
-			if i ~= localPlayerId then
+    if sSpam:is_enabled() then
+        for i = 0, 32 do
+            if i ~= localPlayerId then
                 local player_id = i
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Jet_Explosions", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "exile_1", true, 0)
-			end
-		end
-	end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Jet_Explosions", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "exile_1", true, 0)
+            end
+        end
+    end
 end)
 Global:add_sameline()
 local sSpam2 = Global:add_checkbox("Pickup Spam")
 script.register_looped("soundSpam2Loop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
-	if sSpam2:is_enabled() then
-		for i = 0, 32 do
-			if i ~= localPlayerId then
+    if sSpam2:is_enabled() then
+        for i = 0, 32 do
+            if i ~= localPlayerId then
                 local player_id = i
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "PICKUP_DEFAULT", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "HUD_FRONTEND_STANDARD_PICKUPS_SOUNDSET", true, 0)
-			end
-		end
-	end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "PICKUP_DEFAULT", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "HUD_FRONTEND_STANDARD_PICKUPS_SOUNDSET", true, 0)
+            end
+        end
+    end
 end)
 Global:add_sameline()
 local sSpam3 = Global:add_checkbox("Phone Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
 script.register_looped("soundSpam3Loop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
-	if sSpam3:is_enabled() then
-	gui.show_message("Phonecall Spam", "This sound cannot be toggled off once its on.  The only way to stop it is to exit the game")
-		for i = 0, 32 do
-			if i ~= localPlayerId then
+    if sSpam3:is_enabled() then
+    gui.show_message("Phonecall Spam", "This sound cannot be toggled off once its on.  The only way to stop it is to exit the game")
+        for i = 0, 32 do
+            if i ~= localPlayerId then
                 local player_id = i
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "Phone_SoundSet_Michael", true, 0)
-			end
-		end
-	end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "Phone_SoundSet_Michael", true, 0)
+            end
+        end
+    end
 end)
 Global:add_sameline()
 local sSpam4 = Global:add_checkbox("Wasted Spam")
 script.register_looped("soundSpam4Loop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
-	if sSpam4:is_enabled() then
-		for i = 0, 32 do
-			if i ~= localPlayerId then
+    if sSpam4:is_enabled() then
+        for i = 0, 32 do
+            if i ~= localPlayerId then
                 local player_id = i
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "ScreenFlash", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "WastedSounds", true, 0)
-			end
-		end
-	end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "ScreenFlash", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "WastedSounds", true, 0)
+            end
+        end
+    end
 end)
 local sSpam5 = Global:add_checkbox("Bodies Spam")
 script.register_looped("soundSpam5Loop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
-	if sSpam5:is_enabled() then
-		for i = 0, 32 do
-			if i ~= localPlayerId then
+    if sSpam5:is_enabled() then
+        for i = 0, 32 do
+            if i ~= localPlayerId then
                 local player_id = i
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Architect_Fall", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "FBI_HEIST_SOUNDSET", true, 0)
-			end
-		end
-	end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Architect_Fall", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "FBI_HEIST_SOUNDSET", true, 0)
+            end
+        end
+    end
 end)
 Global:add_sameline()
 local sSpam6 = Global:add_checkbox("Yacht Spam")
 script.register_looped("soundSpam6Loop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
-	if sSpam6:is_enabled() then
-		for i = 0, 32 do
-			if i ~= localPlayerId then
+    if sSpam6:is_enabled() then
+        for i = 0, 32 do
+            if i ~= localPlayerId then
                 local player_id = i
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "HORN", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_Apt_Yacht_Ambient_Soundset", true, 0)
-			end
-		end
-	end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "HORN", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_Apt_Yacht_Ambient_Soundset", true, 0)
+            end
+        end
+    end
 end)
 Global:add_sameline()
 local sSpam7 = Global:add_checkbox("Whistle Spam")
 script.register_looped("soundSpam7Loop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
-	if sSpam7:is_enabled() then
-		for i = 0, 32 do
-			if i ~= localPlayerId then
+    if sSpam7:is_enabled() then
+        for i = 0, 32 do
+            if i ~= localPlayerId then
                 local player_id = i
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Franklin_Whistle_For_Chop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "SPEECH_RELATED_SOUNDS", true, 0)
-			end
-		end
-	end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Franklin_Whistle_For_Chop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "SPEECH_RELATED_SOUNDS", true, 0)
+            end
+        end
+    end
 end)
 Global:add_sameline()
 local sSpam8 = Global:add_checkbox("Alarm Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
 script.register_looped("soundSpam8Loop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
-	if sSpam8:is_enabled() then
-		for i = 0, 32 do
-			if i ~= localPlayerId then
+    if sSpam8:is_enabled() then
+        for i = 0, 32 do
+            if i ~= localPlayerId then
                 local player_id = i
-				AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 0)
-			end
-		end
-	end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 0)
+            end
+        end
+    end
 end)
 
 -- Global Particle Effects
@@ -1905,8 +1907,8 @@ function load_fireworks()
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("proj_indep_firework") then
         return false
     end
-	
-	STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_indep_fireworks")
+    
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_indep_fireworks")
     
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_indep_fireworks") then
         return false
@@ -1923,31 +1925,31 @@ script.register_looped("FireworkLoop", function()
     if fireworkLoop:is_enabled() == true then
         if load_fireworks() then
             local localPlayerId = PLAYER.PLAYER_ID()
-			for i = 0, 32 do
-				if i ~= localPlayerId then
-					local player_id = i
-					local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            for i = 0, 32 do
+                if i ~= localPlayerId then
+                    local player_id = i
+                    local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
-					-- Get random color values
-					local colorR, colorG, colorB = random_color()
-					player_coords.z = player_coords.z - 1
-					setExp1 = player_coords.z + 25
-					setExp2 = player_coords.z + 35
-					-- Play the explosion particle effect with random color
-					GRAPHICS.USE_PARTICLE_FX_ASSET("scr_indep_fireworks")
-					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_trailburst", player_coords.x, player_coords.y, player_coords.z, 0, 0, 0, math.random(1, 5), false, false, false, false)
-					sleep(0.05)
-					GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework")
-					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_grd_burst", player_coords.x, player_coords.y, setExp1, 0, 0, 0, math.random(1, 5), false, false, false, false)
-					
-					GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework_v2")
-					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_firework_indep_burst_rwb", player_coords.x, player_coords.y, setExp2, 0, 0, 0, math.random(1, 5), false, false, false, false)
-				end
-			end
-		end
+                    -- Get random color values
+                    local colorR, colorG, colorB = random_color()
+                    player_coords.z = player_coords.z - 1
+                    setExp1 = player_coords.z + 25
+                    setExp2 = player_coords.z + 35
+                    -- Play the explosion particle effect with random color
+                    GRAPHICS.USE_PARTICLE_FX_ASSET("scr_indep_fireworks")
+                    GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+                    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_trailburst", player_coords.x, player_coords.y, player_coords.z, 0, 0, 0, math.random(1, 5), false, false, false, false)
+                    sleep(0.05)
+                    GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework")
+                    GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+                    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_grd_burst", player_coords.x, player_coords.y, setExp1, 0, 0, 0, math.random(1, 5), false, false, false, false)
+                    
+                    GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework_v2")
+                    GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+                    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_firework_indep_burst_rwb", player_coords.x, player_coords.y, setExp2, 0, 0, 0, math.random(1, 5), false, false, false, false)
+                end
+            end
+        end
     end
 end)
 
@@ -1972,21 +1974,21 @@ script.register_looped("FlameLoopGlobal", function()
     if flameLoopGlobal:is_enabled() == true then
         if load_flame() then
             local localPlayerId = PLAYER.PLAYER_ID()
-			for i = 0, 32 do
-				if i ~= localPlayerId then
-					local player_id = i
-					local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            for i = 0, 32 do
+                if i ~= localPlayerId then
+                    local player_id = i
+                    local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
-					-- Get random color values
-					local colorR, colorG, colorB = random_color()
-					test = player_coords.z - 1
-					GRAPHICS.USE_PARTICLE_FX_ASSET("scr_bike_adversary")
-					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_adversary_foot_flames", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
-				end
-			end
-			sleep(0.2)
-		end
+                    -- Get random color values
+                    local colorR, colorG, colorB = random_color()
+                    test = player_coords.z - 1
+                    GRAPHICS.USE_PARTICLE_FX_ASSET("scr_bike_adversary")
+                    GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+                    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_adversary_foot_flames", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
+                end
+            end
+            sleep(0.2)
+        end
     end
 end)
 
@@ -2011,21 +2013,21 @@ script.register_looped("lightningLoopGlobal", function()
     if lightningLoopGlobal:is_enabled() == true then
         if load_lightning() then
             local localPlayerId = PLAYER.PLAYER_ID()
-			for i = 0, 32 do
-				if i ~= localPlayerId then
-					local player_id = i
-					local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            for i = 0, 32 do
+                if i ~= localPlayerId then
+                    local player_id = i
+                    local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
-					-- Get random color values
-					local colorR, colorG, colorB = random_color()
-					test = player_coords.z
-					GRAPHICS.USE_PARTICLE_FX_ASSET("des_tv_smash")
-					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("ent_sht_electrical_box_sp", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
-				end
-			end
-			sleep(0.2)
-		end
+                    -- Get random color values
+                    local colorR, colorG, colorB = random_color()
+                    test = player_coords.z
+                    GRAPHICS.USE_PARTICLE_FX_ASSET("des_tv_smash")
+                    GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+                    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("ent_sht_electrical_box_sp", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
+                end
+            end
+            sleep(0.2)
+        end
     end
 end)
 
@@ -2050,21 +2052,21 @@ script.register_looped("snowLoopGlobal", function()
     if snowLoopGlobal:is_enabled() == true then
         if load_snow() then
             local localPlayerId = PLAYER.PLAYER_ID()
-			for i = 0, 32 do
-				if i ~= localPlayerId then
-					local player_id = i
-					local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            for i = 0, 32 do
+                if i ~= localPlayerId then
+                    local player_id = i
+                    local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
-					-- Get random color values
-					local colorR, colorG, colorB = random_color()
-					test = player_coords.z
-					GRAPHICS.USE_PARTICLE_FX_ASSET("proj_xmas_snowball")
-					GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-					GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("exp_grd_snowball", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
-				end
-			end
-			sleep(0.2)
-		end
+                    -- Get random color values
+                    local colorR, colorG, colorB = random_color()
+                    test = player_coords.z
+                    GRAPHICS.USE_PARTICLE_FX_ASSET("proj_xmas_snowball")
+                    GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
+                    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("exp_grd_snowball", player_coords.x, player_coords.y, test, 0, 0, 0, 5, false, false, false, false)
+                end
+            end
+            sleep(0.2)
+        end
     end
 end)
 
@@ -2085,7 +2087,7 @@ script.register_looped("explosionLoop", function()
                 local player_id = i
                 local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                 gui.show_message("Global (Toxic)", "Exploding " .. PLAYER.GET_PLAYER_NAME(player_id) .. " repeatedly")
-				
+                
                 FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
@@ -2102,60 +2104,60 @@ local ramGlobal = Global:add_checkbox("Vehicle Sandwich (On/Off)")
 
 script.register_looped("ramGlobal", function()
     if ramGlobal:is_enabled() then
-	local localPlayerId = PLAYER.PLAYER_ID()
+    local localPlayerId = PLAYER.PLAYER_ID()
          for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-					if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
-						local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                    if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
+                        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
-						-- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
-						local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+                        -- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
+                        local randomModel = vehicleModels[math.random(1, #vehicleModels)]
 
-						-- Convert the string vehicle model to its hash value
-						local modelHash = MISC.GET_HASH_KEY(randomModel)
+                        -- Convert the string vehicle model to its hash value
+                        local modelHash = MISC.GET_HASH_KEY(randomModel)
 
-						-- Create the vehicle without the last boolean argument (keepTrying)
-						local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
-						-- Set vehicle orientation
-						ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
-						local networkId = NETWORK.VEH_TO_NET(vehicle)
-						if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
-							NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-						end
+                        -- Create the vehicle without the last boolean argument (keepTrying)
+                        local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
+                        -- Set vehicle orientation
+                        ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
+                        local networkId = NETWORK.VEH_TO_NET(vehicle)
+                        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
+                            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+                        end
 
-						if vehicle then
-							-- Set the falling velocity (adjust the value as needed)
-							ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000000)
-							-- Optionally, you can play a sound or customize the ramming effect here
-							VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
-						end
-						
-						local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
-						-- Set vehicle orientation
-						ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
-						local networkId = NETWORK.VEH_TO_NET(vehicle2)
-						if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
-							NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-						end
+                        if vehicle then
+                            -- Set the falling velocity (adjust the value as needed)
+                            ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000000)
+                            -- Optionally, you can play a sound or customize the ramming effect here
+                            VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
+                        end
+                        
+                        local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
+                        -- Set vehicle orientation
+                        ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
+                        local networkId = NETWORK.VEH_TO_NET(vehicle2)
+                        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
+                            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+                        end
 
-						if vehicle2 then
-							-- Set the falling velocity (adjust the value as needed)
-							ENTITY.SET_ENTITY_VELOCITY(vehicle2, 0, 0, 100000000)
-							-- Optionally, you can play a sound or customize the ramming effect here
-							VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
-						end
+                        if vehicle2 then
+                            -- Set the falling velocity (adjust the value as needed)
+                            ENTITY.SET_ENTITY_VELOCITY(vehicle2, 0, 0, 100000000)
+                            -- Optionally, you can play a sound or customize the ramming effect here
+                            VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
+                        end
 
-						gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+                        gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
 
-						-- Use these lines to delete the vehicle after spawning. 
-						-- Needs some type of delay between spawning and deleting to function properly
-						
-						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
-						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
-					end
-			end
-		end
+                        -- Use these lines to delete the vehicle after spawning. 
+                        -- Needs some type of delay between spawning and deleting to function properly
+                        
+                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
+                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
+                    end
+            end
+        end
 
         -- Sets the timer in seconds for how long this should pause before ramming another player
         --sleep(0.2)
@@ -2169,37 +2171,37 @@ local crashGlobal = Global:add_checkbox("Crash Everyone (On/Off)")
 
 script.register_looped("crashGlobal", function()
     if crashGlobal:is_enabled() then
-	local localPlayerId = PLAYER.PLAYER_ID()
+    local localPlayerId = PLAYER.PLAYER_ID()
          for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-				local model = joaat("vw_prop_vw_colle_prbubble")
-				local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-				local money_value = 100000000000
+                local model = joaat("vw_prop_vw_colle_prbubble")
+                local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+                local money_value = 100000000000
 
-				STREAMING.REQUEST_MODEL(model)
+                STREAMING.REQUEST_MODEL(model)
 
-				if STREAMING.HAS_MODEL_LOADED(model) then
-				gui.show_message("Global (Toxic)", "Crashing " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with figurines")
-					local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-					local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-						pickup,
-						coords.x,
-						coords.y,
-						coords.z + 0.5,
-						3,
-						money_value,
-						model,
-						true,
-						false
-					)
+                if STREAMING.HAS_MODEL_LOADED(model) then
+                gui.show_message("Global (Toxic)", "Crashing " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with figurines")
+                    local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                    local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                        pickup,
+                        coords.x,
+                        coords.y,
+                        coords.z + 0.5,
+                        3,
+                        money_value,
+                        model,
+                        true,
+                        false
+                    )
 
-					local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-					NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-				end
-				 sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-			end
-		end
+                    local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+                    NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+                end
+                 sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+            end
+        end
 
         -- Sets the timer in seconds for how long this should pause before ramming another player
         --sleep(0.2)
@@ -2248,117 +2250,117 @@ end)
 
 StoryCharacters = KAOS:add_tab("Story Mode")
 
-	mCash = 0
-	StoryCharacters:add_imgui(function()
-		mCash, used = ImGui.SliderInt("Michael's Cash", mCash, 1, 2147483646)
-		out = "Michael's cash set to $"..tostring(mCash)
-		if used then
-			STATS.STAT_SET_INT(joaat("SP0_TOTAL_CASH"), mCash, true)
-			gui.show_message('Story Mode Cash Updated!', out)
-		end
-	end)
-	
-	fCash = 0
-	StoryCharacters:add_imgui(function()
-		fCash, used = ImGui.SliderInt("Franklin's Cash", fCash, 1, 2147483646)
-		out = "Franklins's cash set to $"..tostring(fCash)
-		if used then
-			STATS.STAT_SET_INT(joaat("SP1_TOTAL_CASH"), fCash, true)
-			gui.show_message('Story Mode Cash Updated!', out)
-		end
-	end)
-	
-	tCash = 0
-	StoryCharacters:add_imgui(function()
-		tCash, used = ImGui.SliderInt("Trevor's Cash", tCash, 1, 2147483646)
-		out = "Trevor's cash set to $"..tostring(tCash)
-		if used then
-			STATS.STAT_SET_INT(joaat("SP2_TOTAL_CASH"), tCash, true)
-			gui.show_message('Story Mode Cash Updated!', out)
-		end
-	end)
-	StoryCharacters:add_separator()
-	mStats = 0
-	StoryCharacters:add_imgui(function()
-		mStats, used = ImGui.SliderInt("Michael's Stats", mStats, 0, 100)
-		out = "Michael's Stats set to "..tostring(mStats).."/100"
-		if used then
-			STATS.STAT_SET_INT(joaat("SP0_SPECIAL_ABILITY"), mStats, true)
-			STATS.STAT_SET_INT(joaat("SP0_STAMINA"), mStats, true)
-			STATS.STAT_SET_INT(joaat("SP0_STRENGTH"), mStats, true)
-			STATS.STAT_SET_INT(joaat("SP0_LUNG_CAPACITY"), mStats, true)
-			STATS.STAT_SET_INT(joaat("SP0_WHEELIE_ABILITY"), mStats, true)
-			STATS.STAT_SET_INT(joaat("SP0_FLYING_ABILITY"), mStats, true)
-			STATS.STAT_SET_INT(joaat("SP0_SHOOTING_ABILITY"), mStats, true)
-			STATS.STAT_SET_INT(joaat("SP0_STEALTH_ABILITY"), mStats, true)
-			gui.show_message('Story Mode Stats Updated!', out)
-		end
-	end)
-	
-	fStats = 0
-	StoryCharacters:add_imgui(function()
-		fStats, used = ImGui.SliderInt("Franklin's Stats", fStats, 0, 100)
-		out = "Franklin's Stats set to "..tostring(fStats).."/100"
-		if used then
-			STATS.STAT_SET_INT(joaat("SP1_SPECIAL_ABILITY"), fStats, true)
-			STATS.STAT_SET_INT(joaat("SP1_STAMINA"), fStats, true)
-			STATS.STAT_SET_INT(joaat("SP1_STRENGTH"), fStats, true)
-			STATS.STAT_SET_INT(joaat("SP1_LUNG_CAPACITY"), fStats, true)
-			STATS.STAT_SET_INT(joaat("SP1_WHEELIE_ABILITY"), fStats, true)
-			STATS.STAT_SET_INT(joaat("SP1_FLYING_ABILITY"), fStats, true)
-			STATS.STAT_SET_INT(joaat("SP1_SHOOTING_ABILITY"), fStats, true)
-			STATS.STAT_SET_INT(joaat("SP1_STEALTH_ABILITY"), fStats, true)
-			gui.show_message('Story Mode Stats Updated!', out)
-		end
-	end)
-	
-	tStats = 0
-	StoryCharacters:add_imgui(function()
-		tStats, used = ImGui.SliderInt("Trevor's Stats", tStats, 0, 100)
-		out = "Trevor's Stats set to "..tostring(tStats).."/100"
-		if used then
-			STATS.STAT_SET_INT(joaat("SP2_SPECIAL_ABILITY"), tStats, true)
-			STATS.STAT_SET_INT(joaat("SP2_STAMINA"), tStats, true)
-			STATS.STAT_SET_INT(joaat("SP2_STRENGTH"), tStats, true)
-			STATS.STAT_SET_INT(joaat("SP2_LUNG_CAPACITY"), tStats, true)
-			STATS.STAT_SET_INT(joaat("SP2_WHEELIE_ABILITY"), tStats, true)
-			STATS.STAT_SET_INT(joaat("SP2_FLYING_ABILITY"), tStats, true)
-			STATS.STAT_SET_INT(joaat("SP2_SHOOTING_ABILITY"), tStats, true)
-			STATS.STAT_SET_INT(joaat("SP2_STEALTH_ABILITY"), tStats, true)
-			gui.show_message('Story Mode Stats Updated!', out)
-		end
-	end)
-	
+    mCash = 0
+    StoryCharacters:add_imgui(function()
+        mCash, used = ImGui.SliderInt("Michael's Cash", mCash, 1, 2147483646)
+        out = "Michael's cash set to $"..tostring(mCash)
+        if used then
+            STATS.STAT_SET_INT(joaat("SP0_TOTAL_CASH"), mCash, true)
+            gui.show_message('Story Mode Cash Updated!', out)
+        end
+    end)
+    
+    fCash = 0
+    StoryCharacters:add_imgui(function()
+        fCash, used = ImGui.SliderInt("Franklin's Cash", fCash, 1, 2147483646)
+        out = "Franklins's cash set to $"..tostring(fCash)
+        if used then
+            STATS.STAT_SET_INT(joaat("SP1_TOTAL_CASH"), fCash, true)
+            gui.show_message('Story Mode Cash Updated!', out)
+        end
+    end)
+    
+    tCash = 0
+    StoryCharacters:add_imgui(function()
+        tCash, used = ImGui.SliderInt("Trevor's Cash", tCash, 1, 2147483646)
+        out = "Trevor's cash set to $"..tostring(tCash)
+        if used then
+            STATS.STAT_SET_INT(joaat("SP2_TOTAL_CASH"), tCash, true)
+            gui.show_message('Story Mode Cash Updated!', out)
+        end
+    end)
+    StoryCharacters:add_separator()
+    mStats = 0
+    StoryCharacters:add_imgui(function()
+        mStats, used = ImGui.SliderInt("Michael's Stats", mStats, 0, 100)
+        out = "Michael's Stats set to "..tostring(mStats).."/100"
+        if used then
+            STATS.STAT_SET_INT(joaat("SP0_SPECIAL_ABILITY"), mStats, true)
+            STATS.STAT_SET_INT(joaat("SP0_STAMINA"), mStats, true)
+            STATS.STAT_SET_INT(joaat("SP0_STRENGTH"), mStats, true)
+            STATS.STAT_SET_INT(joaat("SP0_LUNG_CAPACITY"), mStats, true)
+            STATS.STAT_SET_INT(joaat("SP0_WHEELIE_ABILITY"), mStats, true)
+            STATS.STAT_SET_INT(joaat("SP0_FLYING_ABILITY"), mStats, true)
+            STATS.STAT_SET_INT(joaat("SP0_SHOOTING_ABILITY"), mStats, true)
+            STATS.STAT_SET_INT(joaat("SP0_STEALTH_ABILITY"), mStats, true)
+            gui.show_message('Story Mode Stats Updated!', out)
+        end
+    end)
+    
+    fStats = 0
+    StoryCharacters:add_imgui(function()
+        fStats, used = ImGui.SliderInt("Franklin's Stats", fStats, 0, 100)
+        out = "Franklin's Stats set to "..tostring(fStats).."/100"
+        if used then
+            STATS.STAT_SET_INT(joaat("SP1_SPECIAL_ABILITY"), fStats, true)
+            STATS.STAT_SET_INT(joaat("SP1_STAMINA"), fStats, true)
+            STATS.STAT_SET_INT(joaat("SP1_STRENGTH"), fStats, true)
+            STATS.STAT_SET_INT(joaat("SP1_LUNG_CAPACITY"), fStats, true)
+            STATS.STAT_SET_INT(joaat("SP1_WHEELIE_ABILITY"), fStats, true)
+            STATS.STAT_SET_INT(joaat("SP1_FLYING_ABILITY"), fStats, true)
+            STATS.STAT_SET_INT(joaat("SP1_SHOOTING_ABILITY"), fStats, true)
+            STATS.STAT_SET_INT(joaat("SP1_STEALTH_ABILITY"), fStats, true)
+            gui.show_message('Story Mode Stats Updated!', out)
+        end
+    end)
+    
+    tStats = 0
+    StoryCharacters:add_imgui(function()
+        tStats, used = ImGui.SliderInt("Trevor's Stats", tStats, 0, 100)
+        out = "Trevor's Stats set to "..tostring(tStats).."/100"
+        if used then
+            STATS.STAT_SET_INT(joaat("SP2_SPECIAL_ABILITY"), tStats, true)
+            STATS.STAT_SET_INT(joaat("SP2_STAMINA"), tStats, true)
+            STATS.STAT_SET_INT(joaat("SP2_STRENGTH"), tStats, true)
+            STATS.STAT_SET_INT(joaat("SP2_LUNG_CAPACITY"), tStats, true)
+            STATS.STAT_SET_INT(joaat("SP2_WHEELIE_ABILITY"), tStats, true)
+            STATS.STAT_SET_INT(joaat("SP2_FLYING_ABILITY"), tStats, true)
+            STATS.STAT_SET_INT(joaat("SP2_SHOOTING_ABILITY"), tStats, true)
+            STATS.STAT_SET_INT(joaat("SP2_STEALTH_ABILITY"), tStats, true)
+            gui.show_message('Story Mode Stats Updated!', out)
+        end
+    end)
+    
 -- Weapons Tab
 
 local Weapons = KAOS:add_tab("Weapons")
 
 Weapons:add_button("Remove All Weapons", function()
-		local playerID = PLAYER.PLAYER_ID()
-		local ent = PLAYER.GET_PLAYER_PED(playerID)
-		out = "Successfully removed all weapons"
-		if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
-			for _, name in ipairs(weaponNamesString) do
-				local weaponHash = MISC.GET_HASH_KEY(name)
-				WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
-				gui.show_message('Weapons', out)
-				
-			end
-		end
+        local playerID = PLAYER.PLAYER_ID()
+        local ent = PLAYER.GET_PLAYER_PED(playerID)
+        out = "Successfully removed all weapons"
+        if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
+            for _, name in ipairs(weaponNamesString) do
+                local weaponHash = MISC.GET_HASH_KEY(name)
+                WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
+                gui.show_message('Weapons', out)
+                
+            end
+        end
 end)
 Weapons:add_sameline()
 Weapons:add_button("Give All Weapons", function()
-		local playerID = PLAYER.PLAYER_ID()
-		local ent = PLAYER.GET_PLAYER_PED(playerID)
-		out = "Successfully given all weapons"
-		if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
-			for _, name in ipairs(weaponNamesString) do
-				local weaponHash = MISC.GET_HASH_KEY(name)
-				WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
-				gui.show_message('Weapons', out)
-				
-			end
-		end
+        local playerID = PLAYER.PLAYER_ID()
+        local ent = PLAYER.GET_PLAYER_PED(playerID)
+        out = "Successfully given all weapons"
+        if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
+            for _, name in ipairs(weaponNamesString) do
+                local weaponHash = MISC.GET_HASH_KEY(name)
+                WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
+                gui.show_message('Weapons', out)
+                
+            end
+        end
 end)
 
 Weapons:add_tab("Drops")
@@ -2371,7 +2373,7 @@ Weapons:add_button("Drop Random Weapon", function()
         local weaponName = weaponNamesString[math.random(1, #weaponNamesString)]
         local money_value = 0
         local player_id = network.get_selected_player()
-		local model = weaponModels[math.random(1, #weaponModels)]
+        local model = weaponModels[math.random(1, #weaponModels)]
 
         local modelHash = joaat(model)
         STREAMING.REQUEST_MODEL(modelHash)
@@ -2412,9 +2414,9 @@ local agency = Business:add_tab("Agency")
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
 
 local contract_id = {3, 4, 12, 28, 60, 124, 252, 508, 2044, 4095, -1}
@@ -2444,138 +2446,138 @@ end)
 agency:add_sameline()
 
 agency:add_button("Complete Preps", function()
-	STATS.STAT_SET_INT(joaat(MPX .. "FIXER_GENERAL_BS"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COMPLETED_BS"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_COOLDOWN_POSIX"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "FIXER_GENERAL_BS"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COMPLETED_BS"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_COOLDOWN_POSIX"), -1, true)
 end)
 agency:add_sameline()
 agency:add_button("Skip Cooldown", function()
-	STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_COOLDOWN"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_COOLDOWN"), -1, true)
 end)
 
 agency:add_separator()
 agency:add_text("Money")
 local agencySafe = agency:add_checkbox("Agency Safe Loop")
 script.register_looped("agencyloop", function(script)
-	script:yield()
-	if agencySafe:is_enabled() == true then
-		gui.show_message("Business Manager", "Supplying Agency Safe with money")
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COUNT"), 500, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
-		sleep(0.5)
-	end
+    script:yield()
+    if agencySafe:is_enabled() == true then
+        gui.show_message("Business Manager", "Supplying Agency Safe with money")
+        STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COUNT"), 500, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
+        sleep(0.5)
+    end
 end)
 
 local Hangar = Business:add_tab("Hangar")
 
 hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
 script.register_looped("autoGetHangarCargo", function(script)
-	script:yield()
-	if hStock:is_enabled() == true then
-		autoGetHangarCargo = not autoGetHangarCargo
-		if autoGetHangarCargo then
-			stats.set_bool_masked("MP0_DLC22022PSTAT_BOOL3", true, 9)
-			gui.show_message("Hangar", "Restocking hangar cargo, please wait...")
-			sleep(0.5)
-		end
-	end
+    script:yield()
+    if hStock:is_enabled() == true then
+        autoGetHangarCargo = not autoGetHangarCargo
+        if autoGetHangarCargo then
+            stats.set_bool_masked("MP0_DLC22022PSTAT_BOOL3", true, 9)
+            gui.show_message("Hangar", "Restocking hangar cargo, please wait...")
+            sleep(0.5)
+        end
+    end
 end)
 
 local mcBus = Business:add_tab("Motorcycle Club")
 mcBus:add_text("Resupply your stock in your MC businesses so production stays running")
 acidLab = mcBus:add_checkbox("Resupply Acid Lab (Looped)")
 script.register_looped("autoGetAcidCargo", function(script)
-	script:yield()
-	if acidLab:is_enabled() == true then
-		autoGetAcidCargo = not autoGetAcidCargo
-		if autoGetAcidCargo then
-			globals.set_int(1662873 + 1 + 6, 1)
-			gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...")
-			sleep(0.5)
-		end
-	end
+    script:yield()
+    if acidLab:is_enabled() == true then
+        autoGetAcidCargo = not autoGetAcidCargo
+        if autoGetAcidCargo then
+            globals.set_int(1662873 + 1 + 6, 1)
+            gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...")
+            sleep(0.5)
+        end
+    end
 end)
 
 mcBus:add_sameline()
 bunker = mcBus:add_checkbox("Resupply Bunker (Looped)")
 script.register_looped("autoGetBunkerCargo", function(script)
-	script:yield()
-	if bunker:is_enabled() == true then
-		autoGetBunkerCargo = not autoGetBunkerCargo
-		if autoGetBunkerCargo then
-			globals.set_int(1662873 + 1 + 5, 1)
-			gui.show_message("Bunker", "Resupplying your bunker stock, please wait...")
-			sleep(0.5)
-		end
-	end
+    script:yield()
+    if bunker:is_enabled() == true then
+        autoGetBunkerCargo = not autoGetBunkerCargo
+        if autoGetBunkerCargo then
+            globals.set_int(1662873 + 1 + 5, 1)
+            gui.show_message("Bunker", "Resupplying your bunker stock, please wait...")
+            sleep(0.5)
+        end
+    end
 end)
 
 mcBus:add_sameline()
 docForge = mcBus:add_checkbox("Resupply Document Forge (Looped)")
 script.register_looped("autoGetDocForgeCargo", function(script)
-	script:yield()
-	if docForge:is_enabled() == true then
-		autoGetDocForgeCargo = not autoGetDocForgeCargo
-		if autoGetDocForgeCargo then
-			globals.set_int(1662873 + 1 + 1, 1)
-			gui.show_message("Document Forge", "Resupplying your document forge, please wait...")
-			sleep(0.5)
-		end
-	end
+    script:yield()
+    if docForge:is_enabled() == true then
+        autoGetDocForgeCargo = not autoGetDocForgeCargo
+        if autoGetDocForgeCargo then
+            globals.set_int(1662873 + 1 + 1, 1)
+            gui.show_message("Document Forge", "Resupplying your document forge, please wait...")
+            sleep(0.5)
+        end
+    end
 end)
 
 weed = mcBus:add_checkbox("Resupply Weed (Looped)")
 script.register_looped("autoGetWeedCargo", function(script)
-	script:yield()
-	if weed:is_enabled() == true then
-		autoGetWeedCargo = not autoGetWeedCargo
-		if autoGetWeedCargo then
-			globals.set_int(1662873 + 1 + 2, 1)
-			gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...")
-			sleep(0.5)
-		end
-	end
+    script:yield()
+    if weed:is_enabled() == true then
+        autoGetWeedCargo = not autoGetWeedCargo
+        if autoGetWeedCargo then
+            globals.set_int(1662873 + 1 + 2, 1)
+            gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...")
+            sleep(0.5)
+        end
+    end
 end)
 
 mcBus:add_sameline()
 meth = mcBus:add_checkbox("Resupply Meth (Looped)")
 script.register_looped("autoGetMethCargo", function(script)
-	script:yield()
-	if meth:is_enabled() == true then
-		autoGetMethCargo = not autoGetMethCargo
-		if autoGetMethCargo then
-			globals.set_int(1662873 + 1 + 3, 1)
-			gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...")
-			sleep(0.5)
-		end
-	end
+    script:yield()
+    if meth:is_enabled() == true then
+        autoGetMethCargo = not autoGetMethCargo
+        if autoGetMethCargo then
+            globals.set_int(1662873 + 1 + 3, 1)
+            gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...")
+            sleep(0.5)
+        end
+    end
 end)
 
 mcBus:add_sameline()
 cocaine = mcBus:add_checkbox("Resupply Cocaine (Looped)")
 script.register_looped("autoGetCokeCargo", function(script)
-	script:yield()
-	if cocaine:is_enabled() == true then
-		autoGetCokeCargo = not autoGetCokeCargo
-		if autoGetCokeCargo then
-			globals.set_int(1662873 + 1 + 4, 1)
-			gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...")
-			sleep(0.5)
-		end
-	end
+    script:yield()
+    if cocaine:is_enabled() == true then
+        autoGetCokeCargo = not autoGetCokeCargo
+        if autoGetCokeCargo then
+            globals.set_int(1662873 + 1 + 4, 1)
+            gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...")
+            sleep(0.5)
+        end
+    end
 end)
 
 fakeCash = mcBus:add_checkbox("Resupply Counterfeit Cash (Looped)")
 script.register_looped("autoGetCashCargo", function(script)
-	script:yield()
-	if fakeCash:is_enabled() == true then
-		autoGetCashCargo = not autoGetCashCargo
-		if autoGetCashCargo then
-			globals.set_int(1662873 + 1 + 0, 1)
-			gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...")
-			sleep(0.5)
-		end
-	end
+    script:yield()
+    if fakeCash:is_enabled() == true then
+        autoGetCashCargo = not autoGetCashCargo
+        if autoGetCashCargo then
+            globals.set_int(1662873 + 1 + 0, 1)
+            gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...")
+            sleep(0.5)
+        end
+    end
 end)
 mcBus:add_separator()
 mcBus:add_button("Resupply All", function()
@@ -2612,20 +2614,20 @@ local arcade = Business:add_tab("Arcade")
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
 
 local arcadeSafe = arcade:add_checkbox("Arcade Safe Loop")
 script.register_looped("arcadeloop", function(script)
-	script:yield()
-	if arcadeSafe:is_enabled() == true then
-		gui.show_message("Business Manager", "Supplying Arcade Safe with money")
-		STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_PAY_TIME_LEFT"), -1, true)
-		sleep(0.5)
-	end
+    script:yield()
+    if arcadeSafe:is_enabled() == true then
+        gui.show_message("Business Manager", "Supplying Arcade Safe with money")
+        STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "ARCADE_PAY_TIME_LEFT"), -1, true)
+        sleep(0.5)
+    end
 end)
 
 -- Nightclub Loop - L7Neg
@@ -2634,9 +2636,9 @@ local Club = Business:add_tab("Nightclub")
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
 
 Club:add_button("Restock Warehouse", function()
@@ -2648,17 +2650,17 @@ end)
 
 nClub = Club:add_checkbox("Enable Nightclub $250k/15s (Safe AFK)")
 script.register_looped("nightclubloop", function(script)
-	script:yield()
-	if nClub:is_enabled() == true then
-		gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe")
-		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "CLUB_PAY_TIME_LEFT"), -1, true)
-		sleep(0.5)
-	end
+    script:yield()
+    if nClub:is_enabled() == true then
+        gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe")
+        STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CLUB_PAY_TIME_LEFT"), -1, true)
+        sleep(0.5)
+    end
 end)
 Club:add_separator()
 Club:add_button("Max Club Popularity", function()
-	STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
 end)
 
 -- YimCEO -- Alestarov_Menu
@@ -2689,8 +2691,8 @@ script.register_looped("yimceoloop", function(script)
         script:sleep(1000)  -- Adjust the sleep duration as needed
 
         if yCEO:is_enabled() == true then
-		gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
-			if locals.get_int("appsecuroserv", 2) == 1 then
+        gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
+            if locals.get_int("appsecuroserv", 2) == 1 then
                 script:sleep(500)
                 locals.set_int("appsecuroserv", 740, 1)
                 script:sleep(200)
@@ -2707,7 +2709,7 @@ script.register_looped("yimceoloop", function(script)
                 script:sleep(500)
                 locals.set_int("gb_contraband_sell", 543 + 1, 99999)
             end
-			if locals.get_int("gb_contraband_buy", 2) == 1 then
+            if locals.get_int("gb_contraband_buy", 2) == 1 then
                 locals.set_int("gb_contraband_buy", 601 + 5, 1)
                 locals.set_int("gb_contraband_buy", 601 + 191, 6)
                 locals.set_int("gb_contraband_buy", 601 + 192, 4)
@@ -2737,104 +2739,104 @@ HIP = "heist_island_planning"
 
 -- Editor Stuff // Mashup Scripts L7Neg/Alestarov
 local heistEditor = KAOS:add_tab("Heist Editor")
-	MPX = PI
-	PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-	if PI == 0 then
-		MPX = "MP0_"
-	else
-		MPX = "MP1_"
-	end
-	
+    MPX = PI
+    PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+    if PI == 0 then
+        MPX = "MP0_"
+    else
+        MPX = "MP1_"
+    end
+    
 local casinoHeist = heistEditor:add_tab("Casino Editor")
 casinoHeist:add_text("Casino Heist Setups")
 
 casinoHeist:add_button("Silent & Sneaky", function()
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_TARGET"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 127, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWWEAP"), 4, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWDRIVER"), 5, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWHACKER"), 5, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 2, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 262399, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_MASKS"), 2, true)
-	gui.show_message("Casino Heist", "Setup Silent & Sneaky applied")
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_TARGET"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 127, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWWEAP"), 4, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWDRIVER"), 5, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWHACKER"), 5, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 262399, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_MASKS"), 2, true)
+    gui.show_message("Casino Heist", "Setup Silent & Sneaky applied")
 end)
 casinoHeist:add_sameline()
 casinoHeist:add_button("Big Con", function()
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 2, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_TARGET"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 799, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWWEAP"), 4, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWDRIVER"), 5, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWHACKER"), 5, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 2, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 913623, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_MASKS"), 2, true)
-	gui.show_message("Casino Heist", "Setup Big Con applied")
-	gui.show_message("Casino Heist", "Big Con may not work, use S&S or Aggressive setups.")
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_TARGET"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 799, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWWEAP"), 4, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWDRIVER"), 5, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWHACKER"), 5, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 913623, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_MASKS"), 2, true)
+    gui.show_message("Casino Heist", "Setup Big Con applied")
+    gui.show_message("Casino Heist", "Big Con may not work, use S&S or Aggressive setups.")
 end)
 casinoHeist:add_sameline()
 casinoHeist:add_button("Aggressive", function()
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_TARGET"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 799, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWWEAP"), 4, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWDRIVER"), 5, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWHACKER"), 5, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 2, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 1835223, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_MASKS"), 2, true)
-	gui.show_message("Casino Heist", "Setup Aggressive applied")
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_APPROACH"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3_LAST_APPROACH"), 1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_TARGET"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), 799, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWWEAP"), 4, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWDRIVER"), 5, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_CREWHACKER"), 5, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), 1835223, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_MASKS"), 2, true)
+    gui.show_message("Casino Heist", "Setup Aggressive applied")
 end)
 
 casinoHeist:add_separator()
 
-casinoHeist:add_button("Complete Preps", function()	
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 3, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_COMPLETEDPOSIX"), -1, true)
-	gui.show_message("Casino Heist", "Preps Completed!")
+casinoHeist:add_button("Complete Preps", function() 
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_WEAPS"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET0"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_BITSET1"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_COMPLETEDPOSIX"), -1, true)
+    gui.show_message("Casino Heist", "Preps Completed!")
 end)
 
 casinoHeist:add_sameline()
 casinoHeist:add_button("Skip Cooldown", function()
-	STATS.STAT_SET_INT(joaat(MPX .. "H3_COMPLETEDPOSIX"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "MPPLY_H3_COOLDOWN"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H3_COMPLETEDPOSIX"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "MPPLY_H3_COOLDOWN"), -1, true)
 end)
 local deleteNPCs = casinoHeist:add_checkbox("Delete Mission NPC's")
-	script.register_looped("deleteNPCsLoopScript", function(script)
-		if deleteNPCs:is_enabled() then
-			for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
-				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
-				PED.DELETE_PED(ped)
-				sleep(0.1)
-				PED.DELETE_PED(ped)
-				sleep(0.1)
-				PED.DELETE_PED(ped)
-				sleep(0.1)
-				PED.DELETE_PED(ped)
-				sleep(0.1)
-				gui.show_message("Casino Heist", "Deleting All NPC's from the mission.")
-			end
-		end
-	end)
+    script.register_looped("deleteNPCsLoopScript", function(script)
+        if deleteNPCs:is_enabled() then
+            for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
+                PED.DELETE_PED(ped)
+                sleep(0.1)
+                PED.DELETE_PED(ped)
+                sleep(0.1)
+                PED.DELETE_PED(ped)
+                sleep(0.1)
+                PED.DELETE_PED(ped)
+                sleep(0.1)
+                gui.show_message("Casino Heist", "Deleting All NPC's from the mission.")
+            end
+        end
+    end)
 casinoHeist:add_separator()
 casinoHeist:add_text("How to:")
 casinoHeist:add_text("Click Skip cooldown (if applicable), then pay the 25k")
@@ -2846,570 +2848,570 @@ local cayoHeist = heistEditor:add_tab("Cayo Perico Editor")
 cayoHeist:add_text("Non-Legit Presets")
 
 cayoHeist:add_button("Panther/Gold (Hard)", function()
-	MPX = PI
-	PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-	if PI == 0 then
-		MPX = "MP0_"
-	else
-		MPX = "MP1_"
-	end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+    MPX = PI
+    PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+    if PI == 0 then
+        MPX = "MP0_"
+    else
+        MPX = "MP1_"
+    end
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Panther Hard Mode has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Panther Hard Mode has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 cayoHeist:add_sameline()
 cayoHeist:add_button("Diamond/Gold (Hard)", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 3, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Diamond Hard Mode has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Diamond Hard Mode has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Bonds/Gold (Hard)", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 2, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Bonds Hard Mode has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Bonds Hard Mode has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Necklace/Gold (Hard)", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Necklace Hard Mode has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Necklace Hard Mode has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Tequila/Gold (Hard)", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 1191817, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Tequila Hard Mode has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Tequila Hard Mode has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 cayoHeist:add_separator()
 cayoHeist:add_text("Legit Presets")
 
 cayoHeist:add_button("Panther/Gold (L. Hard)", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 5, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
-		-- Island Loot // -1 shows all, 0 shows none
+        -- Island Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		
-		-- Compound Loot // -1 shows all, 0 shows none
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
+        
+        -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-		
-		-- These are what is set when you find loot throughout the island/compound
+        
+        -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-		
-		-- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
-		globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-		--globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-		--globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-		--globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-		--globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-		
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        
+        -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
+        globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
+        --globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
+        --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
+        --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
+        --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
+        
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Panther Hard Mode (Legit) has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Panther Hard Mode (Legit) has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
 cayoHeist:add_sameline()
 
 cayoHeist:add_button("Diamond/Gold (L. Hard)", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 3, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
-		-- Island Loot // -1 shows all, 0 shows none
+        -- Island Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		
-		-- Compound Loot // -1 shows all, 0 shows none
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
+        
+        -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-		
-		-- These are what is set when you find loot throughout the island/compound
+        
+        -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-		
-		-- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
-		--globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-		globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-		--globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-		--globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-		--globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-		
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        
+        -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
+        --globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
+        globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
+        --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
+        --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
+        --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
+        
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Diamond Hard Mode (Legit) has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Diamond Hard Mode (Legit) has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
 cayoHeist:add_sameline()
 
 cayoHeist:add_button("Bonds/Gold (L. Hard)", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 2, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
-		-- Island Loot // -1 shows all, 0 shows none
+        -- Island Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		
-		-- Compound Loot // -1 shows all, 0 shows none
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
+        
+        -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-		
-		-- These are what is set when you find loot throughout the island/compound
+        
+        -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-		
-		-- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
-		--globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-		--globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-		globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-		--globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-		--globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-		
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        
+        -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
+        --globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
+        --globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
+        globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
+        --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
+        --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
+        
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Bonds Hard Mode (Legit) has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Bonds Hard Mode (Legit) has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
 cayoHeist:add_sameline()
 
 cayoHeist:add_button("Necklace/Gold (L. Hard)", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 1, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
-		-- Island Loot // -1 shows all, 0 shows none
+        -- Island Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		
-		-- Compound Loot // -1 shows all, 0 shows none
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
+        
+        -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-		
-		-- These are what is set when you find loot throughout the island/compound
+        
+        -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-		
-		-- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
-		--globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-		--globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-		--globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-		globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-		--globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-		
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        
+        -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
+        --globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
+        --globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
+        --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
+        globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
+        --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
+        
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Necklace Hard Mode (Legit) has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Necklace Hard Mode (Legit) has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
 cayoHeist:add_sameline()
 
 cayoHeist:add_button("Tequila/Gold (L. Hard)", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEAPONS"), 5, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_WEP_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_ARM_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_HEL_DISRP"), 3, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TARGET"), 0, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-		STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_TROJAN"), 2, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_APPROACH"), -1, true)
-		-- Island Loot // -1 shows all, 0 shows none
+        -- Island Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-		
-		-- Compound Loot // -1 shows all, 0 shows none
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
+        
+        -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-		
-		-- These are what is set when you find loot throughout the island/compound
+        
+        -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-		
-		-- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-		STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
-		--STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
-		--globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-		--globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-		--globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-		--globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-		globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-		
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
+        
+        -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
+        STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), 16875, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), 25312, true)
+        --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), 22500, true)
+        --globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
+        --globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
+        --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
+        --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
+        globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
+        
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-	
-	gui.show_message("Cayo Heist", "Tequila Hard Mode (Legit) has been set up!")
-	gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    
+    gui.show_message("Cayo Heist", "Tequila Hard Mode (Legit) has been set up!")
+    gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
 
 cayoHeist:add_separator()
 cayoHeist:add_text("Press this after clicking one of the above presets")
 cayoHeist:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
-		gui.show_message("Cayo Heist", "Planning board has been reset!")
+        gui.show_message("Cayo Heist", "Planning board has been reset!")
 end)
 
 cayoHeist:add_separator()
 cayoHeist:add_text("During Heist")
 cayoHeist:add_button("Skip Drainage Cut", function()
     locals.set_int(FMC2020, 29118, 6)
-	gui.show_message("Cayo Heist", "Bypassed Drainage Cut")
+    gui.show_message("Cayo Heist", "Bypassed Drainage Cut")
 end)
 
 cayoHeist:add_sameline()
@@ -3421,66 +3423,66 @@ end)
 cayoHeist:add_sameline()
 cayoHeist:add_button("Skip Glass Cut", function()
     locals.set_float(FMC2020, 30357 + 3, 100.0)
-	gui.show_message("Cayo Heist", "Bypassed Plasma Cutter")
+    gui.show_message("Cayo Heist", "Bypassed Plasma Cutter")
 end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Remove All CCTV's", function()
-	for _, ent in pairs(entities.get_all_objects_as_handles()) do
-		for __, cam in pairs(CamList) do
-			if ENTITY.GET_ENTITY_MODEL(ent) == cam then
-				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
-				ENTITY.DELETE_ENTITY(ent)
-				gui.show_message("Cayo Heist", "Deleted all mission Cameras")
-			end
-		end
-	end
+    for _, ent in pairs(entities.get_all_objects_as_handles()) do
+        for __, cam in pairs(CamList) do
+            if ENTITY.GET_ENTITY_MODEL(ent) == cam then
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
+                ENTITY.DELETE_ENTITY(ent)
+                gui.show_message("Cayo Heist", "Deleted all mission Cameras")
+            end
+        end
+    end
 end)
 CamList = {
-	joaat("prop_cctv_cam_01a"), joaat("prop_cctv_cam_01b"), joaat("prop_cctv_cam_02a"), joaat("prop_cctv_cam_03a"),
-	joaat("prop_cctv_cam_04a"), joaat("prop_cctv_cam_04c"), joaat("prop_cctv_cam_05a"), joaat("prop_cctv_cam_06a"),
-	joaat("prop_cctv_cam_07a"), joaat("prop_cs_cctv"), joaat("p_cctv_s"), joaat("hei_prop_bank_cctv_01"),
-	joaat("hei_prop_bank_cctv_02"), joaat("ch_prop_ch_cctv_cam_02a"), joaat("xm_prop_x17_server_farm_cctv_01"),
+    joaat("prop_cctv_cam_01a"), joaat("prop_cctv_cam_01b"), joaat("prop_cctv_cam_02a"), joaat("prop_cctv_cam_03a"),
+    joaat("prop_cctv_cam_04a"), joaat("prop_cctv_cam_04c"), joaat("prop_cctv_cam_05a"), joaat("prop_cctv_cam_06a"),
+    joaat("prop_cctv_cam_07a"), joaat("prop_cs_cctv"), joaat("p_cctv_s"), joaat("hei_prop_bank_cctv_01"),
+    joaat("hei_prop_bank_cctv_02"), joaat("ch_prop_ch_cctv_cam_02a"), joaat("xm_prop_x17_server_farm_cctv_01"),
 }
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX for the help on this
-	for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
-		local model = ENTITY.GET_ENTITY_MODEL(ped)
-		if model == 0x7ED5AD78 or model == 0x6C8C08E5 or model == 0x995B3F9F or model == 0xB881AEE then 
-				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
-				PED.DELETE_PED(ped)
-				gui.show_message("Cayo Heist", "Deleted all mission NPC's.  This will cause the keycards to not drop, use Gold teleport to bypass when standing near a secondary loot room.")
-		end
-	end
+    for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
+        local model = ENTITY.GET_ENTITY_MODEL(ped)
+        if model == 0x7ED5AD78 or model == 0x6C8C08E5 or model == 0x995B3F9F or model == 0xB881AEE then 
+                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
+                PED.DELETE_PED(ped)
+                gui.show_message("Cayo Heist", "Deleted all mission NPC's.  This will cause the keycards to not drop, use Gold teleport to bypass when standing near a secondary loot room.")
+        end
+    end
 end)
-		
+        
 cayoHeist:add_separator()
 cayoHeist:add_text("After Heist")
 cayoHeist:add_button("Skip Cooldown", function()
-	MPX = PI
+    MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
-	-- Solo Skip
-	STATS.STAT_SET_INT(joaat(MPX .. "H4_TARGET_POSIX"), 1659643454, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN_HARD"), 0, true)
-	-- Multiplayer Skip
-	STATS.STAT_SET_INT(joaat(MPX .. "H4_TARGET_POSIX"), 1659429119, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN"), 0, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN_HARD"), 0, true)
-	
-	gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters")
+    -- Solo Skip
+    STATS.STAT_SET_INT(joaat(MPX .. "H4_TARGET_POSIX"), 1659643454, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN_HARD"), 0, true)
+    -- Multiplayer Skip
+    STATS.STAT_SET_INT(joaat(MPX .. "H4_TARGET_POSIX"), 1659429119, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN_HARD"), 0, true)
+    
+    gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters")
 end)
 
 local properties = {
     {name = "Drainage", id = 768}, {name = "Gold", id = 618}, {name = "Fingerprint Scanner", id = 619}, {name = "Main Gate", id = 770}, {name = "Kosatka", id = 760},
     -- Add more properties as needed
-	-- Cayo Drainage = 768
+    -- Cayo Drainage = 768
 }
 
 -- Function to create buttons dynamically
@@ -3494,11 +3496,11 @@ local function createCayoButtons(cayoHeist)
             local coords = HUD.GET_BLIP_COORDS(blip_info)
             
             if HUD.DOES_BLIP_EXIST(blip_info) then
-				if property.id == 740 then
-					PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x + 5, coords.y - 5, coords.z)
-				else 
-					PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x, coords.y, coords.z)
-				end
+                if property.id == 740 then
+                    PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x + 5, coords.y - 5, coords.z)
+                else 
+                    PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x, coords.y, coords.z)
+                end
             end
         end)
         buttonCount = buttonCount + 1
@@ -3540,7 +3542,7 @@ pantherSizeVal, used = ImGui.SliderInt("Panther Value", pantherSizeVal, 1900000,
     
     if used then
         globals.set_int(262145 + 30264, pantherSizeVal)
-		gui.show_message('Panther Value Modified!', out)
+        gui.show_message('Panther Value Modified!', out)
     end
 end)
 
@@ -3551,7 +3553,7 @@ diamondSizeVal, used = ImGui.SliderInt("Diamond Value", diamondSizeVal, 1300000,
     
     if used then
         globals.set_int(262145 + 30262, diamondSizeVal)
-		gui.show_message('Diamond Value Modified!', out)
+        gui.show_message('Diamond Value Modified!', out)
     end
 end)
 
@@ -3562,7 +3564,7 @@ bondSizeVal, used = ImGui.SliderInt("Bonds Value", bondSizeVal, 770000, 1540000)
     
     if used then
         globals.set_int(262145 + 30261, bondSizeVal)
-		gui.show_message('Bonds Value Modified!', out)
+        gui.show_message('Bonds Value Modified!', out)
     end
 end)
 
@@ -3573,7 +3575,7 @@ necklaceSizeVal, used = ImGui.SliderInt("Necklace Value", necklaceSizeVal, 70000
     
     if used then
         globals.set_int(262145 + 30260, necklaceSizeVal)
-		gui.show_message('Necklace Value Modified!', out)
+        gui.show_message('Necklace Value Modified!', out)
     end
 end)
 
@@ -3584,7 +3586,7 @@ tequilaSizeVal, used = ImGui.SliderInt("Tequila Value", tequilaSizeVal, 693000, 
     
     if used then
         globals.set_int(262145 + 30259, tequilaSizeVal)
-		gui.show_message('Tequila Value Modified!', out)
+        gui.show_message('Tequila Value Modified!', out)
     end
 end)
 
@@ -3597,15 +3599,15 @@ goldSizeVal, used = ImGui.SliderInt("Gold Value", goldSizeVal, 45375, 181500) --
     out = "Reset the board to see changes"
     
     if used then
-		MPX = PI
+        MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), goldSizeVal, true)
-		gui.show_message('Gold Value Modified!', out)
+        gui.show_message('Gold Value Modified!', out)
     end
 end)
 
@@ -3615,15 +3617,15 @@ cokeSizeVal, used = ImGui.SliderInt("Coke Value", cokeSizeVal, 25312, 101248) --
     out = "Reset the board to see changes"
     
     if used then
-		MPX = PI
+        MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), cokeSizeVal, true)
-		gui.show_message('Coke Value Modified!', out)
+        gui.show_message('Coke Value Modified!', out)
     end
 end)
 
@@ -3633,15 +3635,15 @@ paintSizeVal, used = ImGui.SliderInt("Paintings Value", paintSizeVal, 22500, 900
     out = "Reset the board to see changes"
     
     if used then
-		MPX = PI
+        MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), paintSizeVal, true)
-		gui.show_message('Paintings Value Modified!', out)
+        gui.show_message('Paintings Value Modified!', out)
     end
 end)
 
@@ -3651,15 +3653,15 @@ weedSizeVal, used = ImGui.SliderInt("Weed Value", weedSizeVal, 16875, 67500) -- 
     out = "Reset the board to see changes"
     
     if used then
-		MPX = PI
+        MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), weedSizeVal, true)
-		gui.show_message('Weed Value Modified!', out)
+        gui.show_message('Weed Value Modified!', out)
     end
 end)
 
@@ -3669,15 +3671,15 @@ cashSizeVal, used = ImGui.SliderInt("Cash Value", cashSizeVal, 10406, 41624) -- 
     out = "Reset the board to see changes"
     
     if used then
-		MPX = PI
+        MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
-	MPX = "MP0_"
+    MPX = "MP0_"
 else
-	MPX = "MP1_"
+    MPX = "MP1_"
 end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), cashSizeVal, true)
-		gui.show_message('Cash Value Modified!', out)
+        gui.show_message('Cash Value Modified!', out)
     end
 end)
 cayoSizeEditor:add_text("These values seem incorrect, but the game reads them properly.")
@@ -3686,7 +3688,7 @@ cayoSizeEditor:add_separator()
 cayoSizeEditor:add_text("Press this after setting values.")
 cayoSizeEditor:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1544, 2)
-		gui.show_message("Cayo Heist", "Planning board has been reset!")
+        gui.show_message("Cayo Heist", "Planning board has been reset!")
 end)
 
 local xmen = Fun:add_tab("Magnet/Forcefield")
@@ -3732,7 +3734,7 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
                 local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
                 local forceY = (playerCoords.y - entityCoord.y) * magnitude
                 local forceZ = (playerCoords.z - entityCoord.z) * magnitude
-				RequestControl(entity)
+                RequestControl(entity)
                 ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
             end
         end
@@ -3746,7 +3748,7 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
                 local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
                 local forceY = (playerCoords.y - entityCoord.y) * magnitude
                 local forceZ = (playerCoords.z - entityCoord.z) * magnitude
-				RequestControl(entity)
+                RequestControl(entity)
                 ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
             end
         end
@@ -3760,7 +3762,7 @@ script.register_looped("blackHoleLoopScript", function(script)
         local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
         local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Pass magnitude
-		sleep(0)
+        sleep(0)
     end
 end)
 
@@ -3815,7 +3817,7 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
                 local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
                 local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
                 local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
-				RequestControl(entity)
+                RequestControl(entity)
                 ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
             end
         end
@@ -3830,7 +3832,7 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
                 local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
                 local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
                 local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
-				RequestControl(entity)
+                RequestControl(entity)
                 ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
             end
         end
@@ -3853,3 +3855,214 @@ function V3_DISTANCE_SQUARED(v1, v2)
     local dz = v1.z - v2.z
     return dx * dx + dy * dy + dz * dz
 end
+
+function request_control(entity)
+    if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) then
+        local netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
+        NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
+    end
+    return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
+end
+
+local balls = {
+"p_ld_soc_ball_01",
+"p_ld_am_ball_01",
+"prop_bowling_ball",
+"prop_beach_volball01",
+"prop_beach_volball02",
+"prop_beachball_02",
+"v_ilev_exball_blue"
+}
+
+selectedPlayerTab:add_text("Extras Addon")
+selectedPlayerTab:add_separator()
+
+selectedPlayerTab:add_text("Trolling")
+npcDrive = selectedPlayerTab:add_checkbox("NPCs Drive To This Player")
+
+dildos = selectedPlayerTab:add_checkbox("Dildos")
+selectedPlayerTab:add_sameline()
+dropBalls = selectedPlayerTab:add_checkbox("Balls")
+
+vehicleSpin = selectedPlayerTab:add_checkbox("Spin Vehicle")
+
+selectedPlayerTab:add_button("Spawn Clone", function()
+    script.run_in_fiber(function(spawnClone)
+        player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        ped = PED.CREATE_PED(26, ENTITY.GET_ENTITY_MODEL(player), coords.x, coords.y + 1, coords.z, ENTITY.GET_ENTITY_HEADING(player), true, false, false)
+        PED.CLONE_PED_TO_TARGET(player, ped)
+        TASK.TASK_COMBAT_PED(ped, player, 0, 16)
+        PED.SET_PED_COMBAT_ABILITY(ped, 2)
+        PED.SET_PED_COMBAT_ATTRIBUTES(ped, 41, true)
+        PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true)
+        PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+    end)
+end)
+
+selectedPlayerTab:add_button("Clown Attack", function()
+    script.run_in_fiber(function (clownAttack)
+        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        local coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        local heading = ENTITY.GET_ENTITY_HEADING(player)
+        local spawnDistance = 250.0 * math.sin(math.rad(heading))
+        local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+        local clown = joaat("s_m_y_clown_01")
+        local van = joaat("speedo2")
+        local weapon = -1121678507
+        --gui.show_message("Road", "Nearest Road is: ".. tostring(isRoad).. "Coords:".. tostring(roadCoords))
+        STREAMING.REQUEST_MODEL(clown)
+        STREAMING.REQUEST_MODEL(van)
+        STREAMING.REQUEST_MODEL(weapon)
+        while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(van) do    
+            STREAMING.REQUEST_MODEL(clown)
+            STREAMING.REQUEST_MODEL(van)
+            clownAttack:yield()
+        end
+        vehicle = VEHICLE.CREATE_VEHICLE(van, roadCoords.x, roadCoords.y, roadCoords.z, ENTITY.GET_ENTITY_HEADING(player), true, false, false)
+        if vehicle ~= 0 then
+            for seat = -1, 2 do
+                --vehiclePed = PED.CREATE_PED_INSIDE_VEHICLE(vehicle, 0, clown, seat, true, false)
+                local ped = PED.CREATE_PED(0, clown, roadCoords.x, roadCoords.y + 2, roadCoords.z, ENTITY.GET_ENTITY_HEADING(player), true, true)
+                if ped ~= 0 then
+                    local group = joaat("HATES_PLAYER")
+                    PED.ADD_RELATIONSHIP_GROUP("clowns", group)
+                    ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
+                    PED.SET_PED_CAN_BE_TARGETTED(ped, false)
+                    WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
+                    --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 3, true)
+                    --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
+                    --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true)
+                    PED.SET_PED_INTO_VEHICLE(ped, vehicle, seat)
+                    TASK.TASK_COMBAT_PED(ped, player, 0, 16)
+                    --if seat == -1 then
+                        TASK.TASK_DRIVE_BY(ped, player, vehicle, coords.x, coords.y, coords.z, 50, 100, false, joaat("FIRING_PATTERN_FULL_AUTO"))
+                        --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true)
+                        --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 3, false)
+                        --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 41, true)
+                    --end
+                    gui.show_message("Spawned", "Successfully spawned and sent peds")
+                else
+                    gui.show_error("Failed", "Failed to create ped")
+                end
+            end
+        else
+            gui.show_error("Failed", "Failed to create vehicle")
+        end
+        
+        if ped == 0 then 
+            gui.show_error("Failed", "Failed To Create Clowns")
+        else
+            gui.show_message("Success", "Successfully Create Clowns")
+        end
+    end)
+end)
+
+selectedPlayerTab:add_separator()
+selectedPlayerTab:add_text("Griefing")
+hydrantCB = selectedPlayerTab:add_checkbox("Hydrant")
+selectedPlayerTab:add_sameline()
+steamCB = selectedPlayerTab:add_checkbox("Steam")
+selectedPlayerTab:add_sameline()
+extinguisherCB = selectedPlayerTab:add_checkbox("Extinguisher")
+
+explodeCB = selectedPlayerTab:add_checkbox("Explode")
+selectedPlayerTab:add_sameline()
+noDamageExplode = selectedPlayerTab:add_checkbox("No Damage Explode")
+
+script.register_looped("extrasAddonLooped", function(script)
+    if npcDrive:is_enabled() then
+        local vehtable = entities.get_all_vehicles_as_handles()
+        for _, vehs in pairs(vehtable) do
+            local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), true)
+            local ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehs, -1, false)
+            local player = false
+            for playerId = 0, 31 do
+                if PLAYER.GET_PLAYER_PED(playerId) == ped then 
+                    player = true
+                end
+            end
+            if ped ~= 0 and player == false then
+                request_control(vehs)
+                request_control(ped)
+                TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, vehs, selfpos.x, selfpos.y, selfpos.z, 70.0, 1, vehs, --[[21234176--]]16777216, 0.0, 1)
+                --gui.show_message("Success", "Peds Driving To Player")
+            else
+                --gui.show_message("Failed", "Ped Seat is: ".. ped)
+            end
+        end
+    end
+    if dildos:is_enabled() then
+        local selectedItem = "prop_cs_dildo_01"
+        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        while not STREAMING.HAS_MODEL_LOADED(joaat(selectedItem)) do
+            STREAMING.REQUEST_MODEL(joaat(selectedItem))
+            script:yield()
+        end   
+        OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 1.5, 0, 1, joaat(selectedItem), false, true)
+    end
+
+    if dropBalls:is_enabled() then
+        local randomIndex = math.random(1, #balls)
+        local selectedItem = balls[randomIndex]
+        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        while not STREAMING.HAS_MODEL_LOADED(joaat(selectedItem)) do
+            STREAMING.REQUEST_MODEL(joaat(selectedItem))
+            script:yield()
+        end
+        OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 2, 0, 1, joaat(selectedItem), false, true)
+    end
+    if vehicleSpin:is_enabled() then
+        if not PED.IS_PED_IN_ANY_VEHICLE(PLAYER.GET_PLAYER_PED(network.get_selected_player()),true) then
+            gui.show_error("Spin Vehicle","Player is not in a vehicle")
+        else
+            veh = PED.GET_VEHICLE_PED_IS_IN(PLAYER.GET_PLAYER_PED(network.get_selected_player()), true)
+            local time = os.time()
+            local request = false
+            while not request do
+                if os.time() - time >= 5 then
+                    gui.show_error("Spin Vehicle","Couldnt Control Vehicle")
+                    break
+                end
+                request = request_control(veh)
+                script:yield()
+            end
+            gui.show_message("Spin Vehicle","Spinning Vehicle")
+            ENTITY.APPLY_FORCE_TO_ENTITY(veh, 5, 0, 0, 150.0, 0, 0, 0, 0, true, false, true, false, true)
+        end
+    end
+    if extinguisherCB:is_enabled() then
+        player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 24, 1, true, false, 0)
+    end
+
+    if steamCB:is_enabled() then
+        player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 11, 1, true, false, 0)
+    end
+
+    if hydrantCB:is_enabled() then
+        player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 13, 1, true, false, 0)
+    end
+
+    if explodeCB:is_enabled() then
+        player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 1, 100, true, false, 2147483647)
+    end
+
+    if noDamageExplode:is_enabled() then
+        player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 1, 0, true, false, 2147483647)
+    end
+end)
