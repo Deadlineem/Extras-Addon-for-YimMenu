@@ -5,7 +5,7 @@ Open in Visual Studio > Open these two files and comment the lines shown in gree
 https://imgur.com/a/4dMx3mc    
 ----------------------------------------------
 OR
-You can view/compile/download the custom dll or source from here 
+You can view/compile/download the custom source from here 
 https://github.com/Deadlineem/YimMenu   
 ----------------------------------------------                                             
                                          Extras Addon for YimMenu                                 
@@ -13,34 +13,17 @@ https://github.com/Deadlineem/YimMenu
 Installation:
 
                                             NOTE TO ALL USERS:
-  KEEP THE ADDON FOLDER WITH ITS CONTENTS, ALL YOU WILL NEED TO DO TO UPDATE IS REPLACE THE EXTRAS-ADDON.LUA IN
-THAT FOLDER WITH THE NEW ONE FROM GITHUB, YOU'LL NEVER NEED TO DOWNLOAD THE ENTIRE ZIP AGAIN AFTER THE FIRST TIME!!
+DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT OFF AND USE THEM AS THE CODES MAY CONFLICT AND CAUSE ISSUES
 
-DO NOT USE THIS ADDON WITH THE OTHERS, TURN IT OFF AND USE THEM AS THE CODES MAY CONFLICT AND CAUSE ISSUES
+                                             How to Use/Install
+_____________________________________________
 
-                                             First Time Users
-________________
-1) Download YimMenu and a dll injector of your choice, run GTA and inject YimMenu into the gta5.exe process
-2) Update Cache for YimMenu when prompted in GTA
-3) Download Extras-Addon as a zip file from Github and Extract it to your Desktop
-4) Run update.bat to put the addon in your YimMenu Scripts folder for you
+1) To install the extras addon, simply download the update.bat from above, you do not need to download the entire zip folder!
+2) After downloading, double click update.bat it will download the latest extras addon from this repository.
+3) After the update batch file reads finished, press any key to close it and simply play GTA with YimMenu. You should see the 'Extras Addon' tab is now in your menu
 
----------------------------------------------------------------------------------------------------------------
+NOTE: IF YOU ARE A RETURNING USER, YOUR UPDATE.BAT FILE SHOULD READ 0.9.4 ON THE PROMPT WHEN OPENED, IF IT DOES NOT, GET THE LATEST VERSION!
 
-                        Users who are updating the Addon (FIRST TIME USING UPDATE FILE)
-________________________________
-1) Download the Extras-Addon as a zip file from GitHub and Extract it to your Desktop
-2) Run update.bat
-3) Play
-
----------------------------------------------------------------------------------------------------------------
-
-                        Users who are updating the Addon (REPEATING NEW UPDATES)
-________________________________
-1) Download the Extras-Addon.lua from the repository (just click Extras-Addon.lua)
-2) REPLACE the Extras-Addon.lua in the folder containing the update.bat, with the new one you downloaded
-2) Run update.bat
-3) Play
 
 TIPS:
 
