@@ -105,7 +105,7 @@ createText(KAOS, "encourage everyone to create this with me, lend your ideas, su
 createText(KAOS, "YimMenu next generation!")
 KAOS:add_separator()
 createText(KAOS, "Credits: Yimura, L7Neg, Loled69, TeaTimeTea, CSYON, Adventure Box, gir489returns, abuazizv,")
-createText(KAOS, "Alestarov, RazorGamerX & the UC community")
+createText(KAOS, "Alestarov, RazorGamerX, USBMenus & the UC community")
 KAOS:add_separator()
 createText(KAOS, "Thanks to all my testers, your time is appreciated.  Thanks to all of the above for your scripts and")
 createText(KAOS, "for your inputs on my comments, I have done alot of reading, scrolling, testing and learning from it all")
@@ -658,6 +658,9 @@ end
 
 
 local function addBlips(array)
+    for k in pairs(array) do
+        array[k] = nil
+    end
     for _, property in ipairs(properties) do
         local ped = PLAYER.PLAYER_PED_ID()
         local nearestBlipId = findNearestBlip(property.id)
@@ -696,9 +699,8 @@ ownedCoords = {}
 
 locations = {customCoords, ownedCoords}
 
-addBlips(ownedCoords)
-
 Tel:add_imgui(function()
+    addBlips(ownedCoords)
     copyLocation = ImGui.Button("Copy Location To Clipboard")
     locationTypeIndex, locationTypeSelected = ImGui.Combo("Location Type", locationTypeIndex, locationTypes, #locationTypes)
     locationNames = {}
