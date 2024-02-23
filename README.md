@@ -22,6 +22,8 @@ _____________________________________________
 2) After downloading, double click update.bat it will download the latest extras addon from this repository.
 3) After the update batch file reads finished, press any key to close it and simply play GTA with YimMenu. You should see the 'Extras Addon' tab is now in your menu
 
+##Note to First Time Users:  You need to inject YimMenu into GTA and press 'Update Cache' on the prompt, then you can run update.bat to install Extras Addon
+______________________________________________
 NOTE: IF YOU ARE A RETURNING USER, YOUR UPDATE.BAT FILE SHOULD READ 0.9.4 ON THE PROMPT WHEN OPENED, IF IT DOES NOT, GET THE LATEST VERSION!
 
 
