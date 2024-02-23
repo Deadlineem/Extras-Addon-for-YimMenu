@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 0.9.4
+        Addon Version: 0.9.5
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -93,7 +93,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.9.4 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.9.5 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -1100,6 +1100,88 @@ millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL 
 -- Griefing Drop Vehicles on Players
 local grief = KAOS:add_tab("Grief Options")
 grief:add_text("Kill Options")
+
+grief:add_button("Clown Jet Attack", function()
+    script.run_in_fiber(function (clownJetAttack)
+        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+		local playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
+        local coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        local heading = ENTITY.GET_ENTITY_HEADING(player)
+        local spawnDistance = 250.0 * math.sin(math.rad(heading))
+        local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
+        local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+        local clown = joaat("s_m_y_clown_01")
+        local jet = joaat("Lazer")
+        local weapon = -1121678507
+
+        STREAMING.REQUEST_MODEL(clown)
+        STREAMING.REQUEST_MODEL(jet)
+        STREAMING.REQUEST_MODEL(weapon)
+
+        while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
+            STREAMING.REQUEST_MODEL(clown)
+            STREAMING.REQUEST_MODEL(jet)
+            clownJetAttack:yield()
+        end
+
+        -- Calculate the spawn position for the jet in the air
+        local jetSpawnX = coords.x + math.random(-1000, 1000)
+        local jetSpawnY = coords.y + math.random(-1000, 1000)
+        local jetSpawnZ = coords.z + math.random(100, 1200)
+        
+		local colors = { "135", "27", "88", "92", "70", }
+        local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
+        
+        if jetVehicle ~= 0 then
+			local primaryColor = colors[math.random(#colors)]
+            local secondaryColor = colors[math.random(#colors)]
+
+            -- Set vehicle colors
+            VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
+            -- Spawn clowns inside the jet
+            for seat = -1, -1 do
+                local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
+                
+                if ped ~= 0 then
+                    local group = joaat("HATES_PLAYER")
+                    PED.ADD_RELATIONSHIP_GROUP("clowns", group)
+                    ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
+                    PED.SET_PED_CAN_BE_TARGETTED(ped, false)
+                    WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
+                    PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
+                    TASK.TASK_COMBAT_PED(ped, player, 0, 16)
+					ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
+					ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
+					ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 10000);
+					ENTITY.SET_ENTITY_HEALTH(jetVehicle, 10000, 0);
+                else
+                    gui.show_error("Failed", "Failed to create ped")
+                end
+            end
+        else
+            gui.show_error("Failed", "Failed to create jet")
+        end
+        
+        if jetVehicle == 0 then 
+            gui.show_error("Failed", "Failed to Create Jet")
+        else
+            gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..playerName)
+        end
+
+        -- Release the resources associated with the spawned entities
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
+
+    end)
+end)
+
 local ramLoopz = grief:add_checkbox("Vehicle Sandwich (On/Off)")
 
 script.register_looped("ramLoopz", function()
@@ -2076,6 +2158,91 @@ end)
 Global:add_separator()
 local explosionLoop = false
 Global:add_text("Toxic Options")
+
+Global:add_button("Clown Jet Attack", function()
+    script.run_in_fiber(function (clownJetAttack)		
+		for i = 0, 32 do
+			if i ~= PLAYER.PLAYER_ID() then
+				local player = i
+				local players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
+				local playerName = PLAYER.GET_PLAYER_NAME(players)
+				local coords = ENTITY.GET_ENTITY_COORDS(players, true)
+				local heading = ENTITY.GET_ENTITY_HEADING(players)
+				local spawnDistance = 250.0 * math.sin(math.rad(heading))
+				local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
+				local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+				local clown = joaat("s_m_y_clown_01")
+				local jet = joaat("Lazer")
+				local weapon = -1121678507
+
+				STREAMING.REQUEST_MODEL(clown)
+				STREAMING.REQUEST_MODEL(jet)
+				STREAMING.REQUEST_MODEL(weapon)
+
+				while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
+					STREAMING.REQUEST_MODEL(clown)
+					STREAMING.REQUEST_MODEL(jet)
+					clownJetAttack:yield()
+				end
+
+				-- Calculate the spawn position for the jet in the air
+				local jetSpawnX = coords.x + math.random(-1000, 1000)
+				local jetSpawnY = coords.y + math.random(-1000, 1000)
+				local jetSpawnZ = coords.z + math.random(100, 1200)
+				
+				local colors = { "135", "27", "88", "92", "70", }
+				local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
+				if jetVehicle ~= 0 then
+					local primaryColor = colors[math.random(#colors)]
+					local secondaryColor = colors[math.random(#colors)]
+
+					-- Set vehicle colors
+					VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
+					-- Spawn clowns inside the jet
+					for seat = -1, -1 do
+						local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
+						
+						if ped ~= 0 then
+							local group = joaat("HATES_PLAYER")
+							PED.ADD_RELATIONSHIP_GROUP("clowns", group)
+							ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
+							PED.SET_PED_CAN_BE_TARGETTED(ped, false)
+							WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
+							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
+							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
+							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
+							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
+							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
+							PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
+							TASK.TASK_COMBAT_PED(ped, players, 0, 16)
+							ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
+							ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
+							ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 10000);
+							ENTITY.SET_ENTITY_HEALTH(jetVehicle, 10000, 0);
+						else
+							gui.show_error("Failed", "Failed to create ped")
+						end
+					end
+				else
+					gui.show_error("Failed", "Failed to create jet")
+				end
+			
+				if jetVehicle == 0 then 
+					gui.show_error("Failed", "Failed to Create Jet")
+				else
+					gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player))
+				end
+			end
+		end
+        -- Release the resources associated with the spawned entities
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
+
+    end)
+end)
+
 explosionLoop = Global:add_checkbox("Explosion (On/Off)")
 
 script.register_looped("explosionLoop", function()
@@ -3882,33 +4049,55 @@ selectedPlayerTab:add_separator()
 
 selectedPlayerTab:add_text("Trolling")
 npcDrive = selectedPlayerTab:add_checkbox("NPCs Drive To This Player")
-
+selectedPlayerTab:add_sameline()
 dildos = selectedPlayerTab:add_checkbox("Dildos")
 selectedPlayerTab:add_sameline()
 dropBalls = selectedPlayerTab:add_checkbox("Balls")
-
+selectedPlayerTab:add_sameline()
 vehicleSpin = selectedPlayerTab:add_checkbox("Spin Vehicle")
-
+selectedPlayerTab:add_sameline()
 selectedPlayerTab:add_button("Spawn Clone", function()
     script.run_in_fiber(function(spawnClone)
-        player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-        coords = ENTITY.GET_ENTITY_COORDS(player, true)
-        ped = PED.CREATE_PED(26, ENTITY.GET_ENTITY_MODEL(player), coords.x, coords.y + 1, coords.z, ENTITY.GET_ENTITY_HEADING(player), true, false, false)
-        PED.CLONE_PED_TO_TARGET(player, ped)
-        TASK.TASK_COMBAT_PED(ped, player, 0, 16)
-        PED.SET_PED_COMBAT_ABILITY(ped, 2)
-        PED.SET_PED_COMBAT_ATTRIBUTES(ped, 41, true)
-        PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true)
-        PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        local coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        
+        -- Create a pedestrian clone
+        local ped = PED.CREATE_PED(26, ENTITY.GET_ENTITY_MODEL(player), coords.x, coords.y + 1, coords.z, ENTITY.GET_ENTITY_HEADING(player), true, false, false)
+        if ped ~= 0 then
+            -- Clone the pedestrian's behavior to target the player
+            PED.CLONE_PED_TO_TARGET(player, ped)
+            
+            -- Make the pedestrian aggressive
+            TASK.TASK_COMBAT_PED(ped, player, 0, 16)
+            
+            -- Equip the pedestrian with a knife
+            WEAPON.GIVE_WEAPON_TO_PED(ped, 1672152130, 1, false, true) -- -1716189206 is the hash for the knife weapon
+            
+            -- Set combat attributes
+            PED.SET_PED_COMBAT_ABILITY(ped, 100)
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true) 
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true) 
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true) 
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 21, true)
+			ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
+			ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
+			PED.SET_PED_CAN_RAGDOLL(ped, false)
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 35, true) -- Enable lock-on targeting for vehicles
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
+        else
+            gui.show_error("Failed", "Failed to create ped")
+        end
     end)
 end)
-
+selectedPlayerTab:add_sameline()
 selectedPlayerTab:add_button("Clown Attack", function()
     script.run_in_fiber(function (clownAttack)
         local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         local coords = ENTITY.GET_ENTITY_COORDS(player, true)
         local heading = ENTITY.GET_ENTITY_HEADING(player)
-        local spawnDistance = 250.0 * math.sin(math.rad(heading))
+        local spawnDistance = 50.0 * math.sin(math.rad(heading))
         local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
         local clown = joaat("s_m_y_clown_01")
         local van = joaat("speedo2")
@@ -3972,10 +4161,10 @@ selectedPlayerTab:add_sameline()
 steamCB = selectedPlayerTab:add_checkbox("Steam")
 selectedPlayerTab:add_sameline()
 extinguisherCB = selectedPlayerTab:add_checkbox("Extinguisher")
-
+selectedPlayerTab:add_sameline()
 explodeCB = selectedPlayerTab:add_checkbox("Explode")
 selectedPlayerTab:add_sameline()
-noDamageExplode = selectedPlayerTab:add_checkbox("No Damage Explode")
+noDamageExplode = selectedPlayerTab:add_checkbox("Screen Shake")
 
 script.register_looped("extrasAddonLooped", function(script)
     if npcDrive:is_enabled() then
