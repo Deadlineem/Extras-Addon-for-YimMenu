@@ -1,249 +1,73 @@
-Extras Addon - Features List  (ALL Working/Non-Working Features/Not Implemented)
+## Features List
 
-Player Options
-_______________________________________________________________________________________________________
+### Player Options Tab
+- **Movement:**
+  - Run Speed Slider
+  - Swim Speed Slider
+- **Fun Self Options:**
+  - Checkboxes and sliders for activating various fun effects like fireworks, smoke, flames, drunkenness, acid trip visuals, etc.
+- **Stats:**
+  - Reset Stats Button
 
+### Money Tab
+- **Drops:**
+  - Toggle options for different types of money drops in-game.
+- **Casino:**
+  - Options related to manipulating casino features, including bypassing casino cooldown, rigging slot machines, forcing poker hands, etc.
+- **Loops:**
+  - Options for activating various money-making loops, including different monetary loop amounts.
 
----- Movement
-  -> Run Speed 0-10  
+### Grief Options Tab
+- **Grief Options:**
+  - Checkboxes and sliders for griefing actions, including vehicle sandwich, explosions, fire, water, trolling actions, and spamming options.
 
-  -> Swim Speed 0-10
-These aren't super speed modifiers, it just slightly increases players speed 
-similar to fast run, but faster.
+### Global Tab
+- **Global Actions:**
+  - Various actions affecting the game world globally, such as dropping global RP, giving global money, activating various environmental effects (fireworks, flames, lightning, snow, explosions), and manipulating game elements.
 
----- Fun Self Options
-  -> PTFX
-      -> Firework
-      -> Smoke
-      -> Flames
-  --> Make Me Drunk  makes your character walk around drunk
-      -> Show VFX  Shows drunk visual effects
-      -> Drunk Driving  Randomly steers your car around to simulate a "Drunk Driver"
-      -> Remove Impairments  Untoggle Make Me Drunk and press to remove all impairments.
+### Business Manager Tab
+- **Agency:**
+  - Options related to agency management, including contracts selection.
+- **Hangar:**
+  - Options for resupplying hangar cargo.
+- **Motorcycle Club:**
+  - Options for resupplying various club-related businesses like the acid lab, bunker, document forge, etc.
+- **Arcade:**
+  - Options for maintaining the arcade business.
+- **Nightclub:**
+  - Options for enabling a safe AFK method in the nightclub.
+- **YimCEO:**
+  - Options related to CEO activities.
 
-  -> Magnet/Forcefield
-      -> Magnet  Pulls all Vehicles/Peds towards you
-      -> Forcefield  Pushes all vehicles/peds away from you
-  Can be combined with set manitude/radius for a push/pull effect.
-  ***STILL IN BETA
+### Heist Editor Tab
+- **Heist Editor:**
+  - Options related to editing heists, including casino and Cayo Perico heists customization.
 
----- Stats
-  -> Reset Stats  Resets ALL stats for Player 1 and Player 2 Characters
+### Story Mode Tab
+- **Story Mode Customization:**
+  - Sliders for adjusting the cash and stats of story mode characters (Michael, Franklin, Trevor).
 
----- Money
+### Teleports Tab
+- **Teleportation:**
+  - Buttons, dropdowns, and lists for teleportation and copying location coordinates.
 
--------- Drops (These are for dropping near you to 1 or 2 people)
-    -> Princess Robot Bubblegum Loop (On/Off)
-    -> Alien Loop (On/Off)
-    -> Casino Card Loop (On/Off)
-    -> Cash Loop (On/Off) (Drops 2k cash per pickup to yourself only, others cannot see it or pick it up) - PLAYER SELECTABLE
+### Object Options Tab
+- **Object Orientation:**
+  - Sliders for adjusting the orientation and spawn distance of objects.
+  - Object search and list for spawning objects.
 
-Drop options are player selectable drops, select a player from the list and run.
+### Vehicle Options Tab
+- **Vehicle Spawning:**
+  - Sliders for adjusting the orientation and spawn distance of vehicles.
+  - Vehicle model search and list for spawning vehicles.
 
----- Casino
-  -> Bypass Casino Cooldown
+### X-Men Tab
+- **Magnet/Forcefield Effects:**
+  - Sliders for adjusting the radius and magnitude of magnet and force field effects.
 
-  -> Rig Slot Machines
-
-  -> Poker
-  -------- Force hand to Royal Flush
-  -------- Force dealers hand to Bad Beat
-  -> Blackjack
-  -------- Dealers Face Down Card (displays also if you are in the casino or not for rigging)
-  -------- Set dealers hand to bust
-  -> Roulette
-  -------- Activate Roulette Rig
-  -------- Slider (-1 to 36) for setting the win number of the table
-
----- Loops
-  -> 1 Mill to 15 Mill Cash Loops (toggle on/off) *RISKY, DON'T LET THEM RUN TOO LONG AND RESET YOUR STATS ASAP!!!*
-
----- Teleports
-  -> Copy to Clipboard  copies your current location X/Y/Z coords to clipboard for adding custom locations easily
-  -> Location type (Dropdown) for selecting between owned/custom locations
-  -> Listbox of Locations for each selected type.
-
-_______________________________________________________________________________________________________
-
-Grief Options
-_______________________________________________________________________________________________________
-
----- Kill Options
-  -> Vehicle Sandwich  Sandwiches the player between 2 high velocity vehicles, one above, one below.
-  -> Explode
-  -> Burn
-  -> Water
-
----- Crash Options
-  -> PR crash (Drops tons of figurines worth $1,000,000 each, freezes victims game on pickup in 10 
-seconds)
-
----- Sound Options
-  -> Phone Spam
-  -> Alarm Spam
-
-  * Select Player from list, check an option to use
-_______________________________________________________________________________________________________
-
-Object Options
-_______________________________________________________________________________________________________
-
----- Spawner
-  -> Set Pitch/Yaw/Roll Orientation of the object
-  -> Set X/Y/Z (distance from your player) using sliders and Reset button to reset sliders to 
-default coordinates
-  -> Selectable listbox for items + spawn object button
-
-To spawn on self or other players:
-Click targets name on yimmenu players list
-click Extras Addon > Object Options > Spawner
-Select the item you want to spawn and click Spawn Selected
-
-_______________________________________________________________________________________________________
-
-Vehicle Options
-_______________________________________________________________________________________________________
-
-  -> Gift Vehicles  Yes, it works. 
-  -> Vehicle Spawner  -- Use this to spawn and gift vehicles using Yimmenus default DLL just dont use
-                         the buttons 'Max Vehicle Mods/Performance' in LS Customs on the menu, it will
-                         kick the player when you gift, does not happen with the custom DLL 
-
-Full garage of burner cars, have them drive one out/back into their garage, spawn the vehicle, 
-have them get in, spam gift and when it says success, tell them to drive inside and replace a burner 
-car.
-
-Use the Delete gun to delete invisible vehicles after gifting!!  Self > Weapons > Custom Gun dropdown >
-DELETE_GUN
-
-Vehicle spawner uses the same mechanics as the object spawner with X/Y/Z coordinates and Pitch/Yaw/Roll
-Orientation.
-_______________________________________________________________________________________________________
-
-Global Options
-_______________________________________________________________________________________________________
-
----- Drop Global RP (On/Off)
-  -> Drops Princess Robot Bubblegum figurines  NOTE: This CAN cause you to lag/freeze/crash in 
-sessions with 15+ players, USE WITH CAUTION!
-
----- Sound Spam
-  -> 8 togglable sound spam options that spam the session (not including you) with sounds.  
-Alarm and Phone WILL NOT toggle off, the only way to get rid of them is to restart GTA
-You can also hear it, but switching sessions will get rid of it for you if you set it.
-
----- PTFX
-  -> Fireworks (On/Off) spawns a sequence of fireworks.  Widely Liked in sessions since its not 
-invasive on the player.
-
-  -> Flames (On/Off)  Ghost Rider flame trails, pretty neat, does no harm to anyone.
-
-  -> Lightning (On/Off)  Lightning bolts around the players, kinda looks like a super saiyan
-
-  -> Snow (On/Off)  Its literally the effect of getting hit with snowballs
-
----- Toxic
-  -> Explode (On/Off)  This is self explanatory, its under global, does what it says.
-  -> Vehicle Sandwich  Sandwiches all players between 2 high velocity vehicles, one above, one below.
-  -> Crash All (PR Invalid model crash)
-
--- Weapons
-
-  -> Give all players all weapons  Does what it says
-
-  -> Remove weapons from all players  Does what it says
-
-__________________________________________________________________________________________________________
-
-Story Mode Options
-__________________________________________________________________________________________________________
-
-  -> Michael's Cash  Sets the value of michael's cash in story mode from $1 to $2147483646 using a slider
-
-  -> Franklins's Cash  Sets the value of franklin's cash in story mode from $1 to $2147483646 using a slider
-
-  -> Trevor's Cash  Sets the value of trevor's cash in story mode from $1 to $2147483646 using a slider
-
-  -> Michael's Stats  Sets the value of michael's stats in story mode from 0 to 100 using a slider
-
-  -> Franklins's Stats  Sets the value of franklin's stats in story mode from 0 to 100 using a slider
-
-  -> Trevor's Stats  Sets the value of trevor's stats in story mode from 0 to 100 using a slider
-
-___________________________________________________________________________________________________________
-
-Weapons
-___________________________________________________________________________________________________________
-
-  -> Remove all weapons  Removes all weapons from yourself (Story mode + Multiplayer)
-
-  -> Give all weapons  Gives all weapons to yourself (Story mode + Multiplayer)
-
-  -> Drop Random Weapon  
--------- Select player from list and use, each click picks a random weapon that it drops
-on the player.  As far as I know, the players keep these weapons if you drop them
-
-____________________________________________________________________________________________________________
-
-Business Management
-____________________________________________________________________________________________________________
----- Agency
-  -> Mission Selector
-  -> Select Contract (after selecting from the listbox)
-  -> Complete Preps
-  -> Skip Cooldown
-  -> Agency Safe Loop  Fills your agency safe with money
-
----- Hangar
-  -> Toggles automatic resupply to hangar when outside (CANNOT BE IN HANGAR)
-
----- Motorcycle Club
-  -> Toggleables for all businesses (Acid lab, Bunker, all MC businesses)
-  -> 1 click "Resupply All"
-
----- Arcade
-  -> Arcade Safe Loop  Quickly fills up your arcade safe (max capacity is 100k)  Can be used for SLOW
-  AFK Money
-
----- Nightclub
-  -> Activate 250k/15s loop while standing in front of nightclub safe.  Meant for AFK money
-  -> Restock Warehouse ** Not yet implemented
-  -> Max Popularity  Does what it says
-
----- YimCEO
-  -> Crate Value (10k - 6M)
-  -> Toggle YimCEO On/Off
-  -> Show Computer
-____________________________________________________________________________________________________________
-
-Heist Editor
-____________________________________________________________________________________________________________
----- Casino Editor
-  -> Presets
-  ->Complete Prepr
-  -> Skip Cooldown
-  -> Delete All NPC's
-  -------- In beta, Still adding more to this.
-
----- Cayo Perico Editor
-  -> Presets (Panther + Compound Gold) (Diamond + Compound Gold)
-  -> Reset Kosatka Board
-  -> Skip Drainage cut/Fingerprint Scanner/Glass Cut
-  -> Remove All CCTV's
-  -> Delete Mission NPC's
-  -> Skip Cooldown
-  ---- Size/Value Editor
-    -> Bag Size
-------- Primary Targets
-    -> Panther Value
-    -> Diamond Value
-    -> Bonds Value
-    -> Necklace Value
-    -> Tequila Value
-------- Secondary Targets
-    -> Gold Value
-    -> Cocaine Value
-    -> Paintings Value
-    -> Weed Value
-    -> Cash Value
----- Reset Kosatka Board
+### Extras Addon
+- **Trolling:**
+  - Checkboxes for NPCs driving to the player, spawning dildos, spawning balls, and spinning vehicles.
+  - Buttons for spawning pedestrian clones and initiating clown attacks.
+- **Griefing:**
+  - Checkboxes for activating hydrants, steam, extinguishers, explosions, and screen shaking.
