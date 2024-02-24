@@ -25,8 +25,8 @@ echo " /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ "
 
 :: Set environment variables for source and destination paths
 set "destinationFolder=%APPDATA%\YimMenu\scripts"
-set "destinationFolder2=%USERPROFILE%\Downloadsz"
-set "destinationFolder3=%USERPROFILE%\Downloadsz"
+set "destinationFolder2=%USERPROFILE%\Downloads"
+set "destinationFolder3=%USERPROFILE%\Downloads"
 if not exist "%destinationFolder2%" (
     set "destinationFolder2=%USERPROFILE%\OneDrive\Desktop"
 )
