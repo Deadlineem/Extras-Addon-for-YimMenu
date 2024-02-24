@@ -4063,6 +4063,8 @@ selectedPlayerTab:add_button("Clown Attack", function()
 					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true) -- Can use vehicles
 					TASK.TASK_COMBAT_PED(ped, player, 0, 16)
                     TASK.TASK_DRIVE_BY(ped, player, vehicle, coords.x, coords.y, coords.z, 50, 100, false, joaat("FIRING_PATTERN_FULL_AUTO"))
+					
+					ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
                 else
                     gui.show_error("Failed", "Failed to create ped")
                 end
