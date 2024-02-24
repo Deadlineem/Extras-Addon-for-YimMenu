@@ -3823,7 +3823,8 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
             end
         end
     end
-
+	
+	-- Uncomment below to apply to peds, will break the script in sessions with other players.
     --[[for _, entity in ipairs(peds) do
         if entities.take_control_of(entity) then
             local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
@@ -3907,7 +3908,7 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
         end
     end
 
-    -- Apply forces to peds
+    -- Uncomment below to apply to peds, will break the script in sessions with other players.
     --[[for _, entity in ipairs(peds) do
         if entities.take_control_of(entity) then
             local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
@@ -3940,6 +3941,8 @@ function V3_DISTANCE_SQUARED(v1, v2)
     return dx * dx + dy * dy + dz * dz
 end
 
+
+-- USBMenus (Contributor) Additions
 function request_control(entity)
     if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) then
         local netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
@@ -3991,16 +3994,19 @@ selectedPlayerTab:add_button("Spawn Clone", function()
             -- Set combat attributes
             PED.SET_PED_COMBAT_ABILITY(ped, 100)
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true) 
-            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true) 
-            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true) 
-            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
-            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
-			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 21, true)
+			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true)	-- Can do Driveby's		
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true) -- Always Fight
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true) -- Aggressive
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false) -- always flee /false
+			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 21, true) -- Can chase on foot
+			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 27, true) -- Perfect Accuracy
 			ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
 			ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
 			PED.SET_PED_CAN_RAGDOLL(ped, false)
-            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 35, true) -- Enable lock-on targeting for vehicles
-            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
+			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true) -- Disable Flee from combat
+			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 38, true) -- Disable Bullet Reactions
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true) -- Maintain Min target distance
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true) -- Can use vehicles
         else
             gui.show_error("Failed", "Failed to create ped")
         end
@@ -4017,7 +4023,6 @@ selectedPlayerTab:add_button("Clown Attack", function()
         local clown = joaat("s_m_y_clown_01")
         local van = joaat("speedo2")
         local weapon = -1121678507
-        --gui.show_message("Road", "Nearest Road is: ".. tostring(isRoad).. "Coords:".. tostring(roadCoords))
         STREAMING.REQUEST_MODEL(clown)
         STREAMING.REQUEST_MODEL(van)
         STREAMING.REQUEST_MODEL(weapon)
@@ -4034,25 +4039,30 @@ selectedPlayerTab:add_button("Clown Attack", function()
                 if ped ~= 0 then
                     local group = joaat("HATES_PLAYER")
                     PED.ADD_RELATIONSHIP_GROUP("clowns", group)
+					PED.SET_PED_RELATIONSHIP_GROUP_HASH(ped, group)
                     ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
+					PED.SET_PED_CAN_BE_TARGETTED_BY_TEAM(ped, group, false)
+					PED.SET_CAN_ATTACK_FRIENDLY(ped, false, false)
                     PED.SET_PED_CAN_BE_TARGETTED(ped, false)
                     WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
-                    --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 3, true)
-                    --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
-                    --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true)
                     PED.SET_PED_INTO_VEHICLE(ped, vehicle, seat)
-                    TASK.TASK_COMBAT_PED(ped, player, 0, 16)
-                    --if seat == -1 then
-                        TASK.TASK_DRIVE_BY(ped, player, vehicle, coords.x, coords.y, coords.z, 50, 100, false, joaat("FIRING_PATTERN_FULL_AUTO"))
-                        --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true)
-                        --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 3, false)
-                        --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 41, true)
-                    --end
-                    gui.show_message("Spawned", "Successfully spawned and sent peds")
+					PED.SET_PED_COMBAT_ABILITY(ped, 100)
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true) 
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true)	-- Can do Driveby's		
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true) -- Always Fight
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true) -- Aggressive
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false) -- always flee /false
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 21, true) -- Can chase on foot
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 27, true) -- Perfect Accuracy
+					ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
+					ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
+					PED.SET_PED_CAN_RAGDOLL(ped, false)
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true) -- Disable Flee from combat
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 38, true) -- Disable Bullet Reactions
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true) -- Maintain Min target distance
+					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true) -- Can use vehicles
+					TASK.TASK_COMBAT_PED(ped, player, 0, 16)
+                    TASK.TASK_DRIVE_BY(ped, player, vehicle, coords.x, coords.y, coords.z, 50, 100, false, joaat("FIRING_PATTERN_FULL_AUTO"))
                 else
                     gui.show_error("Failed", "Failed to create ped")
                 end
@@ -4064,7 +4074,7 @@ selectedPlayerTab:add_button("Clown Attack", function()
         if ped == 0 then 
             gui.show_error("Failed", "Failed To Create Clowns")
         else
-            gui.show_message("Success", "Successfully Create Clowns")
+            gui.show_message("Success", "Successfully spawned the attack clowns")
         end
     end)
 end)
