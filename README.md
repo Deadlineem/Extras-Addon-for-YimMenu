@@ -14,11 +14,11 @@ _____________________________________________
 
 1) To install the extras addon, simply download the update.bat from above, you do not need to download the entire zip folder!
 2) After downloading, double click update.bat, it will open with a prompt to select an option.
--- Press 1 to Download/Install Extras Addon (Only use after you've installed/used YimMenu)
--- Press 2 to Download YimMenu (Goes to your Downloads folder)
--- Press 3 to Download FateInjector (Goes to your Downloads folder)
--- Press 4 to read the How-To for YimMenu
--- Press 5 to Exit the Application
+  -- Press 1 to Download/Install Extras Addon (Only use after you've installed/used YimMenu)
+  -- Press 2 to Download YimMenu (Goes to your Downloads folder)
+  -- Press 3 to Download FateInjector (Goes to your Downloads folder)
+  -- Press 4 to read the How-To for YimMenu
+  -- Press 5 to Exit the Application
 
 (More options may be added in future releases)
 ______________________________________________
