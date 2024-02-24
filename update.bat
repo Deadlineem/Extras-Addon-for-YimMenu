@@ -25,9 +25,22 @@ echo " /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ "
 
 :: Set environment variables for source and destination paths
 set "destinationFolder=%APPDATA%\YimMenu\scripts"
-set "destinationFolder2=%USERPROFILE%\Downloads"
-set "destinationFolder3=%USERPROFILE%\Downloads"
-
+set "destinationFolder2=%USERPROFILE%\Downloadsz"
+set "destinationFolder3=%USERPROFILE%\Downloadsz"
+if not exist "%destinationFolder2%" (
+    set "destinationFolder2=%USERPROFILE%\OneDrive\Desktop"
+)
+:: If Downloads folder does not exist default to onedrive desktop
+if not exist "%destinationFolder3%" (
+	set "destinationFolder3=%USERPROFILE%\OneDrive\Desktop"
+)
+:: If Onedrive destination does not exist, default to normal Desktop
+if not exist "%destinationFolder2%" (
+	set "destinationFolder2=%USERPROFILE%\Desktop"
+)
+if not exist "%destinationFolder3%" (
+	set "destinationFolder3=%USERPROFILE%\Desktop"
+)
 echo ------------------------------------------------------------------
 echo   This app is for easily Downloading/Updating Yim/Extras Addon
 echo 	  and tools you may want/need to use YimMenu itself.
