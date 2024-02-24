@@ -388,42 +388,20 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
                 pickup,
                 coords.x,
                 coords.y,
-                coords.z + 1,
+                coords.z + 0.5,
                 3,
                 money_value,
                 model,
-                true,
-                false
-            )
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                true,
-                false
-            )
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                true,
+                false,
                 false
             )
 
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+			
+			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-        sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+        sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not princessBubblegumLoop then
             script.unregister_script("princessbubblegumLoop")
         end
@@ -451,42 +429,20 @@ Drops:add_button("Alien (On/Off)", function()
                 pickup,
                 coords.x,
                 coords.y,
-                coords.z + 1,
+                coords.z + 0.5,
                 3,
                 money_value,
                 model,
-                true,
-                false
-            )
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                true,
-                false
-            )
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                true,
+                false,
                 false
             )
 
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+			
+			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-        sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+        sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not alienfigurineLoop then
             script.unregister_script("alienfigurineLoop")
         end
@@ -514,42 +470,20 @@ Drops:add_button("Casino Cards (On/Off)", function()
                 pickup,
                 coords.x,
                 coords.y,
-                coords.z + 1,
+                coords.z + 0.5,
                 3,
                 money_value,
                 model,
-                true,
-                false
-            )
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                true,
-                false
-            )
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                true,
+                false,
                 false
             )
         
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+			
+			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-        sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
+        sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not casinocardsLoop then
             script.unregister_script("casinocardsLoop")
         end
@@ -577,42 +511,19 @@ kcashLoop = not kcashLoop
                 pickup,
                 coords.x,
                 coords.y,
-                coords.z + 1,
+                coords.z + 0.5,
                 3,
                 money_value,
                 model,
-                true,
+                false,
                 false
             )
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                true,
-                false
-            )
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                true,
-                false
-            )
-
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+			
+			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+        sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not kcashLoop then
             script.unregister_script("kcashLoop")
         end
@@ -1129,7 +1040,7 @@ grief:add_button("Clown Jet Attack", function()
         local jetSpawnY = coords.y + math.random(-1000, 1000)
         local jetSpawnZ = coords.z + math.random(100, 1200)
         
-		local colors = { "135", "27", "88", "92", "70", }
+		local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
         local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
         
         if jetVehicle ~= 0 then
@@ -1157,10 +1068,12 @@ grief:add_button("Clown Jet Attack", function()
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
                     PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
                     TASK.TASK_COMBAT_PED(ped, player, 0, 16)
-					ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
-					ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
-					ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 10000);
-					ENTITY.SET_ENTITY_HEALTH(jetVehicle, 10000, 0);
+					ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
+					ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
+					ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
+					ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
+					PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
+					WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
                 else
                     gui.show_error("Failed", "Failed to create ped")
                 end
@@ -2190,7 +2103,7 @@ Global:add_button("Clown Jet Attack", function()
 				local jetSpawnY = coords.y + math.random(-1000, 1000)
 				local jetSpawnZ = coords.z + math.random(100, 1200)
 				
-				local colors = { "135", "27", "88", "92", "70", }
+				local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
 				local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
 				if jetVehicle ~= 0 then
 					local primaryColor = colors[math.random(#colors)]
@@ -2217,10 +2130,12 @@ Global:add_button("Clown Jet Attack", function()
 							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
 							PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
 							TASK.TASK_COMBAT_PED(ped, players, 0, 16)
-							ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
-							ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
-							ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 10000);
-							ENTITY.SET_ENTITY_HEALTH(jetVehicle, 10000, 0);
+							ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
+							ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
+							ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
+							ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
+							PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
+							WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
 						else
 							gui.show_error("Failed", "Failed to create ped")
 						end
@@ -4053,9 +3968,9 @@ selectedPlayerTab:add_sameline()
 dildos = selectedPlayerTab:add_checkbox("Dildos")
 selectedPlayerTab:add_sameline()
 dropBalls = selectedPlayerTab:add_checkbox("Balls")
-selectedPlayerTab:add_sameline()
+
 vehicleSpin = selectedPlayerTab:add_checkbox("Spin Vehicle")
-selectedPlayerTab:add_sameline()
+
 selectedPlayerTab:add_button("Spawn Clone", function()
     script.run_in_fiber(function(spawnClone)
         local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
@@ -4161,7 +4076,7 @@ selectedPlayerTab:add_sameline()
 steamCB = selectedPlayerTab:add_checkbox("Steam")
 selectedPlayerTab:add_sameline()
 extinguisherCB = selectedPlayerTab:add_checkbox("Extinguisher")
-selectedPlayerTab:add_sameline()
+
 explodeCB = selectedPlayerTab:add_checkbox("Explode")
 selectedPlayerTab:add_sameline()
 noDamageExplode = selectedPlayerTab:add_checkbox("Screen Shake")
