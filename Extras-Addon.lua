@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 0.9.5
+        Addon Version: 0.9.6
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -93,7 +93,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.9.5 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v0.9.6 please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -1008,7 +1008,7 @@ end)
 millLoop:add_separator()
 millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL GET BANNED!")
 
--- Griefing Drop Vehicles on Players
+-- Griefing Options
 local grief = KAOS:add_tab("Grief Options")
 grief:add_text("Kill Options")
 
@@ -1246,7 +1246,7 @@ script.register_looped("trollLoop", function(script)
     end
 end)
 
--- Figurine Crash
+-- Crash Options
 grief:add_separator()
 grief:add_text("Crash Options")
 local prCrash = false
@@ -1283,15 +1283,102 @@ script.register_looped("prCrash", function()
         sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
     end
 end)
+-- SCH-Lua
+grief:add_sameline()
+grief:add_button("Fragment crash", function()
+    script.run_in_fiber(function (fragcrash)
+        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+            gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+            return
+        end
+        fraghash = joaat("prop_fragtest_cnst_04")
+        STREAMING.REQUEST_MODEL(fraghash)
+        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        local crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff1, 1, false)
+        local crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff2, 1, false)
+        local crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
+        local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
+        for i = 0, 100 do 
+            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                return
+            end    
+            local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff3, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff4, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+            fragcrash:sleep(10)
+            delete_entity(crashstaff1)
+            delete_entity(crashstaff2)
+            delete_entity(crashstaff3)
+            delete_entity(crashstaff4)
+        end
+    end)
+    script.run_in_fiber(function (fragcrash2)
+        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        fraghash = joaat("prop_fragtest_cnst_04")
+        STREAMING.REQUEST_MODEL(fraghash)
+        for i=1,10 do
+            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                return
+            end    
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            fragcrash2:sleep(100)
+            delete_entity(object)
+        end
+    end)
+end)
 
-grief:add_separator()
 -- Griefing Sound Spam Targetable
 grief:add_text("Sound Spams")
+local airDefSpam = grief:add_checkbox("Air Defense Spam")
+script.register_looped("airDefSpam", function()
+local targetPlayer = network.get_selected_player()
+	if airDefSpam:is_enabled() == true then
+        AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Air_Defences_Activated", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999)
+		gui.show_message("Sound Spam", "Air Defense spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
+    end
+end)
+grief:add_sameline()
 local sSpamAlarm = grief:add_checkbox("Alarm Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
 script.register_looped("sSpamAlarm", function()
 local targetPlayer = network.get_selected_player()
     if sSpamAlarm:is_enabled() then
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 999999999)
                 gui.show_message("Sound Spam", "Alarm spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
     end
 end)
@@ -1300,7 +1387,7 @@ local pSpamAlarm = grief:add_checkbox("Phone Spam") -- THIS DOES NOT TURN OFF EV
 script.register_looped("pSpamAlarm", function()
 local targetPlayer = network.get_selected_player()
     if pSpamAlarm:is_enabled() then
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "Phone_SoundSet_Michael", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "Phone_SoundSet_Michael", true, 999999999)
                 gui.show_message("Sound Spam", "Phone spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
     end
 end)
@@ -1309,7 +1396,7 @@ local altitudeSpam = grief:add_checkbox("Altitude Spam")
 script.register_looped("altitudeSpam", function()
 local player_id = network.get_selected_player()
     if altitudeSpam:is_enabled() then
-        AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 0)
+        AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 999999999)
         gui.show_message("Sound Spam", "Altitude spamming "..PLAYER.GET_PLAYER_NAME(player_id))
     end
 end)
@@ -1762,18 +1849,32 @@ script.register_looped("moneyLoop", function()
 
                         local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
                         NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+						
+						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
                     end
                 end
             end
             sleep(0.4) -- Sets the timer in seconds for how long this should pause before sending another figure
     end
-    sleep(0.4) -- Sets the timer in seconds for how long this should pause
 end)
 
 
 -- Global Sound Spam Options
 Global:add_separator()
 Global:add_text("Global Sound Options")
+local airDeSpam = Global:add_checkbox("Air Defense Spam")
+script.register_looped("airDeSpam", function()
+local localPlayerId = PLAYER.PLAYER_ID()
+    if airDeSpam:is_enabled() then
+        for i = 0, 32 do
+            if i ~= localPlayerId then
+                local player_id = i
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Air_Defences_Activated", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999)
+            end
+        end
+    end
+end)
+Global:add_sameline()
 local altSpam = Global:add_checkbox("Altitude Spam")
 script.register_looped("altSpamLoop", function()
 local localPlayerId = PLAYER.PLAYER_ID()
@@ -1781,7 +1882,7 @@ local localPlayerId = PLAYER.PLAYER_ID()
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 999999999)
             end
         end
     end
@@ -1794,7 +1895,7 @@ local localPlayerId = PLAYER.PLAYER_ID()
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Jet_Explosions", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "exile_1", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Jet_Explosions", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "exile_1", true, 999999999)
             end
         end
     end
@@ -1807,7 +1908,7 @@ local localPlayerId = PLAYER.PLAYER_ID()
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "PICKUP_DEFAULT", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "HUD_FRONTEND_STANDARD_PICKUPS_SOUNDSET", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "PICKUP_DEFAULT", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "HUD_FRONTEND_STANDARD_PICKUPS_SOUNDSET", true, 999999999)
             end
         end
     end
@@ -1821,7 +1922,7 @@ local localPlayerId = PLAYER.PLAYER_ID()
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "Phone_SoundSet_Michael", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "Phone_SoundSet_Michael", true, 999999999)
             end
         end
     end
@@ -1834,7 +1935,7 @@ local localPlayerId = PLAYER.PLAYER_ID()
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "ScreenFlash", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "WastedSounds", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "ScreenFlash", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "WastedSounds", true, 999999999)
             end
         end
     end
@@ -1846,7 +1947,7 @@ local localPlayerId = PLAYER.PLAYER_ID()
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Architect_Fall", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "FBI_HEIST_SOUNDSET", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Architect_Fall", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "FBI_HEIST_SOUNDSET", true, 999999999)
             end
         end
     end
@@ -1859,7 +1960,7 @@ local localPlayerId = PLAYER.PLAYER_ID()
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "HORN", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_Apt_Yacht_Ambient_Soundset", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "HORN", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_Apt_Yacht_Ambient_Soundset", true, 999999999)
             end
         end
     end
@@ -1872,7 +1973,7 @@ local localPlayerId = PLAYER.PLAYER_ID()
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Franklin_Whistle_For_Chop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "SPEECH_RELATED_SOUNDS", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Franklin_Whistle_For_Chop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "SPEECH_RELATED_SOUNDS", true, 999999999)
             end
         end
     end
@@ -1885,7 +1986,7 @@ local localPlayerId = PLAYER.PLAYER_ID()
         for i = 0, 32 do
             if i ~= localPlayerId then
                 local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 0)
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 999999999)
             end
         end
     end
@@ -2069,9 +2170,142 @@ end)
 
 -- Global Explode
 Global:add_separator()
-local explosionLoop = false
-Global:add_text("Toxic Options")
 
+Global:add_text("Toxic Options")
+Global:add_button("Boat Skin Crash", function()
+    script.run_in_fiber(function (pedpacrash)
+        gui.show_message("Boat Skin", "Giving everyone the boat skin.")
+        PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), -74.94, -818.58, 327)
+        local spped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+        local ppos = ENTITY.GET_ENTITY_COORDS(spped, true)
+        for n = 0 , 5 do
+            local object_hash = joaat("prop_byard_rowboat4")
+            STREAMING.REQUEST_MODEL(object_hash)
+              while not STREAMING.HAS_MODEL_LOADED(object_hash) do
+                pedpacrash:yield()
+            end
+            PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(),object_hash)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spped, 0,0,500, false, true, true)
+            WEAPON.GIVE_DELAYED_WEAPON_TO_PED(spped, 0xFBAB5776, 1000, false)
+            pedpacrash:sleep(1000)
+            for i = 0 , 20 do
+                PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 144, 1.0)
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(spped)
+            end
+            pedpacrash:sleep(1000)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spped, ppos.x, ppos.y, ppos.z, false, true, true)
+    
+            local object_hash2 = joaat("prop_byard_rowboat4")
+            STREAMING.REQUEST_MODEL(object_hash2)
+            while not STREAMING.HAS_MODEL_LOADED(object_hash2) do
+                pedpacrash:yield()
+            end
+            PLAYER.SET_PLAYER_PARACHUTE_MODEL_OVERRIDE(PLAYER.PLAYER_ID(),object_hash2)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spped, 0,0,500, false, false, true)
+            WEAPON.GIVE_DELAYED_WEAPON_TO_PED(spped, 0xFBAB5776, 1000, false)
+            pedpacrash:sleep(1000)
+            for i = 0 , 20 do
+                PED.FORCE_PED_TO_OPEN_PARACHUTE(spped)
+                PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 144, 1.0)
+            end
+            pedpacrash:sleep(1000)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spped, ppos.x, ppos.y, ppos.z, false, true, true)
+        end
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spped, ppos.x, ppos.y, ppos.z, false, true, true)    
+    end)
+end)
+Global:add_sameline()
+function delete_entity(ent)  --discord@rostal315
+    if ENTITY.DOES_ENTITY_EXIST(ent) then
+        ENTITY.DETACH_ENTITY(ent, true, true)
+        ENTITY.SET_ENTITY_VISIBLE(ent, false, false)
+        NETWORK.NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ent, 0.0, 0.0, -1000.0, false, false, false)
+        ENTITY.SET_ENTITY_COLLISION(ent, false, false)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ent)
+        ENTITY.DELETE_ENTITY(ent)
+    end
+end
+Global:add_button("Fragment crash", function()
+    script.run_in_fiber(function (fragcrash)
+	local localPlayerId = PLAYER.PLAYER_PED_ID()
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+				local players = i
+				fraghash = joaat("prop_fragtest_cnst_04")
+				STREAMING.REQUEST_MODEL(fraghash)
+				local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(selPlayer), false)
+				local crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff1, 1, false)
+				local crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff2, 1, false)
+				local crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
+				local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
+				for v = 0, 100 do   
+					local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+					ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+					ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+					ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff3, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+					ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff4, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+					fragcrash:sleep(10)
+					delete_entity(crashstaff1)
+					delete_entity(crashstaff2)
+					delete_entity(crashstaff3)
+					delete_entity(crashstaff4)
+				end
+			end
+		end
+    end)
+    script.run_in_fiber(function (fragcrash2)
+	local localPlayerId = PLAYER.PLAYER_ID()
+		for i = 0, 32 do
+			if i ~= localPlayerId then
+				local players = i
+				local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(players), false)
+				fraghash = joaat("prop_fragtest_cnst_04")
+				STREAMING.REQUEST_MODEL(fraghash)
+				for v=1,10 do
+				 
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					delete_entity(object)
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					delete_entity(object)
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					delete_entity(object)
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					delete_entity(object)
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					delete_entity(object)
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					delete_entity(object)
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					delete_entity(object)
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					delete_entity(object)
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					delete_entity(object)
+					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+					fragcrash2:sleep(100)
+					delete_entity(object)
+				end
+			end
+		end
+    end)
+end)
+Global:add_sameline()
 Global:add_button("Clown Jet Attack", function()
     script.run_in_fiber(function (clownJetAttack)		
 		for i = 0, 32 do
@@ -2158,6 +2392,7 @@ Global:add_button("Clown Jet Attack", function()
     end)
 end)
 
+local explosionLoop = false
 explosionLoop = Global:add_checkbox("Explosion (On/Off)")
 
 script.register_looped("explosionLoop", function()
@@ -2249,9 +2484,9 @@ script.register_looped("ramGlobal", function()
 end)
 
 
--- Global Figurine Crash - DISABLED BECAUSE IT IS EXTREMELY TOXIC and because it can also cause your game to crash as well.
+-- Global Crashes
 Global:add_sameline()
-local crashGlobal = Global:add_checkbox("Crash Everyone (On/Off)")
+local crashGlobal = Global:add_checkbox("PR Crash All (On/Off)")
 
 script.register_looped("crashGlobal", function()
     if crashGlobal:is_enabled() then
@@ -2282,6 +2517,8 @@ script.register_looped("crashGlobal", function()
 
                     local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
                     NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+					
+					ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
                 end
                  sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
             end
@@ -3940,7 +4177,6 @@ function V3_DISTANCE_SQUARED(v1, v2)
     local dz = v1.z - v2.z
     return dx * dx + dy * dy + dz * dz
 end
-
 
 -- USBMenus (Contributor) Additions
 function request_control(entity)
