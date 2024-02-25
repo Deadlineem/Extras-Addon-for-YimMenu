@@ -73,3 +73,6 @@
   - Buttons for spawning pedestrian clones and initiating clown attacks.
 - **Griefing:**
   - Checkboxes for activating hydrants, steam, extinguishers, explosions, and screen shaking.
+
+
+### You can see more features by using the menu, there are new features almost daily!
