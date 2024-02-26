@@ -312,64 +312,190 @@ Fun:add_button("Remove Impairments", function()
     end
 end)
 
+local function SessionChanger(session)
+		globals.set_int(1575032, session)
+		if session == -1 then
+			globals.set_int(1574589 + 2, -1)
+		end
+		sleep(0.5)
+		globals.set_int(1574589, 1)
+		sleep(0.5)
+		globals.set_int(1574589, 0)
+	end
 -- Stat Editor - Alestarov_Menu
 local Stats = Pla:add_tab("Stats")
-
-Stats:add_button("Reset Stats", function()
-    gui.show_message("Multiplayer Stats Reset", "Stats reset for both Player 1 and Player 2, Change session to apply changes")
+Stats:add_text("Change Levels")
+Stats:add_button("Randomize RP", function()
+	script.run_in_fiber(function (script)
+		MPX = PI
+		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+		if PI == 0 then
+			MPX = "MP0_"
+		else
+			MPX = "MP1_"
+		end
+		local randomizeRP = math.random(0, 1787576850)
+		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
+		gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP")
+		sleep(1)
+		SessionChanger(0)
+	end)
+end)
+Stats:add_sameline()
+Stats:add_button("Lvl 1", function()
+	script.run_in_fiber(function (script)
+		MPX = PI
+		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+		if PI == 0 then
+			MPX = "MP0_"
+		else
+			MPX = "MP1_"
+		end
+		local rpLevel = 1 -- Level 1 -- https://www.unknowncheats.me/forum/2458458-post691.html
+		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+		gui.show_message("Stats", "Your level was set to 1, changing session and applying RP")
+		sleep(1)
+		SessionChanger(0)
+	end)
+end)
+Stats:add_sameline()
+Stats:add_button("Lvl 100", function()
+	script.run_in_fiber(function (script)
+		MPX = PI
+		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+		if PI == 0 then
+			MPX = "MP0_"
+		else
+			MPX = "MP1_"
+		end
+		local rpLevel = 1584350 -- Level 100 -- https://www.unknowncheats.me/forum/2458458-post691.html
+		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+		gui.show_message("Stats", "Your level was set to 100, changing session and applying RP")
+		sleep(1)
+		SessionChanger(0)
+	end)
+end)
+Stats:add_sameline()
+Stats:add_button("Lvl 420", function()
+	script.run_in_fiber(function (script)
+		MPX = PI
+		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+		if PI == 0 then
+			MPX = "MP0_"
+		else
+			MPX = "MP1_"
+		end
+		local rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
+		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+		gui.show_message("Stats", "Your level was set to 420, changing session and applying RP")
+		sleep(1)
+		SessionChanger(0)
+	end)
+end)
+Stats:add_sameline()
+Stats:add_button("Lvl 1337", function()
+	script.run_in_fiber(function (script)
+		MPX = PI
+		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+		if PI == 0 then
+			MPX = "MP0_"
+		else
+			MPX = "MP1_"
+		end
+		local rpLevel = 75185850 -- Level 1337 -- https://www.unknowncheats.me/forum/2458458-post691.html
+		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+		gui.show_message("Stats", "Your level was set to 1337, changing session and applying RP")
+		sleep(1)
+		SessionChanger(0)
+	end)
+end)
+Stats:add_sameline()
+Stats:add_button("Lvl 8000", function()
+	script.run_in_fiber(function (script)
+		MPX = PI
+		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+		if PI == 0 then
+			MPX = "MP0_"
+		else
+			MPX = "MP1_"
+		end
+		local rpLevel = 1787576850 -- Level 8000 -- https://www.unknowncheats.me/forum/2458458-post691.html
+		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+		gui.show_message("Stats", "Your level was set to 8000, changing session and applying RP")
+		sleep(1)
+		SessionChanger(0)
+	end)
+end)
+Stats:add_separator()
+Stats:add_text("Income Statistics")
+Stats:add_button("Reset Income/Spent Stats", function()
     script.run_in_fiber(function (script)
+		MPX = PI
+		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+		if PI == 0 then
+			MPX = "MP0_"
+		else
+			MPX = "MP1_"
+		end
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_SVC"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_EARN_BETTING"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_EARN_JOBS"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_EARN_SHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_SPENT_SHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_EARN_JOBSHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_EARN_SELLING_VEH"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_SPENT_WEAPON_ARMOR"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_SPENT_VEH_MAINTENANCE"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_SPENT_STYLE_ENT"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_SPENT_PROPERTY_UTIL"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_SPENT_JOB_ACTIVITY"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_SPENT_BETTING"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_EARN_VEHICLE_EXPORT"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_SPENT_VEHICLE_EXPORT"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_MONEY_EARN_CLUB_DANCING"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_CASINO_CHIPS_WON_GD"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_CASINO_CHIPS_WONTIM"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_CASINO_GMBLNG_GD"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_CASINO_BAN_TIME"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_CASINO_CHIPS_PURTIM"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP0_CASINO_CHIPS_PUR_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_BETTING"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_JOBS"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_SHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_SHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_JOBSHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_SELLING_VEH"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_WEAPON_ARMOR"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_VEH_MAINTENANCE"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_STYLE_ENT"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_PROPERTY_UTIL"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_JOB_ACTIVITY"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_BETTING"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_VEHICLE_EXPORT"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_VEHICLE_EXPORT"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_CLUB_DANCING"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_WON_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_WONTIM"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_GMBLNG_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_BAN_TIME"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PURTIM"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PUR_GD"), 0, true)
         -- Player 2 Stats Reset
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_SVC"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_BETTING"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_JOBS"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_SHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_SHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_JOBSHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_SELLING_VEH"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_WEAPON_ARMOR"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_VEH_MAINTENANCE"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_STYLE_ENT"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_PROPERTY_UTIL"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_JOB_ACTIVITY"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_BETTING"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_VEHICLE_EXPORT"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_SPENT_VEHICLE_EXPORT"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_MONEY_EARN_CLUB_DANCING"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_CASINO_CHIPS_WON_GD"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_CASINO_CHIPS_WONTIM"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_CASINO_GMBLNG_GD"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_CASINO_BAN_TIME"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_CASINO_CHIPS_PURTIM"), 0, true)
-        STATS.STAT_SET_INT(joaat("MP1_CASINO_CHIPS_PUR_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_BETTING"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_JOBS"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_SHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_SHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_JOBSHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_SELLING_VEH"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_WEAPON_ARMOR"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_VEH_MAINTENANCE"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_STYLE_ENT"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_PROPERTY_UTIL"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_JOB_ACTIVITY"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_BETTING"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_VEHICLE_EXPORT"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_VEHICLE_EXPORT"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_CLUB_DANCING"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_WON_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_WONTIM"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_GMBLNG_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_BAN_TIME"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PURTIM"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PUR_GD"), 0, true)
+		if PI == 0 then
+			gui.show_message("Stats", "Income Stats for Player 1 have been reset to 0, changing sessions to apply.")
+		else
+			gui.show_message("Stats", "Income Stats for Player 2 have been reset to 0, changing sessions to apply.")
+		end
+		sleep(1)
+		SessionChanger(0)
     end)
 end)
-Stats:add_separator()
-Stats:add_text("Resets your player stats (Ban time, earned income, sales, etc.)")
-Stats:add_text("*This may glitch some owned properties and reset mission progress in freemode*")
+
+Stats:add_text("Randomize or set your RP amount and/or reset character stats.")
+Stats:add_text("*Reset Income may glitch some owned properties and reset mission progress in freemode*")
 
 
 -- Autorun Drops
@@ -567,12 +693,8 @@ script.register_looped("tseTest", function()
 	if tseTest:is_enabled() == true then
 		script.run_in_fiber(function(payout)
 			pid = network.get_selected_player()
-			if pid == PLAYER.PLAYER_ID() then
-				tseTest:yield()
-			else
-				for i = 0, 24 do 
-					network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
-				end
+			for i = 0, 24 do 
+				network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
 			end
 		end)
 	end
@@ -1414,11 +1536,6 @@ grief:add_sameline()
 grief:add_button("TSE Crash", function()
 	local pid = network.get_selected_player()
 	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
-	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
-	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
-	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
-	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
-	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
 	gui.show_message("Invalid Activity", "TSE Freezing "..PLAYER.GET_PLAYER_NAME(pid))
 end)
 
@@ -1881,7 +1998,7 @@ script.register_looped("goodRP", function()
 	if goodRP:is_enabled() == true then
         for p = 0, 31 do
             if p ~= PLAYER.PLAYER_ID() then
-				for i = 0, 24 do 
+				for i = 20, 24 do 
 					network.trigger_script_event(1 << p, {968269233 , p, 1, 4, i, 1, 1, 1, 1})
 					local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
 					gui.show_message("Fast RP", "Giving massive amounts of RP to "..player_count.." players in the session")
