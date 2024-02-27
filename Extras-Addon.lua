@@ -15,13 +15,14 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 0.9.6
+        Addon Version: 0.9.7
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
       TheKuter, RazorGamerX, USBMenus & More!
 
 ]]--
+local addonVersion = "0.9.7"
 
 selectedPlayerTab = gui.get_tab("")
 
@@ -106,7 +107,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v0.9.6 please read the information below before proceeding to use the menu options.")
+createText(KAOS, "Welcome to Extras Addon v"..addonVersion.." please read the information below before proceeding to use the menu options.")
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -130,9 +131,9 @@ local Pla = KAOS:add_tab("Player Options")
 -- Movement Tab with Slider for Movement Speed
 local Mvmt = Pla:add_tab("Movement")
 
-runSpeed = 0
+runSpeed = 1
 Mvmt:add_imgui(function()
-    runSpeed, used = ImGui.SliderInt("Run Speed", runSpeed, 0, 10)
+    runSpeed, used = ImGui.SliderInt("Run Speed", runSpeed, 1, 10)
     out = "Speed set to "..tostring(runSpeed).."x"
     if used then
         PLAYER.SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), runSpeed/7)
@@ -140,15 +141,17 @@ Mvmt:add_imgui(function()
     end
 end)
 
-swimSpeed = 0
+swimSpeed = 1
 Mvmt:add_imgui(function()
-    swimSpeed, used = ImGui.SliderInt("Swim Speed", swimSpeed, 0, 10)
+    swimSpeed, used = ImGui.SliderInt("Swim Speed", swimSpeed, 1, 10)
     out = "Speed set to "..tostring(swimSpeed).."x"
     if used then
         PLAYER.SET_SWIM_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), swimSpeed/7)
         gui.show_message('Swim Speed Modified!', out)
     end
 end)
+Mvmt:add_separator()
+Mvmt:add_text("Slightly increased speed modifiers, similar to Fast Run/Swim")
 
 -- Fun Random Things
 local Fun = Pla:add_tab("Fun Self Options")
@@ -322,7 +325,8 @@ local function SessionChanger(session)
 		sleep(0.5)
 		globals.set_int(1574589, 0)
 	end
--- Stat Editor - Alestarov_Menu
+	
+-- Stat Editor - Alestarov_Menu // Reset Stats Option
 local Stats = Pla:add_tab("Stats")
 Stats:add_text("Change Levels")
 Stats:add_button("Randomize RP", function()
@@ -334,7 +338,7 @@ Stats:add_button("Randomize RP", function()
 		else
 			MPX = "MP1_"
 		end
-		local randomizeRP = math.random(0, 1787576850)
+		local randomizeRP = math.random(1, 1787576850) -- 1 Rp to 1787576850 Rp (lvl 1 to 8000)
 		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
 		gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP")
 		sleep(1)
@@ -460,30 +464,6 @@ Stats:add_button("Reset Income/Spent Stats", function()
         STATS.STAT_SET_INT(joaat(MPX .. "CASINO_BAN_TIME"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PURTIM"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PUR_GD"), 0, true)
-        -- Player 2 Stats Reset
-        STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_SVC"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_BETTING"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_JOBS"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_SHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_SHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_JOBSHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_SELLING_VEH"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_WEAPON_ARMOR"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_VEH_MAINTENANCE"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_STYLE_ENT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_PROPERTY_UTIL"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_JOB_ACTIVITY"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_BETTING"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_VEHICLE_EXPORT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_SPENT_VEHICLE_EXPORT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_CLUB_DANCING"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_WON_GD"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_WONTIM"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_GMBLNG_GD"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_BAN_TIME"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PURTIM"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PUR_GD"), 0, true)
 		if PI == 0 then
 			gui.show_message("Stats", "Income Stats for Player 1 have been reset to 0, changing sessions to apply.")
 		else
@@ -493,17 +473,61 @@ Stats:add_button("Reset Income/Spent Stats", function()
 		SessionChanger(0)
     end)
 end)
-
+Stats:add_separator()
+Stats:add_text("Character Skills")
+Stats:add_button("Max All Skills", function()
+	script.run_in_fiber(function (script)
+		MPX = PI
+		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+		if PI == 0 then
+			MPX = "MP0_"
+		else
+			MPX = "MP1_"
+		end
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_DRIV"), 1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_FLY"), 1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_LUNG"), 1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_SHO"), 1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STAM"), 1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STL"), 1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STRN"), 1000, true)
+		gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been maxed. Changing sessions to apply.")
+		sleep(1)
+		SessionChanger(0)
+	end)
+end)
+Stats:add_sameline()
+Stats:add_button("Reset All Skills", function()
+	script.run_in_fiber(function (script)
+		MPX = PI
+		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+		if PI == 0 then
+			MPX = "MP0_"
+		else
+			MPX = "MP1_"
+		end
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_DRIV"), -1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_FLY"), -1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_LUNG"), -1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_SHO"), -1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STAM"), -1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STL"), -1000, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STRN"), -1000, true)
+		gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been zeroed. Changing sessions to apply.")
+		sleep(1)
+		SessionChanger(0)
+	end)
+end)
 Stats:add_text("Randomize or set your RP amount and/or reset character stats.")
 Stats:add_text("*Reset Income may glitch some owned properties and reset mission progress in freemode*")
 
 
 -- Autorun Drops
-local Money = Pla:add_tab("Money")
+local Money = KAOS:add_tab("Money Options")
 local Drops = Money:add_tab("Drops")
 
 local princessBubblegumLoop = false
-
+Drops:add_text("Action Figures")
 Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
     princessBubblegumLoop = not princessBubblegumLoop
 
@@ -519,7 +543,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("RP/Cash Drop Started", "Princess Robot Bubblegum Drops inbound!")
+        gui.show_message("RP/Cash Drop Started", "Dropping Princess Robot figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -560,7 +584,7 @@ Drops:add_button("Alien (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("RP/Cash Drop Started", "Alien Drops inbound!")
+        gui.show_message("RP/Cash Drop Started", "Dropping Alien figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -601,7 +625,7 @@ Drops:add_button("Casino Cards (On/Off)", function()
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("RP/Cash Drop Started", "Casino Card Drops inbound!")
+        gui.show_message("RP/Cash Drop Started", "Dropping Casino Cards on "..PLAYER.GET_PLAYER_NAME(player_id))
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -642,7 +666,7 @@ kcashLoop = not kcashLoop
         end
 
         if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("Cash Drop Started", "LOCAL CASH WORKS ON PICKUP but other players cannot see it!")
+        gui.show_message("Cash Drop Started", "LOCAL CASH WORKS ON PICKUP but other players cannot see/pick it up!")
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
@@ -667,6 +691,7 @@ kcashLoop = not kcashLoop
     end)
 end)
 Drops:add_separator()
+Drops:add_text("TSE RP/Money")
 Drops:add_button("Give 25k & Random RP", function()
     script.run_in_fiber(function(tse)
         pid = network.get_selected_player()
@@ -691,14 +716,24 @@ Drops:add_sameline()
 local tseTest = Drops:add_checkbox("Super Fast RP")
 script.register_looped("tseTest", function()
 	if tseTest:is_enabled() == true then
-		script.run_in_fiber(function(payout)
-			pid = network.get_selected_player()
-			for i = 0, 24 do 
-				network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
-			end
-		end)
+		pid = network.get_selected_player()
+		for i = 0, 24 do 
+			network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
+		end
 	end
 end)
+Drops:add_sameline()
+local ezMoney = Drops:add_checkbox("Money ($225k)")
+    script.register_looped("ezMoney", function()
+		if ezMoney:is_enabled() == true then
+			local pid = network.get_selected_player()
+			for n = 0, 10 do
+				for l = -10, 10 do
+					network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
+				end
+			end
+		end
+    end)
 
 Drops:add_separator()
 Drops:add_text("Cash loop is REAL but only for you, other players cannot see it at all");
@@ -1003,6 +1038,7 @@ script.register_looped("Casino Pacino Thread", function (script)
             end
         end
     end
+
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_slots")) ~= 0 then
         local needs_run = false
         if rig_slot_machine:is_enabled() then
@@ -1063,6 +1099,50 @@ script.register_looped("Casino Pacino Thread", function (script)
     end
 end)
 
+casino_gui:add_button("Broadcast Msg", function()
+	if dealers_card_gui_element:get_value() ~= "Not in Casino." then
+		if force_roulette_wheel:is_enabled() then
+			network.send_chat_message("[Casino Rig]: Make sure you own a Casino Penthouse OR you are in a CEO with someone who does AND that you have 50k+ chips before playing!")
+			network.send_chat_message("[Casino Rig]: Roulette tables are rigged at the casino!  Come to the casino for easy money!")
+		else
+			gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
+		end
+	else
+		gui.show_message("Error", "You need to be in the casino near the tables to use this")
+	end
+end)
+casino_gui:add_sameline()
+casino_gui:add_button("How To Bet", function()
+	if dealers_card_gui_element:get_value() ~= "Not in Casino." then
+		if force_roulette_wheel:is_enabled() then
+			if casVal == -1 then 
+				local casVal = "00"
+				network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
+			else
+				network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
+			end
+		else
+			gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
+		end
+	else
+		gui.show_message("Error", "You need to be in the casino near the tables to use this")
+	end
+end)
+casino_gui:add_sameline()
+casino_gui:add_button("Alt Betting Info", function()
+	if dealers_card_gui_element:get_value() ~= "Not in Casino." then
+		if force_roulette_wheel:is_enabled() then
+			network.send_chat_message("[Casino Rig]: You can optionally stack as many chips as you can on the corresponding '1st 12, 2nd 12 or 3rd 12' in the same row as the winning number instead of '2 to 1'")
+		else
+			gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
+		end
+	else
+		gui.show_message("Error", "You need to be in the casino near the tables to use this")
+	end
+end)
+
+casino_gui:add_separator()
+casino_gui:add_text("Everything except for Slot rig works for everyone.")
 -- Instant Money Loops - Pessi v2
 local TransactionManager <const> = {};
 TransactionManager.__index = TransactionManager
@@ -1110,7 +1190,7 @@ function TransactionManager:TriggerTransaction(hash, amount)
 end
 
 local millLoop = Money:add_tab("Loops")
-millLoop:add_text("Money Loop Options (SEVERELY RISKY!)")
+millLoop:add_text("Money Loops (SEVERELY RISKY!)")
 local oneMillLoop = millLoop:add_checkbox("1M Loop")
 script.register_looped("onemLoop", function(script)
     script:yield()
@@ -1177,6 +1257,8 @@ script.register_looped("fifteenMLoop", function(script)
 end)
 millLoop:add_separator()
 millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL GET BANNED!")
+millLoop:add_text("Some loops may not run more than once, the 1m loop runs infinite till stopped")
+millLoop:add_text("It is normal if the 1m loop runs a few seconds longer after its disabled")
 
 -- Griefing Options
 local grief = KAOS:add_tab("Grief Options")
@@ -1583,6 +1665,7 @@ grief:add_button("Stop all local sounds", function()
     end
 end)
 grief:add_text("Select a player from the list and activate.")
+
 -- Object Spawner (Can be used negatively!) (Originally from Kuter Menu)
 
 -- Function to convert object names to hashes using joaat()
@@ -1847,8 +1930,31 @@ vSpawn:add_imgui(displayVehicleModelsList)
 vSpawn:add_separator()
 
 -- Spawn Selected button with orientation and spawn position
+--local maxVeh = vSpawn:add_checkbox("Spawn Maxed") under development
+--vSpawn:add_sameline()
 vSpawn:add_button("Spawn Selected", function()
+--[[if maxVeh:is_enabled() == true then
     local selectedModelIndex = selectedObjectIndex + 1
+    if selectedModelIndex > 0 then
+        local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
+        if selectedVehicleModel then
+            local vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
+            local selPlayer = network.get_selected_player()
+            local targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+            local playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
+            local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
+            playerPos.x = playerPos.x + spawnDistance.x
+            playerPos.y = playerPos.y + spawnDistance.y
+            playerPos.z = playerPos.z + spawnDistance.z
+			upgradeveh(vehicleHash)
+			spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
+            gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
+        end
+    else
+        gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
+    end
+else]]
+	local selectedModelIndex = selectedObjectIndex + 1
     if selectedModelIndex > 0 then
         local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
         if selectedVehicleModel then
@@ -1866,6 +1972,7 @@ vSpawn:add_button("Spawn Selected", function()
     else
         gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
     end
+--end
 end)
 
 -- Vehicle Gift Options
@@ -1946,8 +2053,8 @@ local Global = KAOS:add_tab("Global")
 
 -- Global RP Loop Options
 local PRGBGLoop = false
-Global:add_text("Global RP Options")
-rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
+Global:add_text("Global Helpful Options")
+rpLoop = Global:add_checkbox("Drop RP (On/Off)")
 
         script.register_looped("PRGBGLoop", function()
         if rpLoop:is_enabled() == true then
@@ -1992,8 +2099,8 @@ rpLoop = Global:add_checkbox("Drop Global RP (On/Off)")
             --sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         end
         end)
-		
-local goodRP = Global:add_checkbox("Global Fast RP")
+Global:add_sameline()		
+local goodRP = Global:add_checkbox("Fast RP")
 script.register_looped("goodRP", function()
 	if goodRP:is_enabled() == true then
         for p = 0, 31 do
@@ -2007,6 +2114,26 @@ script.register_looped("goodRP", function()
         end
     end
 end)
+
+Global:add_sameline()
+local goodMoney = Global:add_checkbox("Money")
+    script.register_looped("goodMoney", function()
+		if goodMoney:is_enabled() == true then
+			for i = 0, 31 do
+				pid = i
+				local localPlayerId = PLAYER.PLAYER_ID()
+				if pid ~= localPlayerId then
+					for n = 0, 10 do
+						for l = -10, 10 do
+							network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
+							gui.show_message("Money", "Giving money (max 225k) to "..player_count.." players in the session")
+						end
+					end
+				end
+			end
+		end
+		sleep(0.2)
+    end)
 
 -- Global Sound Spam Options
 Global:add_separator()
@@ -2444,91 +2571,92 @@ Global:add_button("Fragment crash", function()
     end)
 end)
 Global:add_sameline()
-Global:add_button("Clown Jet Attack", function()
-    script.run_in_fiber(function (clownJetAttack)		
-		for i = 0, 31 do
-			if i ~= PLAYER.PLAYER_ID() then
-				local player = i
-				local players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
-				local playerName = PLAYER.GET_PLAYER_NAME(players)
-				local coords = ENTITY.GET_ENTITY_COORDS(players, true)
-				local heading = ENTITY.GET_ENTITY_HEADING(players)
-				local spawnDistance = 250.0 * math.sin(math.rad(heading))
-				local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
-				local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
-				local clown = joaat("s_m_y_clown_01")
-				local jet = joaat("Lazer")
-				local weapon = -1121678507
+local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
+	script.register_looped("clownJetAttack", function()
+		if clownJetAttack:is_enabled() == true then
+			for i = 0, 31 do
+				if i ~= PLAYER.PLAYER_ID() then
+					local player = i
+					local players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
+					local playerName = PLAYER.GET_PLAYER_NAME(players)
+					local coords = ENTITY.GET_ENTITY_COORDS(players, true)
+					local heading = ENTITY.GET_ENTITY_HEADING(players)
+					local spawnDistance = 250.0 * math.sin(math.rad(heading))
+					local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
+					local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+					local clown = joaat("s_m_y_clown_01")
+					local jet = joaat("Lazer")
+					local weapon = -1121678507
 
-				STREAMING.REQUEST_MODEL(clown)
-				STREAMING.REQUEST_MODEL(jet)
-				STREAMING.REQUEST_MODEL(weapon)
-
-				while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
 					STREAMING.REQUEST_MODEL(clown)
 					STREAMING.REQUEST_MODEL(jet)
-					clownJetAttack:yield()
-				end
+					STREAMING.REQUEST_MODEL(weapon)
 
-				-- Calculate the spawn position for the jet in the air
-				local jetSpawnX = coords.x + math.random(-1000, 1000)
-				local jetSpawnY = coords.y + math.random(-1000, 1000)
-				local jetSpawnZ = coords.z + math.random(100, 1200)
-				
-				local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
-				local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
-				if jetVehicle ~= 0 then
-					local primaryColor = colors[math.random(#colors)]
-					local secondaryColor = colors[math.random(#colors)]
-
-					-- Set vehicle colors
-					VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
-					-- Spawn clowns inside the jet
-					for seat = -1, -1 do
-						local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
-						
-						if ped ~= 0 then
-							local group = joaat("HATES_PLAYER")
-							PED.ADD_RELATIONSHIP_GROUP("clowns", group)
-							ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
-							PED.SET_PED_CAN_BE_TARGETTED(ped, false)
-							WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
-							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
-							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
-							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
-							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
-							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
-							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
-							PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
-							PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
-							TASK.TASK_COMBAT_PED(ped, players, 0, 16)
-							ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
-							ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
-							ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
-							ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
-							PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
-							WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
-						else
-							gui.show_error("Failed", "Failed to create ped")
-						end
+					while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
+						STREAMING.REQUEST_MODEL(clown)
+						STREAMING.REQUEST_MODEL(jet)
+						clownJetAttack:yield()
 					end
-				else
-					gui.show_error("Failed", "Failed to create jet")
-				end
-			
-				if jetVehicle == 0 then 
-					gui.show_error("Failed", "Failed to Create Jet")
-				else
-					gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player))
+
+					-- Calculate the spawn position for the jet in the air
+					local jetSpawnX = coords.x + math.random(-1000, 1000)
+					local jetSpawnY = coords.y + math.random(-1000, 1000)
+					local jetSpawnZ = coords.z + math.random(100, 1200)
+					
+					local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
+					local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
+					if jetVehicle ~= 0 then
+						local primaryColor = colors[math.random(#colors)]
+						local secondaryColor = colors[math.random(#colors)]
+
+						-- Set vehicle colors
+						VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
+						-- Spawn clowns inside the jet
+						for seat = -1, -1 do
+							local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
+							
+							if ped ~= 0 then
+								local group = joaat("HATES_PLAYER")
+								PED.ADD_RELATIONSHIP_GROUP("clowns", group)
+								ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
+								PED.SET_PED_CAN_BE_TARGETTED(ped, false)
+								WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
+								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
+								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
+								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
+								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
+								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
+								PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
+								TASK.TASK_COMBAT_PED(ped, players, 0, 16)
+								ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
+								ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
+								ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
+								ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
+								PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
+								WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
+							else
+								gui.show_error("Failed", "Failed to create ped")
+							end
+						end
+					else
+						gui.show_error("Failed", "Failed to create jet")
+					end
+				
+					if jetVehicle == 0 then 
+						gui.show_error("Failed", "Failed to Create Jet")
+					else
+						gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets every 15 seconds.")
+					end
 				end
 			end
+			-- Release the resources associated with the spawned entities
+			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
+			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
+			sleep(15)
 		end
-        -- Release the resources associated with the spawned entities
-        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
-        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
-
     end)
-end)
 
 local explosionLoop = false
 explosionLoop = Global:add_checkbox("Explosion (On/Off)")
@@ -2658,12 +2786,9 @@ script.register_looped("crashGlobal", function()
 					
 					ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
                 end
-                 sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+                 sleep(0.1) -- Sets the timer in seconds for how long this should pause
             end
         end
-
-        -- Sets the timer in seconds for how long this should pause before ramming another player
-        --sleep(0.2)
     end
 end)
 
@@ -2797,9 +2922,9 @@ StoryCharacters = KAOS:add_tab("Story Mode")
 local Weapons = KAOS:add_tab("Weapons")
 
 Weapons:add_button("Remove All Weapons", function()
-        local playerID = PLAYER.PLAYER_ID()
+        local playerID = network.get_selected_player()
         local ent = PLAYER.GET_PLAYER_PED(playerID)
-        out = "Successfully removed all weapons"
+        out = "Successfully removed all weapons from "..PLAYER.GET_PLAYER_NAME(playerID)
         if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
             for _, name in ipairs(weaponNamesString) do
                 local weaponHash = MISC.GET_HASH_KEY(name)
@@ -2811,9 +2936,9 @@ Weapons:add_button("Remove All Weapons", function()
 end)
 Weapons:add_sameline()
 Weapons:add_button("Give All Weapons", function()
-        local playerID = PLAYER.PLAYER_ID()
+        local playerID = network.get_selected_player()
         local ent = PLAYER.GET_PLAYER_PED(playerID)
-        out = "Successfully given all weapons"
+        out = "Successfully given all weapons to "..PLAYER.GET_PLAYER_NAME(playerID)
         if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
             for _, name in ipairs(weaponNamesString) do
                 local weaponHash = MISC.GET_HASH_KEY(name)
@@ -2828,9 +2953,6 @@ Weapons:add_tab("Drops")
 Weapons:add_separator()
 Weapons:add_text("Weapon Drops")
 Weapons:add_button("Drop Random Weapon", function()
-    mk2Loop = not mk2Loop
-
-    script.register_looped("mk2Loop", function(script)
         local weaponName = weaponNamesString[math.random(1, #weaponNamesString)]
         local money_value = 0
         local player_id = network.get_selected_player()
@@ -2842,7 +2964,7 @@ Weapons:add_button("Drop Random Weapon", function()
             script:yield()
         end
         if STREAMING.HAS_MODEL_LOADED(modelHash) then
-            gui.show_message("Weapon Drop Started", "Dropping " .. weaponName)
+            gui.show_message("Weapon Drop Started", "Dropping " .. weaponName .. " on "..PLAYER.GET_PLAYER_NAME(player_id))
             local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
             local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 joaat("PICKUP_" .. string.upper(weaponName)),
@@ -2859,11 +2981,10 @@ Weapons:add_button("Drop Random Weapon", function()
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
-    end)
 end)
 Weapons:add_separator()
-Weapons:add_text("To use the Random Weapon Dropper, Select a player from the player list")
-Weapons:add_text("then press Drop Random Weapon, you can press it as many times as you want")
+Weapons:add_text("Select a player, click an option")
+Weapons:add_text("Random weapon dropper will drop 1 weapon per click")
 Weapons:add_text("it will drop weapon pickups on the player you selected")
 
 
@@ -4324,6 +4445,68 @@ function request_control(entity)
     end
     return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
 end
+
+local chatOpt = KAOS:add_tab("Chat Options")
+
+chatOpt:add_text("Send Unfiltered Messages")
+local chatBox = ""
+chatOpt:add_imgui(function()
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
+    chatBox, used = ImGui.InputText("Message", chatBox, 256)
+    if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
+end)
+chatOpt:add_sameline()
+local isTeam = chatOpt:add_checkbox("Team Only")
+chatOpt:add_button("Send Message", function()
+	if isTeam:is_enabled() == false then
+		if chatBox ~= "" then
+			network.send_chat_message("[Extras Addon]: "..chatBox, false)
+		end
+	else
+		if chatBox ~= "" then
+			network.send_chat_message("[Extras Addon]: "..chatBox, true)
+		end
+	end
+end)
+
+chatOpt:add_separator()
+-- Discord Name Sender, easily send your discord name
+chatOpt:add_text("Discord Advertiser")
+local discordBox = ""
+chatOpt:add_imgui(function()
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
+    discordBox, used = ImGui.InputText("Discord Username", discordBox, 64)
+    if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
+end)
+
+chatOpt:add_button("Send", function()
+	if discordBox ~= "" then
+		network.send_chat_message("[Add My Discord]: "..discordBox, false)
+	end
+end)
+
+chatOpt:add_separator()
+chatOpt:add_button("Addon Info", function()
+		local ainfo = "Extras Addon for YimMenu v"..addonVersion..", find it on Github for FREE @ https://github.com/Deadlineem/Extras-Addon-for-YimMenu!"
+		network.send_chat_message("[Lua Script]: "..ainfo, false)
+end)
+chatOpt:add_sameline()
+chatOpt:add_button("Menu Info", function()
+		local binfo = "YimMenu version 1.68, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
+		network.send_chat_message("[Menu]: "..binfo, false)
+end)
 
 local balls = {
 "p_ld_soc_ball_01",
