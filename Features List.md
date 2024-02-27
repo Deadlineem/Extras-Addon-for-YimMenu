@@ -67,12 +67,17 @@
 - **Magnet/Forcefield Effects:**
   - Sliders for adjusting the radius and magnitude of magnet and force field effects.
 
-### Selected Player Options
+### Selected Player Options - USBMenus Addons
 - **Trolling:**
   - Checkboxes for NPCs driving to the player, spawning dildos, spawning balls, and spinning vehicles.
   - Buttons for spawning pedestrian clones and initiating clown attacks.
 - **Griefing:**
   - Checkboxes for activating hydrants, steam, extinguishers, explosions, and screen shaking.
 
+### Chat Options
+- Send Chat Box/Button for sending unfiltered chat messages, Checkbox Can be toggled on to send to Team Only
+- Send Discord box/Button for advertising your discord username through chat
+- Addon Info sends the addon information/github link in all chat
+- Menu Info sends the menu information/github link in all chat
 
 ### You can see more features by using the menu, there are new features almost daily!
