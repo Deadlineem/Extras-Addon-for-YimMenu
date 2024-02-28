@@ -15,14 +15,14 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 0.9.7
+        Addon Version: 0.9.8
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
       TheKuter, RazorGamerX, USBMenus & More!
 
 ]]--
-local addonVersion = "0.9.7"
+local addonVersion = "0.9.8"
 
 selectedPlayerTab = gui.get_tab("")
 
@@ -473,6 +473,15 @@ Stats:add_button("Reset Income/Spent Stats", function()
 		SessionChanger(0)
     end)
 end)
+Stats:add_sameline()
+Stats:add_button("Bank 2 Wallet", function()
+	NETSHOPPING.NET_GAMESERVER_TRANSFER_BANK_TO_WALLET(stats.get_character_index(), MONEY.NETWORK_GET_VC_BANK_BALANCE(stats.get_character_index()))
+end)
+Stats:add_sameline()
+Stats:add_button("Wallet 2 Bank", function()
+	NETSHOPPING.NET_GAMESERVER_TRANSFER_WALLET_TO_BANK(stats.get_character_index(), MONEY.NETWORK_GET_VC_WALLET_BALANCE(stats.get_character_index()))
+end)
+
 Stats:add_separator()
 Stats:add_text("Character Skills")
 Stats:add_button("Max All Skills", function()
@@ -518,6 +527,7 @@ Stats:add_button("Reset All Skills", function()
 		SessionChanger(0)
 	end)
 end)
+
 Stats:add_text("Randomize or set your RP amount and/or reset character stats.")
 Stats:add_text("*Reset Income may glitch some owned properties and reset mission progress in freemode*")
 
@@ -3050,6 +3060,65 @@ script.register_looped("agencyloop", function(script)
     end
 end)
 
+local bunker = Business:add_tab("Bunker")
+
+bunker:add_button("Unlock All Shooting Range", function()
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+    MPX = "MP0_"
+else
+    MPX = "MP1_"
+end
+	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_1"), 690, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_2"), 1860, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_3"), 2690, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_4"), 2660, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_5"), 2650, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_6"), 450, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "SR_TARGETS_HIT"), 269, true)
+	STATS.STAT_SET_INT(joaat(MPX .. "SR_WEAPON_BIT_SET"), -1, true)
+	STATS.STAT_SET_BOOL(joaat(MPX .. "SR_TIER_1_REWARD"), true, true)
+	STATS.STAT_SET_BOOL(joaat(MPX .. "SR_TIER_3_REWARD"), true, true)
+	STATS.STAT_SET_BOOL(joaat(MPX .. "SR_INCREASE_THROW_CAP"), true, true)
+end)
+
+local bResearch = bunker:add_checkbox("Instant Research Cooldown (Looped)")
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+    MPX = "MP0_"
+else
+    MPX = "MP1_"
+end
+script.register_looped("bunkerResearch", function()
+	if bResearch:is_enabled() == true then
+		STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_PRODUCTION_TIME"), 0, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_EQUIPMENT_REDUCTION_TIME"), 0, true)
+		STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_STAFF_REDUCTION_TIME"), 0, true)
+		gui.show_message("Bunker", "Research is moving fast, feel free to walk away")
+		gui.show_message("Bunker", "Optionally, you can access the PC and pay to fast track")
+	end
+end)
+
+bunker:add_sameline()
+local bSupplies = bunker:add_checkbox("Resupply Bunker (Looped)")
+script.register_looped("autoGetBunkerCargo", function(script)
+    script:yield()
+    if bSupplies:is_enabled() == true then
+        autoGetBunkerCargo = not autoGetBunkerCargo
+        if autoGetBunkerCargo then
+            globals.set_int(1662873 + 1 + 5, 1)
+			if bResearch:is_enabled() == true then
+				gui.show_message("Bunker", "Resupplying your supplies for your research")
+			else
+				gui.show_message("Bunker", "Resupplying your bunker supplies, please wait...")
+				sleep(0.5)
+			end
+        end
+    end
+end)
+
 local Hangar = Business:add_tab("Hangar")
 
 hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
@@ -3075,20 +3144,6 @@ script.register_looped("autoGetAcidCargo", function(script)
         if autoGetAcidCargo then
             globals.set_int(1662873 + 1 + 6, 1)
             gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...")
-            sleep(0.5)
-        end
-    end
-end)
-
-mcBus:add_sameline()
-bunker = mcBus:add_checkbox("Resupply Bunker (Looped)")
-script.register_looped("autoGetBunkerCargo", function(script)
-    script:yield()
-    if bunker:is_enabled() == true then
-        autoGetBunkerCargo = not autoGetBunkerCargo
-        if autoGetBunkerCargo then
-            globals.set_int(1662873 + 1 + 5, 1)
-            gui.show_message("Bunker", "Resupplying your bunker stock, please wait...")
             sleep(0.5)
         end
     end
