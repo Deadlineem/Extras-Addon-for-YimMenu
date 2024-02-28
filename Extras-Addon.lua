@@ -316,131 +316,131 @@ Fun:add_button("Remove Impairments", function()
 end)
 
 local function SessionChanger(session)
-		globals.set_int(1575032, session)
-		if session == -1 then
-			globals.set_int(1574589 + 2, -1)
-		end
-		sleep(0.5)
-		globals.set_int(1574589, 1)
-		sleep(0.5)
-		globals.set_int(1574589, 0)
-	end
-	
+        globals.set_int(1575032, session)
+        if session == -1 then
+            globals.set_int(1574589 + 2, -1)
+        end
+        sleep(0.5)
+        globals.set_int(1574589, 1)
+        sleep(0.5)
+        globals.set_int(1574589, 0)
+    end
+    
 -- Stat Editor - Alestarov_Menu // Reset Stats Option
 local Stats = Pla:add_tab("Stats")
 Stats:add_text("Change Levels")
 Stats:add_button("Randomize RP", function()
-	script.run_in_fiber(function (script)
-		MPX = PI
-		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-		if PI == 0 then
-			MPX = "MP0_"
-		else
-			MPX = "MP1_"
-		end
-		local randomizeRP = math.random(1, 1787576850) -- 1 Rp to 1787576850 Rp (lvl 1 to 8000)
-		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
-		gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP")
-		sleep(1)
-		SessionChanger(0)
-	end)
+    script.run_in_fiber(function (script)
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
+        local randomizeRP = math.random(1, 1787576850) -- 1 Rp to 1787576850 Rp (lvl 1 to 8000)
+        STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
+        gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP")
+        sleep(1)
+        SessionChanger(0)
+    end)
 end)
 Stats:add_sameline()
 Stats:add_button("Lvl 1", function()
-	script.run_in_fiber(function (script)
-		MPX = PI
-		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-		if PI == 0 then
-			MPX = "MP0_"
-		else
-			MPX = "MP1_"
-		end
-		local rpLevel = 1 -- Level 1 -- https://www.unknowncheats.me/forum/2458458-post691.html
-		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-		gui.show_message("Stats", "Your level was set to 1, changing session and applying RP")
-		sleep(1)
-		SessionChanger(0)
-	end)
+    script.run_in_fiber(function (script)
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
+        local rpLevel = 1 -- Level 1 -- https://www.unknowncheats.me/forum/2458458-post691.html
+        STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        gui.show_message("Stats", "Your level was set to 1, changing session and applying RP")
+        sleep(1)
+        SessionChanger(0)
+    end)
 end)
 Stats:add_sameline()
 Stats:add_button("Lvl 100", function()
-	script.run_in_fiber(function (script)
-		MPX = PI
-		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-		if PI == 0 then
-			MPX = "MP0_"
-		else
-			MPX = "MP1_"
-		end
-		local rpLevel = 1584350 -- Level 100 -- https://www.unknowncheats.me/forum/2458458-post691.html
-		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-		gui.show_message("Stats", "Your level was set to 100, changing session and applying RP")
-		sleep(1)
-		SessionChanger(0)
-	end)
+    script.run_in_fiber(function (script)
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
+        local rpLevel = 1584350 -- Level 100 -- https://www.unknowncheats.me/forum/2458458-post691.html
+        STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        gui.show_message("Stats", "Your level was set to 100, changing session and applying RP")
+        sleep(1)
+        SessionChanger(0)
+    end)
 end)
 Stats:add_sameline()
 Stats:add_button("Lvl 420", function()
-	script.run_in_fiber(function (script)
-		MPX = PI
-		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-		if PI == 0 then
-			MPX = "MP0_"
-		else
-			MPX = "MP1_"
-		end
-		local rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
-		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-		gui.show_message("Stats", "Your level was set to 420, changing session and applying RP")
-		sleep(1)
-		SessionChanger(0)
-	end)
+    script.run_in_fiber(function (script)
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
+        local rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
+        STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        gui.show_message("Stats", "Your level was set to 420, changing session and applying RP")
+        sleep(1)
+        SessionChanger(0)
+    end)
 end)
 Stats:add_sameline()
 Stats:add_button("Lvl 1337", function()
-	script.run_in_fiber(function (script)
-		MPX = PI
-		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-		if PI == 0 then
-			MPX = "MP0_"
-		else
-			MPX = "MP1_"
-		end
-		local rpLevel = 75185850 -- Level 1337 -- https://www.unknowncheats.me/forum/2458458-post691.html
-		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-		gui.show_message("Stats", "Your level was set to 1337, changing session and applying RP")
-		sleep(1)
-		SessionChanger(0)
-	end)
+    script.run_in_fiber(function (script)
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
+        local rpLevel = 75185850 -- Level 1337 -- https://www.unknowncheats.me/forum/2458458-post691.html
+        STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        gui.show_message("Stats", "Your level was set to 1337, changing session and applying RP")
+        sleep(1)
+        SessionChanger(0)
+    end)
 end)
 Stats:add_sameline()
 Stats:add_button("Lvl 8000", function()
-	script.run_in_fiber(function (script)
-		MPX = PI
-		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-		if PI == 0 then
-			MPX = "MP0_"
-		else
-			MPX = "MP1_"
-		end
-		local rpLevel = 1787576850 -- Level 8000 -- https://www.unknowncheats.me/forum/2458458-post691.html
-		STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-		gui.show_message("Stats", "Your level was set to 8000, changing session and applying RP")
-		sleep(1)
-		SessionChanger(0)
-	end)
+    script.run_in_fiber(function (script)
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
+        local rpLevel = 1787576850 -- Level 8000 -- https://www.unknowncheats.me/forum/2458458-post691.html
+        STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        gui.show_message("Stats", "Your level was set to 8000, changing session and applying RP")
+        sleep(1)
+        SessionChanger(0)
+    end)
 end)
 Stats:add_separator()
 Stats:add_text("Income Statistics")
 Stats:add_button("Reset Income/Spent Stats", function()
     script.run_in_fiber(function (script)
-		MPX = PI
-		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-		if PI == 0 then
-			MPX = "MP0_"
-		else
-			MPX = "MP1_"
-		end
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_SVC"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_BETTING"), 0, true)
@@ -464,68 +464,68 @@ Stats:add_button("Reset Income/Spent Stats", function()
         STATS.STAT_SET_INT(joaat(MPX .. "CASINO_BAN_TIME"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PURTIM"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "CASINO_CHIPS_PUR_GD"), 0, true)
-		if PI == 0 then
-			gui.show_message("Stats", "Income Stats for Player 1 have been reset to 0, changing sessions to apply.")
-		else
-			gui.show_message("Stats", "Income Stats for Player 2 have been reset to 0, changing sessions to apply.")
-		end
-		sleep(1)
-		SessionChanger(0)
+        if PI == 0 then
+            gui.show_message("Stats", "Income Stats for Player 1 have been reset to 0, changing sessions to apply.")
+        else
+            gui.show_message("Stats", "Income Stats for Player 2 have been reset to 0, changing sessions to apply.")
+        end
+        sleep(1)
+        SessionChanger(0)
     end)
 end)
 Stats:add_sameline()
 Stats:add_button("Bank 2 Wallet", function()
-	NETSHOPPING.NET_GAMESERVER_TRANSFER_BANK_TO_WALLET(stats.get_character_index(), MONEY.NETWORK_GET_VC_BANK_BALANCE(stats.get_character_index()))
+    NETSHOPPING.NET_GAMESERVER_TRANSFER_BANK_TO_WALLET(stats.get_character_index(), MONEY.NETWORK_GET_VC_BANK_BALANCE(stats.get_character_index()))
 end)
 Stats:add_sameline()
 Stats:add_button("Wallet 2 Bank", function()
-	NETSHOPPING.NET_GAMESERVER_TRANSFER_WALLET_TO_BANK(stats.get_character_index(), MONEY.NETWORK_GET_VC_WALLET_BALANCE(stats.get_character_index()))
+    NETSHOPPING.NET_GAMESERVER_TRANSFER_WALLET_TO_BANK(stats.get_character_index(), MONEY.NETWORK_GET_VC_WALLET_BALANCE(stats.get_character_index()))
 end)
 
 Stats:add_separator()
 Stats:add_text("Character Skills")
 Stats:add_button("Max All Skills", function()
-	script.run_in_fiber(function (script)
-		MPX = PI
-		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-		if PI == 0 then
-			MPX = "MP0_"
-		else
-			MPX = "MP1_"
-		end
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_DRIV"), 1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_FLY"), 1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_LUNG"), 1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_SHO"), 1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STAM"), 1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STL"), 1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STRN"), 1000, true)
-		gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been maxed. Changing sessions to apply.")
-		sleep(1)
-		SessionChanger(0)
-	end)
+    script.run_in_fiber(function (script)
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_DRIV"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_FLY"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_LUNG"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_SHO"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STAM"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STL"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STRN"), 1000, true)
+        gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been maxed. Changing sessions to apply.")
+        sleep(1)
+        SessionChanger(0)
+    end)
 end)
 Stats:add_sameline()
 Stats:add_button("Reset All Skills", function()
-	script.run_in_fiber(function (script)
-		MPX = PI
-		PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-		if PI == 0 then
-			MPX = "MP0_"
-		else
-			MPX = "MP1_"
-		end
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_DRIV"), -1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_FLY"), -1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_LUNG"), -1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_SHO"), -1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STAM"), -1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STL"), -1000, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STRN"), -1000, true)
-		gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been zeroed. Changing sessions to apply.")
-		sleep(1)
-		SessionChanger(0)
-	end)
+    script.run_in_fiber(function (script)
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_DRIV"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_FLY"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_LUNG"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_SHO"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STAM"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STL"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_STRN"), -1000, true)
+        gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been zeroed. Changing sessions to apply.")
+        sleep(1)
+        SessionChanger(0)
+    end)
 end)
 
 Stats:add_text("Randomize or set your RP amount and/or reset character stats.")
@@ -569,8 +569,8 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
 
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-			
-			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+            
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
         sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not princessBubblegumLoop then
@@ -610,8 +610,8 @@ Drops:add_button("Alien (On/Off)", function()
 
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-			
-			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+            
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
         sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not alienfigurineLoop then
@@ -651,8 +651,8 @@ Drops:add_button("Casino Cards (On/Off)", function()
         
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-			
-			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+            
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
         sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not casinocardsLoop then
@@ -691,8 +691,8 @@ kcashLoop = not kcashLoop
             )
             local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-			
-			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+            
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
         sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not kcashLoop then
@@ -708,41 +708,41 @@ Drops:add_button("Give 25k & Random RP", function()
         for i = 0, 9 do
             for v = 0, 20 do
                 network.trigger_script_event(1 << pid, {968269233, pid, 0, i, v, v, v})
-				for n = 0, 16 do
+                for n = 0, 16 do
                     network.trigger_script_event(1 << pid, {968269233, pid, n, i, v, v, v})
                 end
             end
             network.trigger_script_event(1 << pid, {968269233, pid, 1, i, 1, 1, 1})
             network.trigger_script_event(1 << pid, {968269233, pid, 3, i, 1, 1, 1})
             network.trigger_script_event(1 << pid, {968269233, pid, 10, i, 1, 1, 1})
-			network.trigger_script_event(1 << pid, {968269233, pid, 0, i, 1, 1, 1})
+            network.trigger_script_event(1 << pid, {968269233, pid, 0, i, 1, 1, 1})
             tse:yield()
-			
-			gui.show_message("Bless RP", "Blessing "..PLAYER.GET_PLAYER_NAME(pid).." with 25k RP (1 time)")
+            
+            gui.show_message("Bless RP", "Blessing "..PLAYER.GET_PLAYER_NAME(pid).." with 25k RP (1 time)")
         end
     end)
 end)
 Drops:add_sameline()
 local tseTest = Drops:add_checkbox("Super Fast RP")
 script.register_looped("tseTest", function()
-	if tseTest:is_enabled() == true then
-		pid = network.get_selected_player()
-		for i = 0, 24 do 
-			network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
-		end
-	end
+    if tseTest:is_enabled() == true then
+        pid = network.get_selected_player()
+        for i = 0, 24 do 
+            network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
+        end
+    end
 end)
 Drops:add_sameline()
 local ezMoney = Drops:add_checkbox("Money ($225k)")
     script.register_looped("ezMoney", function()
-		if ezMoney:is_enabled() == true then
-			local pid = network.get_selected_player()
-			for n = 0, 10 do
-				for l = -10, 10 do
-					network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
-				end
-			end
-		end
+        if ezMoney:is_enabled() == true then
+            local pid = network.get_selected_player()
+            for n = 0, 10 do
+                for l = -10, 10 do
+                    network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
+                end
+            end
+        end
     end)
 
 Drops:add_separator()
@@ -1110,45 +1110,45 @@ script.register_looped("Casino Pacino Thread", function (script)
 end)
 
 casino_gui:add_button("Broadcast Msg", function()
-	if dealers_card_gui_element:get_value() ~= "Not in Casino." then
-		if force_roulette_wheel:is_enabled() then
-			network.send_chat_message("[Casino Rig]: Make sure you own a Casino Penthouse OR you are in a CEO with someone who does AND that you have 50k+ chips before playing!")
-			network.send_chat_message("[Casino Rig]: Roulette tables are rigged at the casino!  Come to the casino for easy money!")
-		else
-			gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
-		end
-	else
-		gui.show_message("Error", "You need to be in the casino near the tables to use this")
-	end
+    if dealers_card_gui_element:get_value() ~= "Not in Casino." then
+        if force_roulette_wheel:is_enabled() then
+            network.send_chat_message("[Casino Rig]: Make sure you own a Casino Penthouse OR you are in a CEO with someone who does AND that you have 50k+ chips before playing!")
+            network.send_chat_message("[Casino Rig]: Roulette tables are rigged at the casino!  Come to the casino for easy money!")
+        else
+            gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
+        end
+    else
+        gui.show_message("Error", "You need to be in the casino near the tables to use this")
+    end
 end)
 casino_gui:add_sameline()
 casino_gui:add_button("How To Bet", function()
-	if dealers_card_gui_element:get_value() ~= "Not in Casino." then
-		if force_roulette_wheel:is_enabled() then
-			if casVal == -1 then 
-				local casVal = "00"
-				network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
-			else
-				network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
-			end
-		else
-			gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
-		end
-	else
-		gui.show_message("Error", "You need to be in the casino near the tables to use this")
-	end
+    if dealers_card_gui_element:get_value() ~= "Not in Casino." then
+        if force_roulette_wheel:is_enabled() then
+            if casVal == -1 then 
+                local casVal = "00"
+                network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
+            else
+                network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
+            end
+        else
+            gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
+        end
+    else
+        gui.show_message("Error", "You need to be in the casino near the tables to use this")
+    end
 end)
 casino_gui:add_sameline()
 casino_gui:add_button("Alt Betting Info", function()
-	if dealers_card_gui_element:get_value() ~= "Not in Casino." then
-		if force_roulette_wheel:is_enabled() then
-			network.send_chat_message("[Casino Rig]: You can optionally stack as many chips as you can on the corresponding '1st 12, 2nd 12 or 3rd 12' in the same row as the winning number instead of '2 to 1'")
-		else
-			gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
-		end
-	else
-		gui.show_message("Error", "You need to be in the casino near the tables to use this")
-	end
+    if dealers_card_gui_element:get_value() ~= "Not in Casino." then
+        if force_roulette_wheel:is_enabled() then
+            network.send_chat_message("[Casino Rig]: You can optionally stack as many chips as you can on the corresponding '1st 12, 2nd 12 or 3rd 12' in the same row as the winning number instead of '2 to 1'")
+        else
+            gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
+        end
+    else
+        gui.show_message("Error", "You need to be in the casino near the tables to use this")
+    end
 end)
 
 casino_gui:add_separator()
@@ -1270,6 +1270,21 @@ millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL 
 millLoop:add_text("Some loops may not run more than once, the 1m loop runs infinite till stopped")
 millLoop:add_text("It is normal if the 1m loop runs a few seconds longer after its disabled")
 
+moneyRemover = Money:add_tab("Money Remover")
+
+removerInput = moneyRemover:add_input_int("Ballistic Equipment")
+
+moneyRemover:add_button("Set Amount", function()
+    if removerInput:get_value() <= 500 then
+        gui.show_error("Money Remover", "Amount Must Be Greater Than 500")
+    else
+        globals.set_int(262145 + 20498, removerInput:get_value())
+        gui.show_message("Money Remover", "Amount Successfully Set")
+    end
+end)
+
+moneyRemover:add_text("To remove money request ballistic equipment in interaction menu from\n Health and Ammo -> Ballistic Equipment Services -> Request Ballistic Equipment")
+
 -- Griefing Options
 local grief = KAOS:add_tab("Grief Options")
 grief:add_text("Kill Options")
@@ -1277,7 +1292,7 @@ grief:add_text("Kill Options")
 grief:add_button("Clown Jet Attack", function()
     script.run_in_fiber(function (clownJetAttack)
         local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-		local playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
+        local playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
         local coords = ENTITY.GET_ENTITY_COORDS(player, true)
         local heading = ENTITY.GET_ENTITY_HEADING(player)
         local spawnDistance = 250.0 * math.sin(math.rad(heading))
@@ -1302,11 +1317,11 @@ grief:add_button("Clown Jet Attack", function()
         local jetSpawnY = coords.y + math.random(-1000, 1000)
         local jetSpawnZ = coords.z + math.random(100, 1200)
         
-		local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
+        local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
         local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
         
         if jetVehicle ~= 0 then
-			local primaryColor = colors[math.random(#colors)]
+            local primaryColor = colors[math.random(#colors)]
             local secondaryColor = colors[math.random(#colors)]
 
             -- Set vehicle colors
@@ -1322,20 +1337,20 @@ grief:add_button("Clown Jet Attack", function()
                     PED.SET_PED_CAN_BE_TARGETTED(ped, false)
                     WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
                     PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
                     TASK.TASK_COMBAT_PED(ped, player, 0, 16)
-					ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
-					ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
-					ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
-					ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
-					PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
-					WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
+                    ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
+                    ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
+                    ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
+                    ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
+                    PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
+                    WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
                 else
                     gui.show_error("Failed", "Failed to create ped")
                 end
@@ -1626,9 +1641,9 @@ grief:add_button("Fragment crash", function()
 end)
 grief:add_sameline()
 grief:add_button("TSE Crash", function()
-	local pid = network.get_selected_player()
-	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
-	gui.show_message("Invalid Activity", "TSE Freezing "..PLAYER.GET_PLAYER_NAME(pid))
+    local pid = network.get_selected_player()
+    network.trigger_script_event(1 << pid, {1450115979, pid, 1})
+    gui.show_message("Invalid Activity", "TSE Freezing "..PLAYER.GET_PLAYER_NAME(pid))
 end)
 
 -- Griefing Sound Spam Targetable
@@ -1636,9 +1651,9 @@ grief:add_text("Sound Spams")
 local airDefSpam = grief:add_checkbox("Air Defense Spam")
 script.register_looped("airDefSpam", function()
 local targetPlayer = network.get_selected_player()
-	if airDefSpam:is_enabled() == true then
+    if airDefSpam:is_enabled() == true then
         AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Air_Defences_Activated", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999)
-		gui.show_message("Sound Spam", "Air Defense spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
+        gui.show_message("Sound Spam", "Air Defense spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
     end
 end)
 grief:add_sameline()
@@ -1956,15 +1971,15 @@ vSpawn:add_button("Spawn Selected", function()
             playerPos.x = playerPos.x + spawnDistance.x
             playerPos.y = playerPos.y + spawnDistance.y
             playerPos.z = playerPos.z + spawnDistance.z
-			upgradeveh(vehicleHash)
-			spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
+            upgradeveh(vehicleHash)
+            spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
             gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
         end
     else
         gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
     end
 else]]
-	local selectedModelIndex = selectedObjectIndex + 1
+    local selectedModelIndex = selectedObjectIndex + 1
     if selectedModelIndex > 0 then
         local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
         if selectedVehicleModel then
@@ -2098,28 +2113,28 @@ rpLoop = Global:add_checkbox("Drop RP (On/Off)")
                             true,
                             false
                         )
-						ENTITY.SET_ENTITY_VISIBLE(objectIdSpawned, true, false)
+                        ENTITY.SET_ENTITY_VISIBLE(objectIdSpawned, true, false)
                         local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
                         NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-						
-						ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+                        
+                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
                     end
                 end
             end
             --sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         end
         end)
-Global:add_sameline()		
+Global:add_sameline()       
 local goodRP = Global:add_checkbox("Fast RP")
 script.register_looped("goodRP", function()
-	if goodRP:is_enabled() == true then
+    if goodRP:is_enabled() == true then
         for p = 0, 31 do
             if p ~= PLAYER.PLAYER_ID() then
-				for i = 20, 24 do 
-					network.trigger_script_event(1 << p, {968269233 , p, 1, 4, i, 1, 1, 1, 1})
-					local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
-					gui.show_message("Fast RP", "Giving massive amounts of RP to "..player_count.." players in the session")
-				end
+                for i = 20, 24 do 
+                    network.trigger_script_event(1 << p, {968269233 , p, 1, 4, i, 1, 1, 1, 1})
+                    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
+                    gui.show_message("Fast RP", "Giving massive amounts of RP to "..player_count.." players in the session")
+                end
             end
         end
     end
@@ -2128,21 +2143,21 @@ end)
 Global:add_sameline()
 local goodMoney = Global:add_checkbox("Money")
     script.register_looped("goodMoney", function()
-		if goodMoney:is_enabled() == true then
-			for i = 0, 31 do
-				pid = i
-				local localPlayerId = PLAYER.PLAYER_ID()
-				if pid ~= localPlayerId then
-					for n = 0, 10 do
-						for l = -10, 10 do
-							network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
-							gui.show_message("Money", "Giving money (max 225k) to "..player_count.." players in the session")
-						end
-					end
-				end
-			end
-		end
-		sleep(0.2)
+        if goodMoney:is_enabled() == true then
+            for i = 0, 31 do
+                pid = i
+                local localPlayerId = PLAYER.PLAYER_ID()
+                if pid ~= localPlayerId then
+                    for n = 0, 10 do
+                        for l = -10, 10 do
+                            network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
+                            gui.show_message("Money", "Giving money (max 225k) to "..player_count.." players in the session")
+                        end
+                    end
+                end
+            end
+        end
+        sleep(0.2)
     end)
 
 -- Global Sound Spam Options
@@ -2504,168 +2519,168 @@ Global:add_sameline()
 
 Global:add_button("Fragment crash", function()
     script.run_in_fiber(function (fragcrash)
-	local localPlayerId = PLAYER.PLAYER_PED_ID()
-		for i = 0, 31 do
-			if i ~= localPlayerId then
-				local players = i
-				fraghash = joaat("prop_fragtest_cnst_04")
-				STREAMING.REQUEST_MODEL(fraghash)
-				local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(selPlayer), false)
-				local crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff1, 1, false)
-				local crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff2, 1, false)
-				local crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
-				local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
-				for v = 0, 100 do   
-					local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
-					ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-					ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-					ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff3, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-					ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff4, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-					fragcrash:sleep(10)
-					delete_entity(crashstaff1)
-					delete_entity(crashstaff2)
-					delete_entity(crashstaff3)
-					delete_entity(crashstaff4)
-				end
-			end
-		end
+    local localPlayerId = PLAYER.PLAYER_PED_ID()
+        for i = 0, 31 do
+            if i ~= localPlayerId then
+                local players = i
+                fraghash = joaat("prop_fragtest_cnst_04")
+                STREAMING.REQUEST_MODEL(fraghash)
+                local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(selPlayer), false)
+                local crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff1, 1, false)
+                local crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff2, 1, false)
+                local crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
+                local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
+                for v = 0, 100 do   
+                    local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff3, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff4, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+                    fragcrash:sleep(10)
+                    delete_entity(crashstaff1)
+                    delete_entity(crashstaff2)
+                    delete_entity(crashstaff3)
+                    delete_entity(crashstaff4)
+                end
+            end
+        end
     end)
     script.run_in_fiber(function (fragcrash2)
-	local localPlayerId = PLAYER.PLAYER_ID()
-		for i = 0, 31 do
-			if i ~= localPlayerId then
-				local players = i
-				local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(players), false)
-				fraghash = joaat("prop_fragtest_cnst_04")
-				STREAMING.REQUEST_MODEL(fraghash)
-				for v=1,10 do
-				 
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					delete_entity(object)
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					delete_entity(object)
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					delete_entity(object)
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					delete_entity(object)
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					delete_entity(object)
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					delete_entity(object)
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					delete_entity(object)
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					delete_entity(object)
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					delete_entity(object)
-					local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-					OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-					fragcrash2:sleep(100)
-					delete_entity(object)
-				end
-			end
-		end
+    local localPlayerId = PLAYER.PLAYER_ID()
+        for i = 0, 31 do
+            if i ~= localPlayerId then
+                local players = i
+                local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(players), false)
+                fraghash = joaat("prop_fragtest_cnst_04")
+                STREAMING.REQUEST_MODEL(fraghash)
+                for v=1,10 do
+                 
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    delete_entity(object)
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    delete_entity(object)
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    delete_entity(object)
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    delete_entity(object)
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    delete_entity(object)
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    delete_entity(object)
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    delete_entity(object)
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    delete_entity(object)
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    delete_entity(object)
+                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                    OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+                    fragcrash2:sleep(100)
+                    delete_entity(object)
+                end
+            end
+        end
     end)
 end)
 Global:add_sameline()
 local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
-	script.register_looped("clownJetAttack", function()
-		if clownJetAttack:is_enabled() == true then
-			for i = 0, 31 do
-				if i ~= PLAYER.PLAYER_ID() then
-					local player = i
-					local players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
-					local playerName = PLAYER.GET_PLAYER_NAME(players)
-					local coords = ENTITY.GET_ENTITY_COORDS(players, true)
-					local heading = ENTITY.GET_ENTITY_HEADING(players)
-					local spawnDistance = 250.0 * math.sin(math.rad(heading))
-					local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
-					local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
-					local clown = joaat("s_m_y_clown_01")
-					local jet = joaat("Lazer")
-					local weapon = -1121678507
+    script.register_looped("clownJetAttack", function()
+        if clownJetAttack:is_enabled() == true then
+            for i = 0, 31 do
+                if i ~= PLAYER.PLAYER_ID() then
+                    local player = i
+                    local players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
+                    local playerName = PLAYER.GET_PLAYER_NAME(players)
+                    local coords = ENTITY.GET_ENTITY_COORDS(players, true)
+                    local heading = ENTITY.GET_ENTITY_HEADING(players)
+                    local spawnDistance = 250.0 * math.sin(math.rad(heading))
+                    local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
+                    local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+                    local clown = joaat("s_m_y_clown_01")
+                    local jet = joaat("Lazer")
+                    local weapon = -1121678507
 
-					STREAMING.REQUEST_MODEL(clown)
-					STREAMING.REQUEST_MODEL(jet)
-					STREAMING.REQUEST_MODEL(weapon)
+                    STREAMING.REQUEST_MODEL(clown)
+                    STREAMING.REQUEST_MODEL(jet)
+                    STREAMING.REQUEST_MODEL(weapon)
 
-					while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
-						STREAMING.REQUEST_MODEL(clown)
-						STREAMING.REQUEST_MODEL(jet)
-						clownJetAttack:yield()
-					end
+                    while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
+                        STREAMING.REQUEST_MODEL(clown)
+                        STREAMING.REQUEST_MODEL(jet)
+                        clownJetAttack:yield()
+                    end
 
-					-- Calculate the spawn position for the jet in the air
-					local jetSpawnX = coords.x + math.random(-1000, 1000)
-					local jetSpawnY = coords.y + math.random(-1000, 1000)
-					local jetSpawnZ = coords.z + math.random(100, 1200)
-					
-					local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
-					local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
-					if jetVehicle ~= 0 then
-						local primaryColor = colors[math.random(#colors)]
-						local secondaryColor = colors[math.random(#colors)]
+                    -- Calculate the spawn position for the jet in the air
+                    local jetSpawnX = coords.x + math.random(-1000, 1000)
+                    local jetSpawnY = coords.y + math.random(-1000, 1000)
+                    local jetSpawnZ = coords.z + math.random(100, 1200)
+                    
+                    local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
+                    local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
+                    if jetVehicle ~= 0 then
+                        local primaryColor = colors[math.random(#colors)]
+                        local secondaryColor = colors[math.random(#colors)]
 
-						-- Set vehicle colors
-						VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
-						-- Spawn clowns inside the jet
-						for seat = -1, -1 do
-							local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
-							
-							if ped ~= 0 then
-								local group = joaat("HATES_PLAYER")
-								PED.ADD_RELATIONSHIP_GROUP("clowns", group)
-								ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
-								PED.SET_PED_CAN_BE_TARGETTED(ped, false)
-								WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
-								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
-								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
-								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
-								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
-								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
-								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
-								PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
-								PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
-								TASK.TASK_COMBAT_PED(ped, players, 0, 16)
-								ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
-								ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
-								ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
-								ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
-								PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
-								WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
-							else
-								gui.show_error("Failed", "Failed to create ped")
-							end
-						end
-					else
-						gui.show_error("Failed", "Failed to create jet")
-					end
-				
-					if jetVehicle == 0 then 
-						gui.show_error("Failed", "Failed to Create Jet")
-					else
-						gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets every 15 seconds.")
-					end
-				end
-			end
-			-- Release the resources associated with the spawned entities
-			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
-			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
-			sleep(15)
-		end
+                        -- Set vehicle colors
+                        VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
+                        -- Spawn clowns inside the jet
+                        for seat = -1, -1 do
+                            local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
+                            
+                            if ped ~= 0 then
+                                local group = joaat("HATES_PLAYER")
+                                PED.ADD_RELATIONSHIP_GROUP("clowns", group)
+                                ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
+                                PED.SET_PED_CAN_BE_TARGETTED(ped, false)
+                                WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
+                                PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
+                                PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
+                                PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
+                                PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+                                PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
+                                PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+                                PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
+                                PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
+                                TASK.TASK_COMBAT_PED(ped, players, 0, 16)
+                                ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
+                                ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
+                                ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
+                                ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
+                                PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
+                                WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
+                            else
+                                gui.show_error("Failed", "Failed to create ped")
+                            end
+                        end
+                    else
+                        gui.show_error("Failed", "Failed to create jet")
+                    end
+                
+                    if jetVehicle == 0 then 
+                        gui.show_error("Failed", "Failed to Create Jet")
+                    else
+                        gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets every 15 seconds.")
+                    end
+                end
+            end
+            -- Release the resources associated with the spawned entities
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
+            sleep(15)
+        end
     end)
 
 local explosionLoop = false
@@ -2793,8 +2808,8 @@ script.register_looped("crashGlobal", function()
 
                     local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
                     NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-					
-					ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+                    
+                    ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
                 end
                  sleep(0.1) -- Sets the timer in seconds for how long this should pause
             end
@@ -2819,8 +2834,8 @@ Global:add_button("Give All Weapons to Players", function()
             end
         end
     end
-	local msg = "I have given the entire lobby all weapons.  This only lasts until you switch sessions, enjoy!"
-	network.send_chat_message(msg, false)
+    local msg = "I have given the entire lobby all weapons.  This only lasts until you switch sessions, enjoy!"
+    network.send_chat_message(msg, false)
     gui.show_message("Global", "Successfully given all weapons to all players")
 end)
 Global:add_sameline()
@@ -2837,8 +2852,8 @@ Global:add_button("Remove All Weapons from Players", function()
             end
         end
     end
-	local msg = "I have removed all weapons from the entire lobby.  This only lasts until you switch sessions, have fun!"
-	network.send_chat_message(msg, false)
+    local msg = "I have removed all weapons from the entire lobby.  This only lasts until you switch sessions, have fun!"
+    network.send_chat_message(msg, false)
     gui.show_message("Global", "Successfully removed all weapons from all players")
 end)
 
@@ -3070,17 +3085,17 @@ if PI == 0 then
 else
     MPX = "MP1_"
 end
-	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_1"), 690, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_2"), 1860, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_3"), 2690, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_4"), 2660, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_5"), 2650, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_6"), 450, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "SR_TARGETS_HIT"), 269, true)
-	STATS.STAT_SET_INT(joaat(MPX .. "SR_WEAPON_BIT_SET"), -1, true)
-	STATS.STAT_SET_BOOL(joaat(MPX .. "SR_TIER_1_REWARD"), true, true)
-	STATS.STAT_SET_BOOL(joaat(MPX .. "SR_TIER_3_REWARD"), true, true)
-	STATS.STAT_SET_BOOL(joaat(MPX .. "SR_INCREASE_THROW_CAP"), true, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_1"), 690, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_2"), 1860, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_3"), 2690, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_4"), 2660, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_5"), 2650, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_6"), 450, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "SR_TARGETS_HIT"), 269, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "SR_WEAPON_BIT_SET"), -1, true)
+    STATS.STAT_SET_BOOL(joaat(MPX .. "SR_TIER_1_REWARD"), true, true)
+    STATS.STAT_SET_BOOL(joaat(MPX .. "SR_TIER_3_REWARD"), true, true)
+    STATS.STAT_SET_BOOL(joaat(MPX .. "SR_INCREASE_THROW_CAP"), true, true)
 end)
 
 local bResearch = bunker:add_checkbox("Instant Research Cooldown (Looped)")
@@ -3092,13 +3107,13 @@ else
     MPX = "MP1_"
 end
 script.register_looped("bunkerResearch", function()
-	if bResearch:is_enabled() == true then
-		STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_PRODUCTION_TIME"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_EQUIPMENT_REDUCTION_TIME"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_STAFF_REDUCTION_TIME"), 0, true)
-		gui.show_message("Bunker", "Research is moving fast, feel free to walk away")
-		gui.show_message("Bunker", "Optionally, you can access the PC and pay to fast track")
-	end
+    if bResearch:is_enabled() == true then
+        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_PRODUCTION_TIME"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_EQUIPMENT_REDUCTION_TIME"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_STAFF_REDUCTION_TIME"), 0, true)
+        gui.show_message("Bunker", "Research is moving fast, feel free to walk away")
+        gui.show_message("Bunker", "Optionally, you can access the PC and pay to fast track")
+    end
 end)
 
 bunker:add_sameline()
@@ -3109,12 +3124,12 @@ script.register_looped("autoGetBunkerCargo", function(script)
         autoGetBunkerCargo = not autoGetBunkerCargo
         if autoGetBunkerCargo then
             globals.set_int(1662873 + 1 + 5, 1)
-			if bResearch:is_enabled() == true then
-				gui.show_message("Bunker", "Resupplying your supplies for your research")
-			else
-				gui.show_message("Bunker", "Resupplying your bunker supplies, please wait...")
-				sleep(0.5)
-			end
+            if bResearch:is_enabled() == true then
+                gui.show_message("Bunker", "Resupplying your supplies for your research")
+            else
+                gui.show_message("Bunker", "Resupplying your bunker supplies, please wait...")
+                sleep(0.5)
+            end
         end
     end
 end)
@@ -4356,35 +4371,35 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
     local peds = entities.get_all_peds_as_handles()
     local blackHoleRadiusSquared = blackHoleRadius * blackHoleRadius
     for _, entity in ipairs(vehicles) do
-		if PED.IS_PED_A_PLAYER(entity) == false then
-			if entities.take_control_of(entity) then
-				local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
-				local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
-				if distanceSquared <= blackHoleRadiusSquared then
-					local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
-					local forceY = (playerCoords.y - entityCoord.y) * magnitude
-					local forceZ = (playerCoords.z - entityCoord.z) * magnitude
-					RequestControl(entity)
-					ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
-				end
-			end
-		end
+        if PED.IS_PED_A_PLAYER(entity) == false then
+            if entities.take_control_of(entity) then
+                local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                if distanceSquared <= blackHoleRadiusSquared then
+                    local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
+                    local forceY = (playerCoords.y - entityCoord.y) * magnitude
+                    local forceZ = (playerCoords.z - entityCoord.z) * magnitude
+                    RequestControl(entity)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                end
+            end
+        end
     end
-	
-	for _, entity in ipairs(peds) do
-		if PED.IS_PED_A_PLAYER(entity) == false then
-			if entities.take_control_of(entity) then
-				local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
-				local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
-				if distanceSquared <= blackHoleRadiusSquared then
-					local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
-					local forceY = (playerCoords.y - entityCoord.y) * magnitude
-					local forceZ = (playerCoords.z - entityCoord.z) * magnitude
-					RequestControl(entity)
-					ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
-				end
-			end
-		end
+    
+    for _, entity in ipairs(peds) do
+        if PED.IS_PED_A_PLAYER(entity) == false then
+            if entities.take_control_of(entity) then
+                local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                if distanceSquared <= blackHoleRadiusSquared then
+                    local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
+                    local forceY = (playerCoords.y - entityCoord.y) * magnitude
+                    local forceZ = (playerCoords.z - entityCoord.z) * magnitude
+                    RequestControl(entity)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                end
+            end
+        end
     end
 end
 
@@ -4442,36 +4457,36 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
 
     -- Apply forces to vehicles
     for _, entity in ipairs(vehicles) do
-		if PED.IS_PED_A_PLAYER(entity) == false then
-			if entities.take_control_of(entity) then
-				local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
-				local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
-				if distanceSquared <= forceFieldRadiusSquared then
-					local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
-					local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
-					local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
-					RequestControl(entity)
-					ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
-				end
-			end
-		end
+        if PED.IS_PED_A_PLAYER(entity) == false then
+            if entities.take_control_of(entity) then
+                local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                if distanceSquared <= forceFieldRadiusSquared then
+                    local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
+                    local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
+                    local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
+                    RequestControl(entity)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                end
+            end
+        end
     end
 
     -- Comment below to unapply to peds
     for _, entity in ipairs(peds) do
-		if PED.IS_PED_A_PLAYER(entity) == false then
-			if entities.take_control_of(entity) then
-				local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
-				local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
-				if distanceSquared <= forceFieldRadiusSquared then
-					local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
-					local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
-					local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
-					RequestControl(entity)
-					ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
-				end
-			end
-		end
+        if PED.IS_PED_A_PLAYER(entity) == false then
+            if entities.take_control_of(entity) then
+                local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                if distanceSquared <= forceFieldRadiusSquared then
+                    local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
+                    local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
+                    local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
+                    RequestControl(entity)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                end
+            end
+        end
     end
 end
 
@@ -4519,15 +4534,15 @@ end)
 chatOpt:add_sameline()
 local isTeam = chatOpt:add_checkbox("Team Only")
 chatOpt:add_button("Send Message", function()
-	if isTeam:is_enabled() == false then
-		if chatBox ~= "" then
-			network.send_chat_message("[Extras Addon]: "..chatBox, false)
-		end
-	else
-		if chatBox ~= "" then
-			network.send_chat_message("[Extras Addon]: "..chatBox, true)
-		end
-	end
+    if isTeam:is_enabled() == false then
+        if chatBox ~= "" then
+            network.send_chat_message("[Extras Addon]: "..chatBox, false)
+        end
+    else
+        if chatBox ~= "" then
+            network.send_chat_message("[Extras Addon]: "..chatBox, true)
+        end
+    end
 end)
 
 chatOpt:add_separator()
@@ -4547,20 +4562,20 @@ chatOpt:add_imgui(function()
 end)
 
 chatOpt:add_button("Send", function()
-	if discordBox ~= "" then
-		network.send_chat_message("[Add My Discord]: "..discordBox, false)
-	end
+    if discordBox ~= "" then
+        network.send_chat_message("[Add My Discord]: "..discordBox, false)
+    end
 end)
 
 chatOpt:add_separator()
 chatOpt:add_button("Addon Info", function()
-		local ainfo = "Extras Addon for YimMenu v"..addonVersion..", find it on Github for FREE @ https://github.com/Deadlineem/Extras-Addon-for-YimMenu!"
-		network.send_chat_message("[Lua Script]: "..ainfo, false)
+        local ainfo = "Extras Addon for YimMenu v"..addonVersion..", find it on Github for FREE @ https://github.com/Deadlineem/Extras-Addon-for-YimMenu!"
+        network.send_chat_message("[Lua Script]: "..ainfo, false)
 end)
 chatOpt:add_sameline()
 chatOpt:add_button("Menu Info", function()
-		local binfo = "YimMenu version 1.68, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
-		network.send_chat_message("[Menu]: "..binfo, false)
+        local binfo = "YimMenu version 1.68, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
+        network.send_chat_message("[Menu]: "..binfo, false)
 end)
 
 local balls = {
@@ -4605,17 +4620,17 @@ selectedPlayerTab:add_button("Spawn Clone", function()
             -- Set combat attributes
             PED.SET_PED_COMBAT_ABILITY(ped, 100)
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true) 
-			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true)	-- Can do Driveby's		
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true) -- Can do Driveby's     
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true) -- Always Fight
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true) -- Aggressive
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false) -- always flee /false
-			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 21, true) -- Can chase on foot
-			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 27, true) -- Perfect Accuracy
-			ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
-			ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
-			PED.SET_PED_CAN_RAGDOLL(ped, false)
-			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true) -- Disable Flee from combat
-			PED.SET_PED_COMBAT_ATTRIBUTES(ped, 38, true) -- Disable Bullet Reactions
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 21, true) -- Can chase on foot
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 27, true) -- Perfect Accuracy
+            ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
+            ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
+            PED.SET_PED_CAN_RAGDOLL(ped, false)
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true) -- Disable Flee from combat
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 38, true) -- Disable Bullet Reactions
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true) -- Maintain Min target distance
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true) -- Can use vehicles
         else
@@ -4650,32 +4665,32 @@ selectedPlayerTab:add_button("Clown Attack", function()
                 if ped ~= 0 then
                     local group = joaat("HATES_PLAYER")
                     PED.ADD_RELATIONSHIP_GROUP("clowns", group)
-					PED.SET_PED_RELATIONSHIP_GROUP_HASH(ped, group)
+                    PED.SET_PED_RELATIONSHIP_GROUP_HASH(ped, group)
                     ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
-					PED.SET_PED_CAN_BE_TARGETTED_BY_TEAM(ped, group, false)
-					PED.SET_CAN_ATTACK_FRIENDLY(ped, false, false)
+                    PED.SET_PED_CAN_BE_TARGETTED_BY_TEAM(ped, group, false)
+                    PED.SET_CAN_ATTACK_FRIENDLY(ped, false, false)
                     PED.SET_PED_CAN_BE_TARGETTED(ped, false)
                     WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
                     PED.SET_PED_INTO_VEHICLE(ped, vehicle, seat)
-					PED.SET_PED_COMBAT_ABILITY(ped, 100)
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true) 
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true)	-- Can do Driveby's		
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true) -- Always Fight
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true) -- Aggressive
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false) -- always flee /false
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 21, true) -- Can chase on foot
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 27, true) -- Perfect Accuracy
-					ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
-					ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
-					PED.SET_PED_CAN_RAGDOLL(ped, false)
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true) -- Disable Flee from combat
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 38, true) -- Disable Bullet Reactions
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true) -- Maintain Min target distance
-					PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true) -- Can use vehicles
-					TASK.TASK_COMBAT_PED(ped, player, 0, 16)
+                    PED.SET_PED_COMBAT_ABILITY(ped, 100)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true) 
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true) -- Can do Driveby's     
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true) -- Always Fight
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true) -- Aggressive
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false) -- always flee /false
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 21, true) -- Can chase on foot
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 27, true) -- Perfect Accuracy
+                    ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000);
+                    ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0);
+                    PED.SET_PED_CAN_RAGDOLL(ped, false)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 58, true) -- Disable Flee from combat
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 38, true) -- Disable Bullet Reactions
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true) -- Maintain Min target distance
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true) -- Can use vehicles
+                    TASK.TASK_COMBAT_PED(ped, player, 0, 16)
                     TASK.TASK_DRIVE_BY(ped, player, vehicle, coords.x, coords.y, coords.z, 50, 100, false, joaat("FIRING_PATTERN_FULL_AUTO"))
-					
-					ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
+                    
+                    ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
                 else
                     gui.show_error("Failed", "Failed to create ped")
                 end
