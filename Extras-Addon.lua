@@ -15,14 +15,14 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 0.9.8
+        Addon Version: 0.9.9
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
       TheKuter, RazorGamerX, USBMenus & More!
 
 ]]--
-local addonVersion = "0.9.8"
+local addonVersion = "0.9.9"
 
 selectedPlayerTab = gui.get_tab("")
 
@@ -1955,30 +1955,8 @@ vSpawn:add_imgui(displayVehicleModelsList)
 vSpawn:add_separator()
 
 -- Spawn Selected button with orientation and spawn position
---local maxVeh = vSpawn:add_checkbox("Spawn Maxed") under development
---vSpawn:add_sameline()
+
 vSpawn:add_button("Spawn Selected", function()
---[[if maxVeh:is_enabled() == true then
-    local selectedModelIndex = selectedObjectIndex + 1
-    if selectedModelIndex > 0 then
-        local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
-        if selectedVehicleModel then
-            local vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
-            local selPlayer = network.get_selected_player()
-            local targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
-            local playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
-            local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
-            playerPos.x = playerPos.x + spawnDistance.x
-            playerPos.y = playerPos.y + spawnDistance.y
-            playerPos.z = playerPos.z + spawnDistance.z
-            upgradeveh(vehicleHash)
-            spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
-            gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
-        end
-    else
-        gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
-    end
-else]]
     local selectedModelIndex = selectedObjectIndex + 1
     if selectedModelIndex > 0 then
         local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
@@ -3259,7 +3237,64 @@ globals.set_int(1662873 + 1 + 4, 1) -- Cocaine Lockup Supplies
 gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
 end)
 mcBus:add_separator()
+
 mcBus:add_text("You can tick these on and back off for instant resupply, toggles are there for afk constant resupplying.")
+mcBus:add_separator()
+mcBus:add_text("Motorcycle Club Name Changer")
+local mcName = ""
+mcBus:add_imgui(function()
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
+    mcName, used = ImGui.InputText("MC name", mcName, 256)
+    if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
+end)
+
+local rockVeri = mcBus:add_checkbox("R* Verified?")
+local copyright = mcBus:add_checkbox("Copyright?")
+
+mcBus:add_button("Change MC Name", function()
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+    MPX = "MP0_"
+else
+    MPX = "MP1_"
+end
+	script.run_in_fiber(function (script)
+		if rockVeri:is_enabled() == true then
+			STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), mcName, true)
+			STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), "&#166;", true)
+			
+			local MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME"), -1)
+			local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+			gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns R* Verified - "..MCnOne..". Changing sessions to apply")
+			SessionChanger(0)
+		else
+			if copyright:is_enabled() == true then
+				STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "&#169; ", true)
+				STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
+				local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+				gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns © "..MCnTwo..". Changing sessions to apply")
+				SessionChanger(0)
+			else
+				STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "", true)
+				STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
+				local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+				gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply")
+				SessionChanger(0)
+			end
+		end
+	end)
+end)
+mcBus:add_separator()
+mcBus:add_text("Do not tick R* verified and Copyright together, one or the other.")
+mcBus:add_text("ticking R* Verified will add a R* Verified logo after your desired club name")
+mcBus:add_text("ticking Copyright will add a copyright symbol before your desired club name.")
 
 local arcade = Business:add_tab("Arcade")
 
@@ -3308,8 +3343,53 @@ Club:add_button("Max Club Popularity", function()
     STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
 end)
 
+local CEO = Business:add_tab("CEO")
+
+local setName = ""
+CEO:add_imgui(function()
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
+    setName, used = ImGui.InputText("org name", setName, 256)
+    if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
+end)
+
+local rockVerif = CEO:add_checkbox("R* Verified?")
+
+CEO:add_button("Change CEO Name", function()
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+    MPX = "MP0_"
+else
+    MPX = "MP1_"
+end
+	script.run_in_fiber(function (script)
+		if rockVerif:is_enabled() == true then
+			local rockVerif = "&#166;"
+			STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), setName, true)
+			STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), rockVerif, true)
+			
+			local nOne = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), -1)
+			local nTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
+			gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns R* Verified - "..nOne..". Changing sessions to apply")
+			SessionChanger(0)
+		else
+			STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), "&#169;", true)
+			STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), setName, true)
+			local nTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
+			gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..nTwo..". Changing sessions to apply")
+			SessionChanger(0)
+		end
+	end)
+end)
+
 -- YimCEO -- Alestarov_Menu
-local yimCEO = Business:add_tab("YimCEO")
+local yimCEO = CEO:add_tab("YimCEO")
 
 cratevalue = 10000
 yimCEO:add_imgui(function()
@@ -4336,6 +4416,84 @@ cayoSizeEditor:add_button("Reset Kosatka Board", function()
         gui.show_message("Cayo Heist", "Planning board has been reset!")
 end)
 
+-- Doomsday Heist Editor
+
+local DP = heistEditor:add_tab("Doomsday Editor")
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+    MPX = "MP0_"
+else
+    MPX = "MP1_"
+end
+
+a48 = 1
+
+local contract_id = {0, 2, 3, 4} -- Assuming these are the IDs for "Select", "Data Breaches", "Bogdan Problem", "Doomsday Scenario"
+local contract_names = {"Select", "Data Breaches", "Bogdan Problem", "Doomsday Scenario"}
+local selectedContractIndex = 0
+local selectedContractID = contract_id[selectedContractIndex + 1]
+
+DP:add_text("Doomsday Act Selection")
+
+local function DoomsdayActSetter(progress, status)
+    STATS.STAT_SET_INT(joaat(MPX .. "GANGOPS_FLOW_MISSION_PROG"), progress, true)
+    STATS.STAT_SET_INT(joaat(MPX .. "GANGOPS_HEIST_STATUS"), status, true)
+   STATS.STAT_SET_INT(joaat(MPX .. "GANGOPS_FLOW_NOTIFICATIONS"), 1557, true)
+end
+
+DP:add_imgui(function()
+    selectedContractIndex, used = ImGui.ListBox("##DoomsdayActList", selectedContractIndex, contract_names, #contract_names) -- Display the listbox
+    if used then
+        selectedContractID = contract_id[selectedContractIndex + 1]
+    end
+
+    if ImGui.Button("Select Act") then
+        if selectedContractID == 2 then
+            DoomsdayActSetter(503, 229383)
+        elseif selectedContractID == 3 then
+            DoomsdayActSetter(240, 229378)
+        elseif selectedContractID == 4 then
+            DoomsdayActSetter(16368, 229380)
+        end
+    end
+end)
+
+DP:add_sameline()
+DP:add_button("Complete Preps", function() STATS.STAT_SET_INT(MPX() .. "GANGOPS_FM_MISSION_PROG", -1, true) end)
+DP:add_sameline()
+DP:add_button("Reset Preps", function()	DoomsdayActSetter(240, 0) end)
+
+DP:add_text("After all choices and pressing Complete Preps")
+DP:add_text("leave your facility and go back inside")
+
+local valEdit = DP:add_tab("Payout Editor")
+
+local h2_d1_awd = valEdit:add_input_int("Data Breaches")
+local h2_d2_awd = valEdit:add_input_int("Bogdan Problem")
+local h2_d3_awd = valEdit:add_input_int("Doomsday Scenario")
+
+valEdit:add_button("Retrieve Payouts", function()
+    h2_d1_awd:set_value(tunables.get_int("GANGOPS_THE_IAA_JOB_CASH_REWARD"))
+    h2_d2_awd:set_value(tunables.get_int("GANGOPS_THE_SUBMARINE_JOB_CASH_REWARD"))
+    h2_d3_awd:set_value(tunables.get_int("GANGOPS_THE_MISSILE_SILO_JOB_CASH_REWARD"))
+end)
+valEdit:add_sameline()
+
+h2_awd_lock = valEdit:add_checkbox("Apply Payouts")
+
+ if  h2_awd_lock:is_enabled() then
+        if h2_d1_awd:get_value() > 2500000 or h2_d1_awd:get_value() <= 0 or h2_d2_awd:get_value() > 2500000 or h2_d2_awd:get_value() <= 0 or h2_d3_awd:get_value() > 2500000 or h2_d3_awd:get_value() <= 0 then
+            gui.show_message("Error", "Final chapter income may not exceed 2.500.000 and must be greater than 0")
+            h2_awd_lock:set_enabled(false)
+           return
+       end
+       tunables.set_int("GANGOPS_THE_IAA_JOB_CASH_REWARD", h2_d1_awd:get_value())   
+       tunables.set_int("GANGOPS_THE_SUBMARINE_JOB_CASH_REWARD", h2_d2_awd:get_value())   
+       tunables.set_int("GANGOPS_THE_MISSILE_SILO_JOB_CASH_REWARD", h2_d3_awd:get_value())   
+    end
+	
+-- Magnet/Forcefield
 local xmen = Fun:add_tab("Magnet/Forcefield")
 xmen:add_text("Magnetic field attracts all peds/vehicles")
 local blackHoleLoopCheckbox = xmen:add_checkbox("Magnet")
@@ -4516,6 +4674,7 @@ function request_control(entity)
     return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
 end
 
+--Chat Options
 local chatOpt = KAOS:add_tab("Chat Options")
 
 chatOpt:add_text("Send Unfiltered Messages")
@@ -4734,7 +4893,7 @@ script.register_looped("extrasAddonLooped", function(script)
             if ped ~= 0 and player == false then
                 request_control(vehs)
                 request_control(ped)
-                TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, vehs, selfpos.x, selfpos.y, selfpos.z, 70.0, 1, vehs, --[[21234176--]]16777216, 0.0, 1)
+                TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, vehs, selfpos.x, selfpos.y, selfpos.z, 70.0, 1, vehs, 16777216, 0.0, 1)
                 --gui.show_message("Success", "Peds Driving To Player")
             else
                 --gui.show_message("Failed", "Ped Seat is: ".. ped)
