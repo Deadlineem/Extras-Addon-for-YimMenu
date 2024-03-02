@@ -19,7 +19,8 @@ echo "          \____|__  /\____ \____ |\____/|___|  /               "
 echo "                  \/      \/    \/           \/                "
 echo "                                                               "
 echo "                Extras Addon for YimMenu                       "
-echo "                  Addon Version: 0.9.5                         "
+echo "                  Addon Version: 0.9.9                         "
+echo "    https://github.com/Deadlineem/Extras-Addon-for-YimMenu     "
 echo "  ______   ______   ______   ______   ______   ______   ______ "
 echo " /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ "
 
@@ -32,32 +33,37 @@ if not exist "%destinationFolder2%" (
 )
 :: If Downloads folder does not exist default to onedrive desktop
 if not exist "%destinationFolder3%" (
-	set "destinationFolder3=%USERPROFILE%\OneDrive\Desktop"
+    set "destinationFolder3=%USERPROFILE%\OneDrive\Desktop"
 )
 :: If Onedrive destination does not exist, default to normal Desktop
 if not exist "%destinationFolder2%" (
-	set "destinationFolder2=%USERPROFILE%\Desktop"
+    set "destinationFolder2=%USERPROFILE%\Desktop"
 )
 if not exist "%destinationFolder3%" (
-	set "destinationFolder3=%USERPROFILE%\Desktop"
+    set "destinationFolder3=%USERPROFILE%\Desktop"
 )
 echo ------------------------------------------------------------------
 echo   This app is for easily Downloading/Updating Yim/Extras Addon
-echo 	  and tools you may want/need to use YimMenu itself.
+echo 	  and tools you may want/need for YimMenu itself.
 echo ------------------------------------------------------------------
 echo ------------------------------------------------------------------
 echo 			Main Menu
 echo ------------------------------------------------------------------
 echo Choose an option:
-echo 1. Download Extras Addon (To Appdata\YimMenu\scripts)
-echo 2. Download YimMenu (To Downloads Folder)
-echo 3. Download FateInjector (To Downloads Folder)
-echo 4. How to install/use YimMenu
-echo 5. Exit the application
+echo 1. Download Extras Addon (To YimMenu\scripts)
+echo 2. Download YimMenu (To Downloads or Desktop)
+echo 3. Download FateInjector (To Downloads or Desktop)
+echo 4. Optional Downloads
+echo 5. How to install/use YimMenu
+echo 6. Exit the application
+echo ------------------------------------------------------------------
+echo If your downloads folder is not in the proper location on your
+echo harddrive, the downloads will default to your desktop, instead.
 
-choice /c 12345 /n
-if errorlevel 5 goto goodbye
-if errorlevel 4 goto instructions
+choice /c 123456 /n
+if errorlevel 6 goto goodbye
+if errorlevel 5 goto instructions
+if errorlevel 4 goto optional_downloads
 if errorlevel 3 goto download_fate_injector
 if errorlevel 2 goto download_yimmenu
 if errorlevel 1 goto check_yimmenu
@@ -73,7 +79,7 @@ if errorlevel 1 goto check_yimmenu
         echo "to use YimMenu, download an injector like FateInjector, Xenos or ProcessHacker2."
 		echo ------------------------------------------------------------------
 		echo "When running YimMenu for the first time, click Update Cache and load into story mode or online."
-		echo "If you don't know how to use YimMenu, press 4 on the main menu for instructions"
+		echo "If you don't know how to use YimMenu, press 5 on the main menu for instructions"
 		echo ------------------------------------------------------------------
 		echo "Returning to the main menu in 15 seconds."
 		timeout /t 15 /nobreak >nul
@@ -86,12 +92,7 @@ if errorlevel 1 goto check_yimmenu
 	echo 	Downloading Extras Addon from the repository
 	echo ------------------------------------------------------------------
 	echo "Checking to see if there is an existing version of Extras Addon"
-	if exist "%destinationFolder%\Extras-Addon.lua" (
-		echo "Found Existing Version, Deleting..."
-		del "%destinationFolder%\Extras-Addon.lua"
-	) else (
-		echo "No existing version was found."
-	)
+	del "%destinationFolder%\Extras-Addon.lua" >nul 2>&1
 
 	echo "Downloading new version of Extras-Addon.lua from the repository..."
 	set "url=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/Extras-Addon.lua"
@@ -113,12 +114,7 @@ echo ------------------------------------------------------------------
 echo 	Downloading YimMenu from the repository
 echo ------------------------------------------------------------------
 echo "Checking to see if there is an existing version of YimMenu"
-if exist "%destinationFolder2%\YimMenu.dll" (
-    del "%destinationFolder2%\YimMenu.dll"
-    echo "Found Existing YimMenu.dll, Deleting..."
-) else (
-    echo "No existing version was found."
-)
+del "%destinationFolder2%\YimMenu.dll" >nul 2>&1
 
 echo "Downloading new version of YimMenu.dll from the repository..."
 set "url2=https://github.com/YimMenu/YimMenu/releases/download/nightly/YimMenu.dll"
@@ -163,6 +159,54 @@ if not exist "%destinationFolder3%\FateInjector.exe" (
 timeout /t 10 /nobreak >nul
 cls
 goto menu
+
+:optional_downloads
+cls
+echo ------------------------------------------------------------------
+echo 	Optional Downloads
+echo ------------------------------------------------------------------
+echo Choose an option:
+echo 1. Get XML Maps/Vehicles (Opens in Browser)
+echo 2. Download Animations Dictionary (To YimMenu Root Folder)
+echo 3. Back to Main Menu
+echo ------------------------------------------------------------------
+echo More optional downloads may be added in the future!
+
+choice /c 1234 /n
+if errorlevel 3 goto menu
+if errorlevel 2 goto download_file_2
+if errorlevel 1 goto download_file_1
+
+:download_file_1
+echo Opening MagicModz89's MEGA drive in a browser window...
+start "XML Maps" "https://mega.nz/folder/BnM2jQoT#Lb6MG4m24nGv0GkNGsD3sQ"
+cscript //nologo BringToFront.vbs
+echo To use these, download the file as zip and extract the corresponding contents to %APPDATA%\YimMenu\xml_maps and xml_vehicles
+echo Returning to Optional Downloads Menu
+timeout /t 10 /nobreak >nul
+goto optional_downloads
+
+:download_file_2
+cls
+	echo ------------------------------------------------------------------
+	echo 	Downloading Animations Dictionary from the repository
+	echo ------------------------------------------------------------------
+	echo "Checking to see if there is an existing version of animDictsCompact.json"
+	del "%APPDATA%\YimMenu\animDictsCompact.json" >nul 2>&1
+
+	echo "Downloading new version of animDictsCompact.json from the repository..."
+	set "url=https://raw.githubusercontent.com/DurtyFree/gta-v-data-dumps/master/animDictsCompact.json"
+	powershell -command "& { Invoke-WebRequest -Uri '%url%' -OutFile '%APPDATA%\YimMenu\animDictsCompact.json' }"
+
+	if not exist "%APPDATA%\YimMenu\animDictsCompact.json" (
+		echo "Error: Failed to download Animations. Check the internet connection or the source URL."
+	) else (
+		echo "Extras Addon downloaded successfully. File Location: %APPDATA%\YimMenu\animDictsCompact.json"
+		echo "Returning to the main menu in 10 seconds."
+	)
+	timeout /t 10 /nobreak >nul
+	cls
+	goto optional_downloads
 
 :instructions
 cls
