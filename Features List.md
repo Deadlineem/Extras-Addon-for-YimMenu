@@ -34,16 +34,26 @@
   - Options for resupplying hangar cargo.
 - **Motorcycle Club:**
   - Options for resupplying various club-related businesses like the acid lab, bunker, document forge, etc.
+  - Alter Motorcycle Club Name
+  - R* Verified? Allows you to display the R* Verified logo next to your MC Name (Idk if this only shows for you or for everyone)
+  - Copyright does similar to the R* Verified logo except it displayed the copyright symbol instead.  Cannot be used with R* Verified
 - **Arcade:**
   - Options for maintaining the arcade business.
 - **Nightclub:**
   - Options for enabling a safe AFK method in the nightclub.
+- **CEO:**
+  - Alter Organization name
+  - R* Verified?  Allows you to display the R* Verified logo next to your CEO Name (Idk if this only shows for you or for everyone)
 - **YimCEO:**
   - Options related to CEO activities.
 
 ### Heist Editor Tab
-- **Heist Editor:**
-  - Options related to editing heists, including casino and Cayo Perico heists customization.
+- **Heist Editors:**
+  - Cayo Editor
+    -Size/Value Editor (for bag/payout editing)
+  - Casino Editor
+  - Doomsday Editor
+    - Payout editor (under development) 
 
 ### Story Mode Tab
 - **Story Mode Customization:**
