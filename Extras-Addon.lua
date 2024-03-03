@@ -3265,31 +3265,31 @@ if PI == 0 then
 else
     MPX = "MP1_"
 end
-	script.run_in_fiber(function (script)
-		if rockVeri:is_enabled() == true then
-			STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), mcName, true)
-			STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), "&#166;", true)
-			
-			local MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME"), -1)
-			local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
-			gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns R* Verified - "..MCnOne..". Changing sessions to apply")
-			SessionChanger(0)
-		else
-			if copyright:is_enabled() == true then
-				STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "&#169; ", true)
-				STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
-				local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
-				gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns © "..MCnTwo..". Changing sessions to apply")
-				SessionChanger(0)
-			else
-				STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "", true)
-				STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
-				local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
-				gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply")
-				SessionChanger(0)
-			end
-		end
-	end)
+    script.run_in_fiber(function (script)
+        if rockVeri:is_enabled() == true then
+            STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), mcName, true)
+            STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), "&#166;", true)
+            
+            local MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME"), -1)
+            local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+            gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns R* Verified - "..MCnOne..". Changing sessions to apply")
+            SessionChanger(0)
+        else
+            if copyright:is_enabled() == true then
+                STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "&#169; ", true)
+                STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
+                local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+                gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns © "..MCnTwo..". Changing sessions to apply")
+                SessionChanger(0)
+            else
+                STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "", true)
+                STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
+                local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+                gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply")
+                SessionChanger(0)
+            end
+        end
+    end)
 end)
 mcBus:add_separator()
 mcBus:add_text("Do not tick R* verified and Copyright together, one or the other.")
@@ -3368,24 +3368,24 @@ if PI == 0 then
 else
     MPX = "MP1_"
 end
-	script.run_in_fiber(function (script)
-		if rockVerif:is_enabled() == true then
-			local rockVerif = "&#166;"
-			STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), setName, true)
-			STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), rockVerif, true)
-			
-			local nOne = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), -1)
-			local nTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
-			gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns R* Verified - "..nOne..". Changing sessions to apply")
-			SessionChanger(0)
-		else
-			STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), "&#169;", true)
-			STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), setName, true)
-			local nTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
-			gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..nTwo..". Changing sessions to apply")
-			SessionChanger(0)
-		end
-	end)
+    script.run_in_fiber(function (script)
+        if rockVerif:is_enabled() == true then
+            local rockVerif = "&#166;"
+            STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), setName, true)
+            STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), rockVerif, true)
+            
+            local nOne = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), -1)
+            local nTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
+            gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns R* Verified - "..nOne..". Changing sessions to apply")
+            SessionChanger(0)
+        else
+            STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), "&#169;", true)
+            STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), setName, true)
+            local nTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
+            gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..nTwo..". Changing sessions to apply")
+            SessionChanger(0)
+        end
+    end)
 end)
 
 -- YimCEO -- Alestarov_Menu
@@ -3471,7 +3471,263 @@ local heistEditor = KAOS:add_tab("Heist Editor")
     else
         MPX = "MP1_"
     end
-    
+
+heistTab = heistEditor:add_tab("Apartment Heists")
+
+player = PLAYER.PLAYER_PED_ID()
+coords = ENTITY.GET_ENTITY_COORDS(player, true)
+
+heistIndex = 0
+
+function tp(x, y, z, pitch, yaw, roll)
+    player = PLAYER.PLAYER_PED_ID()
+    ENTITY.SET_ENTITY_COORDS(player, x, y, z - 1, true, false, false, false)
+    ENTITY.SET_ENTITY_ROTATION(player, pitch, yaw, roll, 0, true)
+end
+
+function MPX()
+    return "MP" .. stats.get_int("MPPLY_LAST_MP_CHAR") .. "_"
+end
+
+function cuts(cut)
+    script.run_in_fiber(function(cuts)
+        for i = 0, 2 do
+            --cuts:sleep(1000)
+            globals.set_int(1928233 + 1 + 1, 100 - (cut * 4))
+            globals.set_int(1928233 + 1 + 2, cut)
+            globals.set_int(1928233 + 1 + 3, cut)
+            globals.set_int(1928233 + 1 + 4, cut)
+            cuts:sleep(500)
+            globals.set_int(1930201 + 3008 + 1, cut)
+            cuts:yield()
+        end
+    end)
+end
+
+function fleecaCut()
+    script.run_in_fiber(function(fleecaCuts)
+        for i = 0, 2 do
+            fleecaCuts:sleep(1000)
+            globals.set_int(1928233 + 1 + 1, 100 - (7453 * 2))
+            globals.set_int(1928233 + 1 + 2, 7453)
+            fleecaCuts:sleep(500)
+            globals.set_int(1930201 + 3008 + 1, 7453)
+            fleecaCuts:yield()
+        end
+    end)
+end
+
+function bringTeam()
+    script.run_in_fiber(function(bringteam)
+        for i = 1, 3 do
+            if (ENTITY.DOES_ENTITY_EXIST(PLAYER.GET_PLAYER_PED(i)) and calcDistance(player, PLAYER.GET_PLAYER_PED(i)) >= 20 and PLAYER.GET_PLAYER_TEAM(i) == PLAYER.GET_PLAYER_TEAM(PLAYER.PLAYER_ID())) then
+                command.call( "bring", {i})
+                bringteam:yield()
+            end
+        end
+    end)
+end
+
+function calcDistance(player, target)
+    pos = ENTITY.GET_ENTITY_COORDS(player, true)
+    tarpos = ENTITY.GET_ENTITY_COORDS(target, true)
+    local dx = pos.x - tarpos.x
+    local dy = pos.y - tarpos.y
+    local dz = pos.z - tarpos.z
+    local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
+    return distance
+end
+
+function calcDistanceFromCoords(player, target)
+    pos = ENTITY.GET_ENTITY_COORDS(player, true)
+    local dx = pos.x - target[1]
+    local dy = pos.y - target[2]
+    local dz = pos.z - target[3]
+    local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
+    return distance
+end
+
+unlockHeist = heistTab:add_checkbox("Play Unavailable Heists")
+
+heistTab:add_imgui(function()
+    if unlockHeist:is_enabled() then
+        ImGui.Text("Heist will still be grayed out but you can now play it")
+    end
+end)
+
+heistTab:add_button("Complete All Setups", function()
+    stats.set_int(MPX .. "HEIST_PLANNING_STAGE", -1)
+end)
+
+heistTab:add_button("Bring Team", function()
+    bringTeam()
+end)
+
+heistTab:add_sameline()
+
+heistTab:add_button("Bring Everyone", function()
+    script.run_in_fiber(function(bringall)
+        for i = 0, 3 do
+            gui.show_message("Distance", tostring(calcDistance(player, PLAYER.GET_PLAYER_PED(i))))
+            if (ENTITY.DOES_ENTITY_EXIST(PLAYER.GET_PLAYER_PED(i)) and calcDistance(player, PLAYER.GET_PLAYER_PED(i)) >= 50) then
+                command.call( "bring", {i})
+                bringall:yield()
+            end
+        end
+    end)
+end)
+
+heistTab:add_button("Spawn Tailgater", function()
+    script.run_in_fiber(function(script)
+        player = PLAYER.PLAYER_PED_ID()
+        coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        while not STREAMING.HAS_MODEL_LOADED(joaat("tailgater")) do
+            STREAMING.REQUEST_MODEL(joaat("tailgater"))
+            script:yield()
+        end
+        vehicle = VEHICLE.CREATE_VEHICLE(joaat("tailgater"), coords.x, coords.y, coords.z, ENTITY.GET_ENTITY_HEADING(player), true, false, false)
+        PED.SET_PED_INTO_VEHICLE(player ,vehicle, -1)
+    end)
+end)
+
+heistTab:add_sameline()
+
+heistTab:add_button("TP To Objective", function()
+    command.call("objectivetp", {})
+end)
+
+heistTab:add_button("Life Count +5", function()
+    if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then 
+        network.force_script_host("fm_mission_controller_2020")
+        c_tlives_v = locals.get_int("fm_mission_controller_2020", 55004 + 873 + 1)
+        locals.set_int("fm_mission_controller_2020", 55004 + 873 + 1, c_tlives_v + 5)
+    end
+    if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then 
+        network.force_script_host("fm_mission_controller")
+        globals.set_int(4718592 + 3318 + 1 + 38, 1)
+        c_tlives_v = locals.get_int("fm_mission_controller", 26154 + 1325 + 1)
+        locals.set_int("fm_mission_controller", 26154 + 1325 + 1, c_tlives_v + 5)
+    end
+end)
+
+shootEnemies = heistTab:add_checkbox("Kill Enemies")
+
+heistTab:add_imgui(function()
+    --PAD.DISABLE_ALL_CONTROL_ACTIONS(2)
+    PAD.DISABLE_CONTROL_ACTION(2, 237, true)
+
+    objectiveText = globals.get_string(1574764 + 16)
+    tpdValk = false
+    tpdParkingLot = false
+    heistIndex = ImGui.Combo("Heist", heistIndex, {"Fleeca Job", "Prison Break", "Humane Labs", "Series A Funding", "Pacific Standard"}, 5, 5)
+    if heistIndex == 0 then -- fleeca
+        ImGui.Text("Fastest as Hacker")
+        if (ImGui.Button("15 Million Cuts")) then
+            fleecaCut()
+        end
+        if ImGui.Button("Bypass Hack") then
+            locals.set_int("fm_mission_controller", 11776 + 24, 7)
+        end
+        if ImGui.Button("Bypass Drill") then
+            locals.set_float("fm_mission_controller", 10067 + 11, 100)
+        end
+    end
+    if heistIndex == 1 then -- prison break
+        ImGui.Text("Fastest as Prison Officer")
+        if (ImGui.Button("15 Million Cuts")) then
+            cuts(2142)
+        end
+        if (ImGui.Button("TP Prison Bus")) then
+            script.run_in_fiber(function(pbus)
+                for i, vehicle in ipairs(entities.get_all_vehicles_as_handles()) do
+                    player = PLAYER.PLAYER_PED_ID()
+                    blip = HUD.GET_BLIP_FROM_ENTITY(vehicle)
+                    if (ENTITY.GET_ENTITY_MODEL(vehicle) == joaat("pbus") and blip == 133955592) then
+                        PED.SET_PED_INTO_VEHICLE(player, vehicle, -1)
+                        pbus:sleep(100)
+                        PED.SET_PED_COORDS_KEEP_VEHICLE(player, -774.57, 288.42, 85.79)
+                    end
+                end
+            end)
+        end
+    end
+    if heistIndex == 2 then -- humane labs
+        ImGui.Text("Fastest as Ground Team")
+        all15mil = ImGui.Button("15 Million Cuts")
+        tpValk = ImGui.Button("TP Valkeryie")
+        tunnel = ImGui.Button("Tunnel")
+        if all15mil then
+            cuts(1587)
+        end
+        if tunnel then
+            player = PLAYER.PLAYER_PED_ID()
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player, 3521.90, 3724.84, -9.47, true, false, false)
+        end
+        if tpValk then
+            for i, vehicle in ipairs(entities.get_all_vehicles_as_handles()) do
+                if (ENTITY.GET_ENTITY_MODEL(vehicle) == joaat("valkyrie")) then
+                    player = PLAYER.PLAYER_PED_ID()
+                    PED.SET_PED_INTO_VEHICLE(player, vehicle, 2)
+                    PED.SET_PED_COORDS_KEEP_VEHICLE(player, -774.57, 288.42, 85.79)
+                end
+            end
+        end
+    end
+    if heistIndex == 3 then -- series a funding
+        all15mil = ImGui.Button("15 Million Cuts")
+        if all15mil then
+            cuts(2121)
+        end
+    end
+    if heistIndex == 4 then -- pacific standard
+        if (ImGui.Button("15 Million Cuts")) then
+            cuts(1000)
+        end
+    end
+end)
+
+heistTab:add_imgui(function()
+    if (ImGui.TreeNode("READ ME - IMPORTANT!")) then
+        ImGui.Text("For completing setups")
+        ImGui.Text("if you are in the planning screen after the cutscene")
+        ImGui.Text("you can click it then scroll up down left or right")
+        ImGui.Text("and it should kick you out of the screen and complete the setups")
+        ImGui.Separator()
+        ImGui.Text("For 15 million cuts")
+        ImGui.Text("you must first click on your cut")
+        ImGui.Text("then left click and right click")
+        ImGui.Text("then click your cut again")
+        ImGui.Text("and left click, right, then left click")
+        ImGui.Text("if your cut is negative then click it again")
+    end
+end)
+
+script.register_looped("heistTabLoop", function(heistTabScript)
+    if unlockHeist:is_enabled() then
+        globals.set_int(1933381 + 420, 31)
+    end
+
+    if  shootEnemies:is_enabled() then
+        local pedtable = entities.get_all_peds_as_handles()
+        for _, peds in pairs(pedtable) do
+            local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+            local ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
+            if (PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 4 or PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 5 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 1 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 49 or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Swat_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Sheriff_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Sheriff_01")) and peds ~= PLAYER.PLAYER_PED_ID() and not PED.IS_PED_DEAD_OR_DYING(peds,true)  and PED.IS_PED_A_PLAYER(peds) ~= 1 and calcDistance(PLAYER.PLAYER_PED_ID(), peds) <= 100 then 
+                if PED.IS_PED_IN_ANY_VEHICLE(peds, true) then
+                    request_control(peds)
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(peds)
+                    ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
+                    MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(ped_pos.x, ped_pos.y, ped_pos.z + 1, ped_pos.x, ped_pos.y, ped_pos.z, 1000, true, 2526821735, PLAYER.PLAYER_PED_ID(), false, true, 1.0)
+                else
+                    MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(ped_pos.x, ped_pos.y, ped_pos.z + 1, ped_pos.x, ped_pos.y, ped_pos.z, 1000, true, 2526821735, PLAYER.PLAYER_PED_ID(), false, true, 1.0)
+                end
+            end
+        end
+    end
+
+
+end)
+
 local casinoHeist = heistEditor:add_tab("Casino Editor")
 casinoHeist:add_text("Casino Heist Setups")
 
@@ -4462,7 +4718,7 @@ end)
 DP:add_sameline()
 DP:add_button("Complete Preps", function() STATS.STAT_SET_INT(MPX() .. "GANGOPS_FM_MISSION_PROG", -1, true) end)
 DP:add_sameline()
-DP:add_button("Reset Preps", function()	DoomsdayActSetter(240, 0) end)
+DP:add_button("Reset Preps", function() DoomsdayActSetter(240, 0) end)
 
 DP:add_text("After all choices and pressing Complete Preps")
 DP:add_text("leave your facility and go back inside")
@@ -4492,7 +4748,7 @@ h2_awd_lock = valEdit:add_checkbox("Apply Payouts")
        tunables.set_int("GANGOPS_THE_SUBMARINE_JOB_CASH_REWARD", h2_d2_awd:get_value())   
        tunables.set_int("GANGOPS_THE_MISSILE_SILO_JOB_CASH_REWARD", h2_d3_awd:get_value())   
     end
-	
+    
 -- Magnet/Forcefield
 local xmen = Fun:add_tab("Magnet/Forcefield")
 xmen:add_text("Magnetic field attracts all peds/vehicles")
