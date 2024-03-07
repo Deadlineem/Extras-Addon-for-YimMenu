@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 1.0.0
+        Addon Version: 0.9.9
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -6997,6 +6997,9 @@ extraGrief = selectedPlayerTab:add_checkbox("Separate Window?")
 extraGrief:set_enabled(true)
 selectedPlayerTab:add_imgui(function()
 	if extraGrief:is_enabled() then
+	local x = 1072  -- Specify the X coordinate
+    local y = 87  -- Specify the Y coordinate
+    ImGui.SetNextWindowPos(x, y)
         if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
 			-- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
 			posX, posY = ImGui.GetWindowPos()
