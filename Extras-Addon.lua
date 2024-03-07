@@ -15,16 +15,16 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 0.9.9
+        Addon Version: 1.0.0
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
       TheKuter, RazorGamerX, USBMenus & More!
 
 ]]--
-local addonVersion = "0.9.9"
+local addonVersion = "1.0.0"
 
-selectedPlayerTab = gui.get_tab("")
+selectedPlayerTab = gui.get_tab("") -- For Selected Player Options
 
 -- Function to create a text element
 local function createText(tab, text)
@@ -39,7 +39,7 @@ function sleep(seconds)
     end
 end
 
-function delete_entity(ent)  --discord@rostal315
+function delete_entity(ent) --discord@rostal315
     if ENTITY.DOES_ENTITY_EXIST(ent) then
         ENTITY.DETACH_ENTITY(ent, true, true)
         ENTITY.SET_ENTITY_VISIBLE(ent, false, false)
@@ -50,6 +50,59 @@ function delete_entity(ent)  --discord@rostal315
         ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ent)
         ENTITY.DELETE_ENTITY(ent)
     end
+end
+
+function toolTip(tab, text)
+	if tab == "" then
+		if ImGui.IsItemHovered() then
+			ImGui.BeginTooltip()
+			ImGui.Text(text)
+			ImGui.EndTooltip()
+		end
+	else
+		tab:add_imgui(function()
+			if ImGui.IsItemHovered() then
+				ImGui.BeginTooltip()
+				ImGui.Text(text)
+				ImGui.EndTooltip()
+			end
+		end)
+	end
+end
+
+function newText(tab, text, size)
+    size = size or 1
+    tab:add_imgui(function()
+        ImGui.SetWindowFontScale(size)
+        ImGui.Text(text)
+        ImGui.SetWindowFontScale(1)
+    end)
+end
+
+function RequestControl(entity)
+    local tick = 0
+ 
+    local netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
+ 
+    NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
+    NETWORK.NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID)
+    while not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) and tick < 50 do
+        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
+        tick = tick + 1
+    end
+ 
+    return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
+end
+
+function SessionChanger(session)
+    globals.set_int(1575032, session)
+        if session == -1 then
+            globals.set_int(1574589 + 2, -1)
+        end
+        sleep(0.5)
+        globals.set_int(1574589, 1)
+        sleep(0.5)
+        globals.set_int(1574589, 0)
 end
 
 -- Objects list - Used for the object spawner.  Ik its a huge list...
@@ -92,6 +145,2213 @@ local weaponNamesString = {
     "WEAPON_TACTICALRIFLE", "WEAPON_EMPLAUNCHER", "WEAPON_HEAVYRIFLE"
 }
 
+sounds = {
+    {SoundName = "1st Person Transition", AudioName = "1st_Person_Transition", AudioRef = "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+    {SoundName = "FocusOut", AudioName = "FocusOut", AudioRef = "HintCamSounds"},
+    {SoundName = "FocusIn", AudioName = "FocusIn", AudioRef = "HintCamSounds"},
+    {SoundName = "SELECT", AudioName = "SELECT", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "BACK", AudioName = "BACK", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "FBI HEIST SETUP 1 Car Park Skid CR", AudioName = "FBI_HEIST_SETUP_1_Car_Park_Skid_CR", AudioRef = "0"},
+    {SoundName = "FBI HEIST SETUP 1 Car Park tyre bump CR", AudioName = "FBI_HEIST_SETUP_1_Car_Park_tyre_bump_CR", AudioRef = "0"},
+    {SoundName = "FBI HEIST SETUP 1 Car Park tyre bump creak CR", AudioName = "FBI_HEIST_SETUP_1_Car_Park_tyre_bump_creak_CR", AudioRef = "0"},
+    {SoundName = "FBI HEIST SETUP 1 Car Park tyre bump no skid CR", AudioName = "FBI_HEIST_SETUP_1_Car_Park_tyre_bump_no_skid_CR", AudioRef = "0"},
+    {SoundName = "FBI HEIST SETUP 1 Car Park tyre bump scraped CR", AudioName = "FBI_HEIST_SETUP_1_Car_Park_tyre_bump_scraped_CR", AudioRef = "0"},
+    {SoundName = "Architect Fall", AudioName = "Architect_Fall", AudioRef = "FBI_HEIST_SOUNDSET"},
+    {SoundName = "FBI HEIST H2 ARCHITECT GRAB CASE", AudioName = "FBI_HEIST_H2_ARCHITECT_GRAB_CASE", AudioRef = "0"},
+    {SoundName = "FREIGHT ELEVATOR 02 MOTOR", AudioName = "FREIGHT_ELEVATOR_02_MOTOR", AudioRef = "0"},
+    {SoundName = "debris", AudioName = "debris", AudioRef = "FBI_HEIST_RAID"},
+    {SoundName = "FBI HEIST H5 FIRE", AudioName = "FBI_HEIST_H5_FIRE", AudioRef = "0"},
+    {SoundName = "Bell", AudioName = "Bell", AudioRef = "LIFT_NORMAL_SOUNDSET"},
+    {SoundName = "Gasmask", AudioName = "Gasmask", AudioRef = "FBI_HEIST_RAID"},
+    {SoundName = "Explosion 01", AudioName = "Explosion_01", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Woosh 01", AudioName = "Woosh_01", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Land 01", AudioName = "Land_01", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Explosion 04", AudioName = "Explosion_04", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Woosh 04", AudioName = "Woosh_04", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Land 04", AudioName = "Land_04", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Explosion 03", AudioName = "Explosion_03", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Woosh 03", AudioName = "Woosh_03", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Land 03", AudioName = "Land_03", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Explosion 02", AudioName = "Explosion_02", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Woosh 02", AudioName = "Woosh_02", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "Land 02", AudioName = "Land_02", AudioRef = "FBI_HEIST_ELEVATOR_SHAFT_DEBRIS_SOUNDS"},
+    {SoundName = "CEILING COLLAPSE", AudioName = "CEILING_COLLAPSE", AudioRef = "FBI_HEIST_RAID"},
+    {SoundName = "Door Blast A", AudioName = "Door_Blast_A", AudioRef = "FBI_HEIST_RAID"},
+    {SoundName = "Door Blast B", AudioName = "Door_Blast_B", AudioRef = "FBI_HEIST_RAID"},
+    {SoundName = "FIB3A LAND FROM HEIGHT MASTER", AudioName = "FIB3A_LAND_FROM_HEIGHT_MASTER", AudioRef = "0"},
+    {SoundName = "Pre Glass Explosion", AudioName = "Pre_Glass_Explosion", AudioRef = "FBI_HEIST_RAID"},
+    {SoundName = "Glass Smash", AudioName = "Glass_Smash", AudioRef = "FBI_HEIST_RAID"},
+    {SoundName = "MAIN EXPLOSION CHEAP", AudioName = "MAIN_EXPLOSION_CHEAP", AudioRef = "0"},
+    {SoundName = "LIFTS TONE", AudioName = "LIFTS_TONE", AudioRef = "0"},
+    {SoundName = "LIFT POSH DOOR OPEN", AudioName = "LIFT_POSH_DOOR_OPEN", AudioRef = "0"},
+    {SoundName = "Hum", AudioName = "Hum", AudioRef = "SECURITY_CAMERA"},
+    {SoundName = "Zoom In", AudioName = "Zoom_In", AudioRef = "SECURITY_CAMERA"},
+    {SoundName = "detonation", AudioName = "detonation", AudioRef = "FBI_HEIST_RAID"},
+    {SoundName = "Detonation 2", AudioName = "Detonation_2", AudioRef = "FBI_HEIST_RAID"},
+    {SoundName = "Hit out", AudioName = "Hit_out", AudioRef = "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+    {SoundName = "Short Transition In", AudioName = "Short_Transition_In", AudioRef = "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+    {SoundName = "Hit In", AudioName = "Hit_In", AudioRef = "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+    {SoundName = "Camera Move Loop", AudioName = "Camera_Move_Loop", AudioRef = "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+    {SoundName = "Hit Out", AudioName = "Hit_Out", AudioRef = "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+    {SoundName = "Move", AudioName = "Move", AudioRef = "LIFT_NORMAL_SOUNDSET"},
+    {SoundName = "Distant Sirens Fight", AudioName = "Distant_Sirens_Fight", AudioRef = "FBI_HEIST_FINALE_CHOPPER"},
+    {SoundName = "Distant Sirens Rubble", AudioName = "Distant_Sirens_Rubble", AudioRef = "FBI_HEIST_FINALE_CHOPPER"},
+    {SoundName = "HACKING DOWNLOADED", AudioName = "HACKING_DOWNLOADED", AudioRef = "0"},
+    {SoundName = "HACKING DOWNLOADING", AudioName = "HACKING_DOWNLOADING", AudioRef = "0"},
+    {SoundName = "HACKING MOVE CURSOR", AudioName = "HACKING_MOVE_CURSOR", AudioRef = "0"},
+    {SoundName = "HACKING CLICK BAD", AudioName = "HACKING_CLICK_BAD", AudioRef = "0"},
+    {SoundName = "HACKING COUNTDOWN IP FIND", AudioName = "HACKING_COUNTDOWN_IP_FIND", AudioRef = "0"},
+    {SoundName = "HACKING COUNTDOWN CRACK PASS", AudioName = "HACKING_COUNTDOWN_CRACK_PASS", AudioRef = "0"},
+    {SoundName = "HACKING FAILURE", AudioName = "HACKING_FAILURE", AudioRef = "0"},
+    {SoundName = "HACKING CLICK GOOD", AudioName = "HACKING_CLICK_GOOD", AudioRef = "0"},
+    {SoundName = "HACKING CLICK", AudioName = "HACKING_CLICK", AudioRef = "0"},
+    {SoundName = "Hack Success", AudioName = "Hack_Success", AudioRef = "DLC_GR_Steal_Railguns_Sounds"},
+    {SoundName = "HACKING SUCCESS", AudioName = "HACKING_SUCCESS", AudioRef = "0"},
+    {SoundName = "unlocked bleep", AudioName = "unlocked_bleep", AudioRef = "HACKING_DOOR_UNLOCK_SOUNDS"},
+    {SoundName = "Hack Success", AudioName = "Hack_Success", AudioRef = "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+    {SoundName = "Pin Movement", AudioName = "Pin_Movement", AudioRef = "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+    {SoundName = "Pin Centred", AudioName = "Pin_Centred", AudioRef = "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+    {SoundName = "Pin Good", AudioName = "Pin_Good", AudioRef = "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+    {SoundName = "Pin Bad", AudioName = "Pin_Bad", AudioRef = "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+    {SoundName = "BASEJUMPS CHOPPER WIND WAIT", AudioName = "BASEJUMPS_CHOPPER_WIND_WAIT", AudioRef = "0"},
+    {SoundName = "TIME LAPSE MASTER", AudioName = "TIME_LAPSE_MASTER", AudioRef = "0"},
+    {SoundName = "Chopper Goes Down", AudioName = "Chopper_Goes_Down", AudioRef = "FBI_HEIST_FIGHT_CHOPPER_SOUNDS"},
+    {SoundName = "Chopper Destroyed", AudioName = "Chopper_Destroyed", AudioRef = "FBI_HEIST_FIGHT_CHOPPER_SOUNDS"},
+    {SoundName = "Heli Crash", AudioName = "Heli_Crash", AudioRef = "FBI_HEIST_FINALE_CHOPPER"},
+    {SoundName = "RFL SINGLESHOT NPC MASTER", AudioName = "RFL_SINGLESHOT_NPC_MASTER", AudioRef = "0"},
+    {SoundName = "CHARACTER CHANGE UP MASTER", AudioName = "CHARACTER_CHANGE_UP_MASTER", AudioRef = "0"},
+    {SoundName = "slow", AudioName = "slow", AudioRef = "SHORT_PLAYER_SWITCH_SOUND_SET"},
+    {SoundName = "CHARACTER CHANGE SKY MASTER", AudioName = "CHARACTER_CHANGE_SKY_MASTER", AudioRef = "0"},
+    {SoundName = "ScreenFlash", AudioName = "ScreenFlash", AudioRef = "WastedSounds"},
+    {SoundName = "Bed", AudioName = "Bed", AudioRef = "WastedSounds"},
+    {SoundName = "TextHit", AudioName = "TextHit", AudioRef = "WastedSounds"},
+    {SoundName = "ScreenFlash", AudioName = "ScreenFlash", AudioRef = "MissionFailedSounds"},
+    {SoundName = "YES", AudioName = "YES", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "NO", AudioName = "NO", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "PROPERTY PURCHASE", AudioName = "PROPERTY_PURCHASE", AudioRef = "HUD_AWARDS"},
+    {SoundName = "PEYOTE COMPLETED", AudioName = "PEYOTE_COMPLETED", AudioRef = "HUD_AWARDS"},
+    {SoundName = "COLLECTED", AudioName = "COLLECTED", AudioRef = "HUD_AWARDS"},
+    {SoundName = "SINGLE BLIP FROM BOAT", AudioName = "SINGLE_BLIP_FROM_BOAT", AudioRef = "ABIGAIL_SONAR_SOUNDSET"},
+    {SoundName = "SCRIPT TRIGGERED FROM PROP", AudioName = "SCRIPT_TRIGGERED_FROM_PROP", AudioRef = "ABIGAIL_SONAR_SOUNDSET"},
+    {SoundName = "SPECIAL EVIL UFO DEATH RAY", AudioName = "SPECIAL_EVIL_UFO_DEATH_RAY", AudioRef = "0"},
+    {SoundName = "SPECIAL EVIL UFO DEATH RAY 3", AudioName = "SPECIAL_EVIL_UFO_DEATH_RAY_3", AudioRef = "0"},
+    {SoundName = "ent amb elec crackle", AudioName = "ent_amb_elec_crackle", AudioRef = "0"},
+    {SoundName = "spl stun npc master", AudioName = "spl_stun_npc_master", AudioRef = "0"},
+    {SoundName = "Crate Beeps", AudioName = "Crate_Beeps", AudioRef = "MP_CRATE_DROP_SOUNDS"},
+    {SoundName = "ARM WRESTLING ARM IMPACT MASTER", AudioName = "ARM_WRESTLING_ARM_IMPACT_MASTER", AudioRef = "0"},
+    {SoundName = "ARM WRESTLING WHOOSH MASTER", AudioName = "ARM_WRESTLING_WHOOSH_MASTER", AudioRef = "0"},
+    {SoundName = "LOSER", AudioName = "LOSER", AudioRef = "HUD_AWARDS"},
+    {SoundName = "WIN", AudioName = "WIN", AudioRef = "0"},
+    {SoundName = "Hit 1", AudioName = "Hit_1", AudioRef = "LONG_PLAYER_SWITCH_SOUNDS"},
+    {SoundName = "Slow Clap Cel", AudioName = "Slow_Clap_Cel", AudioRef = "MP_SNACKS_SOUNDSET"},
+    {SoundName = "Knuckle Crack Slap Cel", AudioName = "Knuckle_Crack_Slap_Cel", AudioRef = "MP_SNACKS_SOUNDSET"},
+    {SoundName = "Knuckle Crack Hard Cel", AudioName = "Knuckle_Crack_Hard_Cel", AudioRef = "MP_SNACKS_SOUNDSET"},
+    {SoundName = "TOGGLE ON", AudioName = "TOGGLE_ON", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Pre Screen Stinger", AudioName = "Pre_Screen_Stinger", AudioRef = "DLC_HEISTS_PREP_SCREEN_SOUNDS"},
+    {SoundName = "On", AudioName = "On", AudioRef = "GTAO_Vision_Modes_SoundSet"},
+    {SoundName = "Switch", AudioName = "Switch", AudioRef = "GTAO_Vision_Modes_SoundSet"},
+    {SoundName = "Off", AudioName = "Off", AudioRef = "GTAO_Vision_Modes_SoundSet"},
+    {SoundName = "ARM WRESTLING WOOD CREEK MASTER", AudioName = "ARM_WRESTLING_WOOD_CREEK_MASTER", AudioRef = "0"},
+    {SoundName = "3 2 1 NON RACE", AudioName = "3_2_1_NON_RACE", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "GO NON RACE", AudioName = "GO_NON_RACE", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "place bet", AudioName = "place_bet", AudioRef = "0"},
+    {SoundName = "place max bet", AudioName = "place_max_bet", AudioRef = "0"},
+    {SoundName = "start spin", AudioName = "start_spin", AudioRef = "0"},
+    {SoundName = "spinning", AudioName = "spinning", AudioRef = "0"},
+    {SoundName = "Click Special", AudioName = "Click_Special", AudioRef = "WEB_NAVIGATION_SOUNDS_PHONE"},
+    {SoundName = "Garage Door Open", AudioName = "Garage_Door_Open", AudioRef = "GTAO_Script_Doors_Faded_Screen_Sounds"},
+    {SoundName = "Garage Door Close", AudioName = "Garage_Door_Close", AudioRef = "GTAO_Script_Doors_Faded_Screen_Sounds"},
+    {SoundName = "Event Message Purple", AudioName = "Event_Message_Purple", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "OPENING", AudioName = "OPENING", AudioRef = "MP_PROPERTIES_ELEVATOR_DOORS"},
+    {SoundName = "OPENED", AudioName = "OPENED", AudioRef = "MP_PROPERTIES_ELEVATOR_DOORS"},
+    {SoundName = "Sink", AudioName = "Sink", AudioRef = "DLC_H4_Submarine_Sinking_Sounds"},
+    {SoundName = "LIMIT", AudioName = "LIMIT", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+    {SoundName = "PUSH", AudioName = "PUSH", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+    {SoundName = "elevator ascend loop", AudioName = "elevator_ascend_loop", AudioRef = "dlc_xm_facility_entry_exit_sounds"},
+    {SoundName = "hangar doors loop", AudioName = "hangar_doors_loop", AudioRef = "dlc_xm_facility_entry_exit_sounds"},
+    {SoundName = "hangar doors close", AudioName = "hangar_doors_close", AudioRef = "dlc_xm_facility_entry_exit_sounds"},
+    {SoundName = "elevator descend loop", AudioName = "elevator_descend_loop", AudioRef = "dlc_xm_facility_entry_exit_sounds"},
+    {SoundName = "hangar doors limit", AudioName = "hangar_doors_limit", AudioRef = "dlc_xm_facility_entry_exit_sounds"},
+    {SoundName = "hangar doors open", AudioName = "hangar_doors_open", AudioRef = "dlc_xm_facility_entry_exit_sounds"},
+    {SoundName = "Door Open Limit", AudioName = "Door_Open_Limit", AudioRef = "DLC_SM_Hangar_Door_Sounds"},
+    {SoundName = "Enter Car Ramp Deploy", AudioName = "Enter_Car_Ramp_Deploy", AudioRef = "DLC_GR_MOC_Enter_Exit_Sounds"},
+    {SoundName = "Enter Car Ramp Hits Ground", AudioName = "Enter_Car_Ramp_Hits_Ground", AudioRef = "DLC_GR_MOC_Enter_Exit_Sounds"},
+    {SoundName = "OK", AudioName = "OK", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "CANCEL", AudioName = "CANCEL", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Armour Off", AudioName = "Armour_Off", AudioRef = "DLC_GR_Steal_Miniguns_Sounds"},
+    {SoundName = "Door Open Limit", AudioName = "Door_Open_Limit", AudioRef = "DLC_GR_Bunker_Door_Sounds"},
+    {SoundName = "CLOSED", AudioName = "CLOSED", AudioRef = "MP_PROPERTIES_ELEVATOR_DOORS"},
+    {SoundName = "CLOSING", AudioName = "CLOSING", AudioRef = "MP_PROPERTIES_ELEVATOR_DOORS"},
+    {SoundName = "Explosion Countdown", AudioName = "Explosion_Countdown", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Altitude Warning", AudioName = "Altitude_Warning", AudioRef = "EXILE_1"},
+    {SoundName = "10S", AudioName = "10S", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "Near Miss Counter", AudioName = "Near_Miss_Counter", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Near Miss Counter Reset", AudioName = "Near_Miss_Counter_Reset", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Enter 1st", AudioName = "Enter_1st", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "Enter 1st", AudioName = "Enter_1st", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Lose 1st", AudioName = "Lose_1st", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "Lose 1st", AudioName = "Lose_1st", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Checkpoint Hit", AudioName = "Checkpoint_Hit", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "5s To Event Start Countdown", AudioName = "5s_To_Event_Start_Countdown", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Event Start Text", AudioName = "Event_Start_Text", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Text Arrive Tone", AudioName = "Text_Arrive_Tone", AudioRef = "0"},
+    {SoundName = "SELECT", AudioName = "SELECT", AudioRef = "HUD_FREEMODE_SOUNDSET"},
+    {SoundName = "NAV UP DOWN", AudioName = "NAV_UP_DOWN", AudioRef = "HUD_FREEMODE_SOUNDSET"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "HUD_FREEMODE_SOUNDSET"},
+    {SoundName = "CANCEL", AudioName = "CANCEL", AudioRef = "HUD_FREEMODE_SOUNDSET"},
+    {SoundName = "NAV LEFT RIGHT", AudioName = "NAV_LEFT_RIGHT", AudioRef = "HUD_FREEMODE_SOUNDSET"},
+    {SoundName = "Checkpoint Cash Hit", AudioName = "Checkpoint_Cash_Hit", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Crate Collect", AudioName = "Crate_Collect", AudioRef = "MP_CRATE_DROP_SOUNDS"},
+    {SoundName = "Criminal Damage Low Value", AudioName = "Criminal_Damage_Low_Value", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Criminal Damage Kill Player", AudioName = "Criminal_Damage_Kill_Player", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Criminal Damage High Value", AudioName = "Criminal_Damage_High_Value", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "WIN", AudioName = "WIN", AudioRef = "HUD_AWARDS"},
+    {SoundName = "GOLF NEW RECORD", AudioName = "GOLF_NEW_RECORD", AudioRef = "HUD_AWARDS"},
+    {SoundName = "DARTS HIT DART MASTER", AudioName = "DARTS_HIT_DART_MASTER", AudioRef = "0"},
+    {SoundName = "DARTS HIT BULLSEYE MASTER", AudioName = "DARTS_HIT_BULLSEYE_MASTER", AudioRef = "0"},
+    {SoundName = "DARTS HIT BOARD MASTER", AudioName = "DARTS_HIT_BOARD_MASTER", AudioRef = "0"},
+    {SoundName = "DARTS HIT WALL MASTER", AudioName = "DARTS_HIT_WALL_MASTER", AudioRef = "0"},
+    {SoundName = "DARTS SCORE TRIPLE MASTER", AudioName = "DARTS_SCORE_TRIPLE_MASTER", AudioRef = "0"},
+    {SoundName = "DARTS SCORE DOUBLE MASTER", AudioName = "DARTS_SCORE_DOUBLE_MASTER", AudioRef = "0"},
+    {SoundName = "DARTS HIT WIRE MASTER", AudioName = "DARTS_HIT_WIRE_MASTER", AudioRef = "0"},
+    {SoundName = "DARTS THROW DART MASTER", AudioName = "DARTS_THROW_DART_MASTER", AudioRef = "0"},
+    {SoundName = "WINNER", AudioName = "WINNER", AudioRef = "CELEBRATION_SOUNDSET"},
+    {SoundName = "LOSER", AudioName = "LOSER", AudioRef = "CELEBRATION_SOUNDSET"},
+    {SoundName = "DLC Biker Darts Hit Board Remote Master", AudioName = "DLC_Biker_Darts_Hit_Board_Remote_Master", AudioRef = "0"},
+    {SoundName = "Object Collect Remote", AudioName = "Object_Collect_Remote", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Object Dropped Remote", AudioName = "Object_Dropped_Remote", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Object Collect Player", AudioName = "Object_Collect_Player", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "GENERATOR", AudioName = "GENERATOR", AudioRef = "THE_FERRIS_WHALE_SOUNDSET"},
+    {SoundName = "SLOW SQUEAK", AudioName = "SLOW_SQUEAK", AudioRef = "THE_FERRIS_WHALE_SOUNDSET"},
+    {SoundName = "CARRIAGE", AudioName = "CARRIAGE", AudioRef = "THE_FERRIS_WHALE_SOUNDSET"},
+    {SoundName = "ROBBERY MONEY TOTAL", AudioName = "ROBBERY_MONEY_TOTAL", AudioRef = "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+    {SoundName = "NAV UP DOWN", AudioName = "NAV_UP_DOWN", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "PURCHASE", AudioName = "PURCHASE", AudioRef = "HUD_LIQUOR_STORE_SOUNDSET"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "HUD_LIQUOR_STORE_SOUNDSET"},
+    {SoundName = "SELECT", AudioName = "SELECT", AudioRef = "HUD_LIQUOR_STORE_SOUNDSET"},
+    {SoundName = "CANCEL", AudioName = "CANCEL", AudioRef = "HUD_LIQUOR_STORE_SOUNDSET"},
+    {SoundName = "BACK", AudioName = "BACK", AudioRef = "HUD_FREEMODE_SOUNDSET"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "NAV UP DOWN", AudioName = "NAV_UP_DOWN", AudioRef = "HUD_LIQUOR_STORE_SOUNDSET"},
+    {SoundName = "Frontend Beast Transform Back", AudioName = "Frontend_Beast_Transform_Back", AudioRef = "FM_Events_Sasquatch_Sounds"},
+    {SoundName = "Frontend Beast Fade Screen", AudioName = "Frontend_Beast_Fade_Screen", AudioRef = "FM_Events_Sasquatch_Sounds"},
+    {SoundName = "Frontend Beast Freeze Screen", AudioName = "Frontend_Beast_Freeze_Screen", AudioRef = "FM_Events_Sasquatch_Sounds"},
+    {SoundName = "Frontend Beast Frozen Screen Loop", AudioName = "Frontend_Beast_Frozen_Screen_Loop", AudioRef = "FM_Events_Sasquatch_Sounds"},
+    {SoundName = "Frontend Beast Text Hit", AudioName = "Frontend_Beast_Text_Hit", AudioRef = "FM_Events_Sasquatch_Sounds"},
+    {SoundName = "Beast Calls", AudioName = "Beast_Calls", AudioRef = "FM_Events_Sasquatch_Sounds"},
+    {SoundName = "Checkpoint Beast Hit", AudioName = "Checkpoint_Beast_Hit", AudioRef = "FM_Events_Sasquatch_Sounds"},
+    {SoundName = "Radar Beast Blip", AudioName = "Radar_Beast_Blip", AudioRef = "FM_Events_Sasquatch_Sounds"},
+    {SoundName = "Kill List Counter", AudioName = "Kill_List_Counter", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Change Vehicle", AudioName = "Change_Vehicle", AudioRef = "GTAO_Auto_Store_Sounds"},
+    {SoundName = "Select Mission Unavailable", AudioName = "Select_Mission_Unavailable", AudioRef = "DLC_GR_MOC_Computer_Sounds"},
+    {SoundName = "NAV LEFT RIGHT", AudioName = "NAV_LEFT_RIGHT", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "PICK UP", AudioName = "PICK_UP", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "WEAPON PURCHASE", AudioName = "WEAPON_PURCHASE", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "ascend", AudioName = "ascend", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "descend impact", AudioName = "descend_impact", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "release toy", AudioName = "release_toy", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "rare win", AudioName = "rare_win", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "win", AudioName = "win", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "lose", AudioName = "lose", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "laser power up", AudioName = "laser_power_up", AudioRef = "dlc_ch_heist_finale_laser_drill_sounds"},
+    {SoundName = "laser drill", AudioName = "laser_drill", AudioRef = "dlc_ch_heist_finale_laser_drill_sounds"},
+    {SoundName = "laser power down", AudioName = "laser_power_down", AudioRef = "dlc_ch_heist_finale_laser_drill_sounds"},
+    {SoundName = "laser overheat", AudioName = "laser_overheat", AudioRef = "dlc_ch_heist_finale_laser_drill_sounds"},
+    {SoundName = "Drill Jam", AudioName = "Drill_Jam", AudioRef = "DLC_HEIST_FLEECA_SOUNDSET"},
+    {SoundName = "Drill", AudioName = "Drill", AudioRef = "DLC_HEIST_FLEECA_SOUNDSET"},
+    {SoundName = "laser pin break", AudioName = "laser_pin_break", AudioRef = "dlc_ch_heist_finale_laser_drill_sounds"},
+    {SoundName = "Drill Pin Break", AudioName = "Drill_Pin_Break", AudioRef = "DLC_HEIST_FLEECA_SOUNDSET"},
+    {SoundName = "ascend win", AudioName = "ascend_win", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "ascend lose", AudioName = "ascend_lose", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "move", AudioName = "move", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "descend", AudioName = "descend", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "start", AudioName = "start", AudioRef = "dlc_ch_claw_crane_sounds"},
+    {SoundName = "fortune bell", AudioName = "fortune_bell", AudioRef = "dlc_ch_nazar_speaks_sounds"},
+    {SoundName = "fortune mech loop", AudioName = "fortune_mech_loop", AudioRef = "dlc_ch_nazar_speaks_sounds"},
+    {SoundName = "Outcome Nemesis", AudioName = "Outcome_Nemesis", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome Chillin", AudioName = "Outcome_Chillin", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome BuzzKill", AudioName = "Outcome_BuzzKill", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome Not", AudioName = "Outcome_Not", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome Schwing", AudioName = "Outcome_Schwing", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome Pimpin", AudioName = "Outcome_Pimpin", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome Hype", AudioName = "Outcome_Hype", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome Sweet", AudioName = "Outcome_Sweet", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome LoveSick", AudioName = "Outcome_LoveSick", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome SoFine", AudioName = "Outcome_SoFine", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Outcome PerfectMatch", AudioName = "Outcome_PerfectMatch", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "Calculate Outcome", AudioName = "Calculate_Outcome", AudioRef = "DLC_H3_LoveMachine_Sounds"},
+    {SoundName = "sum20 am Axe of Fury sounds", AudioName = "sum20_am_Axe_of_Fury_sounds", AudioRef = "0"},
+    {SoundName = "Fail Bink", AudioName = "Fail_Bink", AudioRef = "0"},
+    {SoundName = "Loading Bink", AudioName = "Loading_Bink", AudioRef = "0"},
+    {SoundName = "Main Screen Draw", AudioName = "Main_Screen_Draw", AudioRef = "0"},
+    {SoundName = "OS Draw", AudioName = "OS_Draw", AudioRef = "0"},
+    {SoundName = "Disconnect Wire", AudioName = "Disconnect_Wire", AudioRef = "0"},
+    {SoundName = "Minigame Failure", AudioName = "Minigame_Failure", AudioRef = "0"},
+    {SoundName = "All Connected Correct", AudioName = "All_Connected_Correct", AudioRef = "0"},
+    {SoundName = "All Connected Incorrect", AudioName = "All_Connected_Incorrect", AudioRef = "0"},
+    {SoundName = "Minigame Success", AudioName = "Minigame_Success", AudioRef = "0"},
+    {SoundName = "Success Bink", AudioName = "Success_Bink", AudioRef = "0"},
+    {SoundName = "Background loop", AudioName = "Background_loop", AudioRef = "0"},
+    {SoundName = "Connect Multiply 1", AudioName = "Connect_Multiply_1", AudioRef = "0"},
+    {SoundName = "Connect Multiply 2", AudioName = "Connect_Multiply_2", AudioRef = "0"},
+    {SoundName = "Connect Multiply 10", AudioName = "Connect_Multiply_10", AudioRef = "0"},
+    {SoundName = "Nav down", AudioName = "Nav_down", AudioRef = "0"},
+    {SoundName = "Nav up", AudioName = "Nav_up", AudioRef = "0"},
+    {SoundName = "Startup Sequence", AudioName = "Startup_Sequence", AudioRef = "0"},
+    {SoundName = "Draw Screen", AudioName = "Draw_Screen", AudioRef = "0"},
+    {SoundName = "Hack Failed", AudioName = "Hack_Failed", AudioRef = "0"},
+    {SoundName = "Hack Success", AudioName = "Hack_Success", AudioRef = "0"},
+    {SoundName = "Processing", AudioName = "Processing", AudioRef = "0"},
+    {SoundName = "Print Match", AudioName = "Print_Match", AudioRef = "0"},
+    {SoundName = "Print Not Match", AudioName = "Print_Not_Match", AudioRef = "0"},
+    {SoundName = "Pattern Shift", AudioName = "Pattern_Shift", AudioRef = "0"},
+    {SoundName = "Pattern Scramble", AudioName = "Pattern_Scramble", AudioRef = "0"},
+    {SoundName = "Window Clear", AudioName = "Window_Clear", AudioRef = "0"},
+    {SoundName = "Print Appears", AudioName = "Print_Appears", AudioRef = "0"},
+    {SoundName = "Tile select", AudioName = "Tile_select", AudioRef = "0"},
+    {SoundName = "Cursor Move", AudioName = "Cursor_Move", AudioRef = "0"},
+    {SoundName = "Tile Select", AudioName = "Tile_Select", AudioRef = "0"},
+    {SoundName = "Scramble Countdown High", AudioName = "Scramble_Countdown_High", AudioRef = "0"},
+    {SoundName = "Scramble Countdown MED", AudioName = "Scramble_Countdown_MED", AudioRef = "0"},
+    {SoundName = "Scramble Countdown Low", AudioName = "Scramble_Countdown_Low", AudioRef = "0"},
+    {SoundName = "Background Hum", AudioName = "Background_Hum", AudioRef = "0"},
+    {SoundName = "Play Start", AudioName = "Play_Start", AudioRef = "0"},
+    {SoundName = "Cursor Choose Good", AudioName = "Cursor_Choose_Good", AudioRef = "0"},
+    {SoundName = "Cursor Choose Bad", AudioName = "Cursor_Choose_Bad", AudioRef = "0"},
+    {SoundName = "New Line Flash", AudioName = "New_Line_Flash", AudioRef = "0"},
+    {SoundName = "Dot Sequence Change", AudioName = "Dot_Sequence_Change", AudioRef = "0"},
+    {SoundName = "Dot Sequence Choose Flash", AudioName = "Dot_Sequence_Choose_Flash", AudioRef = "0"},
+    {SoundName = "Section Success Window Appears", AudioName = "Section_Success_Window_Appears", AudioRef = "0"},
+    {SoundName = "Section Success Window Cleared", AudioName = "Section_Success_Window_Cleared", AudioRef = "0"},
+    {SoundName = "Scramble Countdown Med", AudioName = "Scramble_Countdown_Med", AudioRef = "0"},
+    {SoundName = "Window Draw", AudioName = "Window_Draw", AudioRef = "0"},
+    {SoundName = "Target Match", AudioName = "Target_Match", AudioRef = "0"},
+    {SoundName = "No Match", AudioName = "No_Match", AudioRef = "0"},
+    {SoundName = "Print Shuffle", AudioName = "Print_Shuffle", AudioRef = "0"},
+    {SoundName = "Select Print Tile", AudioName = "Select_Print_Tile", AudioRef = "0"},
+    {SoundName = "Deselect Print Tile", AudioName = "Deselect_Print_Tile", AudioRef = "0"},
+    {SoundName = "Kick Machine", AudioName = "Kick_Machine", AudioRef = "DLC_H3_Arc_Mac_Degen_DotF_Sounds"},
+    {SoundName = "Wheel Spin Start", AudioName = "Wheel_Spin_Start", AudioRef = "DLC_AW_Arena_Spin_Wheel_Game_Sounds"},
+    {SoundName = "Pan", AudioName = "Pan", AudioRef = "DLC_Arena_CCTV_SOUNDSET"},
+    {SoundName = "Pan", AudioName = "Pan", AudioRef = "MP_CCTV_SOUNDSET"},
+    {SoundName = "Background", AudioName = "Background", AudioRef = "DLC_Arena_CCTV_SOUNDSET"},
+    {SoundName = "Background", AudioName = "Background", AudioRef = "MP_CCTV_SOUNDSET"},
+    {SoundName = "Change Cam", AudioName = "Change_Cam", AudioRef = "DLC_Arena_CCTV_SOUNDSET"},
+    {SoundName = "Change Cam", AudioName = "Change_Cam", AudioRef = "MP_CCTV_SOUNDSET"},
+    {SoundName = "Door Open", AudioName = "Door_Open", AudioRef = "DLC_AW_Arena_Spectator_Box_Access_Sounds"},
+    {SoundName = "SELECT", AudioName = "SELECT", AudioRef = "HUD_FRONTEND_MP_SOUNDSET"},
+    {SoundName = "Highlight Move Up Down", AudioName = "Highlight_Move_Up_Down", AudioRef = "DLC_AW_Arena_Office_Planning_Wall_Sounds"},
+    {SoundName = "Highlight Back", AudioName = "Highlight_Back", AudioRef = "DLC_AW_Arena_Office_Planning_Wall_Sounds"},
+    {SoundName = "Highlight Accept", AudioName = "Highlight_Accept", AudioRef = "DLC_AW_Arena_Office_Planning_Wall_Sounds"},
+    {SoundName = "Activate Privacy Glass", AudioName = "Activate_Privacy_Glass", AudioRef = "dlc_xm_facility_ambient_sounds"},
+    {SoundName = "Deactivate Privacy Glass", AudioName = "Deactivate_Privacy_Glass", AudioRef = "dlc_xm_facility_ambient_sounds"},
+    {SoundName = "Money Counter Loop", AudioName = "Money_Counter_Loop", AudioRef = "DLC_Biker_Business_CFM_Sounds"},
+    {SoundName = "FAKE ARRIVE", AudioName = "FAKE_ARRIVE", AudioRef = "MP_PROPERTIES_ELEVATOR_DOORS"},
+    {SoundName = "BUTTON", AudioName = "BUTTON", AudioRef = "MP_PROPERTIES_ELEVATOR_DOORS"},
+    {SoundName = "Retune Low", AudioName = "Retune_Low", AudioRef = "MP_RADIO_SFX"},
+    {SoundName = "MP RADIO SFX", AudioName = "MP_RADIO_SFX", AudioRef = "0"},
+    {SoundName = "Retune High", AudioName = "Retune_High", AudioRef = "MP_RADIO_SFX"},
+    {SoundName = "Off Low", AudioName = "Off_Low", AudioRef = "MP_RADIO_SFX"},
+    {SoundName = "Off High", AudioName = "Off_High", AudioRef = "MP_RADIO_SFX"},
+    {SoundName = "DLC Biker Warehouse Intro Inventory Sounds", AudioName = "DLC_Biker_Warehouse_Intro_Inventory_Sounds", AudioRef = "0"},
+    {SoundName = "Wasted", AudioName = "Wasted", AudioRef = "POWER_PLAY_General_Soundset"},
+    {SoundName = "MP Flash", AudioName = "MP_Flash", AudioRef = "WastedSounds"},
+    {SoundName = "MP Impact", AudioName = "MP_Impact", AudioRef = "WastedSounds"},
+    {SoundName = "Exit Engine Blips", AudioName = "Exit_Engine_Blips", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "radio tower fixed", AudioName = "radio_tower_fixed", AudioRef = "dlc_hei4_hidden_collectibles_sounds"},
+    {SoundName = "DLC VW RULES", AudioName = "DLC_VW_RULES", AudioRef = "dlc_vw_table_games_frontend_sounds"},
+    {SoundName = "DLC VW CONTINUE", AudioName = "DLC_VW_CONTINUE", AudioRef = "dlc_vw_table_games_frontend_sounds"},
+    {SoundName = "Inside Track Start", AudioName = "Inside_Track_Start", AudioRef = "DLC_AW_Casino_Track_Inside_Game_Sounds"},
+    {SoundName = "dlc vw am cabinet sounds", AudioName = "dlc_vw_am_cabinet_sounds", AudioRef = "0"},
+    {SoundName = "Beat Pulse Default", AudioName = "Beat_Pulse_Default", AudioRef = "GTAO_Dancing_Sounds"},
+    {SoundName = "Background", AudioName = "Background", AudioRef = "DLC_XM17_Facility_Strike_PC_Sounds"},
+    {SoundName = "Login", AudioName = "Login", AudioRef = "GTAO_Exec_SecuroServ_Warehouse_PC_Sounds"},
+    {SoundName = "scanner alarm os", AudioName = "scanner_alarm_os", AudioRef = "dlc_xm_iaa_player_facility_sounds"},
+    {SoundName = "cannon active", AudioName = "cannon_active", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "DLC XM Explosions Orbital Cannon", AudioName = "DLC_XM_Explosions_Orbital_Cannon", AudioRef = "0"},
+    {SoundName = "inactive fire fail", AudioName = "inactive_fire_fail", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "menu select", AudioName = "menu_select", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "menu back", AudioName = "menu_back", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "menu reset", AudioName = "menu_reset", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "zoom out loop", AudioName = "zoom_out_loop", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "cannon charge fire loop", AudioName = "cannon_charge_fire_loop", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "pan loop", AudioName = "pan_loop", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "background loop", AudioName = "background_loop", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "cannon activating loop", AudioName = "cannon_activating_loop", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "menu up down", AudioName = "menu_up_down", AudioRef = "dlc_xm_orbital_cannon_sounds"},
+    {SoundName = "cannon active loop", AudioName = "cannon_active_loop", AudioRef = "dlc_xm_orbital_cannon_remote_sounds"},
+    {SoundName = "3 2 1 fire", AudioName = "3_2_1_fire", AudioRef = "dlc_xm_orbital_cannon_remote_sounds"},
+    {SoundName = "cannon charge fire loop", AudioName = "cannon_charge_fire_loop", AudioRef = "dlc_xm_orbital_cannon_remote_sounds"},
+    {SoundName = "HUD Static Loop", AudioName = "HUD_Static_Loop", AudioRef = "0"},
+    {SoundName = "HUD Disconnect", AudioName = "HUD_Disconnect", AudioRef = "0"},
+    {SoundName = "Out Of Bounds Alarm Loop", AudioName = "Out_Of_Bounds_Alarm_Loop", AudioRef = "0"},
+    {SoundName = "Scanner Loop", AudioName = "Scanner_Loop", AudioRef = "DLC_BTL_Target_Pursuit_Sounds"},
+    {SoundName = "HUD Shock Recharge", AudioName = "HUD_Shock_Recharge", AudioRef = "0"},
+    {SoundName = "Remote Perspective Fire", AudioName = "Remote_Perspective_Fire", AudioRef = "DLC_H3_Drone_Tranq_Weapon_Sounds"},
+    {SoundName = "Pilot Perspective Fire", AudioName = "Pilot_Perspective_Fire", AudioRef = "DLC_H3_Drone_Tranq_Weapon_Sounds"},
+    {SoundName = "Destroyed", AudioName = "Destroyed", AudioRef = "0"},
+    {SoundName = "HUD Detonate Charge", AudioName = "HUD_Detonate_Charge", AudioRef = "0"},
+    {SoundName = "Shock Fire", AudioName = "Shock_Fire", AudioRef = "0"},
+    {SoundName = "HUD Zoom Change", AudioName = "HUD_Zoom_Change", AudioRef = "0"},
+    {SoundName = "HUD Boost Loop", AudioName = "HUD_Boost_Loop", AudioRef = "0"},
+    {SoundName = "HUD Boost Recharge Loop", AudioName = "HUD_Boost_Recharge_Loop", AudioRef = "0"},
+    {SoundName = "HUD Loop", AudioName = "HUD_Loop", AudioRef = "0"},
+    {SoundName = "Flight Loop", AudioName = "Flight_Loop", AudioRef = "0"},
+    {SoundName = "HUD Startup", AudioName = "HUD_Startup", AudioRef = "0"},
+    {SoundName = "Missile Launch", AudioName = "Missile_Launch", AudioRef = "0"},
+    {SoundName = "Select Spec Drone", AudioName = "Select_Spec_Drone", AudioRef = "DLC_AW_Spectator_Tablet_Sounds"},
+    {SoundName = "Super Mod Garage Upgrade Car Default", AudioName = "Super_Mod_Garage_Upgrade_Car_Default", AudioRef = "0"},
+    {SoundName = "club crowd transition", AudioName = "club_crowd_transition", AudioRef = "dlc_btl_club_open_transition_crowd_sounds"},
+    {SoundName = "GARAGE DOOR SCRIPTED CLOSE", AudioName = "GARAGE_DOOR_SCRIPTED_CLOSE", AudioRef = "0"},
+    {SoundName = "Engine Revs", AudioName = "Engine_Revs", AudioRef = "DLC_HEISTS_GENERIC_SOUNDS"},
+    {SoundName = "Elevator Doors Opening Loop", AudioName = "Elevator_Doors_Opening_Loop", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "Garage Door Open Loop", AudioName = "Garage_Door_Open_Loop", AudioRef = "GTAO_Script_Doors_Sounds"},
+    {SoundName = "Elevator Doors Closing Loop", AudioName = "Elevator_Doors_Closing_Loop", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "Garage Door Close Loop", AudioName = "Garage_Door_Close_Loop", AudioRef = "GTAO_Script_Doors_Sounds"},
+    {SoundName = "Speech Going Up", AudioName = "Speech_Going_Up", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "GARAGE DOOR SCRIPTED OPEN", AudioName = "GARAGE_DOOR_SCRIPTED_OPEN", AudioRef = "0"},
+    {SoundName = "DOOR Intercom MASTER", AudioName = "DOOR_Intercom_MASTER", AudioRef = "0"},
+    {SoundName = "DOOR BUZZ", AudioName = "DOOR_BUZZ", AudioRef = "MP_PLAYER_APARTMENT"},
+    {SoundName = "Click Fail", AudioName = "Click_Fail", AudioRef = "WEB_NAVIGATION_SOUNDS_PHONE"},
+    {SoundName = "DOOR BUZZ ONESHOT MASTER", AudioName = "DOOR_BUZZ_ONESHOT_MASTER", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+    {SoundName = "WOODEN DOOR OPEN NO HANDLE AT", AudioName = "WOODEN_DOOR_OPEN_NO_HANDLE_AT", AudioRef = "0"},
+    {SoundName = "PUSH", AudioName = "PUSH", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
+    {SoundName = "PUSH", AudioName = "PUSH", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_GENERIC_SOUNDS"},
+    {SoundName = "PUSH", AudioName = "PUSH", AudioRef = "GTAO_APT_DOOR_ROOF_METAL_SOUNDS"},
+    {SoundName = "LIMIT", AudioName = "LIMIT", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
+    {SoundName = "LIMIT", AudioName = "LIMIT", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_GENERIC_SOUNDS"},
+    {SoundName = "LIMIT", AudioName = "LIMIT", AudioRef = "GTAO_APT_DOOR_ROOF_METAL_SOUNDS"},
+    {SoundName = "Enter On Foot", AudioName = "Enter_On_Foot", AudioRef = "GTAO_ImpExp_Enter_Exit_Garage_Sounds"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "DLC_Biker_Mission_Wall_Sounds"},
+    {SoundName = "Highlight Accept", AudioName = "Highlight_Accept", AudioRef = "DLC_Biker_Mission_Wall_Sounds"},
+    {SoundName = "Highlight Error", AudioName = "Highlight_Error", AudioRef = "DLC_Biker_Mission_Wall_Sounds"},
+    {SoundName = "Highlight Back", AudioName = "Highlight_Back", AudioRef = "DLC_Biker_Mission_Wall_Sounds"},
+    {SoundName = "Highlight Move Left Right", AudioName = "Highlight_Move_Left_Right", AudioRef = "DLC_Biker_Mission_Wall_Sounds"},
+    {SoundName = "Highlight Move Up Down", AudioName = "Highlight_Move_Up_Down", AudioRef = "DLC_Biker_Mission_Wall_Sounds"},
+    {SoundName = "Exit In Vehicle", AudioName = "Exit_In_Vehicle", AudioRef = "GTAO_ImpExp_Enter_Exit_Garage_Sounds"},
+    {SoundName = "PUSH", AudioName = "PUSH", AudioRef = "DLC_APT_YACHT_DOOR_SOUNDS"},
+    {SoundName = "WOODEN DOOR OPEN HANDLE AT", AudioName = "WOODEN_DOOR_OPEN_HANDLE_AT", AudioRef = "0"},
+    {SoundName = "LIMIT", AudioName = "LIMIT", AudioRef = "DLC_APT_YACHT_DOOR_SOUNDS"},
+    {SoundName = "WOODEN DOOR CLOSING AT", AudioName = "WOODEN_DOOR_CLOSING_AT", AudioRef = "0"},
+    {SoundName = "SWING SHUT", AudioName = "SWING_SHUT", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
+    {SoundName = "Closed", AudioName = "Closed", AudioRef = "DLC_APT_YACHT_DOOR_SOUNDS"},
+    {SoundName = "SWING SHUT", AudioName = "SWING_SHUT", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_GENERIC_SOUNDS"},
+    {SoundName = "SWING SHUT", AudioName = "SWING_SHUT", AudioRef = "GTAO_APT_DOOR_ROOF_METAL_SOUNDS"},
+    {SoundName = "SWING SHUT", AudioName = "SWING_SHUT", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+    {SoundName = "WOODEN DOOR CLOSED AT", AudioName = "WOODEN_DOOR_CLOSED_AT", AudioRef = "0"},
+    {SoundName = "Speech Floor 1", AudioName = "Speech_Floor_1", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "Speech Floor 2", AudioName = "Speech_Floor_2", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "Speech Floor 3", AudioName = "Speech_Floor_3", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "Tone", AudioName = "Tone", AudioRef = "LIFT_POSH_SOUNDSET"},
+    {SoundName = "Fake Game", AudioName = "Fake_Game", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "playing card", AudioName = "playing_card", AudioRef = "dlc_vw_hidden_collectible_sounds"},
+    {SoundName = "Elevator Start", AudioName = "Elevator_Start", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "Elevator Stop", AudioName = "Elevator_Stop", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "Elevator Ascending Loop", AudioName = "Elevator_Ascending_Loop", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "Elevator Descending Loop", AudioName = "Elevator_Descending_Loop", AudioRef = "DLC_IE_Garage_Elevator_Sounds"},
+    {SoundName = "REMOTE VEHICLE LOOP", AudioName = "REMOTE_VEHICLE_LOOP", AudioRef = "REMOTE_CONTROLLED_VEHICLE_Sounds"},
+    {SoundName = "10 SEC WARNING", AudioName = "10_SEC_WARNING", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "TIMER STOP", AudioName = "TIMER_STOP", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "Target Activate", AudioName = "Target_Activate", AudioRef = "DLC_GR_Bunker_Shooting_Range_Sounds"},
+    {SoundName = "Target Deactivate", AudioName = "Target_Deactivate", AudioRef = "DLC_GR_Bunker_Shooting_Range_Sounds"},
+    {SoundName = "Target Hit Head Black", AudioName = "Target_Hit_Head_Black", AudioRef = "DLC_GR_Bunker_Shooting_Range_Sounds"},
+    {SoundName = "Target Hit Head Red", AudioName = "Target_Hit_Head_Red", AudioRef = "DLC_GR_Bunker_Shooting_Range_Sounds"},
+    {SoundName = "Target Hit Body Black", AudioName = "Target_Hit_Body_Black", AudioRef = "DLC_GR_Bunker_Shooting_Range_Sounds"},
+    {SoundName = "Target Hit Body Red", AudioName = "Target_Hit_Body_Red", AudioRef = "DLC_GR_Bunker_Shooting_Range_Sounds"},
+    {SoundName = "GO", AudioName = "GO", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "3 2 1", AudioName = "3_2_1", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "Delivery Screen Fade", AudioName = "Delivery_Screen_Fade", AudioRef = "DLC_Exec1_Buy_Sell_Sounds"},
+    {SoundName = "Delivery Screen Fade On Foot", AudioName = "Delivery_Screen_Fade_On_Foot", AudioRef = "DLC_Exec1_Buy_Sell_Sounds"},
+    {SoundName = "Helicopter Prompt Exit", AudioName = "Helicopter_Prompt_Exit", AudioRef = "0"},
+    {SoundName = "Moonpool Prompt Exit", AudioName = "Moonpool_Prompt_Exit", AudioRef = "0"},
+    {SoundName = "Crush", AudioName = "Crush", AudioRef = "DLC_H4_Submarine_Crush_Depth_Sounds"},
+    {SoundName = "Creaking Loop", AudioName = "Creaking_Loop", AudioRef = "DLC_H4_Submarine_Crush_Depth_Sounds"},
+    {SoundName = "Warning Alarm Loop", AudioName = "Warning_Alarm_Loop", AudioRef = "DLC_H4_Submarine_Crush_Depth_Sounds"},
+    {SoundName = "VULKAN LOCK ON AMBER", AudioName = "VULKAN_LOCK_ON_AMBER", AudioRef = "0"},
+    {SoundName = "VULKAN LOCK ON RED", AudioName = "VULKAN_LOCK_ON_RED", AudioRef = "0"},
+    {SoundName = "Fire", AudioName = "Fire", AudioRef = "DLC_BTL_Terrobyte_Turret_Sounds"},
+    {SoundName = "Background Loop", AudioName = "Background_Loop", AudioRef = "0"},
+    {SoundName = "COP HELI CAM ZOOM", AudioName = "COP_HELI_CAM_ZOOM", AudioRef = "0"},
+    {SoundName = "COP HELI CAM TURN", AudioName = "COP_HELI_CAM_TURN", AudioRef = "0"},
+    {SoundName = "Turret Camera Hum Loop", AudioName = "Turret_Camera_Hum_Loop", AudioRef = "DLC_BTL_Terrobyte_Turret_Sounds"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "DLC_EXEC_Warehouse_Upgrade_Bench_Sounds"},
+    {SoundName = "BACK", AudioName = "BACK", AudioRef = "DLC_EXEC_Warehouse_Upgrade_Bench_Sounds"},
+    {SoundName = "NAV UP DOWN", AudioName = "NAV_UP_DOWN", AudioRef = "DLC_EXEC_Warehouse_Upgrade_Bench_Sounds"},
+    {SoundName = "Purchase Upgrade", AudioName = "Purchase_Upgrade", AudioRef = "DLC_EXEC_Warehouse_Upgrade_Bench_Sounds"},
+    {SoundName = "CANCEL", AudioName = "CANCEL", AudioRef = "DLC_EXEC_Warehouse_Upgrade_Bench_Sounds"},
+    {SoundName = "SELECT", AudioName = "SELECT", AudioRef = "DLC_EXEC_Warehouse_Upgrade_Bench_Sounds"},
+    {SoundName = "ExitWater", AudioName = "ExitWater", AudioRef = "GTAO_Hot_Tub_PED_INSIDE_WATER"},
+    {SoundName = "PED INSIDE WATER", AudioName = "PED_INSIDE_WATER", AudioRef = "0"},
+    {SoundName = "Engine", AudioName = "Engine", AudioRef = "DLC_Apt_Yacht_Ambient_Soundset"},
+    {SoundName = "Deck", AudioName = "Deck", AudioRef = "DLC_Apt_Yacht_Ambient_Soundset"},
+    {SoundName = "Hot Tub Loop", AudioName = "Hot_Tub_Loop", AudioRef = "GTAO_Yacht_SoundSet"},
+    {SoundName = "Clothes On", AudioName = "Clothes_On", AudioRef = "GTAO_Hot_Tub_Sounds"},
+    {SoundName = "Clothes Off", AudioName = "Clothes_Off", AudioRef = "GTAO_Hot_Tub_Sounds"},
+    {SoundName = "CLOSED", AudioName = "CLOSED", AudioRef = "DLC_APT_YACHT_DOOR_SOUNDS"},
+    {SoundName = "Moor SEASHARK Engine", AudioName = "Moor_SEASHARK_Engine", AudioRef = "DLC_Apt_Yacht_Ambient_Soundset"},
+    {SoundName = "Moor Boat Engine", AudioName = "Moor_Boat_Engine", AudioRef = "DLC_Apt_Yacht_Ambient_Soundset"},
+    {SoundName = "Parcel Vehicle Lost", AudioName = "Parcel_Vehicle_Lost", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "EXIT", AudioName = "EXIT", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "OOB Cancel", AudioName = "OOB_Cancel", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "OOB Start", AudioName = "OOB_Start", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "OOB Timer Dynamic", AudioName = "OOB_Timer_Dynamic", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Apt Style Purchase", AudioName = "Apt_Style_Purchase", AudioRef = "DLC_APT_Apartment_SoundSet"},
+    {SoundName = "Ride Stop", AudioName = "Ride_Stop", AudioRef = "DLC_IND_ROLLERCOASTER_SOUNDS"},
+    {SoundName = "Bar Unlock And Raise", AudioName = "Bar_Unlock_And_Raise", AudioRef = "DLC_IND_ROLLERCOASTER_SOUNDS"},
+    {SoundName = "Bar Lower And Lock", AudioName = "Bar_Lower_And_Lock", AudioRef = "DLC_IND_ROLLERCOASTER_SOUNDS"},
+    {SoundName = "Scan Success", AudioName = "Scan_Success", AudioRef = "Scan_Fail"},
+    {SoundName = "Scan Ped Loop", AudioName = "Scan_Ped_Loop", AudioRef = "0"},
+    {SoundName = "Lost Target", AudioName = "Lost_Target", AudioRef = "0"},
+    {SoundName = "Bleep", AudioName = "Bleep", AudioRef = "0"},
+    {SoundName = "Fly Loop", AudioName = "Fly_Loop", AudioRef = "dlc_xm_avngr_sounds"},
+    {SoundName = "Drive Loop", AudioName = "Drive_Loop", AudioRef = "DLC_GR_MOC_Sounds"},
+    {SoundName = "Background Hum", AudioName = "Background_Hum", AudioRef = "DLC_XM_Vehicle_Interior_Security_Camera_Sounds"},
+    {SoundName = "PEYOTE ATTRACT SOUNDSET", AudioName = "PEYOTE_ATTRACT_SOUNDSET", AudioRef = "0"},
+    {SoundName = "Click Link", AudioName = "Click_Link", AudioRef = "DLC_H3_Arcade_Laptop_Sounds"},
+    {SoundName = "Click Fail", AudioName = "Click_Fail", AudioRef = "DLC_H3_Arcade_Laptop_Sounds"},
+    {SoundName = "Click Special", AudioName = "Click_Special", AudioRef = "DLC_H3_Arcade_Laptop_Sounds"},
+    {SoundName = "Click Back", AudioName = "Click_Back", AudioRef = "DLC_H3_Arcade_Laptop_Sounds"},
+    {SoundName = "Exit", AudioName = "Exit", AudioRef = "DLC_H3_Arcade_Laptop_Sounds"},
+    {SoundName = "Click Link", AudioName = "Click_Link", AudioRef = "GTAO_SMG_Hangar_Computer_Sounds"},
+    {SoundName = "Click Fail", AudioName = "Click_Fail", AudioRef = "GTAO_SMG_Hangar_Computer_Sounds"},
+    {SoundName = "Click Back", AudioName = "Click_Back", AudioRef = "GTAO_SMG_Hangar_Computer_Sounds"},
+    {SoundName = "Exit", AudioName = "Exit", AudioRef = "GTAO_SMG_Hangar_Computer_Sounds"},
+    {SoundName = "DLC Fixer Agency Computer Soundset", AudioName = "DLC_Fixer_Agency_Computer_Soundset", AudioRef = "0"},
+    {SoundName = "Click Cancel", AudioName = "Click_Cancel", AudioRef = "DLC_Biker_Computer_Sounds"},
+    {SoundName = "Click Fail", AudioName = "Click_Fail", AudioRef = "DLC_Biker_Computer_Sounds"},
+    {SoundName = "Click Special", AudioName = "Click_Special", AudioRef = "DLC_Biker_Computer_Sounds"},
+    {SoundName = "Business Shutdown", AudioName = "Business_Shutdown", AudioRef = "DLC_Biker_Computer_Sounds"},
+    {SoundName = "Business Restart", AudioName = "Business_Restart", AudioRef = "DLC_Biker_Computer_Sounds"},
+    {SoundName = "Popup Confirm Fail", AudioName = "Popup_Confirm_Fail", AudioRef = "GTAO_Exec_SecuroServ_Computer_Sounds"},
+    {SoundName = "Click Back", AudioName = "Click_Back", AudioRef = "DLC_Biker_Computer_Sounds"},
+    {SoundName = "Exit", AudioName = "Exit", AudioRef = "DLC_Biker_Computer_Sounds"},
+    {SoundName = "Menu Accept", AudioName = "Menu_Accept", AudioRef = "0"},
+    {SoundName = "Click Link", AudioName = "Click_Link", AudioRef = "DLC_GR_Disruption_Logistics_Sounds"},
+    {SoundName = "Click Fail", AudioName = "Click_Fail", AudioRef = "DLC_GR_Disruption_Logistics_Sounds"},
+    {SoundName = "Click Special", AudioName = "Click_Special", AudioRef = "DLC_GR_Disruption_Logistics_Sounds"},
+    {SoundName = "Business Shutdown", AudioName = "Business_Shutdown", AudioRef = "DLC_GR_Disruption_Logistics_Sounds"},
+    {SoundName = "Business Restart", AudioName = "Business_Restart", AudioRef = "DLC_GR_Disruption_Logistics_Sounds"},
+    {SoundName = "Exit", AudioName = "Exit", AudioRef = "DLC_GR_Disruption_Logistics_Sounds"},
+    {SoundName = "Click Special", AudioName = "Click_Special", AudioRef = "GTAO_SMG_Hangar_Computer_Sounds"},
+    {SoundName = "Show Overview Menu", AudioName = "Show_Overview_Menu", AudioRef = "GTAO_SMG_Hangar_Computer_Sounds"},
+    {SoundName = "Menu Navigate", AudioName = "Menu_Navigate", AudioRef = "0"},
+    {SoundName = "Camera Zoom", AudioName = "Camera_Zoom", AudioRef = "0"},
+    {SoundName = "Camera Shoot", AudioName = "Camera_Shoot", AudioRef = "0"},
+    {SoundName = "Menu Back", AudioName = "Menu_Back", AudioRef = "0"},
+    {SoundName = "Dial and Remote Ring", AudioName = "Dial_and_Remote_Ring", AudioRef = "0"},
+    {SoundName = "Remote Ring", AudioName = "Remote_Ring", AudioRef = "0"},
+    {SoundName = "Remote Engaged", AudioName = "Remote_Engaged", AudioRef = "0"},
+    {SoundName = "Hang Up", AudioName = "Hang_Up", AudioRef = "0"},
+    {SoundName = "Select Mission Cancel", AudioName = "Select_Mission_Cancel", AudioRef = "DLC_GR_MOC_Computer_Sounds"},
+    {SoundName = "Select Mission Are You Sure", AudioName = "Select_Mission_Are_You_Sure", AudioRef = "DLC_GR_MOC_Computer_Sounds"},
+    {SoundName = "Select Mission Launch", AudioName = "Select_Mission_Launch", AudioRef = "DLC_GR_MOC_Computer_Sounds"},
+    {SoundName = "Select Mission Unavailable OK", AudioName = "Select_Mission_Unavailable_OK", AudioRef = "DLC_GR_MOC_Computer_Sounds"},
+    {SoundName = "Logout", AudioName = "Logout", AudioRef = "DLC_GR_MOC_Computer_Sounds"},
+    {SoundName = "Notification", AudioName = "Notification", AudioRef = "0"},
+    {SoundName = "Log In", AudioName = "Log_In", AudioRef = "DLC_GR_MOC_Computer_Sounds"},
+    {SoundName = "ATM WINDOW", AudioName = "ATM_WINDOW", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Click Special", AudioName = "Click_Special", AudioRef = " WEB_NAVIGATION_SOUNDS_PHONE"},
+    {SoundName = "CLICK BACK", AudioName = "CLICK_BACK", AudioRef = "WEB_NAVIGATION_SOUNDS_PHONE"},
+    {SoundName = "Popup Confirm Success", AudioName = "Popup_Confirm_Success", AudioRef = "GTAO_Exec_SecuroServ_Computer_Sounds"},
+    {SoundName = "Popup Cancel", AudioName = "Popup_Cancel", AudioRef = "GTAO_Exec_SecuroServ_Computer_Sounds"},
+    {SoundName = "Sell", AudioName = "Sell", AudioRef = "GTAO_Exec_SecuroServ_Computer_Sounds"},
+    {SoundName = "Navigate", AudioName = "Navigate", AudioRef = "GTAO_Exec_SecuroServ_Computer_Sounds"},
+    {SoundName = "Mouse Click", AudioName = "Mouse_Click", AudioRef = "GTAO_Exec_SecuroServ_Warehouse_PC_Sounds"},
+    {SoundName = "Sell", AudioName = "Sell", AudioRef = "GTAO_Exec_SecuroServ_Warehouse_PC_Sounds"},
+    {SoundName = "Error", AudioName = "Error", AudioRef = "GTAO_Exec_SecuroServ_Warehouse_PC_Sounds"},
+    {SoundName = "Confirm", AudioName = "Confirm", AudioRef = "GTAO_Exec_SecuroServ_Warehouse_PC_Sounds"},
+    {SoundName = "Cancel", AudioName = "Cancel", AudioRef = "GTAO_Exec_SecuroServ_Warehouse_PC_Sounds"},
+    {SoundName = "Logout", AudioName = "Logout", AudioRef = "GTAO_Exec_SecuroServ_Computer_Sounds"},
+    {SoundName = "Show Source Menu", AudioName = "Show_Source_Menu", AudioRef = "GTAO_SMG_Hangar_Computer_Sounds"},
+    {SoundName = "Show Sell Menu", AudioName = "Show_Sell_Menu", AudioRef = "GTAO_SMG_Hangar_Computer_Sounds"},
+    {SoundName = "Lester Laugh Phone", AudioName = "Lester_Laugh_Phone", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Exit Menu", AudioName = "Exit_Menu", AudioRef = "DLC_AW_Spectator_Tablet_Sounds"},
+    {SoundName = "Enter Menu", AudioName = "Enter_Menu", AudioRef = "DLC_AW_Spectator_Tablet_Sounds"},
+    {SoundName = "Select Turret", AudioName = "Select_Turret", AudioRef = "DLC_AW_Spectator_Tablet_Sounds"},
+    {SoundName = "Select Drone", AudioName = "Select_Drone", AudioRef = "DLC_AW_Spectator_Tablet_Sounds"},
+    {SoundName = "Select RC Car", AudioName = "Select_RC_Car", AudioRef = "DLC_AW_Spectator_Tablet_Sounds"},
+    {SoundName = "Select Trap Cam", AudioName = "Select_Trap_Cam", AudioRef = "DLC_AW_Spectator_Tablet_Sounds"},
+    {SoundName = "Select Live Stream", AudioName = "Select_Live_Stream", AudioRef = "DLC_AW_Spectator_Tablet_Sounds"},
+    {SoundName = "MOD SHOPS UPGRADE BLIP", AudioName = "MOD_SHOPS_UPGRADE_BLIP", AudioRef = "0"},
+    {SoundName = "Engine Rev", AudioName = "Engine_Rev", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "MOD SHOPS EXIT ENGINE BLIP", AudioName = "MOD_SHOPS_EXIT_ENGINE_BLIP", AudioRef = "0"},
+    {SoundName = "MOD SHOP BRAKES ONESHOT", AudioName = "MOD_SHOP_BRAKES_ONESHOT", AudioRef = "0"},
+    {SoundName = "Trunk Open", AudioName = "Trunk_Open", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "Trunk Shut", AudioName = "Trunk_Shut", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "Hood Open", AudioName = "Hood_Open", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "Hood Shut", AudioName = "Hood_Shut", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "Door Open", AudioName = "Door_Open", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "Door Shut", AudioName = "Door_Shut", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "Lowrider Upgrade", AudioName = "Lowrider_Upgrade", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "SultanRS Upgrade", AudioName = "SultanRS_Upgrade", AudioRef = "JA16_Super_Mod_Garage_Sounds"},
+    {SoundName = "Banshee2 Upgrade", AudioName = "Banshee2_Upgrade", AudioRef = "JA16_Super_Mod_Garage_Sounds"},
+    {SoundName = "Faction3 Upgrade", AudioName = "Faction3_Upgrade", AudioRef = "Low2_Super_Mod_Garage_Sounds"},
+    {SoundName = "Weapon Upgrade", AudioName = "Weapon_Upgrade", AudioRef = "DLC_GR_Weapon_Upgrade_Soundset"},
+    {SoundName = "supermod consumer", AudioName = "supermod_consumer", AudioRef = "Arena_Vehicle_Mod_Shop_Sounds"},
+    {SoundName = "supermod scifi", AudioName = "supermod_scifi", AudioRef = "Arena_Vehicle_Mod_Shop_Sounds"},
+    {SoundName = "supermod wasteland", AudioName = "supermod_wasteland", AudioRef = "Arena_Vehicle_Mod_Shop_Sounds"},
+    {SoundName = "Hydraulics Up", AudioName = "Hydraulics_Up", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "Hydraulics Down", AudioName = "Hydraulics_Down", AudioRef = "Lowrider_Super_Mod_Garage_Sounds"},
+    {SoundName = "Remove Tracker", AudioName = "Remove_Tracker", AudioRef = "DLC_IO_Warehouse_Mod_Garage_Sounds"},
+    {SoundName = "NAV", AudioName = "NAV", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "MOD SHOPS ENTER ENGINE BLIP", AudioName = "MOD_SHOPS_ENTER_ENGINE_BLIP", AudioRef = "0"},
+    {SoundName = "Lamar Throttle Blip", AudioName = "Lamar_Throttle_Blip", AudioRef = "0"},
+    {SoundName = "Franklin Throttle Blip", AudioName = "Franklin_Throttle_Blip", AudioRef = "0"},
+    {SoundName = "Idling Throttle Blip Loop", AudioName = "Idling_Throttle_Blip_Loop", AudioRef = "ARM_1_SOUNDSET"},
+    {SoundName = "Bike Bell", AudioName = "Bike_Bell", AudioRef = "ARM_1_SOUNDSET"},
+    {SoundName = "Birds", AudioName = "Birds", AudioRef = "ARM_1_SOUNDSET"},
+    {SoundName = "Gas Explosion", AudioName = "Gas_Explosion", AudioRef = "ARM_2_REPO_SOUNDS"},
+    {SoundName = "Garage Open 01", AudioName = "Garage_Open_01", AudioRef = "ARM_2_REPO_SOUNDS"},
+    {SoundName = "Garage Open 02", AudioName = "Garage_Open_02", AudioRef = "ARM_2_REPO_SOUNDS"},
+    {SoundName = "ARM 2 REPO DOOR KICK OPEN", AudioName = "ARM_2_REPO_DOOR_KICK_OPEN", AudioRef = "0"},
+    {SoundName = "Biker Ride Off", AudioName = "Biker_Ride_Off", AudioRef = "ARM_2_REPO_SOUNDS"},
+    {SoundName = "ARM 2 Repo Ignite Petrol", AudioName = "ARM_2_Repo_Ignite_Petrol", AudioRef = "0"},
+    {SoundName = "GARDENING LEAFBLOWER ANIM TRIGGERED", AudioName = "GARDENING_LEAFBLOWER_ANIM_TRIGGERED", AudioRef = "0"},
+    {SoundName = "ARM 3 CAR GLASS CRASH", AudioName = "ARM_3_CAR_GLASS_CRASH", AudioRef = "0"},
+    {SoundName = "ARM 3 PISTOL COCK", AudioName = "ARM_3_PISTOL_COCK", AudioRef = "0"},
+    {SoundName = "CONTINUE", AudioName = "CONTINUE", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "continue", AudioName = "continue", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "ASSASSINATIONS HOTEL TIMER COUNTDOWN", AudioName = "ASSASSINATIONS_HOTEL_TIMER_COUNTDOWN", AudioRef = "ASSASSINATION_MULTI"},
+    {SoundName = "PIN BUTTON", AudioName = "PIN_BUTTON", AudioRef = "ATM_SOUNDS"},
+    {SoundName = "CHECKPOINT UNDER THE BRIDGE", AudioName = "CHECKPOINT_UNDER_THE_BRIDGE", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "SPAWN", AudioName = "SPAWN", AudioRef = "BARRY_01_SOUNDSET"},
+    {SoundName = "DESPAWN", AudioName = "DESPAWN", AudioRef = "BARRY_01_SOUNDSET"},
+    {SoundName = "MIND CONTROL", AudioName = "MIND_CONTROL", AudioRef = "BARRY_01_SOUNDSET"},
+    {SoundName = "PLAYER BEAMED UP", AudioName = "PLAYER_BEAMED_UP", AudioRef = "BARRY_01_SOUNDSET"},
+    {SoundName = "CROWD WATCHING", AudioName = "CROWD_WATCHING", AudioRef = "0"},
+    {SoundName = "HOORAY", AudioName = "HOORAY", AudioRef = "BARRY_02_SOUNDSET"},
+    {SoundName = "clown die wrapper", AudioName = "clown_die_wrapper", AudioRef = "BARRY_02_SOUNDSET"},
+    {SoundName = "IGNITION FAIL", AudioName = "IGNITION_FAIL", AudioRef = "BARRY_03_SOUNDSET"},
+    {SoundName = "Helicopter Wind Idle", AudioName = "Helicopter_Wind_Idle", AudioRef = "BASEJUMPS_SOUNDS"},
+    {SoundName = "Helicopter Wind", AudioName = "Helicopter_Wind", AudioRef = "BASEJUMPS_SOUNDS"},
+    {SoundName = "BASE JUMP PASSED", AudioName = "BASE_JUMP_PASSED", AudioRef = "HUD_AWARDS"},
+    {SoundName = "CHECKPOINT NORMAL", AudioName = "CHECKPOINT_NORMAL", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "CHECKPOINT MISSED", AudioName = "CHECKPOINT_MISSED", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "DLC VW BET MAX", AudioName = "DLC_VW_BET_MAX", AudioRef = "dlc_vw_table_games_frontend_sounds"},
+    {SoundName = "DLC VW ERROR MAX", AudioName = "DLC_VW_ERROR_MAX", AudioRef = "dlc_vw_table_games_frontend_sounds"},
+    {SoundName = "DLC VW BET UP", AudioName = "DLC_VW_BET_UP", AudioRef = "dlc_vw_table_games_frontend_sounds"},
+    {SoundName = "DLC VW WIN CHIPS", AudioName = "DLC_VW_WIN_CHIPS", AudioRef = "dlc_vw_table_games_frontend_sounds"},
+    {SoundName = "dlc vw table games sounds", AudioName = "dlc_vw_table_games_sounds", AudioRef = "0"},
+    {SoundName = "sports bag", AudioName = "sports_bag", AudioRef = "dlc_xm_pickup_sweetener_sounds"},
+    {SoundName = "Air Drop Package", AudioName = "Air_Drop_Package", AudioRef = "DLC_SM_Generic_Mission_Sounds"},
+    {SoundName = "Flyover", AudioName = "Flyover", AudioRef = "DLC_Exec_Buy_Air_Drop_Sounds"},
+    {SoundName = "download start", AudioName = "download_start", AudioRef = "DLC_BTL_Break_In_Sounds"},
+    {SoundName = "download complete", AudioName = "download_complete", AudioRef = "DLC_BTL_Break_In_Sounds"},
+    {SoundName = "Bell 02", AudioName = "Bell_02", AudioRef = "ALARMS_SOUNDSET"},
+    {SoundName = "DLC BTL Break In Sounds", AudioName = "DLC_BTL_Break_In_Sounds", AudioRef = "0"},
+    {SoundName = "MP AWARD", AudioName = "MP_AWARD", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Garage Door Unlocked", AudioName = "Garage_Door_Unlocked", AudioRef = "DLC_BTL_Showroom_Sounds"},
+    {SoundName = "5s", AudioName = "5s", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "package delivered success", AudioName = "package_delivered_success", AudioRef = "DLC_GR_Generic_Mission_Sounds"},
+    {SoundName = "package delivered success remote", AudioName = "package_delivered_success_remote", AudioRef = "DLC_GR_Generic_Mission_Sounds"},
+    {SoundName = "Air Drop Parachute", AudioName = "Air_Drop_Parachute", AudioRef = "DLC_SM_Generic_Mission_Sounds"},
+    {SoundName = "Parachute Land", AudioName = "Parachute_Land", AudioRef = "DLC_Exec_Air_Drop_Sounds"},
+    {SoundName = "TUMBLER TURN", AudioName = "TUMBLER_TURN", AudioRef = "SAFE_CRACK_SOUNDSET"},
+    {SoundName = "TUMBLER RESET", AudioName = "TUMBLER_RESET", AudioRef = "SAFE_CRACK_SOUNDSET"},
+    {SoundName = "TUMBLER PIN FALL", AudioName = "TUMBLER_PIN_FALL", AudioRef = "SAFE_CRACK_SOUNDSET"},
+    {SoundName = "TUMBLER PIN FALL FINAL", AudioName = "TUMBLER_PIN_FALL_FINAL", AudioRef = "SAFE_CRACK_SOUNDSET"},
+    {SoundName = "SAFE DOOR OPEN", AudioName = "SAFE_DOOR_OPEN", AudioRef = "SAFE_CRACK_SOUNDSET"},
+    {SoundName = "SAFE DOOR CLOSE", AudioName = "SAFE_DOOR_CLOSE", AudioRef = "SAFE_CRACK_SOUNDSET"},
+    {SoundName = "Safe Handle Spin", AudioName = "Safe_Handle_Spin", AudioRef = "DLC_Biker_Cracked_Sounds"},
+    {SoundName = "Safe Door Open", AudioName = "Safe_Door_Open", AudioRef = "DLC_Biker_Cracked_Sounds"},
+    {SoundName = "Target Counter Tick", AudioName = "Target_Counter_Tick", AudioRef = "DLC_SM_Generic_Mission_Sounds"},
+    {SoundName = "Boss Message Orange", AudioName = "Boss_Message_Orange", AudioRef = "0"},
+    {SoundName = "Flyer Drop", AudioName = "Flyer_Drop", AudioRef = "DLC_BTL_Flyer_Promotion_Sounds"},
+    {SoundName = "Crates Blipped", AudioName = "Crates_Blipped", AudioRef = "GTAO_Magnate_Boss_Modes_Soundset"},
+    {SoundName = "car fall", AudioName = "car_fall", AudioRef = "DLC_BTL_Collector_Sounds"},
+    {SoundName = "bottles loop", AudioName = "bottles_loop", AudioRef = "dlc_btl_stolen_supplies_Sounds"},
+    {SoundName = "lock break", AudioName = "lock_break", AudioRef = "DLC_BTL_Collector_Sounds"},
+    {SoundName = "stafford fall", AudioName = "stafford_fall", AudioRef = "DLC_BTL_Collector_Sounds"},
+    {SoundName = "ramp fall", AudioName = "ramp_fall", AudioRef = "DLC_BTL_Collector_Sounds"},
+    {SoundName = "Leave Station", AudioName = "Leave_Station", AudioRef = "CABLE_CAR_SOUNDS"},
+    {SoundName = "Running", AudioName = "Running", AudioRef = "CABLE_CAR_SOUNDS"},
+    {SoundName = "DOOR OPEN", AudioName = "DOOR_OPEN", AudioRef = "CABLE_CAR_SOUNDS"},
+    {SoundName = "DOOR CLOSE", AudioName = "DOOR_CLOSE", AudioRef = "CABLE_CAR_SOUNDS"},
+    {SoundName = "Arrive Station", AudioName = "Arrive_Station", AudioRef = "CABLE_CAR_SOUNDS"},
+    {SoundName = "Interior Rain", AudioName = "Interior_Rain", AudioRef = "CABLE_CAR_SOUNDS"},
+    {SoundName = "CAR STEAL 1 IGNITIONS", AudioName = "CAR_STEAL_1_IGNITIONS", AudioRef = "CAR_STEAL_1_SOUNDSET"},
+    {SoundName = "TRUCK HORN", AudioName = "TRUCK_HORN", AudioRef = "CAR_STEAL_1_SOUNDSET"},
+    {SoundName = "BUS HORN", AudioName = "BUS_HORN", AudioRef = "CAR_STEAL_1_SOUNDSET"},
+    {SoundName = "Microphone", AudioName = "Microphone", AudioRef = "POLICE_CHOPPER_CAM_SOUNDS"},
+    {SoundName = "Garage Open", AudioName = "Garage_Open", AudioRef = "CAR_STEAL_2_SOUNDSET"},
+    {SoundName = "DISTANT DOG BARK", AudioName = "DISTANT_DOG_BARK", AudioRef = "CAR_STEAL_2_SOUNDSET"},
+    {SoundName = "Lost Target", AudioName = "Lost_Target", AudioRef = "POLICE_CHOPPER_CAM_SOUNDS"},
+    {SoundName = "Found Target", AudioName = "Found_Target", AudioRef = "POLICE_CHOPPER_CAM_SOUNDS"},
+    {SoundName = "HIT OUT", AudioName = "HIT_OUT", AudioRef = "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+    {SoundName = "COP HELI CAM BACKGROUND", AudioName = "COP_HELI_CAM_BACKGROUND", AudioRef = "0"},
+    {SoundName = "COP HELI CAM BLEEP", AudioName = "COP_HELI_CAM_BLEEP", AudioRef = "0"},
+    {SoundName = "COP HELI CAM SCAN PED LOOP", AudioName = "COP_HELI_CAM_SCAN_PED_LOOP", AudioRef = "0"},
+    {SoundName = "COP HELI CAM SCAN PED SUCCESS", AudioName = "COP_HELI_CAM_SCAN_PED_SUCCESS", AudioRef = "0"},
+    {SoundName = "COP HELI CAM SCAN PED FAILURE", AudioName = "COP_HELI_CAM_SCAN_PED_FAILURE", AudioRef = "0"},
+    {SoundName = "COP HELI CAM BLEEP TOO FAR", AudioName = "COP_HELI_CAM_BLEEP_TOO_FAR", AudioRef = "0"},
+    {SoundName = "Pan Loop", AudioName = "Pan_Loop", AudioRef = "0"},
+    {SoundName = "Pan", AudioName = "Pan", AudioRef = "0"},
+    {SoundName = "Zoom Loop", AudioName = "Zoom_Loop", AudioRef = "0"},
+    {SoundName = "Zoom", AudioName = "Zoom", AudioRef = "0"},
+    {SoundName = "Thermal Off", AudioName = "Thermal_Off", AudioRef = "CAR_STEAL_2_SOUNDSET"},
+    {SoundName = "Thermal On", AudioName = "Thermal_On", AudioRef = "CAR_STEAL_2_SOUNDSET"},
+    {SoundName = "Pimp Gunshot Mic", AudioName = "Pimp_Gunshot_Mic", AudioRef = "CAR_STEAL_2_SOUNDSET"},
+    {SoundName = "Pimp Gunshot", AudioName = "Pimp_Gunshot", AudioRef = "CAR_STEAL_2_SOUNDSET"},
+    {SoundName = "CAR STEAL 3 AGENT TYRE BURST", AudioName = "CAR_STEAL_3_AGENT_TYRE_BURST", AudioRef = "CAR_STEAL_3_AGENT"},
+    {SoundName = "CAR THEFT MOVIE LOT DROP SPIKES", AudioName = "CAR_THEFT_MOVIE_LOT_DROP_SPIKES", AudioRef = "0"},
+    {SoundName = "CAR THEFT MOVIE LOT EJECT SEAT", AudioName = "CAR_THEFT_MOVIE_LOT_EJECT_SEAT", AudioRef = "0"},
+    {SoundName = "Ejector Scream", AudioName = "Ejector_Scream", AudioRef = "CAR_STEAL_3_AGENT"},
+    {SoundName = "FRANKLIN GUN MASTER", AudioName = "FRANKLIN_GUN_MASTER", AudioRef = "0"},
+    {SoundName = "JB700 GUN PLAYER MASTER", AudioName = "JB700_GUN_PLAYER_MASTER", AudioRef = "0"},
+    {SoundName = "spikes", AudioName = "spikes", AudioRef = "CAR_THEFT_DB5_ESCAPE"},
+    {SoundName = "tyre", AudioName = "tyre", AudioRef = "CAR_THEFT_DB5_ESCAPE"},
+    {SoundName = "CAR STEAL 4 RAMP SCRAPE", AudioName = "CAR_STEAL_4_RAMP_SCRAPE", AudioRef = "CAR_STEAL_4_SOUNDSET"},
+    {SoundName = "Destroy Cop Car", AudioName = "Destroy_Cop_Car", AudioRef = "JEWEL_HEIST_SOUNDS"},
+    {SoundName = "out", AudioName = "out", AudioRef = "SHORT_PLAYER_SWITCH_SOUND_SET"},
+    {SoundName = "CAR STEAL 4 BURNOUT", AudioName = "CAR_STEAL_4_BURNOUT", AudioRef = "CAR_STEAL_4_SOUNDSET"},
+    {SoundName = "SPRAY", AudioName = "SPRAY", AudioRef = "CARWASH_SOUNDS"},
+    {SoundName = "DRYER", AudioName = "DRYER", AudioRef = "CARWASH_SOUNDS"},
+    {SoundName = "SPRAY CAR", AudioName = "SPRAY_CAR", AudioRef = "CARWASH_SOUNDS"},
+    {SoundName = "BRUSHES SPINNING", AudioName = "BRUSHES_SPINNING", AudioRef = "CARWASH_SOUNDS"},
+    {SoundName = "BRUSHES MOVE", AudioName = "BRUSHES_MOVE", AudioRef = "CARWASH_SOUNDS"},
+    {SoundName = "BRUSHES HIT CAR", AudioName = "BRUSHES_HIT_CAR", AudioRef = "CARWASH_SOUNDS"},
+    {SoundName = "CHALLENGE UNLOCKED", AudioName = "CHALLENGE_UNLOCKED", AudioRef = "HUD_AWARDS"},
+    {SoundName = "dlc vw casino lucky wheel sounds", AudioName = "dlc_vw_casino_lucky_wheel_sounds", AudioRef = "0"},
+    {SoundName = "Win", AudioName = "Win", AudioRef = "dlc_vw_casino_lucky_wheel_sounds"},
+    {SoundName = "Spin Single Ticks", AudioName = "Spin_Single_Ticks", AudioRef = "dlc_vw_casino_lucky_wheel_sounds"},
+    {SoundName = "Spin Start", AudioName = "Spin_Start", AudioRef = "dlc_vw_casino_lucky_wheel_sounds"},
+    {SoundName = "no win", AudioName = "no_win", AudioRef = "0"},
+    {SoundName = "small win", AudioName = "small_win", AudioRef = "0"},
+    {SoundName = "big win", AudioName = "big_win", AudioRef = "0"},
+    {SoundName = "jackpot", AudioName = "jackpot", AudioRef = "0"},
+    {SoundName = "wheel stop clunk", AudioName = "wheel_stop_clunk", AudioRef = "0"},
+    {SoundName = "wheel stop on prize", AudioName = "wheel_stop_on_prize", AudioRef = "0"},
+    {SoundName = "welcome stinger", AudioName = "welcome_stinger", AudioRef = "0"},
+    {SoundName = "spin wheel", AudioName = "spin_wheel", AudioRef = "0"},
+    {SoundName = "spin wheel win", AudioName = "spin_wheel_win", AudioRef = "0"},
+    {SoundName = "attract loop", AudioName = "attract_loop", AudioRef = "0"},
+    {SoundName = "Pre Screen Stinger", AudioName = "Pre_Screen_Stinger", AudioRef = "DLC_HEISTS_FINALE_SCREEN_SOUNDS"},
+    {SoundName = "Pull Out", AudioName = "Pull_Out", AudioRef = "0"},
+    {SoundName = "Hang Up", AudioName = "Hang_Up", AudioRef = "Phone_SoundSet_Michael"},
+    {SoundName = "Put Away", AudioName = "Put_Away", AudioRef = "0"},
+    {SoundName = "CR WEAPONS BURST SHORT", AudioName = "CR_WEAPONS_BURST_SHORT", AudioRef = "0"},
+    {SoundName = "Change Station Loud", AudioName = "Change_Station_Loud", AudioRef = "Radio_Soundset"},
+    {SoundName = "FarmhouseFire Ignite", AudioName = "FarmhouseFire_Ignite", AudioRef = "CHINESE2_SOUNDS"},
+    {SoundName = "PICKUP WEAPON BALL", AudioName = "PICKUP_WEAPON_BALL", AudioRef = "HUD_FRONTEND_WEAPONS_PICKUPS_SOUNDSET"},
+    {SoundName = "NAV UP DOWN", AudioName = "NAV_UP_DOWN", AudioRef = "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT ARMOR", AudioName = "WEAPON_SELECT_ARMOR", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "SELECT", AudioName = "SELECT", AudioRef = "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"},
+    {SoundName = "BACK", AudioName = "BACK", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "CANCEL", AudioName = "CANCEL", AudioRef = "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"},
+    {SoundName = "End Squelch", AudioName = "End_Squelch", AudioRef = "CB_RADIO_SFX"},
+    {SoundName = "Start Squelch", AudioName = "Start_Squelch", AudioRef = "CB_RADIO_SFX"},
+    {SoundName = "Background Loop", AudioName = "Background_Loop", AudioRef = "CB_RADIO_SFX"},
+    {SoundName = "Radio Off", AudioName = "Radio_Off", AudioRef = "TAXI_SOUNDS"},
+    {SoundName = "Radio On", AudioName = "Radio_On", AudioRef = "TAXI_SOUNDS"},
+    {SoundName = "Short Transition Out", AudioName = "Short_Transition_Out", AudioRef = "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+    {SoundName = "MEDAL UP", AudioName = "MEDAL_UP", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "RACE PLACED", AudioName = "RACE_PLACED", AudioRef = "HUD_AWARDS"},
+    {SoundName = "DISTANT RACERS", AudioName = "DISTANT_RACERS", AudioRef = "ROAD_RACE_SOUNDSET"},
+    {SoundName = "SELECT", AudioName = "SELECT", AudioRef = "0"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "0"},
+    {SoundName = "BACK", AudioName = "BACK", AudioRef = "0"},
+    {SoundName = "EDIT", AudioName = "EDIT", AudioRef = "HUD_DEATHMATCH_SOUNDSET"},
+    {SoundName = "DELETE", AudioName = "DELETE", AudioRef = "HUD_DEATHMATCH_SOUNDSET"},
+    {SoundName = "NAV UP DOWN", AudioName = "NAV_UP_DOWN", AudioRef = "0"},
+    {SoundName = "TENNIS POINT WON", AudioName = "TENNIS_POINT_WON", AudioRef = "HUD_AWARDS"},
+    {SoundName = "OTHER TEXT", AudioName = "OTHER_TEXT", AudioRef = "HUD_AWARDS"},
+    {SoundName = "LOOSE MATCH", AudioName = "LOOSE_MATCH", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "DARTS SCOREBOARD MASTER", AudioName = "DARTS_SCOREBOARD_MASTER", AudioRef = "0"},
+    {SoundName = "CAM PAN DARTS", AudioName = "CAM_PAN_DARTS", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "MP SNACKS SOUNDSET", AudioName = "MP_SNACKS_SOUNDSET", AudioRef = "0"},
+    {SoundName = "WAYPOINT SET", AudioName = "WAYPOINT_SET", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Load Scene", AudioName = "Load_Scene", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Place Prop Fail", AudioName = "Place_Prop_Fail", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Save Scene", AudioName = "Save_Scene", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Delete Placed Prop", AudioName = "Delete_Placed_Prop", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Select Placed Prop", AudioName = "Select_Placed_Prop", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Prop Drop Water", AudioName = "Prop_Drop_Water", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Prop Drop Land", AudioName = "Prop_Drop_Land", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Place Prop Success", AudioName = "Place_Prop_Success", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Cycle Item", AudioName = "Cycle_Item", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Rotate Loop", AudioName = "Rotate_Loop", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Move Loop", AudioName = "Move_Loop", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Elevation Loop", AudioName = "Elevation_Loop", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "Reset Prop Position", AudioName = "Reset_Prop_Position", AudioRef = "DLC_Dmod_Prop_Editor_Sounds"},
+    {SoundName = "BODY FALL DIVE WATER MASTER", AudioName = "BODY_FALL_DIVE_WATER_MASTER", AudioRef = "docks_heist_finale_2a_sounds"},
+    {SoundName = "Attach Cargo", AudioName = "Attach_Cargo", AudioRef = "docks_heist_finale_2a_sounds"},
+    {SoundName = "CONDUCTORS PORT OF LS 2A LOOP", AudioName = "CONDUCTORS_PORT_OF_LS_2A_LOOP", AudioRef = "0"},
+    {SoundName = "SNIPER SHOT ZIP", AudioName = "SNIPER_SHOT_ZIP", AudioRef = "DOCKS_HEIST_FINALE_2A_SOUNDS"},
+    {SoundName = "SNIPER SHOT SPLAT", AudioName = "SNIPER_SHOT_SPLAT", AudioRef = "DOCKS_HEIST_FINALE_2A_SOUNDS"},
+    {SoundName = "SNIPER SHOT SPRAY", AudioName = "SNIPER_SHOT_SPRAY", AudioRef = "DOCKS_HEIST_FINALE_2A_SOUNDS"},
+    {SoundName = "rebreather", AudioName = "rebreather", AudioRef = "docks_heist_finale_2a_sounds"},
+    {SoundName = "uw ambience", AudioName = "uw_ambience", AudioRef = "0"},
+    {SoundName = "foot swish", AudioName = "foot_swish", AudioRef = "docks_heist_finale_2a_sounds"},
+    {SoundName = "sonar pulse", AudioName = "sonar_pulse", AudioRef = "docks_heist_finale_2a_sounds"},
+    {SoundName = "All", AudioName = "All", AudioRef = "SHORT_PLAYER_SWITCH_SOUND_SET"},
+    {SoundName = "CHARACTER CHANGE DOWN MASTER", AudioName = "CHARACTER_CHANGE_DOWN_MASTER", AudioRef = "0"},
+    {SoundName = "DOCKS HEIST FINALE 2A SUB LAND", AudioName = "DOCKS_HEIST_FINALE_2A_SUB_LAND", AudioRef = "DOCKS_HEIST_FINALE_2A_SOUNDS"},
+    {SoundName = "SWAP POSITION", AudioName = "SWAP_POSITION", AudioRef = "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+    {SoundName = "Door Open", AudioName = "Door_Open", AudioRef = "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+    {SoundName = "Missile Incoming Miss", AudioName = "Missile_Incoming_Miss", AudioRef = "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+    {SoundName = "Missile Incoming Hit", AudioName = "Missile_Incoming_Hit", AudioRef = "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+    {SoundName = "Sub Lift", AudioName = "Sub_Lift", AudioRef = "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+    {SoundName = "Attach Cargo", AudioName = "Attach_Cargo", AudioRef = "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+    {SoundName = "VEHICLE WATER SPLASH HEAVY SCRIPT", AudioName = "VEHICLE_WATER_SPLASH_HEAVY_SCRIPT", AudioRef = "0"},
+    {SoundName = "UW Ambience", AudioName = "UW_Ambience", AudioRef = "0"},
+    {SoundName = "UW Rebreather", AudioName = "UW_Rebreather", AudioRef = "0"},
+    {SoundName = "FBI 05 RAID FOOT SWISH", AudioName = "FBI_05_RAID_FOOT_SWISH", AudioRef = "0"},
+    {SoundName = "FBI 05 RAID BREATH", AudioName = "FBI_05_RAID_BREATH", AudioRef = "0"},
+    {SoundName = "SUB RELEASE", AudioName = "SUB_RELEASE", AudioRef = "DOCKS_HEIST_PREP_1_SOUNDSET"},
+    {SoundName = "SUB SPLASH", AudioName = "SUB_SPLASH", AudioRef = "DOCKS_HEIST_PREP_1_SOUNDSET"},
+    {SoundName = "DOCKS HEIST PREP 1 SUB SWING", AudioName = "DOCKS_HEIST_PREP_1_SUB_SWING", AudioRef = "0"},
+    {SoundName = "DOCKS HEIST PREP 1 SUB TILT", AudioName = "DOCKS_HEIST_PREP_1_SUB_TILT", AudioRef = "0"},
+    {SoundName = "DOCKS HEIST PREP 1 CABLE SNAP", AudioName = "DOCKS_HEIST_PREP_1_CABLE_SNAP", AudioRef = "0"},
+    {SoundName = "Generic Alarm Electronic 01", AudioName = "Generic_Alarm_Electronic_01", AudioRef = "0"},
+    {SoundName = "Floyd Beating", AudioName = "Floyd_Beating", AudioRef = "DOCKS_HEIST_SETUP_SOUNDS"},
+    {SoundName = "Truck Stop", AudioName = "Truck_Stop", AudioRef = "DOCKS_HEIST_SETUP_SOUNDS"},
+    {SoundName = "CRANE MOVE U D", AudioName = "CRANE_MOVE_U_D", AudioRef = "0"},
+    {SoundName = "Move L R", AudioName = "Move_L_R", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Clamp", AudioName = "Clamp", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Move Fail", AudioName = "Move_Fail", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Move U D", AudioName = "Move_U_D", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Move Base", AudioName = "Move_Base", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Attach Container Fail", AudioName = "Attach_Container_Fail", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Container Impact", AudioName = "Container_Impact", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Container Impact Land", AudioName = "Container_Impact_Land", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Strain", AudioName = "Strain", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Detach Container", AudioName = "Detach_Container", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Attach Container", AudioName = "Attach_Container", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Container Release", AudioName = "Container_Release", AudioRef = "CONTAINER_LIFTER_SOUNDS"},
+    {SoundName = "Container Land", AudioName = "Container_Land", AudioRef = "CONTAINER_LIFTER_SOUNDS"},
+    {SoundName = "Container Attach", AudioName = "Container_Attach", AudioRef = "CONTAINER_LIFTER_SOUNDS"},
+    {SoundName = "CREAK 01", AudioName = "CREAK_01", AudioRef = "DOCKS_HEIST_SETUP_SOUNDS"},
+    {SoundName = "Strain No Container", AudioName = "Strain_No_Container", AudioRef = "CRANE_SOUNDS"},
+    {SoundName = "Game Over Blink", AudioName = "Game_Over_Blink", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Music Game Over", AudioName = "Music_Game_Over", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Insert Coin", AudioName = "Insert_Coin", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Cancel", AudioName = "Cancel", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Background", AudioName = "Background", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Music Win", AudioName = "Music_Win", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Trail 1", AudioName = "Trail_1", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Trail 2", AudioName = "Trail_2", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Trail 3", AudioName = "Trail_3", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Trail 4", AudioName = "Trail_4", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Turn", AudioName = "Turn", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Turn NPC", AudioName = "Turn_NPC", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Crash", AudioName = "Crash", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Crash NPC", AudioName = "Crash_NPC", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Go", AudioName = "Go", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "321", AudioName = "321", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Ready", AudioName = "Ready", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Degenatron Logo", AudioName = "Degenatron_Logo", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "Degenatron Star", AudioName = "Degenatron_Star", AudioRef = "DLC_EXEC_ARC_MAC_SOUNDS"},
+    {SoundName = "CLOSED", AudioName = "CLOSED", AudioRef = "DOOR_GARAGE"},
+    {SoundName = "CLOSING", AudioName = "CLOSING", AudioRef = "DOOR_GARAGE"},
+    {SoundName = "OPENED", AudioName = "OPENED", AudioRef = "DOOR_GARAGE"},
+    {SoundName = "OPENING", AudioName = "OPENING", AudioRef = "DOOR_GARAGE"},
+    {SoundName = "CONTINUAL BEEP", AudioName = "CONTINUAL_BEEP", AudioRef = "EPSILONISM_04_SOUNDSET"},
+    {SoundName = "IDLE BEEP", AudioName = "IDLE_BEEP", AudioRef = "EPSILONISM_04_SOUNDSET"},
+    {SoundName = "SCAN", AudioName = "SCAN", AudioRef = "EPSILONISM_04_SOUNDSET"},
+    {SoundName = "DEVICE", AudioName = "DEVICE", AudioRef = "EPSILONISM_04_SOUNDSET"},
+    {SoundName = "IDLE BEEP NPC", AudioName = "IDLE_BEEP_NPC", AudioRef = "EPSILONISM_04_SOUNDSET"},
+    {SoundName = "Falling Crates", AudioName = "Falling_Crates", AudioRef = "EXILE_1"},
+    {SoundName = "Transition Sound", AudioName = "Transition_Sound", AudioRef = "EXILE_1"},
+    {SoundName = "Pt2 Fail", AudioName = "Pt2_Fail", AudioRef = "exile_1"},
+    {SoundName = "EXILE 1", AudioName = "EXILE_1", AudioRef = "0"},
+    {SoundName = "Generic Alarm Fire Electronic", AudioName = "Generic_Alarm_Fire_Electronic", AudioRef = "0"},
+    {SoundName = "SPL RPG DIST FLIGHT MASTER", AudioName = "SPL_RPG_DIST_FLIGHT_MASTER", AudioRef = "0"},
+    {SoundName = "Jet Explosions", AudioName = "Jet_Explosions", AudioRef = "exile_1"},
+    {SoundName = "CHOP CAM A", AudioName = "CHOP_CAM_A", AudioRef = "0"},
+    {SoundName = "CHOP CAM B", AudioName = "CHOP_CAM_B", AudioRef = "0"},
+    {SoundName = "CHOP CAM C", AudioName = "CHOP_CAM_C", AudioRef = "0"},
+    {SoundName = "Fire RPG", AudioName = "Fire_RPG", AudioRef = "EXILE_2_SOUNDS"},
+    {SoundName = "Fire Missile Loop", AudioName = "Fire_Missile_Loop", AudioRef = "EXILE_2_SOUNDS"},
+    {SoundName = "Fire RPG On Foot", AudioName = "Fire_RPG_On_Foot", AudioRef = "EXILE_2_SOUNDS"},
+    {SoundName = "Missile Warning Sound", AudioName = "Missile_Warning_Sound", AudioRef = "EXILE_2_SOUNDS"},
+    {SoundName = "EXILE 2 GANG CAR FIRE", AudioName = "EXILE_2_GANG_CAR_FIRE", AudioRef = "0"},
+    {SoundName = "BOAT WAVE HIT SCRIPT", AudioName = "BOAT_WAVE_HIT_SCRIPT", AudioRef = "0"},
+    {SoundName = "EXILE 3 TRAIN FALL MASTER", AudioName = "EXILE_3_TRAIN_FALL_MASTER", AudioRef = "0"},
+    {SoundName = "EXILE 3 TYRE CHIRPS MASTER", AudioName = "EXILE_3_TYRE_CHIRPS_MASTER", AudioRef = "0"},
+    {SoundName = "EXILE 3 LAND ON TRAIN MASTER", AudioName = "EXILE_3_LAND_ON_TRAIN_MASTER", AudioRef = "0"},
+    {SoundName = "EXILE 3 TRAIN BRAKE PULL MASTER", AudioName = "EXILE_3_TRAIN_BRAKE_PULL_MASTER", AudioRef = "0"},
+    {SoundName = "EXILE 3 TRAIN BRAKE RELEASE MASTER", AudioName = "EXILE_3_TRAIN_BRAKE_RELEASE_MASTER", AudioRef = "0"},
+    {SoundName = "WIND", AudioName = "WIND", AudioRef = "EXTREME_01_SOUNDSET"},
+    {SoundName = "PLAYER AT SPEED FREEFALL MASTER", AudioName = "PLAYER_AT_SPEED_FREEFALL_MASTER", AudioRef = "0"},
+    {SoundName = "Scraping Ramp", AudioName = "Scraping_Ramp", AudioRef = "EXTREME_02_SOUNDSET"},
+    {SoundName = "DOM", AudioName = "DOM", AudioRef = "EXTREME_04_SOUNDSET"},
+    {SoundName = "FAMILY1 JUMPTOYACHT", AudioName = "FAMILY1_JUMPTOYACHT", AudioRef = "0"},
+    {SoundName = "FAMILY1 FAKE RICOCHET", AudioName = "FAMILY1_FAKE_RICOCHET", AudioRef = "0"},
+    {SoundName = "FAMILY1 THROWN OVERBOARD1", AudioName = "FAMILY1_THROWN_OVERBOARD1", AudioRef = "0"},
+    {SoundName = "FAMILY1 BOOM SWING1", AudioName = "FAMILY1_BOOM_SWING1", AudioRef = "0"},
+    {SoundName = "FAMILY1 LAND ON BONNET", AudioName = "FAMILY1_LAND_ON_BONNET", AudioRef = "0"},
+    {SoundName = "FAMILY 1 CAR BREAKDOWN", AudioName = "FAMILY_1_CAR_BREAKDOWN", AudioRef = "FAMILY1_BOAT"},
+    {SoundName = "FAMILY 1 CAR BREAKDOWN ADDITIONAL", AudioName = "FAMILY_1_CAR_BREAKDOWN_ADDITIONAL", AudioRef = "FAMILY1_BOAT"},
+    {SoundName = "FAMILY1 DROP IN CAR", AudioName = "FAMILY1_DROP_IN_CAR", AudioRef = "0"},
+    {SoundName = "FAMILY1 BOX HIT FRANKLIN", AudioName = "FAMILY1_BOX_HIT_FRANKLIN", AudioRef = "0"},
+    {SoundName = "TEST SCREAM LONG", AudioName = "TEST_SCREAM_LONG", AudioRef = "0"},
+    {SoundName = "FAMILY1 CAR CRASH BIG", AudioName = "FAMILY1_CAR_CRASH_BIG", AudioRef = "0"},
+    {SoundName = "FAMILY3 REAR END MASTER", AudioName = "FAMILY3_REAR_END_MASTER", AudioRef = "0"},
+    {SoundName = "FAMILY3 CABLE STRAIN MASTER", AudioName = "FAMILY3_CABLE_STRAIN_MASTER", AudioRef = "0"},
+    {SoundName = "FAMILY3 POST DEBRIS MASTER", AudioName = "FAMILY3_POST_DEBRIS_MASTER", AudioRef = "0"},
+    {SoundName = "UNHITCH TRAILER", AudioName = "UNHITCH_TRAILER", AudioRef = "FAM4_UNHITCH_TRAILER"},
+    {SoundName = "FAMILY 5 SOUNDS", AudioName = "FAMILY_5_SOUNDS", AudioRef = "0"},
+    {SoundName = "FLYING STREAM END INSTANT", AudioName = "FLYING_STREAM_END_INSTANT", AudioRef = "FAMILY_5_SOUNDS"},
+    {SoundName = "MICHAEL LONG SCREAM", AudioName = "MICHAEL_LONG_SCREAM", AudioRef = "FAMILY_5_SOUNDS"},
+    {SoundName = "YOGA FAIL", AudioName = "YOGA_FAIL", AudioRef = "FAMILY_5_SOUNDS"},
+    {SoundName = "YOGA INHALE", AudioName = "YOGA_INHALE", AudioRef = "FAMILY_5_SOUNDS"},
+    {SoundName = "YOGA EXHALE", AudioName = "YOGA_EXHALE", AudioRef = "FAMILY_5_SOUNDS"},
+    {SoundName = "Snip Ponytail", AudioName = "Snip_Ponytail", AudioRef = "FAMILY_6_SOUNDS"},
+    {SoundName = "Tattoo", AudioName = "Tattoo", AudioRef = "FAMILY_6_SOUNDS"},
+    {SoundName = "Pierce", AudioName = "Pierce", AudioRef = "FAMILY_6_SOUNDS"},
+    {SoundName = "Amanda Pulls Away", AudioName = "Amanda_Pulls_Away", AudioRef = "FAMILY_6_SOUNDS"},
+    {SoundName = "FRANKLINS HOUSE SECURITY LIGHT ON", AudioName = "FRANKLINS_HOUSE_SECURITY_LIGHT_ON", AudioRef = "0"},
+    {SoundName = "FRANKLINS HOUSE SECURITY LIGHT OFF", AudioName = "FRANKLINS_HOUSE_SECURITY_LIGHT_OFF", AudioRef = "0"},
+    {SoundName = "MICHAELS HOUSE DAUGHTER SICK ONESHOT", AudioName = "MICHAELS_HOUSE_DAUGHTER_SICK_ONESHOT", AudioRef = "0"},
+    {SoundName = "FBI 01 DMW GARBAGE LAND", AudioName = "FBI_01_DMW_GARBAGE_LAND", AudioRef = "FBI_01_DMW_02_SOUNDS"},
+    {SoundName = "PICK UP PARACHUTE", AudioName = "PICK_UP_PARACHUTE", AudioRef = "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+    {SoundName = "FBI 01 DMW LIFT ARRIVE", AudioName = "FBI_01_DMW_LIFT_ARRIVE", AudioRef = "FBI_01_SOUNDS"},
+    {SoundName = "UNZIP", AudioName = "UNZIP", AudioRef = "FBI_01_SOUNDS"},
+    {SoundName = "FBI 02 SNATCH AND GRAB HELI DOWN", AudioName = "FBI_02_SNATCH_AND_GRAB_HELI_DOWN", AudioRef = "0"},
+    {SoundName = "FBI 02 SNATCH AND GRAB DANGLE", AudioName = "FBI_02_SNATCH_AND_GRAB_DANGLE", AudioRef = "0"},
+    {SoundName = "Remote Sniper Rifle Fire", AudioName = "Remote_Sniper_Rifle_Fire", AudioRef = "0"},
+    {SoundName = "FBI 02 SNATCH AND GRAB SMASH WINDOW", AudioName = "FBI_02_SNATCH_AND_GRAB_SMASH_WINDOW", AudioRef = "0"},
+    {SoundName = "FBI 02 SNATCH AND GRAB AMB HELI", AudioName = "FBI_02_SNATCH_AND_GRAB_AMB_HELI", AudioRef = "0"},
+    {SoundName = "Party panic", AudioName = "Party_panic", AudioRef = "FBI_03_Torture_Sounds"},
+    {SoundName = "Teeth Initial Pain", AudioName = "Teeth_Initial_Pain", AudioRef = "FBI_03_Torture_Sounds"},
+    {SoundName = "PED PHONE DIAL 01", AudioName = "PED_PHONE_DIAL_01", AudioRef = "0"},
+    {SoundName = "SIRENS DISTANT 01 MASTER", AudioName = "SIRENS_DISTANT_01_MASTER", AudioRef = "0"},
+    {SoundName = "Distant Sirens Skip Start", AudioName = "Distant_Sirens_Skip_Start", AudioRef = "FBI_04_HEAT_SOUNDS"},
+    {SoundName = "Garbage Truck Explosion", AudioName = "Garbage_Truck_Explosion", AudioRef = "FBI_04_HEAT_SOUNDS"},
+    {SoundName = "Distant Sirens", AudioName = "Distant_Sirens", AudioRef = "FBI_04_HEAT_SOUNDS"},
+    {SoundName = "Distant Sirens", AudioName = "Distant_Sirens", AudioRef = "0"},
+    {SoundName = "FBI 04 HEAT C4 DOORS", AudioName = "FBI_04_HEAT_C4_DOORS", AudioRef = "0"},
+    {SoundName = "Securicar Horn", AudioName = "Securicar_Horn", AudioRef = "FBI_04_HEAT_SOUNDS"},
+    {SoundName = "Tow truck damage", AudioName = "Tow_truck_damage", AudioRef = "FBI_04_HEAT_SOUNDS"},
+    {SoundName = "Torch", AudioName = "Torch", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Bar Cut", AudioName = "Bar_Cut", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Torch Cut", AudioName = "Torch_Cut", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Shoot Door", AudioName = "Shoot_Door", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Release Crate", AudioName = "Release_Crate", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Crate Land", AudioName = "Crate_Land", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Cable Strain", AudioName = "Cable_Strain", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Gasmask", AudioName = "Gasmask", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Monkey Yell", AudioName = "Monkey_Yell", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Monkey Scream", AudioName = "Monkey_Scream", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Scientist Approaching", AudioName = "Scientist_Approaching", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "LIFT POSH MOVE", AudioName = "LIFT_POSH_MOVE", AudioRef = "0"},
+    {SoundName = "Move Fade In", AudioName = "Move_Fade_In", AudioRef = "LIFT_POSH_SOUNDSET"},
+    {SoundName = "Grate Release", AudioName = "Grate_Release", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Flare", AudioName = "Flare", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Speech Bubble", AudioName = "Speech_Bubble", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "Foot Swish", AudioName = "Foot_Swish", AudioRef = "FBI_05_SOUNDS"},
+    {SoundName = "FINALE PETROL SPILL", AudioName = "FINALE_PETROL_SPILL", AudioRef = "0"},
+    {SoundName = "FINALE C2 DEVIN INSIDE TRUNK MASTER", AudioName = "FINALE_C2_DEVIN_INSIDE_TRUNK_MASTER", AudioRef = "0"},
+    {SoundName = "CAR WHEELS", AudioName = "CAR_WHEELS", AudioRef = "FINALE_C2_SOUNDS"},
+    {SoundName = "Car Push Flex", AudioName = "Car_Push_Flex", AudioRef = "FINALE_C2_SOUNDS"},
+    {SoundName = "Camera Zoom", AudioName = "Camera_Zoom", AudioRef = "BIG_SCORE_SETUP_SOUNDS"},
+    {SoundName = "Camera Hum", AudioName = "Camera_Hum", AudioRef = "BIG_SCORE_SETUP_SOUNDS"},
+    {SoundName = "TRAFFIC CONTROL CHANGE CAM", AudioName = "TRAFFIC_CONTROL_CHANGE_CAM", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "TRAFFIC CONTROL MOVE CROSSHAIR", AudioName = "TRAFFIC_CONTROL_MOVE_CROSSHAIR", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "TRAFFIC CONTROL TOGGLE LIGHT", AudioName = "TRAFFIC_CONTROL_TOGGLE_LIGHT", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Traffic Control Light Switch Back", AudioName = "Traffic_Control_Light_Switch_Back", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "TRAFFIC CONTROL BG NOISE", AudioName = "TRAFFIC_CONTROL_BG_NOISE", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Traffic Control Fail", AudioName = "Traffic_Control_Fail", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Traffic Control Fail Blank", AudioName = "Traffic_Control_Fail_Blank", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Truck Ramp Scrape", AudioName = "Truck_Ramp_Scrape", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Gas Tanker Explosion", AudioName = "Gas_Tanker_Explosion", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Truck Ramp Raise", AudioName = "Truck_Ramp_Raise", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Muscle Jump", AudioName = "Muscle_Jump", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Muscle Land", AudioName = "Muscle_Land", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "SIREN BLIP", AudioName = "SIREN_BLIP", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Gold Trolley Roll Player", AudioName = "Gold_Trolley_Roll_Player", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Gold Trolley Roll NPC", AudioName = "Gold_Trolley_Roll_NPC", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "FREIGHT ELEVATOR 01 DOOR OPEN", AudioName = "FREIGHT_ELEVATOR_01_DOOR_OPEN", AudioRef = "0"},
+    {SoundName = "FREIGHT ELEVATOR 01 DOOR CLOSE", AudioName = "FREIGHT_ELEVATOR_01_DOOR_CLOSE", AudioRef = "0"},
+    {SoundName = "VAULT DOOR CLOSE", AudioName = "VAULT_DOOR_CLOSE", AudioRef = "0"},
+    {SoundName = "FREIGHT ELEVATOR 01 MOTOR", AudioName = "FREIGHT_ELEVATOR_01_MOTOR", AudioRef = "0"},
+    {SoundName = "BANK DOOR OPEN", AudioName = "BANK_DOOR_OPEN", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "BLOWOUT", AudioName = "BLOWOUT", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "BLOWOUT B", AudioName = "BLOWOUT_B", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "DROP STINGER", AudioName = "DROP_STINGER", AudioRef = "BIG_SCORE_3A_SOUNDS"},
+    {SoundName = "Gold Cage Collisions", AudioName = "Gold_Cage_Collisions", AudioRef = "BIG_SCORE_3B_SOUNDS"},
+    {SoundName = "SPL RPG NPC SHOT MASTER", AudioName = "SPL_RPG_NPC_SHOT_MASTER", AudioRef = "0"},
+    {SoundName = "CUTTER", AudioName = "CUTTER", AudioRef = "BIG_SCORE_3B_SOUNDS"},
+    {SoundName = "Gold Vault Explosions", AudioName = "Gold_Vault_Explosions", AudioRef = "BIG_SCORE_3B_SOUNDS"},
+    {SoundName = "ELECTRO MAGNET DRONE MASTER", AudioName = "ELECTRO_MAGNET_DRONE_MASTER", AudioRef = "0"},
+    {SoundName = "TRAIN PICK UP MASTER", AudioName = "TRAIN_PICK_UP_MASTER", AudioRef = "0"},
+    {SoundName = "TRAIN PICK UP IMPACT MASTER", AudioName = "TRAIN_PICK_UP_IMPACT_MASTER", AudioRef = "0"},
+    {SoundName = "HELI TURNING MASTER", AudioName = "HELI_TURNING_MASTER", AudioRef = "0"},
+    {SoundName = "TRAIN SWITCH TRACKS MASTER", AudioName = "TRAIN_SWITCH_TRACKS_MASTER", AudioRef = "0"},
+    {SoundName = "UNDER THE BRIDGE", AudioName = "UNDER_THE_BRIDGE", AudioRef = "HUD_AWARDS"},
+    {SoundName = "On Call Player Join", AudioName = "On_Call_Player_Join", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "Continue Accepted", AudioName = "Continue_Accepted", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Continue Appears", AudioName = "Continue_Appears", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Zoom In", AudioName = "Zoom_In", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Highlight Cancel", AudioName = "Highlight_Cancel", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Zoom Out", AudioName = "Zoom_Out", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Highlight Move", AudioName = "Highlight_Move", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Pen Tick", AudioName = "Pen_Tick", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Highlight Accept", AudioName = "Highlight_Accept", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Highlight Error", AudioName = "Highlight_Error", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Zoom Right", AudioName = "Zoom_Right", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Map Roll Up", AudioName = "Map_Roll_Up", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Zoom Left", AudioName = "Zoom_Left", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Map Roll Down", AudioName = "Map_Roll_Down", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Paper Shuffle", AudioName = "Paper_Shuffle", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "BOATS PLANES HELIS BOOM", AudioName = "BOATS_PLANES_HELIS_BOOM", AudioRef = "MP_LOBBY_SOUNDS"},
+    {SoundName = "CAR BIKE WHOOSH", AudioName = "CAR_BIKE_WHOOSH", AudioRef = "MP_LOBBY_SOUNDS"},
+    {SoundName = "Whoosh 1s R to L", AudioName = "Whoosh_1s_R_to_L", AudioRef = "MP_LOBBY_SOUNDS"},
+    {SoundName = "Whoosh 1s L to R", AudioName = "Whoosh_1s_L_to_R", AudioRef = "MP_LOBBY_SOUNDS"},
+    {SoundName = "MP 5 SECOND TIMER", AudioName = "MP_5_SECOND_TIMER", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "BACK", AudioName = "BACK", AudioRef = "HUD_FRONTEND_MP_SOUNDSET"},
+    {SoundName = "Back", AudioName = "Back", AudioRef = "0"},
+    {SoundName = "Select", AudioName = "Select", AudioRef = "0"},
+    {SoundName = "SCREEN FLASH", AudioName = "SCREEN_FLASH", AudioRef = "CELEBRATION_SOUNDSET"},
+    {SoundName = "Alarm Interior Gate Loop", AudioName = "Alarm_Interior_Gate_Loop", AudioRef = "DLC_H4_Island_Alarms_Sounds"},
+    {SoundName = "Alarm Oneshot", AudioName = "Alarm_Oneshot", AudioRef = "DLC_H4_Island_Alarms_Sounds"},
+    {SoundName = "silo alarm loop", AudioName = "silo_alarm_loop", AudioRef = "dlc_xm_silo_finale_sounds"},
+    {SoundName = "launch power up loop", AudioName = "launch_power_up_loop", AudioRef = "dlc_xm_silo_finale_sounds"},
+    {SoundName = "NET RACE START EVENT MASTER", AudioName = "NET_RACE_START_EVENT_MASTER", AudioRef = "0"},
+    {SoundName = "health lost", AudioName = "health_lost", AudioRef = "DLC_sum20_Open_Wheel_Racing_Sounds"},
+    {SoundName = "Hit", AudioName = "Hit", AudioRef = "RESPAWN_ONLINE_SOUNDSET"},
+    {SoundName = "Count Stop", AudioName = "Count_Stop", AudioRef = "0"},
+    {SoundName = "Checkpoint Finish", AudioName = "Checkpoint_Finish", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Checkpoint Finish", AudioName = "Checkpoint_Finish", AudioRef = "DLC_sum20_Open_Wheel_Racing_Sounds"},
+    {SoundName = "Checkpoint Finish", AudioName = "Checkpoint_Finish", AudioRef = "DLC_Stunt_Race_Frontend_Sounds"},
+    {SoundName = "Checkpoint Finish", AudioName = "Checkpoint_Finish", AudioRef = "Car_Club_Races_Pursuit_Series_Sounds"},
+    {SoundName = "Checkpoint Finish", AudioName = "Checkpoint_Finish", AudioRef = "Car_Club_Races_Street_Race_Sounds"},
+    {SoundName = "Checkpoint Finish", AudioName = "Checkpoint_Finish", AudioRef = "Island_Race_Soundset"},
+    {SoundName = "Checkpoint Lap", AudioName = "Checkpoint_Lap", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Checkpoint Lap", AudioName = "Checkpoint_Lap", AudioRef = "DLC_sum20_Open_Wheel_Racing_Sounds"},
+    {SoundName = "Checkpoint Lap", AudioName = "Checkpoint_Lap", AudioRef = "DLC_Stunt_Race_Frontend_Sounds"},
+    {SoundName = "Checkpoint Lap", AudioName = "Checkpoint_Lap", AudioRef = "Car_Club_Races_Pursuit_Series_Sounds"},
+    {SoundName = "Checkpoint Lap", AudioName = "Checkpoint_Lap", AudioRef = "Car_Club_Races_Street_Race_Sounds"},
+    {SoundName = "Checkpoint Lap", AudioName = "Checkpoint_Lap", AudioRef = "Island_Race_Soundset"},
+    {SoundName = "Orientation Success", AudioName = "Orientation_Success", AudioRef = "DLC_Air_Race_Sounds_Player"},
+    {SoundName = "Orientation Fail", AudioName = "Orientation_Fail", AudioRef = "DLC_Air_Race_Sounds_Player"},
+    {SoundName = "Checkpoint Buzz", AudioName = "Checkpoint_Buzz", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "DLC_sum20_Open_Wheel_Racing_Sounds"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "DLC_Stunt_Race_Frontend_Sounds"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "Car_Club_Races_Pursuit_Series_Sounds"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "Car_Club_Races_Street_Race_Sounds"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "Island_Race_Soundset"},
+    {SoundName = "CHECKPOINT AHEAD", AudioName = "CHECKPOINT_AHEAD", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "CHECKPOINT BEHIND", AudioName = "CHECKPOINT_BEHIND", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "Out Of Ammo", AudioName = "Out_Of_Ammo", AudioRef = "DLC_AW_Machine_Gun_Ammo_Counter_Sounds"},
+    {SoundName = "Recharging Loop", AudioName = "Recharging_Loop", AudioRef = "DLC_AW_Machine_Gun_Ammo_Counter_Sounds"},
+    {SoundName = "Empty Fire Fail", AudioName = "Empty_Fire_Fail", AudioRef = "DLC_AW_Machine_Gun_Ammo_Counter_Sounds"},
+    {SoundName = "Recharged", AudioName = "Recharged", AudioRef = "DLC_AW_Machine_Gun_Ammo_Counter_Sounds"},
+    {SoundName = "1st Place Gain", AudioName = "1st_Place_Gain", AudioRef = "DLC_Stunt_Race_Frontend_Sounds"},
+    {SoundName = "1st Place Lose", AudioName = "1st_Place_Lose", AudioRef = "DLC_Stunt_Race_Frontend_Sounds"},
+    {SoundName = "Place Gain", AudioName = "Place_Gain", AudioRef = "DLC_Stunt_Race_Frontend_Sounds"},
+    {SoundName = "Place Lose", AudioName = "Place_Lose", AudioRef = "DLC_Stunt_Race_Frontend_Sounds"},
+    {SoundName = "tyre burst", AudioName = "tyre_burst", AudioRef = "DLC_sum20_Open_Wheel_Racing_Sounds"},
+    {SoundName = "tyre health warning", AudioName = "tyre_health_warning", AudioRef = "DLC_sum20_Open_Wheel_Racing_Sounds"},
+    {SoundName = "Pit Stop Loop", AudioName = "Pit_Stop_Loop", AudioRef = "DLC_H3_Circuit_Racing_Sounds"},
+    {SoundName = "Count Start", AudioName = "Count_Start", AudioRef = "0"},
+    {SoundName = "INFO", AudioName = "INFO", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Turret Activated Alt", AudioName = "Turret_Activated_Alt", AudioRef = "dlc_aw_Arena_Gun_Turret_Sounds"},
+    {SoundName = "Turret Activated", AudioName = "Turret_Activated", AudioRef = "dlc_aw_Arena_Gun_Turret_Sounds"},
+    {SoundName = "DPAD WEAPON SCROLL", AudioName = "DPAD_WEAPON_SCROLL", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Turret Available Alt", AudioName = "Turret_Available_Alt", AudioRef = "dlc_aw_Arena_Gun_Turret_Sounds"},
+    {SoundName = "Turret Available", AudioName = "Turret_Available", AudioRef = "dlc_aw_Arena_Gun_Turret_Sounds"},
+    {SoundName = "DLC Stunt Race Alarms Soundset", AudioName = "DLC_Stunt_Race_Alarms_Soundset", AudioRef = "0"},
+    {SoundName = "DLC Stunt Race Stinger Sounds", AudioName = "DLC_Stunt_Race_Stinger_Sounds", AudioRef = "0"},
+    {SoundName = "Slipstream Leader", AudioName = "Slipstream_Leader", AudioRef = "DLC_Biker_SL_Sounds"},
+    {SoundName = "Slipstream Follower", AudioName = "Slipstream_Follower", AudioRef = "DLC_Biker_SL_Sounds"},
+    {SoundName = "Slipstream", AudioName = "Slipstream", AudioRef = "DLC_Stunt_Race_Frontend_Sounds"},
+    {SoundName = "SLIPSTREAM MASTER", AudioName = "SLIPSTREAM_MASTER", AudioRef = "0"},
+    {SoundName = "Nav Arrow Ahead", AudioName = "Nav_Arrow_Ahead", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "Nav Arrow Behind", AudioName = "Nav_Arrow_Behind", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "Nav Arrow Left", AudioName = "Nav_Arrow_Left", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "Nav Arrow Right", AudioName = "Nav_Arrow_Right", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "Countdown GO", AudioName = "Countdown_GO", AudioRef = "0"},
+    {SoundName = "Countdown 3", AudioName = "Countdown_3", AudioRef = "0"},
+    {SoundName = "321", AudioName = "321", AudioRef = "Car_Club_Races_Pursuit_Series_Sounds"},
+    {SoundName = "321", AudioName = "321", AudioRef = "Car_Club_Races_Street_Race_Sounds"},
+    {SoundName = "Countdown 321", AudioName = "Countdown_321", AudioRef = "Island_Race_Soundset"},
+    {SoundName = "Countdown 2", AudioName = "Countdown_2", AudioRef = "0"},
+    {SoundName = "Countdown 1", AudioName = "Countdown_1", AudioRef = "0"},
+    {SoundName = "Go", AudioName = "Go", AudioRef = "Car_Club_Races_Pursuit_Series_Sounds"},
+    {SoundName = "Go", AudioName = "Go", AudioRef = "Car_Club_Races_Street_Race_Sounds"},
+    {SoundName = "Countdown Go", AudioName = "Countdown_Go", AudioRef = "Island_Race_Soundset"},
+    {SoundName = "Open Wheel Racing Start Lights Sounds", AudioName = "Open_Wheel_Racing_Start_Lights_Sounds", AudioRef = "0"},
+    {SoundName = "Round Start Blade", AudioName = "Round_Start_Blade", AudioRef = "POWER_PLAY_General_Soundset"},
+    {SoundName = "FE Intro Banner", AudioName = "FE_Intro_Banner", AudioRef = "Go_Kart_Death_Match_Soundset"},
+    {SoundName = "LEADER BOARD", AudioName = "LEADER_BOARD", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Vehicle Warp", AudioName = "Vehicle_Warp", AudioRef = "DLC_Air_Race_Sounds_Player"},
+    {SoundName = "Beast Sprint Loop", AudioName = "Beast_Sprint_Loop", AudioRef = "DLC_AR_Beast_Soundset"},
+    {SoundName = "Beast Jump", AudioName = "Beast_Jump", AudioRef = "DLC_AR_Beast_Soundset"},
+    {SoundName = "Beast Jump Land", AudioName = "Beast_Jump_Land", AudioRef = "DLC_AR_Beast_Soundset"},
+    {SoundName = "Vehicle Transform", AudioName = "Vehicle_Transform", AudioRef = "DLC_Air_Race_Sounds_Player"},
+    {SoundName = "Beast Attack", AudioName = "Beast_Attack", AudioRef = "DLC_AR_Beast_Soundset"},
+    {SoundName = "Rocket Detonate", AudioName = "Rocket_Detonate", AudioRef = "DLC_IE_VV_Rocket_Player_Sounds"},
+    {SoundName = "SPIKES", AudioName = "SPIKES", AudioRef = "MP_RACE_SPIKES_SOUNDSET"},
+    {SoundName = "DLC AW Arena Traps Turntable Sounds", AudioName = "DLC_AW_Arena_Traps_Turntable_Sounds", AudioRef = "0"},
+    {SoundName = "DLC AW Arena Traps Rams Sounds", AudioName = "DLC_AW_Arena_Traps_Rams_Sounds", AudioRef = "0"},
+    {SoundName = "Idle", AudioName = "Idle", AudioRef = "0"},
+    {SoundName = "Active", AudioName = "Active", AudioRef = "0"},
+    {SoundName = "Arm", AudioName = "Arm", AudioRef = "0"},
+    {SoundName = "FIRST PLACE", AudioName = "FIRST_PLACE", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "Shard Disappear", AudioName = "Shard_Disappear", AudioRef = "GTAO_Biker_FM_Shard_Sounds"},
+    {SoundName = "Shard Disappear", AudioName = "Shard_Disappear", AudioRef = "GTAO_Boss_Goons_FM_Shard_Sounds"},
+    {SoundName = "PowerupShard Disappear", AudioName = "PowerupShard_Disappear", AudioRef = "Go_Kart_Death_Match_Soundset"},
+    {SoundName = "Shard Disappear", AudioName = "Shard_Disappear", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Blade Appear", AudioName = "Blade_Appear", AudioRef = "0"},
+    {SoundName = "Resurrected", AudioName = "Resurrected", AudioRef = "DLC_SR_RS_Player_Sounds"},
+    {SoundName = "Reset Win", AudioName = "Reset_Win", AudioRef = "DLC_SR_RS_Team_Sounds"},
+    {SoundName = "Reset Win", AudioName = "Reset_Win", AudioRef = "DLC_SR_RS_Enemy_Sounds"},
+    {SoundName = "Metal Detector Unlocked Shard", AudioName = "Metal_Detector_Unlocked_Shard", AudioRef = "Tuner_Hidden_Collectibles_MD_Sounds"},
+    {SoundName = "shard", AudioName = "shard", AudioRef = "dlc_vw_hidden_collectible_sounds"},
+    {SoundName = "killer down", AudioName = "killer_down", AudioRef = "dlc_ch_hidden_collectibles_sk_sounds"},
+    {SoundName = "PowerupShard Appear", AudioName = "PowerupShard_Appear", AudioRef = "Go_Kart_Death_Match_Soundset"},
+    {SoundName = "Par Beaten", AudioName = "Par_Beaten", AudioRef = "Bike_Time_Trials_Soundset"},
+    {SoundName = "Fail", AudioName = "Fail", AudioRef = "Bike_Time_Trials_Soundset"},
+    {SoundName = "MP RANK UP", AudioName = "MP_RANK_UP", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "DELETE", AudioName = "DELETE", AudioRef = "0"},
+    {SoundName = "Camera Shoot", AudioName = "Camera_Shoot", AudioRef = "Phone_Soundset_Franklin"},
+    {SoundName = "ADD SPAWN POINT", AudioName = "ADD_SPAWN_POINT", AudioRef = "0"},
+    {SoundName = "Creator Snap", AudioName = "Creator_Snap", AudioRef = "DLC_Stunt_Race_Frontend_Sounds"},
+    {SoundName = "NAV LEFT RIGHT", AudioName = "NAV_LEFT_RIGHT", AudioRef = "0"},
+    {SoundName = "PLACE VEHICLE", AudioName = "PLACE_VEHICLE", AudioRef = "0"},
+    {SoundName = "PLACE OBJECT", AudioName = "PLACE_OBJECT", AudioRef = "0"},
+    {SoundName = "PLACE ENEMY", AudioName = "PLACE_ENEMY", AudioRef = "0"},
+    {SoundName = "YES", AudioName = "YES", AudioRef = "0"},
+    {SoundName = "EDIT", AudioName = "EDIT", AudioRef = "0"},
+    {SoundName = "SELECT LOCATION", AudioName = "SELECT_LOCATION", AudioRef = "0"},
+    {SoundName = "HUD FREEMODE CANCEL MASTER", AudioName = "HUD_FREEMODE_CANCEL_MASTER", AudioRef = "0"},
+    {SoundName = "Stash Acid Frontend", AudioName = "Stash_Acid_Frontend", AudioRef = "DLC_CM2022_Sell_Stash_Delivery_Sounds"},
+    {SoundName = "Stash Acid Foley", AudioName = "Stash_Acid_Foley", AudioRef = "DLC_CM2022_Sell_Stash_Delivery_Sounds"},
+    {SoundName = "Close", AudioName = "Close", AudioRef = "Truck_Ramp_Sounds"},
+    {SoundName = "Open", AudioName = "Open", AudioRef = "Truck_Ramp_Sounds"},
+    {SoundName = "Stash Crate On Truck", AudioName = "Stash_Crate_On_Truck", AudioRef = "DLC_CM2022_Setup_Lab_Equipment_Sounds"},
+    {SoundName = "PICKUP DEFAULT", AudioName = "PICKUP_DEFAULT", AudioRef = "HUD_FRONTEND_STANDARD_PICKUPS_SOUNDSET"},
+    {SoundName = "Scope Spot POI", AudioName = "Scope_Spot_POI", AudioRef = "GTAO_Heists_HUD_Sounds"},
+    {SoundName = "Barge Door", AudioName = "Barge_Door", AudioRef = "dlc_h4_Prep_FC_Sounds"},
+    {SoundName = "Countdown 123", AudioName = "Countdown_123", AudioRef = "Bike_Time_Trials_Soundset"},
+    {SoundName = "Countdown Go", AudioName = "Countdown_Go", AudioRef = "Bike_Time_Trials_Soundset"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "Bike_Time_Trials_Soundset"},
+    {SoundName = "collect part", AudioName = "collect_part", AudioRef = "DLC_sum20_BB_Captured_Sounds"},
+    {SoundName = "06", AudioName = "06", AudioRef = "0"},
+    {SoundName = "Air Defences Activated", AudioName = "Air_Defences_Activated", AudioRef = "DLC_sum20_Business_Battle_AC_Sounds"},
+    {SoundName = "Air Defenses Disabled", AudioName = "Air_Defenses_Disabled", AudioRef = "DLC_sum20_Business_Battle_AC_Sounds"},
+    {SoundName = "Hack Fail", AudioName = "Hack_Fail", AudioRef = "DLC_sum20_Business_Battle_AC_Sounds"},
+    {SoundName = "Hack Success", AudioName = "Hack_Success", AudioRef = "DLC_sum20_Business_Battle_AC_Sounds"},
+    {SoundName = "door unlocked", AudioName = "door_unlocked", AudioRef = "dlc_sum20_factory_raid_sounds"},
+    {SoundName = "Power Down", AudioName = "Power_Down", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Beep Red", AudioName = "Beep_Red", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Beep Green", AudioName = "Beep_Green", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Success", AudioName = "Success", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Put Away", AudioName = "Put_Away", AudioRef = "Phone_SoundSet_Michael"},
+    {SoundName = "Crash", AudioName = "Crash", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Failure", AudioName = "Failure", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Click", AudioName = "Click", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Start", AudioName = "Start", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Trail Custom", AudioName = "Trail_Custom", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Turn", AudioName = "Turn", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Goal", AudioName = "Goal", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "Background", AudioName = "Background", AudioRef = "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+    {SoundName = "collect keys", AudioName = "collect_keys", AudioRef = "dlc_vw_recover_luxury_car_sounds"},
+    {SoundName = "Push", AudioName = "Push", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
+    {SoundName = "Attach", AudioName = "Attach", AudioRef = "GTAO_Bomb_Plant_Sounds"},
+    {SoundName = "Explosion External", AudioName = "Explosion_External", AudioRef = "DLC_SECURITY_TAIL_AND_DESTROY_Sounds"},
+    {SoundName = "Explosion Internal", AudioName = "Explosion_Internal", AudioRef = "DLC_SECURITY_TAIL_AND_DESTROY_Sounds"},
+    {SoundName = "Barge Door Metal", AudioName = "Barge_Door_Metal", AudioRef = "dlc_h4_Prep_FC_Sounds"},
+    {SoundName = "PICK UP MONEY", AudioName = "PICK_UP_MONEY", AudioRef = "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+    {SoundName = "Collect Weapon Component", AudioName = "Collect_Weapon_Component", AudioRef = "Crime_Scene_Sounds"},
+    {SoundName = "Install On Vehicle", AudioName = "Install_On_Vehicle", AudioRef = "GTAO_Bomb_Plant_Sounds"},
+    {SoundName = "generator on loop", AudioName = "generator_on_loop", AudioRef = "dlc_xm_stealavg_sounds"},
+    {SoundName = "handle up", AudioName = "handle_up", AudioRef = "dlc_xm_stealavg_sounds"},
+    {SoundName = "DRUGS VOMIT", AudioName = "DRUGS_VOMIT", AudioRef = "FAMILY_5_SOUNDS"},
+    {SoundName = "Collect Shard", AudioName = "Collect_Shard", AudioRef = "Ghost_Hunt_Sounds"},
+    {SoundName = "PRM2 BEDROOM AMANDA SNORE MASTER", AudioName = "PRM2_BEDROOM_AMANDA_SNORE_MASTER", AudioRef = "0"},
+    {SoundName = "Software Installing Loop", AudioName = "Software_Installing_Loop", AudioRef = "DLC_Security_Investigations_Setup_Sounds"},
+    {SoundName = "Hack Stop", AudioName = "Hack_Stop", AudioRef = "dlc_xm_deluxos_hacking_Hacking_Sounds"},
+    {SoundName = "Software Installing Success", AudioName = "Software_Installing_Success", AudioRef = "DLC_Security_Investigations_Setup_Sounds"},
+    {SoundName = "Hack Start", AudioName = "Hack_Start", AudioRef = "dlc_xm_deluxos_hacking_Hacking_Sounds"},
+    {SoundName = "Hack Loop", AudioName = "Hack_Loop", AudioRef = "dlc_xm_deluxos_hacking_Hacking_Sounds"},
+    {SoundName = "Hack Complete", AudioName = "Hack_Complete", AudioRef = "dlc_xm_deluxos_hacking_Hacking_Sounds"},
+    {SoundName = "Phone Text Arrive", AudioName = "Phone_Text_Arrive", AudioRef = "DLC_H4_MM_Sounds"},
+    {SoundName = "Push", AudioName = "Push", AudioRef = "GTAO_APT_DOOR_DOWNSTAIRS_GENERIC_SOUNDS"},
+    {SoundName = "Use Fuse Box Foley Only", AudioName = "Use_Fuse_Box_Foley_Only", AudioRef = "dlc_h4_Prep_FC_Sounds"},
+    {SoundName = "Use Fuse Box Off", AudioName = "Use_Fuse_Box_Off", AudioRef = "dlc_h4_Prep_FC_Sounds"},
+    {SoundName = "Barge Door Glass", AudioName = "Barge_Door_Glass", AudioRef = "dlc_h4_Prep_FC_Sounds"},
+    {SoundName = "Generic Door Closed", AudioName = "Generic_Door_Closed", AudioRef = "GTAO_Script_Doors_Sounds"},
+    {SoundName = "Barge Door Metal Bars", AudioName = "Barge_Door_Metal_Bars", AudioRef = "dlc_h4_Prep_FC_Sounds"},
+    {SoundName = "Klaxon 03", AudioName = "Klaxon_03", AudioRef = "ALARMS_SOUNDSET"},
+    {SoundName = "Metal Detector Unequip", AudioName = "Metal_Detector_Unequip", AudioRef = "Island_Metal_Detector"},
+    {SoundName = "Metal Detector equip", AudioName = "Metal_Detector_equip", AudioRef = "Island_Metal_Detector"},
+    {SoundName = "Metal Detector Scanner", AudioName = "Metal_Detector_Scanner", AudioRef = "Island_Metal_Detector"},
+    {SoundName = "Zoom", AudioName = "Zoom", AudioRef = "MP_CCTV_SOUNDSET"},
+    {SoundName = "Collect Money", AudioName = "Collect_Money", AudioRef = "Island_Metal_Detector"},
+    {SoundName = "movie prop", AudioName = "movie_prop", AudioRef = "DLC_SUM20_HIDDEN_COLLECTIBLES"},
+    {SoundName = "Crush Car", AudioName = "Crush_Car", AudioRef = "DLC_IE_Deliver_Vehicle_Scrapyard_Sounds"},
+    {SoundName = "Spawn FE", AudioName = "Spawn_FE", AudioRef = "0"},
+    {SoundName = "Destroy", AudioName = "Destroy", AudioRef = "DLC_SECURITY_TAIL_AND_DESTROY_Sounds"},
+    {SoundName = "Countdown Main", AudioName = "Countdown_Main", AudioRef = "DLC_SECURITY_TAIL_AND_DESTROY_Sounds"},
+    {SoundName = "Countdown 5 secs", AudioName = "Countdown_5_secs", AudioRef = "DLC_SECURITY_TAIL_AND_DESTROY_Sounds"},
+    {SoundName = "Countdown 0 secs", AudioName = "Countdown_0_secs", AudioRef = "DLC_SECURITY_TAIL_AND_DESTROY_Sounds"},
+    {SoundName = "Smoke Loop", AudioName = "Smoke_Loop", AudioRef = "DLC_SECURITY_TAIL_AND_DESTROY_Sounds"},
+    {SoundName = "Metal Door Push", AudioName = "Metal_Door_Push", AudioRef = "GTAO_Script_Doors_Sounds"},
+    {SoundName = "Barge Door Metal", AudioName = "Barge_Door_Metal", AudioRef = "DLC_Security_Door_Barge_Sounds"},
+    {SoundName = "Press", AudioName = "Press", AudioRef = "DLC_SECURITY_BUTTON_PRESS_SOUNDS"},
+    {SoundName = "Collect Pass", AudioName = "Collect_Pass", AudioRef = "PrSCRV_Elevator_Pass_Sounds"},
+    {SoundName = "Deploy Parachute", AudioName = "Deploy_Parachute", AudioRef = "Junk_Energy_Skydive_Soundset"},
+    {SoundName = "Checkpoint Missed", AudioName = "Checkpoint_Missed", AudioRef = "Junk_Energy_Skydive_Soundset"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "Junk_Energy_Skydive_Soundset"},
+    {SoundName = "Countdown Go", AudioName = "Countdown_Go", AudioRef = "Junk_Energy_Skydive_Soundset"},
+    {SoundName = "Countdown 123", AudioName = "Countdown_123", AudioRef = "Junk_Energy_Skydive_Soundset"},
+    {SoundName = "Finish Gold", AudioName = "Finish_Gold", AudioRef = "Junk_Energy_Skydive_Soundset"},
+    {SoundName = "Finish", AudioName = "Finish", AudioRef = "Junk_Energy_Skydive_Soundset"},
+    {SoundName = "Free Fall Loop", AudioName = "Free_Fall_Loop", AudioRef = "Junk_Energy_Skydive_Soundset"},
+    {SoundName = "Jump", AudioName = "Jump", AudioRef = "Junk_Energy_Skydive_Soundset"},
+    {SoundName = "FE Spawn", AudioName = "FE_Spawn", AudioRef = "DLC_Tuner_Halloween_Slasher_Soundset"},
+    {SoundName = "Ingame Spawn", AudioName = "Ingame_Spawn", AudioRef = "DLC_Tuner_Halloween_Slasher_Soundset"},
+    {SoundName = "Character Loop", AudioName = "Character_Loop", AudioRef = "DLC_Tuner_Halloween_Slasher_Soundset"},
+    {SoundName = "Despawn FE", AudioName = "Despawn_FE", AudioRef = "DLC_Tuner_Halloween_Slasher_Soundset"},
+    {SoundName = "Despawn Ingame", AudioName = "Despawn_Ingame", AudioRef = "DLC_Tuner_Halloween_Slasher_Soundset"},
+    {SoundName = "FE Spawn", AudioName = "FE_Spawn", AudioRef = "DLC_Tuner_Halloween_Driver_Soundset"},
+    {SoundName = "Ingame Spawn", AudioName = "Ingame_Spawn", AudioRef = "DLC_Tuner_Halloween_Driver_Soundset"},
+    {SoundName = "Character Loop", AudioName = "Character_Loop", AudioRef = "DLC_Tuner_Halloween_Driver_Soundset"},
+    {SoundName = "Despawn FE", AudioName = "Despawn_FE", AudioRef = "DLC_Tuner_Halloween_Driver_Soundset"},
+    {SoundName = "Despawn Ingame", AudioName = "Despawn_Ingame", AudioRef = "DLC_Tuner_Halloween_Driver_Soundset"},
+    {SoundName = "FE Spawn", AudioName = "FE_Spawn", AudioRef = "DLC_Tuner_Halloween_Psycho_Soundset"},
+    {SoundName = "Ingame Spawn", AudioName = "Ingame_Spawn", AudioRef = "DLC_Tuner_Halloween_Psycho_Soundset"},
+    {SoundName = "Character Loop", AudioName = "Character_Loop", AudioRef = "DLC_Tuner_Halloween_Psycho_Soundset"},
+    {SoundName = "Despawn FE", AudioName = "Despawn_FE", AudioRef = "DLC_Tuner_Halloween_Psycho_Soundset"},
+    {SoundName = "Despawn Ingame", AudioName = "Despawn_Ingame", AudioRef = "DLC_Tuner_Halloween_Psycho_Soundset"},
+    {SoundName = "FE Spawn", AudioName = "FE_Spawn", AudioRef = "DLC_Tuner_Halloween_Clown_Soundset"},
+    {SoundName = "Ingame Spawn", AudioName = "Ingame_Spawn", AudioRef = "DLC_Tuner_Halloween_Clown_Soundset"},
+    {SoundName = "Character Loop", AudioName = "Character_Loop", AudioRef = "DLC_Tuner_Halloween_Clown_Soundset"},
+    {SoundName = "Honk Loop", AudioName = "Honk_Loop", AudioRef = "DLC_Tuner_Halloween_Clown_Soundset"},
+    {SoundName = "Despawn FE", AudioName = "Despawn_FE", AudioRef = "DLC_Tuner_Halloween_Clown_Soundset"},
+    {SoundName = "Despawn Ingame", AudioName = "Despawn_Ingame", AudioRef = "DLC_Tuner_Halloween_Clown_Soundset"},
+    {SoundName = "FE Spawn", AudioName = "FE_Spawn", AudioRef = "Freemode_Mirror_Slash_sounds"},
+    {SoundName = "Ingame Spawn", AudioName = "Ingame_Spawn", AudioRef = "Freemode_Mirror_Slash_sounds"},
+    {SoundName = "FE Despawn", AudioName = "FE_Despawn", AudioRef = "Freemode_Mirror_Slash_sounds"},
+    {SoundName = "Ingame Despawn", AudioName = "Ingame_Despawn", AudioRef = "Freemode_Mirror_Slash_sounds"},
+    {SoundName = "Lazer Takeoff Oneshot", AudioName = "Lazer_Takeoff_Oneshot", AudioRef = "Aircraft_Carrier_Raid_Sounds"},
+    {SoundName = "Attach", AudioName = "Attach", AudioRef = "GTAO_Tracker_Plant_Sounds"},
+    {SoundName = "Deliver Parcel", AudioName = "Deliver_Parcel", AudioRef = "DLC_MP2023_1_Small_And_Agile_Sounds"},
+    {SoundName = "Delivery Success", AudioName = "Delivery_Success", AudioRef = "DLC_MP2023_1_Small_And_Agile_Sounds"},
+    {SoundName = "GTAO XM3 FRM IG6 STASH ENTRY Door Breach Kick", AudioName = "GTAO_XM3_FRM_IG6_STASH_ENTRY_Door_Breach_Kick", AudioRef = "0"},
+    {SoundName = "Input Code Enter Correct Final", AudioName = "Input_Code_Enter_Correct_Final", AudioRef = "Safe_Minigame_Sounds"},
+    {SoundName = "Input Code Enter Wrong", AudioName = "Input_Code_Enter_Wrong", AudioRef = "Safe_Minigame_Sounds"},
+    {SoundName = "Input Code Up", AudioName = "Input_Code_Up", AudioRef = "Safe_Minigame_Sounds"},
+    {SoundName = "Input Code Down", AudioName = "Input_Code_Down", AudioRef = "Safe_Minigame_Sounds"},
+    {SoundName = "Attach", AudioName = "Attach", AudioRef = "Prep_Signal_Jammers_Sounds"},
+    {SoundName = "Collect Pass", AudioName = "Collect_Pass", AudioRef = "Prep_Elevator_Pass_Sounds"},
+    {SoundName = "Door Close", AudioName = "Door_Close", AudioRef = "LIFT_NORMAL_SOUNDSET"},
+    {SoundName = "Tone", AudioName = "Tone", AudioRef = "LIFT_NORMAL_SOUNDSET"},
+    {SoundName = "Air Defences Disabled", AudioName = "Air_Defences_Disabled", AudioRef = "DLC_Security_Investigation_The_Yacht_Sounds"},
+    {SoundName = "Upload Complete", AudioName = "Upload_Complete", AudioRef = "DLC_Security_Investigations_The_Limo_Sounds"},
+    {SoundName = "Focus", AudioName = "Focus", AudioRef = "DLC_AW_Trap_Controller_Sounds"},
+    {SoundName = "Next Trap", AudioName = "Next_Trap", AudioRef = "DLC_AW_Trap_Controller_Sounds"},
+    {SoundName = "Previous Trap", AudioName = "Previous_Trap", AudioRef = "DLC_AW_Trap_Controller_Sounds"},
+    {SoundName = "Activate Trap", AudioName = "Activate_Trap", AudioRef = "DLC_AW_Trap_Controller_Sounds"},
+    {SoundName = "Go To Target", AudioName = "Go_To_Target", AudioRef = "DLC_AW_Trap_Controller_Sounds"},
+    {SoundName = "Zone Captured", AudioName = "Zone_Captured", AudioRef = "dlc_vw_koth_Sounds"},
+    {SoundName = "Zone Held", AudioName = "Zone_Held", AudioRef = "dlc_vw_koth_Sounds"},
+    {SoundName = "5S", AudioName = "5S", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "Screen Flash Start", AudioName = "Screen_Flash_Start", AudioRef = "Deathmatch_Sounds"},
+    {SoundName = "Start", AudioName = "Start", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Finish Win", AudioName = "Finish_Win", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Finish Default", AudioName = "Finish_Default", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Weapon Force Change Smoke", AudioName = "Weapon_Force_Change_Smoke", AudioRef = "Deathmatch_Sounds"},
+    {SoundName = "Countdown GO", AudioName = "Countdown_GO", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Countdown 3", AudioName = "Countdown_3", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Countdown 3", AudioName = "Countdown_3", AudioRef = "DLC_SR_TR_General_Sounds"},
+    {SoundName = "Countdown 2", AudioName = "Countdown_2", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Countdown 2", AudioName = "Countdown_2", AudioRef = "DLC_SR_TR_General_Sounds"},
+    {SoundName = "Countdown 1", AudioName = "Countdown_1", AudioRef = "DLC_AW_Frontend_Sounds"},
+    {SoundName = "Countdown 1", AudioName = "Countdown_1", AudioRef = "DLC_SR_TR_General_Sounds"},
+    {SoundName = "Airhorn", AudioName = "Airhorn", AudioRef = "DLC_TG_Running_Back_Sounds"},
+    {SoundName = "Go Kart Death Match Soundset", AudioName = "Go_Kart_Death_Match_Soundset", AudioRef = "0"},
+    {SoundName = "LAND BASED VEHICLE FAKE REVS", AudioName = "LAND_BASED_VEHICLE_FAKE_REVS", AudioRef = "0"},
+    {SoundName = "Out of Bounds Explode", AudioName = "Out_of_Bounds_Explode", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "PowerupShard Attract Loop", AudioName = "PowerupShard_Attract_Loop", AudioRef = "Go_Kart_Death_Match_Soundset"},
+    {SoundName = "Fire Powerup Amped", AudioName = "Fire_Powerup_Amped", AudioRef = "Go_Kart_Death_Match_Soundset"},
+    {SoundName = "Fire Loop", AudioName = "Fire_Loop", AudioRef = "DLC_IE_VV_Gun_Player_Sounds"},
+    {SoundName = "30 Secs Remaining", AudioName = "30_Secs_Remaining", AudioRef = "Go_Kart_Death_Match_Soundset"},
+    {SoundName = "20 Secs Remaining", AudioName = "20_Secs_Remaining", AudioRef = "Go_Kart_Death_Match_Soundset"},
+    {SoundName = "10 Secs Countdown", AudioName = "10_Secs_Countdown", AudioRef = "Go_Kart_Death_Match_Soundset"},
+    {SoundName = "Powerup Block Loop", AudioName = "Powerup_Block_Loop", AudioRef = "Go_Kart_Death_Match_Soundset"},
+    {SoundName = "Bomb Countdown", AudioName = "Bomb_Countdown", AudioRef = "DLC_AW_PTB_Sounds"},
+    {SoundName = "Bomb Passed", AudioName = "Bomb_Passed", AudioRef = "DLC_AW_PTB_Sounds"},
+    {SoundName = "Bomb Collected", AudioName = "Bomb_Collected", AudioRef = "DLC_AW_PTB_Sounds"},
+    {SoundName = "Zone Captured Remote", AudioName = "Zone_Captured_Remote", AudioRef = "dlc_vw_koth_Sounds"},
+    {SoundName = "Zone Lost", AudioName = "Zone_Lost", AudioRef = "dlc_vw_koth_Sounds"},
+    {SoundName = "Zone Contested", AudioName = "Zone_Contested", AudioRef = "dlc_vw_koth_Sounds"},
+    {SoundName = "MP WAVE COMPLETE", AudioName = "MP_WAVE_COMPLETE", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Hit", AudioName = "Hit", AudioRef = "RESPAWN_SOUNDSET"},
+    {SoundName = "HORDE COOL DOWN TIMER", AudioName = "HORDE_COOL_DOWN_TIMER", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Pre Screen Stinger", AudioName = "Pre_Screen_Stinger", AudioRef = "DLC_HEISTS_FAILED_SCREEN_SOUNDS"},
+    {SoundName = "Cheers", AudioName = "Cheers", AudioRef = "DLC_TG_Running_Back_Sounds"},
+    {SoundName = "Whistle", AudioName = "Whistle", AudioRef = "DLC_TG_Running_Back_Sounds"},
+    {SoundName = "Round End", AudioName = "Round_End", AudioRef = "DLC_BTL_SM_Remix_Soundset"},
+    {SoundName = "Round End", AudioName = "Round_End", AudioRef = "DLC_LOW2_Sumo_Soundset"},
+    {SoundName = "Match End", AudioName = "Match_End", AudioRef = "DLC_Low2_Ibi_Sounds"},
+    {SoundName = "Payment Player", AudioName = "Payment_Player", AudioRef = "DLC_HEISTS_GENERIC_SOUNDS"},
+    {SoundName = "Payment Non Player", AudioName = "Payment_Non_Player", AudioRef = "DLC_HEISTS_GENERIC_SOUNDS"},
+    {SoundName = "Mission Pass Notify", AudioName = "Mission_Pass_Notify", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "Nightvision Loop", AudioName = "Nightvision_Loop", AudioRef = "GTAO_Vision_Modes_SoundSet"},
+    {SoundName = "Thermal Loop", AudioName = "Thermal_Loop", AudioRef = "GTAO_Vision_Modes_SoundSet"},
+    {SoundName = "Put On Mask", AudioName = "Put_On_Mask", AudioRef = "DLC_HEISTS_GENERIC_SOUNDS"},
+    {SoundName = "vault unlock", AudioName = "vault_unlock", AudioRef = "dlc_heist_fleeca_bank_door_sounds"},
+    {SoundName = "Gain Point", AudioName = "Gain_Point", AudioRef = "dlc_xm_aqo_sounds"},
+    {SoundName = "Swap Sides", AudioName = "Swap_Sides", AudioRef = "0"},
+    {SoundName = "Swap Sides", AudioName = "Swap_Sides", AudioRef = "DLC_HALLOWEEN_FVJ_Sounds"},
+    {SoundName = "Goggles Update", AudioName = "Goggles_Update", AudioRef = "DLC_XM17_Silo_Pred_Sounds"},
+    {SoundName = "elevator descend loop", AudioName = "elevator_descend_loop", AudioRef = "dlc_xm_IAA_Finale_sounds"},
+    {SoundName = "ROUND ENDING STINGER CUSTOM", AudioName = "ROUND_ENDING_STINGER_CUSTOM", AudioRef = "CELEBRATION_SOUNDSET"},
+    {SoundName = "Beast Checkpoint", AudioName = "Beast_Checkpoint", AudioRef = "0"},
+    {SoundName = "Player Collect", AudioName = "Player_Collect", AudioRef = "DLC_PILOT_MP_HUD_SOUNDS"},
+    {SoundName = "Checkpoint Collect", AudioName = "Checkpoint_Collect", AudioRef = "DLC_SR_TR_General_Sounds"},
+    {SoundName = "CHECKPOINT PERFECT", AudioName = "CHECKPOINT_PERFECT", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "Bomb Disarmed", AudioName = "Bomb_Disarmed", AudioRef = "GTAO_Speed_Convoy_Soundset"},
+    {SoundName = "Player Enter Line", AudioName = "Player_Enter_Line", AudioRef = "GTAO_FM_Cross_The_Line_Soundset"},
+    {SoundName = "Exit Capture Zone", AudioName = "Exit_Capture_Zone", AudioRef = "0"},
+    {SoundName = "Player Exit Line", AudioName = "Player_Exit_Line", AudioRef = "GTAO_FM_Cross_The_Line_Soundset"},
+    {SoundName = "Friend Pick Up", AudioName = "Friend_Pick_Up", AudioRef = "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+    {SoundName = "Beast Attack", AudioName = "Beast_Attack", AudioRef = "0"},
+    {SoundName = "Become JN", AudioName = "Become_JN", AudioRef = "DLC_GR_PM_Juggernaut_Player_Sounds"},
+    {SoundName = "Transform JN VFX", AudioName = "Transform_JN_VFX", AudioRef = "DLC_GR_PM_Juggernaut_Player_Sounds"},
+    {SoundName = "Transform JN VFX", AudioName = "Transform_JN_VFX", AudioRef = "DLC_BTL_TP_Remix_Juggernaut_Player_Sounds"},
+    {SoundName = "Transform JN VFX", AudioName = "Transform_JN_VFX", AudioRef = "DLC_IE_JN_Player_Sounds"},
+    {SoundName = "Zone Captured", AudioName = "Zone_Captured", AudioRef = "0"},
+    {SoundName = "Zone Captured Remote", AudioName = "Zone_Captured_Remote", AudioRef = "0"},
+    {SoundName = "Zone Lost", AudioName = "Zone_Lost", AudioRef = "0"},
+    {SoundName = "Zone Contested", AudioName = "Zone_Contested", AudioRef = "0"},
+    {SoundName = "Stop", AudioName = "Stop", AudioRef = "0"},
+    {SoundName = "Deactivate", AudioName = "Deactivate", AudioRef = "0"},
+    {SoundName = "Hover Unlock", AudioName = "Hover_Unlock", AudioRef = "DLC_XM17_IAA_Deluxos_Sounds"},
+    {SoundName = "Flight Unlock", AudioName = "Flight_Unlock", AudioRef = "DLC_XM17_IAA_Deluxos_Sounds"},
+    {SoundName = "Arming Countdown", AudioName = "Arming_Countdown", AudioRef = "GTAO_Speed_Convoy_Soundset"},
+    {SoundName = "Bomb Armed", AudioName = "Bomb_Armed", AudioRef = "GTAO_Speed_Convoy_Soundset"},
+    {SoundName = "Out of Bounds", AudioName = "Out_of_Bounds", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "Drone View", AudioName = "Drone_View", AudioRef = "DLC_GR_WVM_APC_Sounds"},
+    {SoundName = "Team Vehicle Destroyed", AudioName = "Team_Vehicle_Destroyed", AudioRef = "DLC_LOW2_Sumo_Soundset"},
+    {SoundName = "Vehicle Destroyed", AudioName = "Vehicle_Destroyed", AudioRef = "DLC_LOW2_Sumo_Soundset"},
+    {SoundName = "5 Second Timer", AudioName = "5_Second_Timer", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "Timer 10s", AudioName = "Timer_10s", AudioRef = "DLC_TG_Dinner_Sounds"},
+    {SoundName = "Timer To Night", AudioName = "Timer_To_Night", AudioRef = "DLC_Biker_LostAndDamned_Sounds"},
+    {SoundName = "Timer To Day", AudioName = "Timer_To_Day", AudioRef = "DLC_Biker_LostAndDamned_Sounds"},
+    {SoundName = "Timer 5s", AudioName = "Timer_5s", AudioRef = "DLC_TG_Dinner_Sounds"},
+    {SoundName = "Oneshot Final", AudioName = "Oneshot_Final", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "10s", AudioName = "10s", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "Explosion Countdown", AudioName = "Explosion_Countdown", AudioRef = "0"},
+    {SoundName = "Explosion Timer", AudioName = "Explosion_Timer", AudioRef = "0"},
+    {SoundName = "Brawl Start Oneshot", AudioName = "Brawl_Start_Oneshot", AudioRef = "dlc_vw_hk_sounds"},
+    {SoundName = "Brawl Walla Loop", AudioName = "Brawl_Walla_Loop", AudioRef = "dlc_vw_hk_sounds"},
+    {SoundName = "Wasted", AudioName = "Wasted", AudioRef = "DLC_IE_VV_General_Sounds"},
+    {SoundName = "Become Attacker", AudioName = "Become_Attacker", AudioRef = "DLC_IE_JN_Player_Sounds"},
+    {SoundName = "Become Attacker", AudioName = "Become_Attacker", AudioRef = "DLC_BTL_TP_Remix_Juggernaut_Player_Sounds"},
+    {SoundName = "Losing Team Shard", AudioName = "Losing_Team_Shard", AudioRef = "DLC_Exec_TP_SoundSet"},
+    {SoundName = "Crash", AudioName = "Crash", AudioRef = "0"},
+    {SoundName = "Crash", AudioName = "Crash", AudioRef = "DLC_Biker_DL_Sounds"},
+    {SoundName = "Bomb Detonate", AudioName = "Bomb_Detonate", AudioRef = "0"},
+    {SoundName = "Bomb Timer Loop", AudioName = "Bomb_Timer_Loop", AudioRef = "0"},
+    {SoundName = "Camera Destroy", AudioName = "Camera_Destroy", AudioRef = "DLC_HEIST_FLEECA_SOUNDSET"},
+    {SoundName = "Security Box Online", AudioName = "Security_Box_Online", AudioRef = "dlc_ch_heist_finale_security_alarms_sounds"},
+    {SoundName = "Camera Online", AudioName = "Camera_Online", AudioRef = "dlc_ch_heist_finale_security_alarms_sounds"},
+    {SoundName = "Zone Neutral", AudioName = "Zone_Neutral", AudioRef = "0"},
+    {SoundName = "Zone Team Capture", AudioName = "Zone_Team_Capture", AudioRef = "0"},
+    {SoundName = "Zone Enemy Capture", AudioName = "Zone_Enemy_Capture", AudioRef = "0"},
+    {SoundName = "Door Open Limit", AudioName = "Door_Open_Limit", AudioRef = "DLC_XM_Silo_Secret_Door_Sounds"},
+    {SoundName = "Prop Flash", AudioName = "Prop_Flash", AudioRef = "0"},
+    {SoundName = "Prop Delete", AudioName = "Prop_Delete", AudioRef = "0"},
+    {SoundName = "Screech", AudioName = "Screech", AudioRef = "DLC_HEIST_BIOLAB_MONKEYS_SOUNDS"},
+    {SoundName = "General Chatter", AudioName = "General_Chatter", AudioRef = "DLC_HEIST_BIOLAB_MONKEYS_SOUNDS"},
+    {SoundName = "Cage Rattle", AudioName = "Cage_Rattle", AudioRef = "DLC_HEIST_BIOLAB_MONKEYS_SOUNDS"},
+    {SoundName = "Flare", AudioName = "Flare", AudioRef = "DLC_HEISTS_BIOLAB_FINALE_SOUNDS"},
+    {SoundName = "Flare", AudioName = "Flare", AudioRef = "DLC_GR_DR_Player_Sounds"},
+    {SoundName = "Crashed Plane Ambience", AudioName = "Crashed_Plane_Ambience", AudioRef = "DLC_Apartments_Extraction_SoundSet"},
+    {SoundName = "Powerup Despawn", AudioName = "Powerup_Despawn", AudioRef = "0"},
+    {SoundName = "Powerup Respawn", AudioName = "Powerup_Respawn", AudioRef = "POWER_PLAY_General_Soundset"},
+    {SoundName = "transform oneshot", AudioName = "transform_oneshot", AudioRef = "dlc_xm_stromberg_sounds"},
+    {SoundName = "tag entity", AudioName = "tag_entity", AudioRef = "dlc_xm_heists_iaa_morgue_sounds"},
+    {SoundName = "Beacon", AudioName = "Beacon", AudioRef = "DLC_GR_WVM_MOC_Soundset"},
+    {SoundName = "Armed", AudioName = "Armed", AudioRef = "0"},
+    {SoundName = "Countdown", AudioName = "Countdown", AudioRef = "0"},
+    {SoundName = "Beacon", AudioName = "Beacon", AudioRef = "0"},
+    {SoundName = "Fire Loop", AudioName = "Fire_Loop", AudioRef = "0"},
+    {SoundName = "Use Bunnyhop", AudioName = "Use_Bunnyhop", AudioRef = "DLC_Biker_DL_Sounds"},
+    {SoundName = "Use Boost", AudioName = "Use_Boost", AudioRef = "DLC_Biker_DL_Sounds"},
+    {SoundName = "Use Zoned", AudioName = "Use_Zoned", AudioRef = "DLC_Biker_DL_Sounds"},
+    {SoundName = "Last Alive", AudioName = "Last_Alive", AudioRef = "DLC_SR_RS_Player_Sounds"},
+    {SoundName = "submarine sunk", AudioName = "submarine_sunk", AudioRef = "dlc_xm_submarine_sounds"},
+    {SoundName = "Bounds Timer Pulse", AudioName = "Bounds_Timer_Pulse", AudioRef = "DLC_SM_VEHWA_Player_Sounds"},
+    {SoundName = "TIMER RADIAL Pulse", AudioName = "TIMER_RADIAL_Pulse", AudioRef = "DLC_AS_TRP_Sounds"},
+    {SoundName = "TIMER RADIAL Pulse", AudioName = "TIMER_RADIAL_Pulse", AudioRef = "DLC_BTL_SM_Remix_Soundset"},
+    {SoundName = "TIMER RADIAL Reset", AudioName = "TIMER_RADIAL_Reset", AudioRef = "DLC_AS_TRP_Sounds"},
+    {SoundName = "TIMER RADIAL Reset", AudioName = "TIMER_RADIAL_Reset", AudioRef = "DLC_BTL_SM_Remix_Soundset"},
+    {SoundName = "Hack Start", AudioName = "Hack_Start", AudioRef = "DLC_IE_SVM_Voltic2_Hacking_Sounds"},
+    {SoundName = "Hack Loop", AudioName = "Hack_Loop", AudioRef = "DLC_IE_SVM_Voltic2_Hacking_Sounds"},
+    {SoundName = "Hack Complete", AudioName = "Hack_Complete", AudioRef = "DLC_IE_SVM_Voltic2_Hacking_Sounds"},
+    {SoundName = "power on", AudioName = "power_on", AudioRef = "dlc_ch_heist_finale_sounds"},
+    {SoundName = "End Zone Flash", AudioName = "End_Zone_Flash", AudioRef = "DLC_BTL_RB_Remix_Sounds"},
+    {SoundName = "Carrying", AudioName = "Carrying", AudioRef = "DLC_Low2_Ibi_Sounds"},
+    {SoundName = "dlc ch heist finale poison gas coughs sounds", AudioName = "dlc_ch_heist_finale_poison_gas_coughs_sounds", AudioRef = "0"},
+    {SoundName = "Beast Sprint Loop", AudioName = "Beast_Sprint_Loop", AudioRef = "0"},
+    {SoundName = "Beast Jump", AudioName = "Beast_Jump", AudioRef = "0"},
+    {SoundName = "Beast Jump Land", AudioName = "Beast_Jump_Land", AudioRef = "0"},
+    {SoundName = "Beast Cloak", AudioName = "Beast_Cloak", AudioRef = "0"},
+    {SoundName = "Beast Uncloak", AudioName = "Beast_Uncloak", AudioRef = "0"},
+    {SoundName = "Transmitter Beeps", AudioName = "Transmitter_Beeps", AudioRef = "DLC_GR_DR_Player_Sounds"},
+    {SoundName = "NightFall Stinger", AudioName = "NightFall_Stinger", AudioRef = "DLC_Biker_LostAndDamned_Sounds"},
+    {SoundName = "DayBreak Stinger", AudioName = "DayBreak_Stinger", AudioRef = "DLC_Biker_LostAndDamned_Sounds"},
+    {SoundName = "Round End", AudioName = "Round_End", AudioRef = "0"},
+    {SoundName = "Round Start", AudioName = "Round_Start", AudioRef = "0"},
+    {SoundName = "Reset Timer", AudioName = "Reset_Timer", AudioRef = "0"},
+    {SoundName = "Vehicle Transform", AudioName = "Vehicle_Transform", AudioRef = "dlc_xm_aqo_sounds"},
+    {SoundName = "Become Slasher", AudioName = "Become_Slasher", AudioRef = "dlc_xm_sls_Sounds"},
+    {SoundName = "Become Hunted", AudioName = "Become_Hunted", AudioRef = "dlc_xm_sls_Sounds"},
+    {SoundName = "Next Level Gun", AudioName = "Next_Level_Gun", AudioRef = "DLC_Biker_KQ_Sounds"},
+    {SoundName = "Next Level Explosive", AudioName = "Next_Level_Explosive", AudioRef = "DLC_Biker_KQ_Sounds"},
+    {SoundName = "Next Level Melee", AudioName = "Next_Level_Melee", AudioRef = "DLC_Biker_KQ_Sounds"},
+    {SoundName = "Next Level Generic", AudioName = "Next_Level_Generic", AudioRef = "DLC_Biker_KQ_Sounds"},
+    {SoundName = "R2 Boost", AudioName = "R2_Boost", AudioRef = "DLC_Biker_SL_Sounds"},
+    {SoundName = "Teammate Checkpoint", AudioName = "Teammate_Checkpoint", AudioRef = "DLC_Biker_SL_Sounds"},
+    {SoundName = "Take First", AudioName = "Take_First", AudioRef = "DLC_Biker_SL_Sounds"},
+    {SoundName = "Lose First", AudioName = "Lose_First", AudioRef = "DLC_Biker_SL_Sounds"},
+    {SoundName = "Out Of Range", AudioName = "Out_Of_Range", AudioRef = "DLC_Biker_SL_Sounds"},
+    {SoundName = "In Range", AudioName = "In_Range", AudioRef = "DLC_Biker_SL_Sounds"},
+    {SoundName = "Period Start", AudioName = "Period_Start", AudioRef = "DLC_AW_BB_Sounds"},
+    {SoundName = "Become Target", AudioName = "Become_Target", AudioRef = "dlc_xm_hata_Sounds"},
+    {SoundName = "No Longer Target", AudioName = "No_Longer_Target", AudioRef = "dlc_xm_hata_Sounds"},
+    {SoundName = "Collect Pickup", AudioName = "Collect_Pickup", AudioRef = "DLC_IE_PL_Player_Sounds"},
+    {SoundName = "Collect Pickup", AudioName = "Collect_Pickup", AudioRef = "DLC_IE_PL_Team_Sounds"},
+    {SoundName = "Collect Pickup", AudioName = "Collect_Pickup", AudioRef = "DLC_IE_PL_Enemy_Sounds"},
+    {SoundName = "Drop Pickup", AudioName = "Drop_Pickup", AudioRef = "DLC_IE_PL_Player_Sounds"},
+    {SoundName = "Drop Pickup", AudioName = "Drop_Pickup", AudioRef = "DLC_IE_PL_Team_Sounds"},
+    {SoundName = "Drop Pickup", AudioName = "Drop_Pickup", AudioRef = "DLC_IE_PL_Enemy_Sounds"},
+    {SoundName = "Score Up", AudioName = "Score_Up", AudioRef = "DLC_IE_PL_Player_Sounds"},
+    {SoundName = "Score Up", AudioName = "Score_Up", AudioRef = "DLC_IE_PL_Team_Sounds"},
+    {SoundName = "Score Up", AudioName = "Score_Up", AudioRef = "DLC_IE_PL_Enemy_Sounds"},
+    {SoundName = "Score Down", AudioName = "Score_Down", AudioRef = "DLC_IE_PL_Player_Sounds"},
+    {SoundName = "Score Down", AudioName = "Score_Down", AudioRef = "DLC_IE_PL_Team_Sounds"},
+    {SoundName = "Score Down", AudioName = "Score_Down", AudioRef = "DLC_IE_PL_Enemy_Sounds"},
+    {SoundName = "Countdown To Win", AudioName = "Countdown_To_Win", AudioRef = "DLC_IE_PL_Player_Sounds"},
+    {SoundName = "Countdown To Win", AudioName = "Countdown_To_Win", AudioRef = "DLC_IE_PL_Team_Sounds"},
+    {SoundName = "Timer 10s", AudioName = "Timer_10s", AudioRef = "0"},
+    {SoundName = "alarm loop", AudioName = "alarm_loop", AudioRef = "dlc_xm_farm_sounds"},
+    {SoundName = "alarm loop", AudioName = "alarm_loop", AudioRef = "dlc_xm_submarine_sounds"},
+    {SoundName = "Condemned Heartbeat", AudioName = "Condemned_Heartbeat", AudioRef = "DLC_SM_CND_Player_Sounds"},
+    {SoundName = "Condemned", AudioName = "Condemned", AudioRef = "DLC_SM_CND_Player_Sounds"},
+    {SoundName = "Uncondemned", AudioName = "Uncondemned", AudioRef = "DLC_SM_CND_Player_Sounds"},
+    {SoundName = "Trash Bag Land", AudioName = "Trash_Bag_Land", AudioRef = "DLC_HEIST_SERIES_A_SOUNDS"},
+    {SoundName = "Bus Schedule Pickup", AudioName = "Bus_Schedule_Pickup", AudioRef = "DLC_PRISON_BREAK_HEIST_SOUNDS"},
+    {SoundName = "Metal Detector Offline", AudioName = "Metal_Detector_Offline", AudioRef = "dlc_ch_heist_finale_security_alarms_sounds"},
+    {SoundName = "Security Box Offline Gun", AudioName = "Security_Box_Offline_Gun", AudioRef = "dlc_ch_heist_finale_security_alarms_sounds"},
+    {SoundName = "Metal Detector Online", AudioName = "Metal_Detector_Online", AudioRef = "dlc_ch_heist_finale_security_alarms_sounds"},
+    {SoundName = "keypad break", AudioName = "keypad_break", AudioRef = "dlc_ch_heist_thermal_charge_sounds"},
+    {SoundName = "Gate Lock Break", AudioName = "Gate_Lock_Break", AudioRef = "DLC_HEISTS_ORNATE_BANK_FINALE_SOUNDS"},
+    {SoundName = "Hack Success Remote", AudioName = "Hack_Success_Remote", AudioRef = "0"},
+    {SoundName = "Test Circuit", AudioName = "Test_Circuit", AudioRef = "0"},
+    {SoundName = "Hack Fail", AudioName = "Hack_Fail", AudioRef = "0"},
+    {SoundName = "Hack Fail Remote", AudioName = "Hack_Fail_Remote", AudioRef = "0"},
+    {SoundName = "Grab Wire", AudioName = "Grab_Wire", AudioRef = "0"},
+    {SoundName = "Attach Wire", AudioName = "Attach_Wire", AudioRef = "0"},
+    {SoundName = "Error", AudioName = "Error", AudioRef = "0"},
+    {SoundName = "Output Highlight", AudioName = "Output_Highlight", AudioRef = "0"},
+    {SoundName = "Input Highlight", AudioName = "Input_Highlight", AudioRef = "0"},
+    {SoundName = "laptop download loop", AudioName = "laptop_download_loop", AudioRef = "dlc_xm_heists_iaa_morgue_sounds"},
+    {SoundName = "cash room door button", AudioName = "cash_room_door_button", AudioRef = "dlc_ch_heist_finale_sounds"},
+    {SoundName = "Hit Mirror", AudioName = "Hit_Mirror", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Pass", AudioName = "Pass", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Pass Remote", AudioName = "Pass_Remote", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Fail", AudioName = "Fail", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Fail Remote", AudioName = "Fail_Remote", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Blue Target Explode", AudioName = "Blue_Target_Explode", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Red Target Explode", AudioName = "Red_Target_Explode", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Node Release", AudioName = "Node_Release", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Node Select", AudioName = "Node_Select", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Background", AudioName = "Background", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Blue Target Charge", AudioName = "Blue_Target_Charge", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Red Target Charge", AudioName = "Red_Target_Charge", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Cursor Move", AudioName = "Cursor_Move", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Rotate Mirror", AudioName = "Rotate_Mirror", AudioRef = "dlc_xm_silo_laser_hack_sounds"},
+    {SoundName = "Keycard Success", AudioName = "Keycard_Success", AudioRef = "DLC_HEISTS_BIOLAB_FINALE_SOUNDS"},
+    {SoundName = "Keycard Fail", AudioName = "Keycard_Fail", AudioRef = "DLC_HEISTS_BIOLAB_FINALE_SOUNDS"},
+    {SoundName = "Hack Failed", AudioName = "Hack_Failed", AudioRef = "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+    {SoundName = "HACKING DOOR UNLOCK SOUNDS", AudioName = "HACKING_DOOR_UNLOCK_SOUNDS", AudioRef = "0"},
+    {SoundName = "container door", AudioName = "container_door", AudioRef = "dlc_prison_break_heist_sounds"},
+    {SoundName = "DLC AW BB Sounds", AudioName = "DLC_AW_BB_Sounds", AudioRef = "0"},
+    {SoundName = "Explosion Timer", AudioName = "Explosion_Timer", AudioRef = "DLC_Lowrider_Relay_Race_Sounds"},
+    {SoundName = "EMP Vehicle Hum", AudioName = "EMP_Vehicle_Hum", AudioRef = "DLC_HEIST_BIOLAB_DELIVER_EMP_SOUNDS"},
+    {SoundName = "Hack Stop", AudioName = "Hack_Stop", AudioRef = "DLC_IE_SVM_Voltic2_Hacking_Sounds"},
+    {SoundName = "Remote Friendly Enter Line", AudioName = "Remote_Friendly_Enter_Line", AudioRef = "GTAO_FM_Cross_The_Line_Soundset"},
+    {SoundName = "Remote Enemy Enter Line", AudioName = "Remote_Enemy_Enter_Line", AudioRef = "GTAO_FM_Cross_The_Line_Soundset"},
+    {SoundName = "Enter Capture Zone", AudioName = "Enter_Capture_Zone", AudioRef = "0"},
+    {SoundName = "Zone Enter", AudioName = "Zone_Enter", AudioRef = "0"},
+    {SoundName = "sub scanner loop", AudioName = "sub_scanner_loop", AudioRef = "dlc_xm_stromberg_sounds"},
+    {SoundName = "cash room door open", AudioName = "cash_room_door_open", AudioRef = "dlc_ch_heist_finale_sounds"},
+    {SoundName = "cash room door open end", AudioName = "cash_room_door_open_end", AudioRef = "dlc_ch_heist_finale_sounds"},
+    {SoundName = "cash room door close end", AudioName = "cash_room_door_close_end", AudioRef = "dlc_ch_heist_finale_sounds"},
+    {SoundName = "Garage Door", AudioName = "Garage_Door", AudioRef = "DLC_HEISTS_GENERIC_SOUNDS"},
+    {SoundName = "Plane Door Open", AudioName = "Plane_Door_Open", AudioRef = "DLC_GR_WVM_Oppressor2_Sounds"},
+    {SoundName = "Plane Alarm Loop", AudioName = "Plane_Alarm_Loop", AudioRef = "DLC_GR_WVM_Oppressor2_Sounds"},
+    {SoundName = "lights on", AudioName = "lights_on", AudioRef = "dlc_xm_stealavg_sounds"},
+    {SoundName = "EMP Blast", AudioName = "EMP_Blast", AudioRef = "DLC_HEISTS_BIOLAB_FINALE_SOUNDS"},
+    {SoundName = "EMP", AudioName = "EMP", AudioRef = "DLC_HALLOWEEN_FVJ_Sounds"},
+    {SoundName = "EMP", AudioName = "EMP", AudioRef = "0"},
+    {SoundName = "Weapon Disabled", AudioName = "Weapon_Disabled", AudioRef = "DLC_SR_LG_Player_Sounds"},
+    {SoundName = "Weapon Enabled", AudioName = "Weapon_Enabled", AudioRef = "DLC_SR_LG_Player_Sounds"},
+    {SoundName = "Metal Detector Big Guns", AudioName = "Metal_Detector_Big_Guns", AudioRef = "dlc_ch_heist_finale_security_alarms_sounds"},
+    {SoundName = "Metal Detector Small Guns", AudioName = "Metal_Detector_Small_Guns", AudioRef = "dlc_ch_heist_finale_security_alarms_sounds"},
+    {SoundName = "Breaker 02", AudioName = "Breaker_02", AudioRef = "0"},
+    {SoundName = "Enter Area", AudioName = "Enter_Area", AudioRef = "DLC_Lowrider_Relay_Race_Sounds"},
+    {SoundName = "Out Of Area", AudioName = "Out_Of_Area", AudioRef = "DLC_Lowrider_Relay_Race_Sounds"},
+    {SoundName = "Round Start", AudioName = "Round_Start", AudioRef = "DLC_LOW2_Sumo_Soundset"},
+    {SoundName = "Round Start", AudioName = "Round_Start", AudioRef = "DLC_BTL_SM_Remix_Soundset"},
+    {SoundName = "Airhorn", AudioName = "Airhorn", AudioRef = "DLC_BTL_RB_Remix_Sounds"},
+    {SoundName = "Countdown GO", AudioName = "Countdown_GO", AudioRef = "DLC_SR_TR_General_Sounds"},
+    {SoundName = "Transform Attacker VFX", AudioName = "Transform_Attacker_VFX", AudioRef = "DLC_BTL_TP_Remix_Juggernaut_Player_Sounds"},
+    {SoundName = "Transform Attacker VFX", AudioName = "Transform_Attacker_VFX", AudioRef = "DLC_IE_JN_Player_Sounds"},
+    {SoundName = "Transform Local Player", AudioName = "Transform_Local_Player", AudioRef = "DLC_Exec_TP_SoundSet"},
+    {SoundName = "Transform Loser Local Player", AudioName = "Transform_Loser_Local_Player", AudioRef = "DLC_Exec_TP_SoundSet"},
+    {SoundName = "Period Over", AudioName = "Period_Over", AudioRef = "DLC_AW_BB_Sounds"},
+    {SoundName = "Breaker 01", AudioName = "Breaker_01", AudioRef = "0"},
+    {SoundName = "Match Start", AudioName = "Match_Start", AudioRef = "DLC_Low2_Ibi_Sounds"},
+    {SoundName = "Round Start JN", AudioName = "Round_Start_JN", AudioRef = "0"},
+    {SoundName = "Cargobob Door Open", AudioName = "Cargobob_Door_Open", AudioRef = "0"},
+    {SoundName = "Helicopter Loop", AudioName = "Helicopter_Loop", AudioRef = "0"},
+    {SoundName = "CUTSCENE DIALOGUE OVERRIDE SOUND 01", AudioName = "CUTSCENE_DIALOGUE_OVERRIDE_SOUND_01", AudioRef = "0"},
+    {SoundName = "CUTSCENE DIALOGUE OVERRIDE SOUND 02", AudioName = "CUTSCENE_DIALOGUE_OVERRIDE_SOUND_02", AudioRef = "0"},
+    {SoundName = "vault door explosion", AudioName = "vault_door_explosion", AudioRef = "dlc_ch_heist_finale_sounds"},
+    {SoundName = "Leave Horn", AudioName = "Leave_Horn", AudioRef = "DLC_Apartment_Yacht_Streams_Soundset"},
+    {SoundName = "Arrive Horn", AudioName = "Arrive_Horn", AudioRef = "DLC_Apartment_Yacht_Streams_Soundset"},
+    {SoundName = "JN Death", AudioName = "JN_Death", AudioRef = "0"},
+    {SoundName = "Enemy Killed 1p", AudioName = "Enemy_Killed_1p", AudioRef = "dlc_xm_hata_Sounds"},
+    {SoundName = "Enemy Killed 3p", AudioName = "Enemy_Killed_3p", AudioRef = "dlc_xm_hata_Sounds"},
+    {SoundName = "Team Killed 1p", AudioName = "Team_Killed_1p", AudioRef = "dlc_xm_hata_Sounds"},
+    {SoundName = "Team Killed 3p", AudioName = "Team_Killed_3p", AudioRef = "dlc_xm_hata_Sounds"},
+    {SoundName = "Become JN", AudioName = "Become_JN", AudioRef = "DLC_IE_JN_Player_Sounds"},
+    {SoundName = "Become JN", AudioName = "Become_JN", AudioRef = "DLC_BTL_TP_Remix_Juggernaut_Player_Sounds"},
+    {SoundName = "Winning Team Shard", AudioName = "Winning_Team_Shard", AudioRef = "DLC_Exec_TP_SoundSet"},
+    {SoundName = "Night Die", AudioName = "Night_Die", AudioRef = "DLC_Biker_LostAndDamned_Sounds"},
+    {SoundName = "Day Die", AudioName = "Day_Die", AudioRef = "DLC_Biker_LostAndDamned_Sounds"},
+    {SoundName = "Beast Die", AudioName = "Beast_Die", AudioRef = "0"},
+    {SoundName = "Security Box Offline Tazer", AudioName = "Security_Box_Offline_Tazer", AudioRef = "dlc_ch_heist_finale_security_alarms_sounds"},
+    {SoundName = "Camera Offline", AudioName = "Camera_Offline", AudioRef = "dlc_ch_heist_finale_security_alarms_sounds"},
+    {SoundName = "emp activate", AudioName = "emp_activate", AudioRef = "dlc_ch_heist_finale_sounds"},
+    {SoundName = "Score Goal", AudioName = "Score_Goal", AudioRef = "DLC_AW_BB_Sounds"},
+    {SoundName = "LOCAL PLYR CASH COUNTER COMPLETE", AudioName = "LOCAL_PLYR_CASH_COUNTER_COMPLETE", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "LOCAL PLYR CASH COUNTER INCREASE", AudioName = "LOCAL_PLYR_CASH_COUNTER_INCREASE", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "REMOTE PLYR CASH COUNTER COMPLETE", AudioName = "REMOTE_PLYR_CASH_COUNTER_COMPLETE", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "REMOTE PLYR CASH COUNTER INCREASE", AudioName = "REMOTE_PLYR_CASH_COUNTER_INCREASE", AudioRef = "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+    {SoundName = "Collect", AudioName = "Collect", AudioRef = "DLC_Low2_Ibi_Sounds"},
+    {SoundName = "Drop", AudioName = "Drop", AudioRef = "DLC_Low2_Ibi_Sounds"},
+    {SoundName = "Score", AudioName = "Score", AudioRef = "DLC_Low2_Ibi_Sounds"},
+    {SoundName = "Transform Remote Player", AudioName = "Transform_Remote_Player", AudioRef = "DLC_Exec_TP_SoundSet"},
+    {SoundName = "Player Pick Up", AudioName = "Player_Pick_Up", AudioRef = "In_And_Out_Attacker_Sounds"},
+    {SoundName = "Friend Pick Up", AudioName = "Friend_Pick_Up", AudioRef = "In_And_Out_Attacker_Sounds"},
+    {SoundName = "Enemy Pick Up", AudioName = "Enemy_Pick_Up", AudioRef = "In_And_Out_Defender_Sounds"},
+    {SoundName = "Dropped", AudioName = "Dropped", AudioRef = "In_And_Out_Attacker_Sounds"},
+    {SoundName = "Dropped", AudioName = "Dropped", AudioRef = "In_And_Out_Defender_Sounds"},
+    {SoundName = "Deliver", AudioName = "Deliver", AudioRef = "In_And_Out_Attacker_Sounds"},
+    {SoundName = "Enemy Deliver", AudioName = "Enemy_Deliver", AudioRef = "In_And_Out_Defender_Sounds"},
+    {SoundName = "Vehicle Destroyed", AudioName = "Vehicle_Destroyed", AudioRef = "0"},
+    {SoundName = "Successful Landing", AudioName = "Successful_Landing", AudioRef = "0"},
+    {SoundName = "Failed Landing", AudioName = "Failed_Landing", AudioRef = "0"},
+    {SoundName = "Reset Win", AudioName = "Reset_Win", AudioRef = "0"},
+    {SoundName = "Lose Powerup", AudioName = "Lose_Powerup", AudioRef = "DLC_IE_VV_General_Sounds"},
+    {SoundName = "Steal Powerup", AudioName = "Steal_Powerup", AudioRef = "DLC_IE_VV_General_Sounds"},
+    {SoundName = "Bounds Timer Reset", AudioName = "Bounds_Timer_Reset", AudioRef = "DLC_SM_VEHWA_Player_Sounds"},
+    {SoundName = "Prop Reset", AudioName = "Prop_Reset", AudioRef = "0"},
+    {SoundName = "police notification", AudioName = "police_notification", AudioRef = "DLC_AS_VNT_Sounds"},
+    {SoundName = "Prop Tagged", AudioName = "Prop_Tagged", AudioRef = "0"},
+    {SoundName = "Prop Contested", AudioName = "Prop_Contested", AudioRef = "0"},
+    {SoundName = "Loop", AudioName = "Loop", AudioRef = "0"},
+    {SoundName = "", AudioName = "", AudioRef = "0"},
+    {SoundName = "Activate", AudioName = "Activate", AudioRef = "0"},
+    {SoundName = "Bomb Release", AudioName = "Bomb_Release", AudioRef = "0"},
+    {SoundName = "Powerup Collect local", AudioName = "Powerup_Collect_local", AudioRef = "0"},
+    {SoundName = "Powerup Collect Remote", AudioName = "Powerup_Collect_Remote", AudioRef = "0"},
+    {SoundName = "Bomb Collect", AudioName = "Bomb_Collect", AudioRef = "DLC_SR_TR_Bomb_Player_Sounds"},
+    {SoundName = "Bomb Collect", AudioName = "Bomb_Collect", AudioRef = "DLC_SR_TR_Bomb_Enemy_Sounds"},
+    {SoundName = "Rocket Collect", AudioName = "Rocket_Collect", AudioRef = "DLC_SR_TR_Rocket_Player_Sounds"},
+    {SoundName = "Rocket Collect", AudioName = "Rocket_Collect", AudioRef = "DLC_SR_TR_Rocket_Enemy_Sounds"},
+    {SoundName = "Gun Collect", AudioName = "Gun_Collect", AudioRef = "DLC_SR_TR_Gun_Player_Sounds"},
+    {SoundName = "Gun Collect", AudioName = "Gun_Collect", AudioRef = "DLC_SR_TR_Gun_Enemy_Sounds"},
+    {SoundName = "Collect Powerup", AudioName = "Collect_Powerup", AudioRef = "0"},
+    {SoundName = "Start", AudioName = "Start", AudioRef = "0"},
+    {SoundName = "Resurrected", AudioName = "Resurrected", AudioRef = "DLC_SR_RS_Team_Sounds"},
+    {SoundName = "Resurrected", AudioName = "Resurrected", AudioRef = "DLC_SR_RS_Enemy_Sounds"},
+    {SoundName = "Powerup Collect Player", AudioName = "Powerup_Collect_Player", AudioRef = "0"},
+    {SoundName = "Flag Collected", AudioName = "Flag_Collected", AudioRef = "DLC_SM_STPI_Player_Sounds"},
+    {SoundName = "Flag Collected", AudioName = "Flag_Collected", AudioRef = "DLC_SM_STPI_Enemy_Sounds"},
+    {SoundName = "Flag Delivered", AudioName = "Flag_Delivered", AudioRef = "DLC_SM_STPI_Player_Sounds"},
+    {SoundName = "Flag Delivered", AudioName = "Flag_Delivered", AudioRef = "DLC_SM_STPI_Enemy_Sounds"},
+    {SoundName = "Flag Dropped", AudioName = "Flag_Dropped", AudioRef = "DLC_SM_STPI_Player_Sounds"},
+    {SoundName = "Flag Dropped", AudioName = "Flag_Dropped", AudioRef = "DLC_SM_STPI_Enemy_Sounds"},
+    {SoundName = "Score Team", AudioName = "Score_Team", AudioRef = "DLC_Biker_KQ_Sounds"},
+    {SoundName = "Score Opponent", AudioName = "Score_Opponent", AudioRef = "DLC_Biker_KQ_Sounds"},
+    {SoundName = "Goal Reached", AudioName = "Goal_Reached", AudioRef = "dlc_xm_aqo_sounds"},
+    {SoundName = "Beast Checkpoint NPC", AudioName = "Beast_Checkpoint_NPC", AudioRef = "0"},
+    {SoundName = "Checkpoint Teammate", AudioName = "Checkpoint_Teammate", AudioRef = "GTAO_Shepherd_Sounds"},
+    {SoundName = "Activate From Vehicle", AudioName = "Activate_From_Vehicle", AudioRef = "0"},
+    {SoundName = "Powerup Respawn", AudioName = "Powerup_Respawn", AudioRef = "0"},
+    {SoundName = "Weapon Respawn", AudioName = "Weapon_Respawn", AudioRef = "0"},
+    {SoundName = "Round Win", AudioName = "Round_Win", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Round Lost", AudioName = "Round_Lost", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "GPS Set", AudioName = "GPS_Set", AudioRef = "DLC_Security_Investigation_The_Yacht_Sounds"},
+    {SoundName = "Pit Stop Complete", AudioName = "Pit_Stop_Complete", AudioRef = "DLC_H3_Circuit_Racing_Sounds"},
+    {SoundName = "Push Loop", AudioName = "Push_Loop", AudioRef = "DLC_MP2023_1_LSA_6_Trolley_sounds"},
+    {SoundName = "Radar Hack Button Success", AudioName = "Radar_Hack_Button_Success", AudioRef = "Cayo_Perico_Attrition_Mode_Sounds"},
+    {SoundName = "Radar Hack Button Fail", AudioName = "Radar_Hack_Button_Fail", AudioRef = "Cayo_Perico_Attrition_Mode_Sounds"},
+    {SoundName = "Container Door Lock Shoot", AudioName = "Container_Door_Lock_Shoot", AudioRef = "DLC_MP2023_1_LSA_1_Sounds"},
+    {SoundName = "Overheat Loop", AudioName = "Overheat_Loop", AudioRef = "DLC_H4_anims_glass_cutter_Sounds"},
+    {SoundName = "StartCutting", AudioName = "StartCutting", AudioRef = "DLC_H4_anims_glass_cutter_Sounds"},
+    {SoundName = "Overheated", AudioName = "Overheated", AudioRef = "DLC_H4_anims_glass_cutter_Sounds"},
+    {SoundName = "Input Code Enter Correct", AudioName = "Input_Code_Enter_Correct", AudioRef = "Safe_Minigame_Sounds"},
+    {SoundName = "Blowtorch On", AudioName = "Blowtorch_On", AudioRef = "DLC_H4_Underwater_Blowtorch_Sounds"},
+    {SoundName = "Blowtorch Loop", AudioName = "Blowtorch_Loop", AudioRef = "DLC_H4_Underwater_Blowtorch_Sounds"},
+    {SoundName = "Blowtorch Off", AudioName = "Blowtorch_Off", AudioRef = "DLC_H4_Underwater_Blowtorch_Sounds"},
+    {SoundName = "Blowtorch Cut Loop", AudioName = "Blowtorch_Cut_Loop", AudioRef = "DLC_H4_Underwater_Blowtorch_Sounds"},
+    {SoundName = "Cut Final Bar", AudioName = "Cut_Final_Bar", AudioRef = "DLC_H4_Underwater_Blowtorch_Sounds"},
+    {SoundName = "Cut Bar", AudioName = "Cut_Bar", AudioRef = "DLC_H4_Underwater_Blowtorch_Sounds"},
+    {SoundName = "shotgun shard", AudioName = "shotgun_shard", AudioRef = "dlc_hei4_hidden_collectibles_sounds"},
+    {SoundName = "gadget pistol shard", AudioName = "gadget_pistol_shard", AudioRef = "dlc_hei4_hidden_collectibles_sounds"},
+    {SoundName = "BreakerDown", AudioName = "BreakerDown", AudioRef = "DLC_H4_scripted_island_power_sounds"},
+    {SoundName = "BreakerUp", AudioName = "BreakerUp", AudioRef = "DLC_H4_scripted_island_power_sounds"},
+    {SoundName = "Clothes Swap", AudioName = "Clothes_Swap", AudioRef = "GTAO_Change_Outfit_Sounds"},
+    {SoundName = "Hack", AudioName = "Hack", AudioRef = "Military_Convoy_HiJack_Sounds"},
+    {SoundName = "Keypad Access Player", AudioName = "Keypad_Access_Player", AudioRef = "DLC_Security_Data_Leak_2_Sounds"},
+    {SoundName = "Keypad Access", AudioName = "Keypad_Access", AudioRef = "DLC_Security_Data_Leak_2_Sounds"},
+    {SoundName = "Bump", AudioName = "Bump", AudioRef = "0"},
+    {SoundName = "Flight loop", AudioName = "Flight_loop", AudioRef = "0"},
+    {SoundName = "UFO Ambience", AudioName = "UFO_Ambience", AudioRef = "Tripping_Sounds"},
+    {SoundName = "Self Destruct", AudioName = "Self_Destruct", AudioRef = "0"},
+    {SoundName = "Gun Fire", AudioName = "Gun_Fire", AudioRef = "0"},
+    {SoundName = "Remove Keycard", AudioName = "Remove_Keycard", AudioRef = "Twin_Card_Entry_Sounds"},
+    {SoundName = "magnetic explosion", AudioName = "magnetic_explosion", AudioRef = "dlc_h4_heist_finale_sounds_soundset"},
+    {SoundName = "Keycard Success", AudioName = "Keycard_Success", AudioRef = "Twin_Card_Entry_Sounds"},
+    {SoundName = "Keycard Fail", AudioName = "Keycard_Fail", AudioRef = "Twin_Card_Entry_Sounds"},
+    {SoundName = "Insert Keycard", AudioName = "Insert_Keycard", AudioRef = "Twin_Card_Entry_Sounds"},
+    {SoundName = "Music Stream Stop", AudioName = "Music_Stream_Stop", AudioRef = "DLC_Security_Data_Leak_3_Hood_Pass_Sounds"},
+    {SoundName = "Bomb Arm", AudioName = "Bomb_Arm", AudioRef = "DLC_MPSUM2_ULP2_Rogue_Drones"},
+    {SoundName = "Bomb Countdown Beep", AudioName = "Bomb_Countdown_Beep", AudioRef = "DLC_MPSUM2_ULP2_Rogue_Drones"},
+    {SoundName = "Bomb Defuse", AudioName = "Bomb_Defuse", AudioRef = "DLC_MPSUM2_ULP2_Rogue_Drones"},
+    {SoundName = "Bomb Detonate", AudioName = "Bomb_Detonate", AudioRef = "DLC_MPSUM2_ULP2_Rogue_Drones"},
+    {SoundName = "Generic Door Push", AudioName = "Generic_Door_Push", AudioRef = "GTAO_Script_Doors_Sounds"},
+    {SoundName = "Switch Loadout", AudioName = "Switch_Loadout", AudioRef = "Cayo_Perico_Attrition_Mode_Sounds"},
+    {SoundName = "player drugged loop", AudioName = "player_drugged_loop", AudioRef = "DLC_MPSUM2_ULP2_Rogue_Drones"},
+    {SoundName = "Rabbit Death", AudioName = "Rabbit_Death", AudioRef = "Tripping_Sounds"},
+    {SoundName = "Riders Start", AudioName = "Riders_Start", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Hunted Start", AudioName = "Hunted_Start", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Thermal Vision Loop", AudioName = "Thermal_Vision_Loop", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Hunted Resurrected", AudioName = "Hunted_Resurrected", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Attack Big Shake Hit", AudioName = "Attack_Big_Shake_Hit", AudioRef = "DLC_MP2023_1_AVGNR_Interior_SFX"},
+    {SoundName = "Explosion Shake", AudioName = "Explosion_Shake", AudioRef = "dlc_xm_avngr_sounds"},
+    {SoundName = "Magnet Deactivate", AudioName = "Magnet_Deactivate", AudioRef = "DLC_MP2023_1_LSA_6_Trolley_sounds"},
+    {SoundName = "Lock Scrape Loop", AudioName = "Lock_Scrape_Loop", AudioRef = "DLC_MP2023_1_LSA_6_Trolley_sounds"},
+    {SoundName = "Elevator Up", AudioName = "Elevator_Up", AudioRef = "dlc_mp2023_1_IAA_sounds"},
+    {SoundName = "Motor 01", AudioName = "Motor_01", AudioRef = "FREIGHT_ELEVATOR_SOUNDS"},
+    {SoundName = "Fake Close", AudioName = "Fake_Close", AudioRef = "Union_Depository_Elevator_Sounds"},
+    {SoundName = "Elevator Moving", AudioName = "Elevator_Moving", AudioRef = "Union_Depository_Elevator_Sounds"},
+    {SoundName = "Flight Loop", AudioName = "Flight_Loop", AudioRef = "DLC_BTL_Drone_Sounds"},
+    {SoundName = "Fake Arrival", AudioName = "Fake_Arrival", AudioRef = "Union_Depository_Elevator_Sounds"},
+    {SoundName = "Hang Up", AudioName = "Hang_Up", AudioRef = "Phone_SoundSet_Default"},
+    {SoundName = "dlc ch heist finale HEALTH DRAIN ZONE coughs sounds", AudioName = "dlc_ch_heist_finale_HEALTH_DRAIN_ZONE_coughs_sounds", AudioRef = "0"},
+    {SoundName = "AR On", AudioName = "AR_On", AudioRef = "LSA_3_Sounds"},
+    {SoundName = "AR Off", AudioName = "AR_Off", AudioRef = "LSA_3_Sounds"},
+    {SoundName = "Fall Land", AudioName = "Fall_Land", AudioRef = "Tripping_Sounds"},
+    {SoundName = "Train Crash", AudioName = "Train_Crash", AudioRef = "DAX_1_6_Sounds"},
+    {SoundName = "Hack Loop", AudioName = "Hack_Loop", AudioRef = "DAX_2_5_Hack_Sounds"},
+    {SoundName = "Hack Start", AudioName = "Hack_Start", AudioRef = "DAX_2_5_Hack_Sounds"},
+    {SoundName = "DAX 2 5 Hack Sounds", AudioName = "DAX_2_5_Hack_Sounds", AudioRef = "0"},
+    {SoundName = "Music Cut", AudioName = "Music_Cut", AudioRef = "DLC_Security_Data_Leak_2_Sounds"},
+    {SoundName = "song", AudioName = "song", AudioRef = "dlc_sec_promoter_music_moment"},
+    {SoundName = "PowerUp", AudioName = "PowerUp", AudioRef = "DLC_H4_scripted_island_power_sounds"},
+    {SoundName = "Disabled", AudioName = "Disabled", AudioRef = "DLC_H4_Island_Defences_Soundset"},
+    {SoundName = "Active", AudioName = "Active", AudioRef = "DLC_H4_Island_Defences_Soundset"},
+    {SoundName = "Methamphetamine Job Sounds", AudioName = "Methamphetamine_Job_Sounds", AudioRef = "0"},
+    {SoundName = "External Explosion", AudioName = "External_Explosion", AudioRef = "Methamphetamine_Job_Sounds"},
+    {SoundName = "Internal Explosion", AudioName = "Internal_Explosion", AudioRef = "Methamphetamine_Job_Sounds"},
+    {SoundName = "PT FAKE CAR ONE REV SLOW", AudioName = "PT_FAKE_CAR_ONE_REV_SLOW", AudioRef = "0"},
+    {SoundName = "PT FAKE CAR TWO REVS FAST", AudioName = "PT_FAKE_CAR_TWO_REVS_FAST", AudioRef = "0"},
+    {SoundName = "PT FAKE CAR THREE QUICK REVS", AudioName = "PT_FAKE_CAR_THREE_QUICK_REVS", AudioRef = "0"},
+    {SoundName = "Match Intro", AudioName = "Match_Intro", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Pickup Keyring", AudioName = "Pickup_Keyring", AudioRef = "dlc_h4_heist_finale_sounds_soundset"},
+    {SoundName = "destroyed", AudioName = "destroyed", AudioRef = "DLC_MP2023_1_LSA_6_sj_sounds"},
+    {SoundName = "Rider War Loop", AudioName = "Rider_War_Loop", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Rider Death Loop", AudioName = "Rider_Death_Loop", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Rider Pestilence Loop", AudioName = "Rider_Pestilence_Loop", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Rider Famine Loop", AudioName = "Rider_Famine_Loop", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Hunted Heartbeat", AudioName = "Hunted_Heartbeat", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Rider Die", AudioName = "Rider_Die", AudioRef = "Halloween_Adversary_Sounds"},
+    {SoundName = "Distant Roar", AudioName = "Distant_Roar", AudioRef = "DLC_H4_EscPan_Sounds"},
+    {SoundName = "Keycard Wait Loop", AudioName = "Keycard_Wait_Loop", AudioRef = "Twin_Card_Entry_Sounds"},
+    {SoundName = "Goon Paid Large", AudioName = "Goon_Paid_Large", AudioRef = "GTAO_Boss_Goons_FM_Soundset"},
+    {SoundName = "Menu Accept", AudioName = "Menu_Accept", AudioRef = "Phone_SoundSet_Default"},
+    {SoundName = "Friend Deliver", AudioName = "Friend_Deliver", AudioRef = "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+    {SoundName = "Enemy Deliver", AudioName = "Enemy_Deliver", AudioRef = "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+    {SoundName = "Deliver Pick Up", AudioName = "Deliver_Pick_Up", AudioRef = "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+    {SoundName = "Dropped", AudioName = "Dropped", AudioRef = "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+    {SoundName = "Enemy Pick Up", AudioName = "Enemy_Pick_Up", AudioRef = "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+    {SoundName = "Boss Message Orange", AudioName = "Boss_Message_Orange", AudioRef = "GTAO_Biker_FM_Soundset"},
+    {SoundName = "Boss Message Orange", AudioName = "Boss_Message_Orange", AudioRef = "GTAO_Boss_Goons_FM_Soundset"},
+    {SoundName = "Crate Pickup Remote", AudioName = "Crate_Pickup_Remote", AudioRef = "DLC_IE_Vip_Stockpile_Sounds"},
+    {SoundName = "Crate Destroy Remote", AudioName = "Crate_Destroy_Remote", AudioRef = "DLC_IE_Vip_Stockpile_Sounds"},
+    {SoundName = "Pickup Standard", AudioName = "Pickup_Standard", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "dlc vw hidden collectible sounds", AudioName = "dlc_vw_hidden_collectible_sounds", AudioRef = "0"},
+    {SoundName = "SELECT START GRID POSITION", AudioName = "SELECT_START_GRID_POSITION", AudioRef = "0"},
+    {SoundName = "PLACE CHECKPOINT", AudioName = "PLACE_CHECKPOINT", AudioRef = "0"},
+    {SoundName = "Survival Passed", AudioName = "Survival_Passed", AudioRef = "0"},
+    {SoundName = "Survival Failed", AudioName = "Survival_Failed", AudioRef = "DLC_VW_AS_Sounds"},
+    {SoundName = "Round Passed", AudioName = "Round_Passed", AudioRef = "0"},
+    {SoundName = "Countdown Tick Last", AudioName = "Countdown_Tick_Last", AudioRef = "0"},
+    {SoundName = "Countdown Tick", AudioName = "Countdown_Tick", AudioRef = "0"},
+    {SoundName = "Health Pickup Loop", AudioName = "Health_Pickup_Loop", AudioRef = "DLC_VW_AS_Sounds"},
+    {SoundName = "Armour Pickup Loop", AudioName = "Armour_Pickup_Loop", AudioRef = "DLC_VW_AS_Sounds"},
+    {SoundName = "Pickup Spawn", AudioName = "Pickup_Spawn", AudioRef = "0"},
+    {SoundName = "Initial Spawn", AudioName = "Initial_Spawn", AudioRef = "DLC_VW_AS_Sounds"},
+    {SoundName = "Ship Loop", AudioName = "Ship_Loop", AudioRef = "DLC_VW_AS_Sounds"},
+    {SoundName = "SIGN DESTROYED", AudioName = "SIGN_DESTROYED", AudioRef = "HUD_AWARDS"},
+    {SoundName = "Franklin Whistle For Chop", AudioName = "Franklin_Whistle_For_Chop", AudioRef = "SPEECH_RELATED_SOUNDS"},
+    {SoundName = "Boxcar Door Slide", AudioName = "Boxcar_Door_Slide", AudioRef = "FRANKLIN_0_SOUNDS"},
+    {SoundName = "Boxcar Door Limit", AudioName = "Boxcar_Door_Limit", AudioRef = "FRANKLIN_0_SOUNDS"},
+    {SoundName = "Crash Through Fence", AudioName = "Crash_Through_Fence", AudioRef = "FRANKLIN_0_SOUNDS"},
+    {SoundName = "FRANKLIN 1 PHOTO SHOOT", AudioName = "FRANKLIN_1_PHOTO_SHOOT", AudioRef = "0"},
+    {SoundName = "HORN", AudioName = "HORN", AudioRef = "DLC_Apt_Yacht_Ambient_Soundset"},
+    {SoundName = "destroyed", AudioName = "destroyed", AudioRef = "dlc_ch_hidden_collectibles_sj_sounds"},
+    {SoundName = "shard", AudioName = "shard", AudioRef = "dlc_ch_hidden_collectibles_sj_sounds"},
+    {SoundName = "attract", AudioName = "attract", AudioRef = "dlc_ch_hidden_collectibles_sj_sounds"},
+    {SoundName = "Collect Trick", AudioName = "Collect_Trick", AudioRef = "Trick_Or_Treat_sounds"},
+    {SoundName = "Collect Treat", AudioName = "Collect_Treat", AudioRef = "Trick_Or_Treat_sounds"},
+    {SoundName = "Buried Stash Shard", AudioName = "Buried_Stash_Shard", AudioRef = "Tuner_Collectables_General_Sounds"},
+    {SoundName = "destroy", AudioName = "destroy", AudioRef = "Snowmen_Colllectible_Sounds"},
+    {SoundName = "Sonar Pulse No Target", AudioName = "Sonar_Pulse_No_Target", AudioRef = "dlc_hei4_hidden_collectibles_sonar_locator_sounds"},
+    {SoundName = "Sonar Pulse", AudioName = "Sonar_Pulse", AudioRef = "dlc_hei4_hidden_collectibles_sonar_locator_sounds"},
+    {SoundName = "cache attract loop", AudioName = "cache_attract_loop", AudioRef = "dlc_hei4_hidden_collectibles_sounds"},
+    {SoundName = "chest attract loop", AudioName = "chest_attract_loop", AudioRef = "dlc_hei4_hidden_collectibles_sounds"},
+    {SoundName = "radio tower attract loop", AudioName = "radio_tower_attract_loop", AudioRef = "dlc_hei4_hidden_collectibles_sounds"},
+    {SoundName = "Shipwreck Attract", AudioName = "Shipwreck_Attract", AudioRef = "Tuner_Collectables_General_Sounds"},
+    {SoundName = "Attract", AudioName = "Attract", AudioRef = "Snowmen_Colllectible_Sounds"},
+    {SoundName = "EMP vehicle affected", AudioName = "EMP_vehicle_affected", AudioRef = "DLC_AW_EMP_Sounds"},
+    {SoundName = "formation active", AudioName = "formation_active", AudioRef = "formation_flying_blips_soundset"},
+    {SoundName = "formation inactive", AudioName = "formation_inactive", AudioRef = "formation_flying_blips_soundset"},
+    {SoundName = "formation flying blips soundset", AudioName = "formation_flying_blips_soundset", AudioRef = "0"},
+    {SoundName = "biker formation blips soundset", AudioName = "biker_formation_blips_soundset", AudioRef = "0"},
+    {SoundName = "player riding", AudioName = "player_riding", AudioRef = "biker_formation_sounds"},
+    {SoundName = "Crates Blipped", AudioName = "Crates_Blipped", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "Goon Paid Small", AudioName = "Goon_Paid_Small", AudioRef = "GTAO_Boss_Goons_FM_Soundset"},
+    {SoundName = "GTAO Biker FM Soundset", AudioName = "GTAO_Biker_FM_Soundset", AudioRef = "0"},
+    {SoundName = "GTAO Boss Goons FM Soundset", AudioName = "GTAO_Boss_Goons_FM_Soundset", AudioRef = "0"},
+    {SoundName = "FestiveGift", AudioName = "FestiveGift", AudioRef = "Feed_Message_Sounds"},
+    {SoundName = "chaff cooldown", AudioName = "chaff_cooldown", AudioRef = "DLC_SM_Countermeasures_Sounds"},
+    {SoundName = "chaff empty", AudioName = "chaff_empty", AudioRef = "DLC_SM_Countermeasures_Sounds"},
+    {SoundName = "chaff released", AudioName = "chaff_released", AudioRef = "DLC_SM_Countermeasures_Sounds"},
+    {SoundName = "flares empty", AudioName = "flares_empty", AudioRef = "DLC_SM_Countermeasures_Sounds"},
+    {SoundName = "flares released", AudioName = "flares_released", AudioRef = "DLC_SM_Countermeasures_Sounds"},
+    {SoundName = "movie prop reward cut music", AudioName = "movie_prop_reward_cut_music", AudioRef = "DLC_sum20_hidden_collectible_sounds"},
+    {SoundName = "movie prop reward cut roar", AudioName = "movie_prop_reward_cut_roar", AudioRef = "DLC_sum20_hidden_collectible_sounds"},
+    {SoundName = "Wheel Spin Start", AudioName = "Wheel_Spin_Start", AudioRef = "DLC_AW_Arena_Spin_Wheel_Game_Frontend_Sounds"},
+    {SoundName = "Countdown Timer Bleep Red", AudioName = "Countdown_Timer_Bleep_Red", AudioRef = "DLC_AW_Arena_Spin_Wheel_Game_Frontend_Sounds"},
+    {SoundName = "Countdown Timer Bleep", AudioName = "Countdown_Timer_Bleep", AudioRef = "DLC_AW_Arena_Spin_Wheel_Game_Frontend_Sounds"},
+    {SoundName = "BULL SHARK TESTOSTERONE START MASTER", AudioName = "BULL_SHARK_TESTOSTERONE_START_MASTER", AudioRef = ""},
+    {SoundName = "BULL SHARK TESTOSTERONE END MASTER", AudioName = "BULL_SHARK_TESTOSTERONE_END_MASTER", AudioRef = ""},
+    {SoundName = "5 SEC WARNING", AudioName = "5_SEC_WARNING", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "RANK UP", AudioName = "RANK_UP", AudioRef = "HUD_AWARDS"},
+    {SoundName = "MP IDLE TIMER", AudioName = "MP_IDLE_TIMER", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "MP IDLE KICK", AudioName = "MP_IDLE_KICK", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Remote Control Fob", AudioName = "Remote_Control_Fob", AudioRef = "PI_Menu_Sounds"},
+    {SoundName = "Remote Control Close", AudioName = "Remote_Control_Close", AudioRef = "PI_Menu_Sounds"},
+    {SoundName = "Remote Control Open", AudioName = "Remote_Control_Open", AudioRef = "PI_Menu_Sounds"},
+    {SoundName = "Toggle Lights", AudioName = "Toggle_Lights", AudioRef = "PI_Menu_Sounds"},
+    {SoundName = "Accept Ghosting Mode", AudioName = "Accept_Ghosting_Mode", AudioRef = "RESPAWN_ONLINE_SOUNDSET"},
+    {SoundName = "Faster Bar Full", AudioName = "Faster_Bar_Full", AudioRef = "RESPAWN_ONLINE_SOUNDSET"},
+    {SoundName = "Faster Click", AudioName = "Faster_Click", AudioRef = "RESPAWN_ONLINE_SOUNDSET"},
+    {SoundName = "Armour On", AudioName = "Armour_On", AudioRef = "DLC_GR_Steal_Miniguns_Sounds"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "HUD_FRONTEND_MP_SOUNDSET"},
+    {SoundName = "Timer 10s", AudioName = "Timer_10s", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "Return To Vehicle Timer", AudioName = "Return_To_Vehicle_Timer", AudioRef = "GTAO_FM_Events_Soundset"},
+    {SoundName = "bombs empty", AudioName = "bombs_empty", AudioRef = "DLC_SM_Bomb_Bay_Bombs_Sounds"},
+    {SoundName = "bomb deployed", AudioName = "bomb_deployed", AudioRef = "DLC_SM_Bomb_Bay_Bombs_Sounds"},
+    {SoundName = "collect water", AudioName = "collect_water", AudioRef = "dlc_sum20_yacht_missions_ah_sounds"},
+    {SoundName = "Rappel Loop", AudioName = "Rappel_Loop", AudioRef = "GTAO_Rappel_Sounds"},
+    {SoundName = "Rappel Stop", AudioName = "Rappel_Stop", AudioRef = "GTAO_Rappel_Sounds"},
+    {SoundName = "Rappel Land", AudioName = "Rappel_Land", AudioRef = "GTAO_Rappel_Sounds"},
+    {SoundName = "clue seen", AudioName = "clue_seen", AudioRef = "dlc_ch_hidden_collectibles_sk_sounds"},
+    {SoundName = "dlc ch hidden collectibles sk sounds", AudioName = "dlc_ch_hidden_collectibles_sk_sounds", AudioRef = "0"},
+    {SoundName = "clue complete shard", AudioName = "clue_complete_shard", AudioRef = "dlc_btl_fm_th_sounds"},
+    {SoundName = "item found", AudioName = "item_found", AudioRef = "dlc_btl_fm_th_sounds"},
+    {SoundName = "item close loop", AudioName = "item_close_loop", AudioRef = "dlc_btl_fm_th_sounds"},
+    {SoundName = "item found", AudioName = "item_found", AudioRef = "dlc_xm_fm_th_sounds"},
+    {SoundName = "clue complete shard", AudioName = "clue_complete_shard", AudioRef = "dlc_xm_fm_th_sounds"},
+    {SoundName = "item close loop", AudioName = "item_close_loop", AudioRef = "dlc_xm_fm_th_sounds"},
+    {SoundName = "rc mines empty", AudioName = "rc_mines_empty", AudioRef = "DLC_AW_RCBandito_Mine_Sounds"},
+    {SoundName = "05", AudioName = "05", AudioRef = "DLC_GR_CS2_Sounds"},
+    {SoundName = "07", AudioName = "07", AudioRef = "DLC_GR_CS2_Sounds"},
+    {SoundName = "Pickup Briefcase", AudioName = "Pickup_Briefcase", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "Pickup Briefcase", AudioName = "Pickup_Briefcase", AudioRef = "GTAO_Magnate_Boss_Modes_Soundset"},
+    {SoundName = "Blip Pickup", AudioName = "Blip_Pickup", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "Enemy Pickup Briefcase", AudioName = "Enemy_Pickup_Briefcase", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "Deliver Item", AudioName = "Deliver_Item", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "Crate Explosion", AudioName = "Crate_Explosion", AudioRef = "DLC_Biker_Burn_Assets_Sounds"},
+    {SoundName = "Counter Tick", AudioName = "Counter_Tick", AudioRef = "DLC_Biker_Burn_Assets_Sounds"},
+    {SoundName = "Drop Zone Alarm", AudioName = "Drop_Zone_Alarm", AudioRef = "0"},
+    {SoundName = "Altitude Warning Loop", AudioName = "Altitude_Warning_Loop", AudioRef = "DLC_Exec_Fly_Low_Sounds"},
+    {SoundName = "Generic Positive Event", AudioName = "Generic_Positive_Event", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "Generic Negative Event", AudioName = "Generic_Negative_Event", AudioRef = "GTAO_Biker_Modes_Soundset"},
+    {SoundName = "Get Back In Vehicle", AudioName = "Get_Back_In_Vehicle", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "Blow Cell Door", AudioName = "Blow_Cell_Door", AudioRef = "DLC_Biker_POW_Sounds"},
+    {SoundName = "Unlock Cell", AudioName = "Unlock_Cell", AudioRef = "DLC_Biker_POW_Sounds"},
+    {SoundName = "Enemy In Zone", AudioName = "Enemy_In_Zone", AudioRef = "DLC_Biker_SYG_Sounds"},
+    {SoundName = "Enter Zone", AudioName = "Enter_Zone", AudioRef = "DLC_Biker_SYG_Sounds"},
+    {SoundName = "Leave Zone", AudioName = "Leave_Zone", AudioRef = "DLC_Biker_SYG_Sounds"},
+    {SoundName = "Lose 1st", AudioName = "Lose_1st", AudioRef = "GTAO_Magnate_Boss_Modes_Soundset"},
+    {SoundName = "Enter 1st", AudioName = "Enter_1st", AudioRef = "GTAO_Magnate_Boss_Modes_Soundset"},
+    {SoundName = "container detach", AudioName = "container_detach", AudioRef = "dlc_vw_slot_machines_sounds"},
+    {SoundName = "car crushed", AudioName = "car_crushed", AudioRef = "dlc_vw_body_disposal_sounds"},
+    {SoundName = "Klaxon 01", AudioName = "Klaxon_01", AudioRef = "ALARMS_SOUNDSET"},
+    {SoundName = "dlc vw heisters sounds", AudioName = "dlc_vw_heisters_sounds", AudioRef = "0"},
+    {SoundName = "laptop download", AudioName = "laptop_download", AudioRef = "dlc_vw_heisters_sounds"},
+    {SoundName = "boot pop", AudioName = "boot_pop", AudioRef = "dlc_vw_body_disposal_sounds"},
+    {SoundName = "distant gunfire", AudioName = "distant_gunfire", AudioRef = "dlc_vw_missing_delivery_sounds"},
+    {SoundName = "collect chips handed", AudioName = "collect_chips_handed", AudioRef = "dlc_vw_tracking_chips_sounds"},
+    {SoundName = "container attach", AudioName = "container_attach", AudioRef = "dlc_vw_slot_machines_sounds"},
+    {SoundName = "Bunker Hatch", AudioName = "Bunker_Hatch", AudioRef = "GTAO_Script_Doors_Faded_Screen_Sounds"},
+    {SoundName = "Flight Loop", AudioName = "Flight_Loop", AudioRef = "DLC_H3_Prep_Drones_Sounds"},
+    {SoundName = "Alarm Interior", AudioName = "Alarm_Interior", AudioRef = "DLC_H3_FM_FIB_Raid_Sounds"},
+    {SoundName = "Alarm Exterior", AudioName = "Alarm_Exterior", AudioRef = "DLC_H3_FM_FIB_Raid_Sounds"},
+    {SoundName = "DLC H3 FM FIB Raid Sounds", AudioName = "DLC_H3_FM_FIB_Raid_Sounds", AudioRef = "0"},
+    {SoundName = "Vent Fizzing", AudioName = "Vent_Fizzing", AudioRef = "dlc_ch_maintenance_sounds"},
+    {SoundName = "Bunker Alarm Interior", AudioName = "Bunker_Alarm_Interior", AudioRef = "dlc_ch_armoured_equipment_sounds"},
+    {SoundName = "Bunker Alarm Exterior", AudioName = "Bunker_Alarm_Exterior", AudioRef = "dlc_ch_armoured_equipment_sounds"},
+    {SoundName = "Airhorn Blast Long", AudioName = "Airhorn_Blast_Long", AudioRef = "DLC_AW_General_Sounds"},
+    {SoundName = "DLC HEIST EMP IDLE MASTER", AudioName = "DLC_HEIST_EMP_IDLE_MASTER", AudioRef = "0"},
+    {SoundName = "Launch", AudioName = "Launch", AudioRef = "DLC_H3_Tracker_App_Sounds"},
+    {SoundName = "Signal Loop", AudioName = "Signal_Loop", AudioRef = "DLC_H3_Tracker_App_Sounds"},
+    {SoundName = "Close", AudioName = "Close", AudioRef = "DLC_H3_Tracker_App_Sounds"},
+    {SoundName = "bin bag bugs", AudioName = "bin_bag_bugs", AudioRef = "dlc_ch_bugstars_sounds"},
+    {SoundName = "Back", AudioName = "Back", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Paper Stick", AudioName = "Paper_Stick", AudioRef = "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+    {SoundName = "Bell 01", AudioName = "Bell_01", AudioRef = "ALARMS_SOUNDSET"},
+    {SoundName = "Crashed Plane Ambience", AudioName = "Crashed_Plane_Ambience", AudioRef = "DLC_Exec_Crash_Site_SoundSet"},
+    {SoundName = "Crow Caw", AudioName = "Crow_Caw", AudioRef = "DLC_Exec_Aftermath_Sounds"},
+    {SoundName = "Fly Buzz", AudioName = "Fly_Buzz", AudioRef = "DLC_Exec_Aftermath_Sounds"},
+    {SoundName = "Car Creak", AudioName = "Car_Creak", AudioRef = "DLC_Exec_Aftermath_Sounds"},
+    {SoundName = "Deliver Item", AudioName = "Deliver_Item", AudioRef = "GTAO_Magnate_Boss_Modes_Soundset"},
+    {SoundName = "Drop Package", AudioName = "Drop_Package", AudioRef = "DLC_Exec_Land_Multiple_Sounds"},
+    {SoundName = "Drop Zone Alarm", AudioName = "Drop_Zone_Alarm", AudioRef = "DLC_Exec_Air_Drop_Sounds"},
+    {SoundName = "Charge Full", AudioName = "Charge_Full", AudioRef = "DLC_Exec_Jammer_Sounds"},
+    {SoundName = "Active", AudioName = "Active", AudioRef = "DLC_Exec_Jammer_Sounds"},
+    {SoundName = "Active Empty", AudioName = "Active_Empty", AudioRef = "DLC_Exec_Jammer_Sounds"},
+    {SoundName = "Charging", AudioName = "Charging", AudioRef = "DLC_Exec_Jammer_Sounds"},
+    {SoundName = "Drop Package", AudioName = "Drop_Package", AudioRef = "DLC_Exec_Air_Drop_Sounds"},
+    {SoundName = "Door Knock Normal", AudioName = "Door_Knock_Normal", AudioRef = "dlc_btl_deliver_goods_sounds"},
+    {SoundName = "flatbed delivery", AudioName = "flatbed_delivery", AudioRef = "DLC_SM_Precision_Delivery_Sounds"},
+    {SoundName = "flatbed delivery impact", AudioName = "flatbed_delivery_impact", AudioRef = "DLC_SM_Precision_Delivery_Sounds"},
+    {SoundName = "Case Beep", AudioName = "Case_Beep", AudioRef = "GTAO_Magnate_Finders_Keepers_Soundset"},
+    {SoundName = "Plane Crash Oneshot", AudioName = "Plane_Crash_Oneshot", AudioRef = "DLC_XM17_Silo_Flight_Recorder_Sounds"},
+    {SoundName = "Tone", AudioName = "Tone", AudioRef = "Lift_Normal_Soundset"},
+    {SoundName = "security scanner beep os", AudioName = "security_scanner_beep_os", AudioRef = "dlc_xm_heists_fm_uc_sounds"},
+    {SoundName = "download start", AudioName = "download_start", AudioRef = "dlc_xm_heists_fm_uc_sounds"},
+    {SoundName = "download complete", AudioName = "download_complete", AudioRef = "dlc_xm_heists_fm_uc_sounds"},
+    {SoundName = "Klaxon 06", AudioName = "Klaxon_06", AudioRef = "ALARMS_SOUNDSET"},
+    {SoundName = "keys", AudioName = "keys", AudioRef = "dlc_xm_pickup_sweetener_sounds"},
+    {SoundName = "Plane Damaged Loop", AudioName = "Plane_Damaged_Loop", AudioRef = "DLC_XM17_Silo_Flight_Recorder_Sounds"},
+    {SoundName = "Use", AudioName = "Use", AudioRef = "0"},
+    {SoundName = "Finale Available", AudioName = "Finale_Available", AudioRef = "0"},
+    {SoundName = "Launch Mission", AudioName = "Launch_Mission", AudioRef = "0"},
+    {SoundName = "Nav Blocked", AudioName = "Nav_Blocked", AudioRef = "0"},
+    {SoundName = "Nav Up Down", AudioName = "Nav_Up_Down", AudioRef = "0"},
+    {SoundName = "Nav Left Right", AudioName = "Nav_Left_Right", AudioRef = "0"},
+    {SoundName = "Decrease Loot Share", AudioName = "Decrease_Loot_Share", AudioRef = "0"},
+    {SoundName = "Increase Loot Share", AudioName = "Increase_Loot_Share", AudioRef = "0"},
+    {SoundName = "Background", AudioName = "Background", AudioRef = "0"},
+    {SoundName = "Draw Board", AudioName = "Draw_Board", AudioRef = "0"},
+    {SoundName = "Bootup", AudioName = "Bootup", AudioRef = "0"},
+    {SoundName = "Nav Up Down Photo Change", AudioName = "Nav_Up_Down_Photo_Change", AudioRef = "0"},
+    {SoundName = "Nav Left Right Photo Change", AudioName = "Nav_Left_Right_Photo_Change", AudioRef = "0"},
+    {SoundName = "Pay", AudioName = "Pay", AudioRef = "0"},
+    {SoundName = "DLC GR Steal Railguns Sounds", AudioName = "DLC_GR_Steal_Railguns_Sounds", AudioRef = "0"},
+    {SoundName = "04", AudioName = "04", AudioRef = "0"},
+    {SoundName = "05", AudioName = "05", AudioRef = "0"},
+    {SoundName = "03", AudioName = "03", AudioRef = "0"},
+    {SoundName = "07", AudioName = "07", AudioRef = "0"},
+    {SoundName = "01", AudioName = "01", AudioRef = "0"},
+    {SoundName = "02", AudioName = "02", AudioRef = "0"},
+    {SoundName = "Signal Off", AudioName = "Signal_Off", AudioRef = "DLC_GR_Ambushed_Sounds"},
+    {SoundName = "Signal On", AudioName = "Signal_On", AudioRef = "DLC_GR_Ambushed_Sounds"},
+    {SoundName = "Connection Established", AudioName = "Connection_Established", AudioRef = "DLC_GR_FTL_Sounds"},
+    {SoundName = "Connection Lost", AudioName = "Connection_Lost", AudioRef = "DLC_GR_FTL_Sounds"},
+    {SoundName = "Exploding Entity Start", AudioName = "Exploding_Entity_Start", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "Exploding Entity Loop", AudioName = "Exploding_Entity_Loop", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "Exploding Entity Stop", AudioName = "Exploding_Entity_Stop", AudioRef = "MP_MISSION_COUNTDOWN_SOUNDSET"},
+    {SoundName = "Bomb Armed", AudioName = "Bomb_Armed", AudioRef = "DLC_GR_Disarm_Bombs_Sounds"},
+    {SoundName = "Bomb Disarmed", AudioName = "Bomb_Disarmed", AudioRef = "DLC_GR_Disarm_Bombs_Sounds"},
+    {SoundName = "Boss Blipped", AudioName = "Boss_Blipped", AudioRef = "GTAO_Magnate_Hunt_Boss_SoundSet"},
+    {SoundName = "Door Open", AudioName = "Door_Open", AudioRef = "GTAO_EXEC_WH_GARAGE_DOOR_SOUNDS"},
+    {SoundName = "Door Close", AudioName = "Door_Close", AudioRef = "GTAO_EXEC_WH_GARAGE_DOOR_SOUNDS"},
+    {SoundName = "PICKUP AMMO BULLET MP", AudioName = "PICKUP_AMMO_BULLET_MP", AudioRef = "PICKUP_DEFAULT"},
+    {SoundName = "Sniper Fire", AudioName = "Sniper_Fire", AudioRef = "DLC_Biker_Resupply_Meet_Contact_Sounds"},
+    {SoundName = "Sniper Bullet Hit", AudioName = "Sniper_Bullet_Hit", AudioRef = "DLC_Biker_Resupply_Meet_Contact_Sounds"},
+    {SoundName = "Control Panel Disabled", AudioName = "Control_Panel_Disabled", AudioRef = "DLC_BTL_Jewel_Store_Grab_Sounds"},
+    {SoundName = "Destroy Supply Player", AudioName = "Destroy_Supply_Player", AudioRef = "DLC_IE_Vip_Plowed_Sounds"},
+    {SoundName = "Destroy Supply Remote", AudioName = "Destroy_Supply_Remote", AudioRef = "DLC_IE_Vip_Plowed_Sounds"},
+    {SoundName = "Flare", AudioName = "Flare", AudioRef = "DLC_Exec_Salvage_Sounds"},
+    {SoundName = "RADAR ACTIVATE", AudioName = "RADAR_ACTIVATE", AudioRef = "DLC_BTL_SECURITY_VANS_RADAR_PING_SOUNDS"},
+    {SoundName = "RADAR READY", AudioName = "RADAR_READY", AudioRef = "DLC_BTL_SECURITY_VANS_RADAR_PING_SOUNDS"},
+    {SoundName = "flight recorder", AudioName = "flight_recorder", AudioRef = "dlc_xm_pickup_sweetener_sounds"},
+    {SoundName = "Blip Pickup", AudioName = "Blip_Pickup", AudioRef = "GTAO_Magnate_Boss_Modes_Soundset"},
+    {SoundName = "Altitude Warning Loop", AudioName = "Altitude_Warning_Loop", AudioRef = "DLC_SM_Under_The_Radar_Sounds"},
+    {SoundName = "container detach", AudioName = "container_detach", AudioRef = "DLC_SM_Heavy_Lifting_Sounds"},
+    {SoundName = "Altitude Checkpoint", AudioName = "Altitude_Checkpoint", AudioRef = "DLC_SM_Infiltration_Sounds"},
+    {SoundName = "Altitude Beeps", AudioName = "Altitude_Beeps", AudioRef = "DLC_SM_Infiltration_Sounds"},
+    {SoundName = "crashed heli ambience", AudioName = "crashed_heli_ambience", AudioRef = "DLC_SM_Blackbox_Sounds"},
+    {SoundName = "alarm loop", AudioName = "alarm_loop", AudioRef = "DLC_SM_Escort_Sounds"},
+    {SoundName = "hook attach", AudioName = "hook_attach", AudioRef = "DLC_SM_Precision_Delivery_Sounds"},
+    {SoundName = "hook detach", AudioName = "hook_detach", AudioRef = "DLC_SM_Precision_Delivery_Sounds"},
+    {SoundName = "cargo alarm loop", AudioName = "cargo_alarm_loop", AudioRef = "DLC_SM_Cargo_Plane_Sounds"},
+    {SoundName = "Crate Pickup Player", AudioName = "Crate_Pickup_Player", AudioRef = "0"},
+    {SoundName = "Crate Destroy Player", AudioName = "Crate_Destroy_Player", AudioRef = "0"},
+    {SoundName = "Countdown Loop", AudioName = "Countdown_Loop", AudioRef = "0"},
+    {SoundName = "Arming Countdown", AudioName = "Arming_Countdown", AudioRef = "0"},
+    {SoundName = "Bomb Armed", AudioName = "Bomb_Armed", AudioRef = "0"},
+    {SoundName = "Bomb Disarmed", AudioName = "Bomb_Disarmed", AudioRef = "0"},
+    {SoundName = "Meter Fill Loop", AudioName = "Meter_Fill_Loop", AudioRef = "DLC_IE_Tail_Vehicle_Sounds"},
+    {SoundName = "Meter Full", AudioName = "Meter_Full", AudioRef = "DLC_IE_Tail_Vehicle_Sounds"},
+    {SoundName = "Hook Attach", AudioName = "Hook_Attach", AudioRef = "DLC_IE_Steal_Cargobob_Sounds"},
+    {SoundName = "Hook Detach", AudioName = "Hook_Detach", AudioRef = "DLC_IE_Steal_Cargobob_Sounds"},
+    {SoundName = "Hook Engage", AudioName = "Hook_Engage", AudioRef = "DLC_IE_Steal_Cargobob_Sounds"},
+    {SoundName = "Speed Boost", AudioName = "Speed_Boost", AudioRef = "DLC_IE_Stunt_Man_Sounds"},
+    {SoundName = "Checkpoint Player", AudioName = "Checkpoint_Player", AudioRef = "0"},
+    {SoundName = "Timer Reduced", AudioName = "Timer_Reduced", AudioRef = "0"},
+    {SoundName = "Horn", AudioName = "Horn", AudioRef = "DLC_Apt_Yacht_Ambient_Soundset"},
+    {SoundName = "Enemy Capture Start", AudioName = "Enemy_Capture_Start", AudioRef = "GTAO_Magnate_Yacht_Attack_Soundset"},
+    {SoundName = "Team Capture Start", AudioName = "Team_Capture_Start", AudioRef = "GTAO_Magnate_Yacht_Attack_Soundset"},
+    {SoundName = "QUIT WHOOSH", AudioName = "QUIT_WHOOSH", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "GOLF HUD HOLE IN ONE MASTER", AudioName = "GOLF_HUD_HOLE_IN_ONE_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF EAGLE", AudioName = "GOLF_EAGLE", AudioRef = "HUD_AWARDS"},
+    {SoundName = "GOLF BIRDIE", AudioName = "GOLF_BIRDIE", AudioRef = "HUD_AWARDS"},
+    {SoundName = "HIGHLIGHT", AudioName = "HIGHLIGHT", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "GOLF HUD SCORECARD MASTER", AudioName = "GOLF_HUD_SCORECARD_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF BALL ROLL PUTT MASTER", AudioName = "GOLF_BALL_ROLL_PUTT_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF BALL IMPACT FLAG MASTER", AudioName = "GOLF_BALL_IMPACT_FLAG_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF BALL CUP MISS MASTER", AudioName = "GOLF_BALL_CUP_MISS_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF BALL CUP MASTER", AudioName = "GOLF_BALL_CUP_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF BALL IN WATER MASTER", AudioName = "GOLF_BALL_IN_WATER_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF BALL IMPACT LEAVES MASTER", AudioName = "GOLF_BALL_IMPACT_LEAVES_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF FORWARD SWING PERFECT VB MASTER", AudioName = "GOLF_FORWARD_SWING_PERFECT_VB_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF FORWARD SWING VB MASTER", AudioName = "GOLF_FORWARD_SWING_VB_MASTER", AudioRef = "0"},
+    {SoundName = "GOLF BACK SWING HARD MASTER", AudioName = "GOLF_BACK_SWING_HARD_MASTER", AudioRef = "0"},
+    {SoundName = "HIGHLIGHT NAV UP DOWN", AudioName = "HIGHLIGHT_NAV_UP_DOWN", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "SELECT", AudioName = "SELECT", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "CANCEL", AudioName = "CANCEL", AudioRef = "0"},
+    {SoundName = "GOLF FORWARD SWING HARD MASTER", AudioName = "GOLF_FORWARD_SWING_HARD_MASTER", AudioRef = "0"},
+    {SoundName = "dlc vw am tw frontend sounds", AudioName = "dlc_vw_am_tw_frontend_sounds", AudioRef = "0"},
+    {SoundName = "dlc vw am tw global sounds", AudioName = "dlc_vw_am_tw_global_sounds", AudioRef = "0"},
+    {SoundName = "Frontend Player No Territory Loop", AudioName = "Frontend_Player_No_Territory_Loop", AudioRef = "dlc_vw_am_tw_frontend_sounds"},
+    {SoundName = "WEAPON SELECT OTHER", AudioName = "WEAPON_SELECT_OTHER", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON AMMO PURCHASE", AudioName = "WEAPON_AMMO_PURCHASE", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON ATTACHMENT EQUIP", AudioName = "WEAPON_ATTACHMENT_EQUIP", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON ATTACHMENT UNEQUIP", AudioName = "WEAPON_ATTACHMENT_UNEQUIP", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT HANDGUN", AudioName = "WEAPON_SELECT_HANDGUN", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT SHOTGUN", AudioName = "WEAPON_SELECT_SHOTGUN", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT RIFLE", AudioName = "WEAPON_SELECT_RIFLE", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT GRENADE LAUNCHER", AudioName = "WEAPON_SELECT_GRENADE_LAUNCHER", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT RPG LAUNCHER", AudioName = "WEAPON_SELECT_RPG_LAUNCHER", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT KNIFE", AudioName = "WEAPON_SELECT_KNIFE", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT BATON", AudioName = "WEAPON_SELECT_BATON", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT PARACHUTE", AudioName = "WEAPON_SELECT_PARACHUTE", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "WEAPON SELECT FUEL CAN", AudioName = "WEAPON_SELECT_FUEL_CAN", AudioRef = "HUD_AMMO_SHOP_SOUNDSET"},
+    {SoundName = "Scissors", AudioName = "Scissors", AudioRef = "Barber_Sounds"},
+    {SoundName = "Makeup", AudioName = "Makeup", AudioRef = "Barber_Sounds"},
+    {SoundName = "CONTINUOUS SLIDER", AudioName = "CONTINUOUS_SLIDER", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "UNDER WATER COME UP", AudioName = "UNDER_WATER_COME_UP", AudioRef = "0"},
+    {SoundName = "MARKER ERASE", AudioName = "MARKER_ERASE", AudioRef = "HEIST_BULLETIN_BOARD_SOUNDSET"},
+    {SoundName = "UNDO", AudioName = "UNDO", AudioRef = "HEIST_BULLETIN_BOARD_SOUNDSET"},
+    {SoundName = "PERSON SELECT", AudioName = "PERSON_SELECT", AudioRef = "HEIST_BULLETIN_BOARD_SOUNDSET"},
+    {SoundName = "PERSON SCROLL", AudioName = "PERSON_SCROLL", AudioRef = "HEIST_BULLETIN_BOARD_SOUNDSET"},
+    {SoundName = "COYOTE BARK MASTER", AudioName = "COYOTE_BARK_MASTER", AudioRef = "0"},
+    {SoundName = "COYOTE CRY MASTER", AudioName = "COYOTE_CRY_MASTER", AudioRef = "0"},
+    {SoundName = "ELK PAIN MASTER", AudioName = "ELK_PAIN_MASTER", AudioRef = "0"},
+    {SoundName = "ELK BREY MASTER", AudioName = "ELK_BREY_MASTER", AudioRef = "0"},
+    {SoundName = "PLAYER CALLS ELK MASTER", AudioName = "PLAYER_CALLS_ELK_MASTER", AudioRef = "0"},
+    {SoundName = "Heart Breathing", AudioName = "Heart_Breathing", AudioRef = "0"},
+    {SoundName = "MEDAL BRONZE", AudioName = "MEDAL_BRONZE", AudioRef = "HUD_AWARDS"},
+    {SoundName = "MEDAL SILVER", AudioName = "MEDAL_SILVER", AudioRef = "HUD_AWARDS"},
+    {SoundName = "MEDAL GOLD", AudioName = "MEDAL_GOLD", AudioRef = "HUD_AWARDS"},
+    {SoundName = "TARP", AudioName = "TARP", AudioRef = "JEWEL_HEIST_SOUNDS"},
+    {SoundName = "RAMP DOWN", AudioName = "RAMP_DOWN", AudioRef = "TRUCK_RAMP_DOWN"},
+    {SoundName = "RAMP UP", AudioName = "RAMP_UP", AudioRef = "TRUCK_RAMP_DOWN"},
+    {SoundName = "In", AudioName = "In", AudioRef = "SHORT_PLAYER_SWITCH_SOUND_SET"},
+    {SoundName = "Gunman Bike Crash", AudioName = "Gunman_Bike_Crash", AudioRef = "JEWEL_HEIST_SOUNDS"},
+    {SoundName = "all", AudioName = "all", AudioRef = "SHORT_PLAYER_SWITCH_SOUND_SET"},
+    {SoundName = "DROP ITEMS", AudioName = "DROP_ITEMS", AudioRef = "JEWEL_HEIST_SOUNDS"},
+    {SoundName = "SMASH CABINET PLAYER", AudioName = "SMASH_CABINET_PLAYER", AudioRef = "JEWEL_HEIST_SOUNDS"},
+    {SoundName = "SMASH CABINET NPC", AudioName = "SMASH_CABINET_NPC", AudioRef = "JEWEL_HEIST_SOUNDS"},
+    {SoundName = "Grenade Throw Success", AudioName = "Grenade_Throw_Success", AudioRef = "JEWEL_HEIST_SOUNDS"},
+    {SoundName = "Grenade Throw Miss", AudioName = "Grenade_Throw_Miss", AudioRef = "JEWEL_HEIST_SOUNDS"},
+    {SoundName = "Seagulls", AudioName = "Seagulls", AudioRef = "JEWEL_HEIST_SOUNDS"},
+    {SoundName = "PICKUP WEAPON SMOKEGRENADE", AudioName = "PICKUP_WEAPON_SMOKEGRENADE", AudioRef = "HUD_FRONTEND_WEAPONS_PICKUPS_SOUNDSET"},
+    {SoundName = "Drop Case", AudioName = "Drop_Case", AudioRef = "JWL_PREP_2A_SOUNDS"},
+    {SoundName = "Lock Destroyed", AudioName = "Lock_Destroyed", AudioRef = "JWL_PREP_2A_SOUNDS"},
+    {SoundName = "Lock Damage", AudioName = "Lock_Damage", AudioRef = "JWL_PREP_2A_SOUNDS"},
+    {SoundName = "Background Sound", AudioName = "Background_Sound", AudioRef = "Phone_SoundSet_Glasses_Cam"},
+    {SoundName = "Camera Shoot", AudioName = "Camera_Shoot", AudioRef = "Phone_SoundSet_Glasses_Cam"},
+    {SoundName = "Camera Zoom", AudioName = "Camera_Zoom", AudioRef = "Phone_SoundSet_Glasses_Cam"},
+    {SoundName = "HOUSE FIRE", AudioName = "HOUSE_FIRE", AudioRef = "JOSH_03_SOUNDSET"},
+    {SoundName = "BBQ EXPLODE", AudioName = "BBQ_EXPLODE", AudioRef = "JOSH_03_SOUNDSET"},
+    {SoundName = "LAMAR1 FAKE POLICE SIREN2 MASTER", AudioName = "LAMAR1_FAKE_POLICE_SIREN2_MASTER", AudioRef = "0"},
+    {SoundName = "LAMAR1 BustDoorOpen1", AudioName = "LAMAR1_BustDoorOpen1", AudioRef = "0"},
+    {SoundName = "LAMAR1 WAREHOUSE FIRE", AudioName = "LAMAR1_WAREHOUSE_FIRE", AudioRef = "0"},
+    {SoundName = "LAMAR1 PARTYGIRLS master", AudioName = "LAMAR1_PARTYGIRLS_master", AudioRef = "0"},
+    {SoundName = "Grab Parachute", AudioName = "Grab_Parachute", AudioRef = "BASEJUMPS_SOUNDS"},
+    {SoundName = "DOM BREATHING", AudioName = "DOM_BREATHING", AudioRef = "EXTREME_03_SOUNDSET"},
+    {SoundName = "TRUNK THUMPS", AudioName = "TRUNK_THUMPS", AudioRef = "0"},
+    {SoundName = "MICHAEL SOFA TV CHANGE CHANNEL MASTER", AudioName = "MICHAEL_SOFA_TV_CHANGE_CHANNEL_MASTER", AudioRef = "0"},
+    {SoundName = "MICHAEL SOFA REMOTE CLICK VOLUME MASTER", AudioName = "MICHAEL_SOFA_REMOTE_CLICK_VOLUME_MASTER", AudioRef = "0"},
+    {SoundName = "Remote Ring", AudioName = "Remote_Ring", AudioRef = "Phone_SoundSet_Michael"},
+    {SoundName = "Answer Phone", AudioName = "Answer_Phone", AudioRef = "Lester1B_Sounds"},
+    {SoundName = "COMPUTERS MOUSE CLICK", AudioName = "COMPUTERS_MOUSE_CLICK", AudioRef = "0"},
+    {SoundName = "CLOSE WINDOW", AudioName = "CLOSE_WINDOW", AudioRef = "LESTER1A_SOUNDS"},
+    {SoundName = "OPEN WINDOW", AudioName = "OPEN_WINDOW", AudioRef = "LESTER1A_SOUNDS"},
+    {SoundName = "LESTER1A SOUNDS", AudioName = "LESTER1A_SOUNDS", AudioRef = "0"},
+    {SoundName = "FINDING VIRUS", AudioName = "FINDING_VIRUS", AudioRef = "LESTER1A_SOUNDS"},
+    {SoundName = "Virus Eradicated", AudioName = "Virus_Eradicated", AudioRef = "LESTER1A_SOUNDS"},
+    {SoundName = "UNLOCK DOOR", AudioName = "UNLOCK_DOOR", AudioRef = "LESTER1A_SOUNDS"},
+    {SoundName = "ON", AudioName = "ON", AudioRef = "0"},
+    {SoundName = "LOOP", AudioName = "LOOP", AudioRef = "0"},
+    {SoundName = "OFF", AudioName = "OFF", AudioRef = "0"},
+    {SoundName = "ON", AudioName = "ON", AudioRef = "NOIR_FILTER_SOUNDS"},
+    {SoundName = "HUD PROPERTY SOUNDSET", AudioName = "HUD_PROPERTY_SOUNDSET", AudioRef = "0"},
+    {SoundName = "Take Picture", AudioName = "Take_Picture", AudioRef = "MUGSHOT_CHARACTER_CREATION_SOUNDS"},
+    {SoundName = "Lights On", AudioName = "Lights_On", AudioRef = "GTAO_MUGSHOT_ROOM_SOUNDS"},
+    {SoundName = "Zoom Out", AudioName = "Zoom_Out", AudioRef = "MUGSHOT_CHARACTER_CREATION_SOUNDS"},
+    {SoundName = "Zoom In", AudioName = "Zoom_In", AudioRef = "MUGSHOT_CHARACTER_CREATION_SOUNDS"},
+    {SoundName = "Remote Sniper Rifle Move", AudioName = "Remote_Sniper_Rifle_Move", AudioRef = "0"},
+    {SoundName = "Remote Sniper Rifle Zoom", AudioName = "Remote_Sniper_Rifle_Zoom", AudioRef = "0"},
+    {SoundName = "PLANE ON FIRE", AudioName = "PLANE_ON_FIRE", AudioRef = "0"},
+    {SoundName = "MARTIN1 DISTANT TRAIN HORNS MASTER", AudioName = "MARTIN1_DISTANT_TRAIN_HORNS_MASTER", AudioRef = "0"},
+    {SoundName = "MARTIN 1 PLANE CRASH MASTER", AudioName = "MARTIN_1_PLANE_CRASH_MASTER", AudioRef = "0"},
+    {SoundName = "SUBWAY TRAIN HORNS AIR HORN", AudioName = "SUBWAY_TRAIN_HORNS_AIR_HORN", AudioRef = "0"},
+    {SoundName = "SOLOMON 1 JET SHOT EXPLODE", AudioName = "SOLOMON_1_JET_SHOT_EXPLODE", AudioRef = "0"},
+    {SoundName = "SCOPE UI MASTER", AudioName = "SCOPE_UI_MASTER", AudioRef = "0"},
+    {SoundName = "MICHAEL EVENT AMANDA REMOVE HANDCUFFS MASTER", AudioName = "MICHAEL_EVENT_AMANDA_REMOVE_HANDCUFFS_MASTER", AudioRef = "0"},
+    {SoundName = "Train Bell", AudioName = "Train_Bell", AudioRef = "Prologue_Sounds"},
+    {SoundName = "RING", AudioName = "RING", AudioRef = "CHURCH_BELL_SOUNDSET"},
+    {SoundName = "MIC 1 RAIN ON PLANE MASTER", AudioName = "MIC_1_RAIN_ON_PLANE_MASTER", AudioRef = "0"},
+    {SoundName = "MINCER FALL", AudioName = "MINCER_FALL", AudioRef = "MICHAEL_2_SOUNDS"},
+    {SoundName = "MIC 2 CHOPPED UP JUMPIN MASTER", AudioName = "MIC_2_CHOPPED_UP_JUMPIN_MASTER", AudioRef = "0"},
+    {SoundName = "MEAT SLIDE", AudioName = "MEAT_SLIDE", AudioRef = "MICHAEL_2_SOUNDS"},
+    {SoundName = "MINCER LOOP", AudioName = "MINCER_LOOP", AudioRef = "MICHAEL_2_SOUNDS"},
+    {SoundName = "ACID BATH FALL", AudioName = "ACID_BATH_FALL", AudioRef = "MICHAEL_2_SOUNDS"},
+    {SoundName = "Rail Loop Skip Start", AudioName = "Rail_Loop_Skip_Start", AudioRef = "MICHAEL_2_SOUNDS"},
+    {SoundName = "Pull Out", AudioName = "Pull_Out", AudioRef = "Phone_SoundSet_Franklin"},
+    {SoundName = "RAIL LOOP", AudioName = "RAIL_LOOP", AudioRef = "MICHAEL_2_SOUNDS"},
+    {SoundName = "MIC4 CAMERA FLASH master", AudioName = "MIC4_CAMERA_FLASH_master", AudioRef = "0"},
+    {SoundName = "STUN COLLECT", AudioName = "STUN_COLLECT", AudioRef = "MINUTE_MAN_01_SOUNDSET"},
+    {SoundName = "PASSPORT", AudioName = "PASSPORT", AudioRef = "MINUTE_02_SOUNDSET"},
+    {SoundName = "KISS", AudioName = "KISS", AudioRef = "ROAD_RACE_SOUNDSET"},
+    {SoundName = "FAMILY3 COACH OUT WINDOW MASTER", AudioName = "FAMILY3_COACH_OUT_WINDOW_MASTER", AudioRef = "0"},
+    {SoundName = "ASS PAYPHONE RING master", AudioName = "ASS_PAYPHONE_RING_master", AudioRef = "0"},
+    {SoundName = "Flush", AudioName = "Flush", AudioRef = "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+    {SoundName = "DOOR BUZZER LOOP", AudioName = "DOOR_BUZZER_LOOP", AudioRef = "FINALE_INTRO_SOUNDSET"},
+    {SoundName = "TOOTH PING", AudioName = "TOOTH_PING", AudioRef = "NIGEL_1A_SOUNDSET"},
+    {SoundName = "WHISTLING", AudioName = "WHISTLING", AudioRef = "NIGEL_1B_SOUNDSET"},
+    {SoundName = "COLLAR", AudioName = "COLLAR", AudioRef = "NIGEL_1C_SOUNDSET"},
+    {SoundName = "COLLECT IN BAG", AudioName = "COLLECT_IN_BAG", AudioRef = "NIGEL_1D_SOUNDSET"},
+    {SoundName = "COLLECT OUT BAG", AudioName = "COLLECT_OUT_BAG", AudioRef = "NIGEL_1D_SOUNDSET"},
+    {SoundName = "CAR DROP WRAP", AudioName = "CAR_DROP_WRAP", AudioRef = "0"},
+    {SoundName = "DOOR CRASH", AudioName = "DOOR_CRASH", AudioRef = "NIGEL_02_SOUNDSET"},
+    {SoundName = "SCREAMS", AudioName = "SCREAMS", AudioRef = "NIGEL_02_SOUNDSET"},
+    {SoundName = "PANIC WALLA", AudioName = "PANIC_WALLA", AudioRef = "NIGEL_02_SOUNDSET"},
+    {SoundName = "WALL CRASH", AudioName = "WALL_CRASH", AudioRef = "NIGEL_02_SOUNDSET"},
+    {SoundName = "WINDOW CRASH", AudioName = "WINDOW_CRASH", AudioRef = "NIGEL_02_SOUNDSET"},
+    {SoundName = "FAKE REVS VEHICLE 02", AudioName = "FAKE_REVS_VEHICLE_02", AudioRef = "NIGEL_02_SOUNDSET"},
+    {SoundName = "CRASH", AudioName = "CRASH", AudioRef = "NIGEL_03_SOUNDSET"},
+    {SoundName = "TRAIN COMING", AudioName = "TRAIN_COMING", AudioRef = "NIGEL_03_SOUNDSET"},
+    {SoundName = "dj crowd cheer", AudioName = "dj_crowd_cheer", AudioRef = "dlc_btl_club_dj_callout_crowd_cheers_sounds"},
+    {SoundName = "MP APARTMENT SHOWER GET UNDRESSED MASTER", AudioName = "MP_APARTMENT_SHOWER_GET_UNDRESSED_MASTER", AudioRef = "0"},
+    {SoundName = "MP APARTMENT SHOWER DOOR OPEN MASTER", AudioName = "MP_APARTMENT_SHOWER_DOOR_OPEN_MASTER", AudioRef = "0"},
+    {SoundName = "MP APARTMENT SHOWER GET DRESSED MASTER", AudioName = "MP_APARTMENT_SHOWER_GET_DRESSED_MASTER", AudioRef = "0"},
+    {SoundName = "GTAO MP APARTMENT SHOWER PLASTIC MASTER", AudioName = "GTAO_MP_APARTMENT_SHOWER_PLASTIC_MASTER", AudioRef = "0"},
+    {SoundName = "MP APARTMENT SHOWER MASTER", AudioName = "MP_APARTMENT_SHOWER_MASTER", AudioRef = "0"},
+    {SoundName = "Insert Coin", AudioName = "Insert_Coin", AudioRef = "0"},
+    {SoundName = "Timer", AudioName = "Timer", AudioRef = "0"},
+    {SoundName = "Turn", AudioName = "Turn", AudioRef = "0"},
+    {SoundName = "Turn Limit", AudioName = "Turn_Limit", AudioRef = "0"},
+    {SoundName = "Zoom Limit", AudioName = "Zoom_Limit", AudioRef = "0"},
+    {SoundName = "10 Seconds", AudioName = "10_Seconds", AudioRef = "0"},
+    {SoundName = "MICHAEL SOFA TV ON MASTER", AudioName = "MICHAEL_SOFA_TV_ON_MASTER", AudioRef = "0"},
+    {SoundName = "HUD MINI GAME SOUNDSET", AudioName = "HUD_MINI_GAME_SOUNDSET", AudioRef = "0"},
+    {SoundName = "CROWD CHEER MASTER", AudioName = "CROWD_CHEER_MASTER", AudioRef = "0"},
+    {SoundName = "SWING", AudioName = "SWING", AudioRef = "0"},
+    {SoundName = "CAMERA", AudioName = "CAMERA", AudioRef = "0"},
+    {SoundName = "ZOOM", AudioName = "ZOOM", AudioRef = "PAPARAZZO_02_SOUNDSETS"},
+    {SoundName = "SMALL CRASH", AudioName = "SMALL_CRASH", AudioRef = "PAPARAZZO_02_SOUNDSETS"},
+    {SoundName = "LOOP REV", AudioName = "LOOP_REV", AudioRef = "PAPARAZZO_02_SOUNDSETS"},
+    {SoundName = "BUILDING SITE CRASH", AudioName = "BUILDING_SITE_CRASH", AudioRef = "PAPARAZZO_02_SOUNDSETS"},
+    {SoundName = "HIGHREV", AudioName = "HIGHREV", AudioRef = "PAPARAZZO_02_SOUNDSETS"},
+    {SoundName = "AMBIENT SEX", AudioName = "AMBIENT_SEX", AudioRef = "PAPARAZZO_02_SOUNDSETS"},
+    {SoundName = "CAMERA FOLEY", AudioName = "CAMERA_FOLEY", AudioRef = "PAPARAZZO_02_SOUNDSETS"},
+    {SoundName = "POLICE CRASH", AudioName = "POLICE_CRASH", AudioRef = "PAPARAZZO_03A"},
+    {SoundName = "CRASH", AudioName = "CRASH", AudioRef = "PAPARAZZO_03A"},
+    {SoundName = "FLIGHT SCHOOL LESSON PASSED", AudioName = "FLIGHT_SCHOOL_LESSON_PASSED", AudioRef = "HUD_AWARDS"},
+    {SoundName = "NAV UP DOWN", AudioName = "NAV_UP_DOWN", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "Spawn", AudioName = "Spawn", AudioRef = "DLC_PILOT_Shooting_Range_Sounds"},
+    {SoundName = "move", AudioName = "move", AudioRef = "DLC_PILOT_Shooting_Range_Sounds"},
+    {SoundName = "stop", AudioName = "stop", AudioRef = "DLC_PILOT_Shooting_Range_Sounds"},
+    {SoundName = "Destroyed", AudioName = "Destroyed", AudioRef = "DLC_PILOT_Shooting_Range_Sounds"},
+    {SoundName = "Jump", AudioName = "Jump", AudioRef = "DLC_Pilot_Chase_Parachute_Sounds"},
+    {SoundName = "Grab Chute Foley", AudioName = "Grab_Chute_Foley", AudioRef = "DLC_Pilot_Chase_Parachute_Sounds"},
+    {SoundName = "Plane Wind", AudioName = "Plane_Wind", AudioRef = "DLC_Pilot_Chase_Parachute_Sounds"},
+    {SoundName = "engineexplosion", AudioName = "engineexplosion", AudioRef = "DLC_PILOT_CITY_LANDING"},
+    {SoundName = "Engine fail", AudioName = "Engine_fail", AudioRef = "DLC_PILOT_ENGINE_FAILURE_SOUNDS"},
+    {SoundName = "Warning Tones", AudioName = "Warning_Tones", AudioRef = "DLC_PILOT_ENGINE_FAILURE_SOUNDS"},
+    {SoundName = "Landing Tone", AudioName = "Landing_Tone", AudioRef = "DLC_PILOT_ENGINE_FAILURE_SOUNDS"},
+    {SoundName = "BAR DELIVER BOOZE RATTLE MASTER", AudioName = "BAR_DELIVER_BOOZE_RATTLE_MASTER", AudioRef = "0"},
+    {SoundName = "PROPERTIES PLANE PROMO MASTER", AudioName = "PROPERTIES_PLANE_PROMO_MASTER", AudioRef = "0"},
+    {SoundName = "TAKINGS TIRES PEELAWAY master", AudioName = "TAKINGS_TIRES_PEELAWAY_master", AudioRef = "0"},
+    {SoundName = "Cops Arrive 2", AudioName = "Cops_Arrive_2", AudioRef = "Prologue_Sounds"},
+    {SoundName = "Train Horn", AudioName = "Train_Horn", AudioRef = "Prologue_Sounds"},
+    {SoundName = "Security Door Bomb Bleeps", AudioName = "Security_Door_Bomb_Bleeps", AudioRef = "Prologue_Sounds"},
+    {SoundName = "COPS ARRIVE", AudioName = "COPS_ARRIVE", AudioRef = "Prologue_Sounds"},
+    {SoundName = "Security Door Alarm", AudioName = "Security_Door_Alarm", AudioRef = "Prologue_Sounds"},
+    {SoundName = "Guard Headshot", AudioName = "Guard_Headshot", AudioRef = "Prologue_Sounds"},
+    {SoundName = "Barge Door", AudioName = "Barge_Door", AudioRef = "Prologue_Sounds"},
+    {SoundName = "Music Dynamic Banked", AudioName = "Music_Dynamic_Banked", AudioRef = "sum20_am_Qub3d_sounds"},
+    {SoundName = "MENU SELECT", AudioName = "MENU_SELECT", AudioRef = "0"},
+    {SoundName = "RAMPAGE TIMER COUNTDOWN LOOP 3 MIN MASTER", AudioName = "RAMPAGE_TIMER_COUNTDOWN_LOOP_3_MIN_MASTER", AudioRef = "0"},
+    {SoundName = "RAMPAGE TIMER COUNTDOWN LOOP MASTER", AudioName = "RAMPAGE_TIMER_COUNTDOWN_LOOP_MASTER", AudioRef = "0"},
+    {SoundName = "RAMPAGE ROAR MASTER", AudioName = "RAMPAGE_ROAR_MASTER", AudioRef = "0"},
+    {SoundName = "RAMPAGE KILLED HEAD SHOT MASTER", AudioName = "RAMPAGE_KILLED_HEAD_SHOT_MASTER", AudioRef = "0"},
+    {SoundName = "RAMPAGE KILLED COUNTER MASTER", AudioName = "RAMPAGE_KILLED_COUNTER_MASTER", AudioRef = "0"},
+    {SoundName = "RAMPAGE PASSED MASTER", AudioName = "RAMPAGE_PASSED_MASTER", AudioRef = "0"},
+    {SoundName = "SHOOTING RANGE ROUND OVER", AudioName = "SHOOTING_RANGE_ROUND_OVER", AudioRef = "HUD_AWARDS"},
+    {SoundName = "TARGET PRACTICE FLIP MASTER", AudioName = "TARGET_PRACTICE_FLIP_MASTER", AudioRef = "0"},
+    {SoundName = "TARGET PRACTICE STOP MASTER", AudioName = "TARGET_PRACTICE_STOP_MASTER", AudioRef = "0"},
+    {SoundName = "TARGET PRACTICE SLIDE MASTER", AudioName = "TARGET_PRACTICE_SLIDE_MASTER", AudioRef = "0"},
+    {SoundName = "HUD FRONTEND DEFAULT SOUNDSET", AudioName = "HUD_FRONTEND_DEFAULT_SOUNDSET", AudioRef = "0"},
+    {SoundName = "TIMER STOP MASTER", AudioName = "TIMER_STOP_MASTER", AudioRef = "0"},
+    {SoundName = "TextHit", AudioName = "TextHit", AudioRef = "MissionFailedSounds"},
+    {SoundName = "SKIP", AudioName = "SKIP", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "RETRY", AudioName = "RETRY", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "RESTART", AudioName = "RESTART", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Bed", AudioName = "Bed", AudioRef = "MissionFailedSounds"},
+    {SoundName = "ScreenFlash", AudioName = "ScreenFlash", AudioRef = "0"},
+    {SoundName = "Bed", AudioName = "Bed", AudioRef = "0"},
+    {SoundName = "TextHit", AudioName = "TextHit", AudioRef = "0"},
+    {SoundName = "Warning Once", AudioName = "Warning_Once", AudioRef = "TRAIN_HORN"},
+    {SoundName = "SUSPENSION SCRIPT FORCE", AudioName = "SUSPENSION_SCRIPT_FORCE", AudioRef = "0"},
+    {SoundName = "WEAKEN", AudioName = "WEAKEN", AudioRef = "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+    {SoundName = "WIND", AudioName = "WIND", AudioRef = "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+    {SoundName = "CABLE SNAPS", AudioName = "CABLE_SNAPS", AudioRef = "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+    {SoundName = "PIPES LAND", AudioName = "PIPES_LAND", AudioRef = "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+    {SoundName = "ROPE CUT", AudioName = "ROPE_CUT", AudioRef = "ROPE_CUT_SOUNDSET"},
+    {SoundName = "CLOTHES THROWN", AudioName = "CLOTHES_THROWN", AudioRef = "RE_DOMESTIC_SOUNDSET"},
+    {SoundName = "VARIABLE COUNTDOWN CLOCK wp", AudioName = "VARIABLE_COUNTDOWN_CLOCK_wp", AudioRef = "0"},
+    {SoundName = "SHUTTER FLASH", AudioName = "SHUTTER_FLASH", AudioRef = "CAMERA_FLASH_SOUNDSET"},
+    {SoundName = "SHUTTER", AudioName = "SHUTTER", AudioRef = "CAMERA_FLASH_SOUNDSET"},
+    {SoundName = "FLASH", AudioName = "FLASH", AudioRef = "CAMERA_FLASH_SOUNDSET"},
+    {SoundName = "DOORS BLOWN", AudioName = "DOORS_BLOWN", AudioRef = "RE_SECURITY_VAN_SOUNDSET"},
+    {SoundName = "BIG STOP", AudioName = "BIG_STOP", AudioRef = "0"},
+    {SoundName = "PS2A DISTANT TRAIN HORNS MASTER", AudioName = "PS2A_DISTANT_TRAIN_HORNS_MASTER", AudioRef = "0"},
+    {SoundName = "PS2A TRACTOR THRU CHAIN LINK MASTER", AudioName = "PS2A_TRACTOR_THRU_CHAIN_LINK_MASTER", AudioRef = "0"},
+    {SoundName = "DiggerRevOneShot", AudioName = "DiggerRevOneShot", AudioRef = "BulldozerDefault"},
+    {SoundName = "TEST SCREAM SHORT", AudioName = "TEST_SCREAM_SHORT", AudioRef = "0"},
+    {SoundName = "Gas Station Explosion", AudioName = "Gas_Station_Explosion", AudioRef = "RURAL_BANK_HEIST_FINALE_SOUNDS"},
+    {SoundName = "PS2A MONEY LOST", AudioName = "PS2A_MONEY_LOST", AudioRef = "PALETO_SCORE_2A_BANK_SS"},
+    {SoundName = "PS2A WELDTORCH MASTER", AudioName = "PS2A_WELDTORCH_MASTER", AudioRef = "0"},
+    {SoundName = "Shoot box", AudioName = "Shoot_box", AudioRef = "Paleto_Score_Setup_Sounds"},
+    {SoundName = "dlc vw am ip frontend sounds", AudioName = "dlc_vw_am_ip_frontend_sounds", AudioRef = "0"},
+    {SoundName = "dlc vw am ip tank sounds", AudioName = "dlc_vw_am_ip_tank_sounds", AudioRef = "0"},
+    {SoundName = "Tank Engine Loop", AudioName = "Tank_Engine_Loop", AudioRef = "dlc_vw_am_ip_tank_sounds"},
+    {SoundName = "Tank Critical Damage Loop", AudioName = "Tank_Critical_Damage_Loop", AudioRef = "dlc_vw_am_ip_tank_sounds"},
+    {SoundName = "dlc vw am ip enemy sounds", AudioName = "dlc_vw_am_ip_enemy_sounds", AudioRef = "0"},
+    {SoundName = "Tank Weapon Lightning Gun Fire Hit", AudioName = "Tank_Weapon_Lightning_Gun_Fire_Hit", AudioRef = "dlc_vw_am_ip_tank_sounds"},
+    {SoundName = "CHARACTER CHANGE CHARACTER 01 MASTER", AudioName = "CHARACTER_CHANGE_CHARACTER_01_MASTER", AudioRef = "0"},
+    {SoundName = "CHARACTER CHANGE DPAD DOWN MP MASTER", AudioName = "CHARACTER_CHANGE_DPAD_DOWN_MP_MASTER", AudioRef = "0"},
+    {SoundName = "CHARACTER CHANGE DPAD DOWN MASTER", AudioName = "CHARACTER_CHANGE_DPAD_DOWN_MASTER", AudioRef = "0"},
+    {SoundName = "SwitchRedWarning", AudioName = "SwitchRedWarning", AudioRef = "SPECIAL_ABILITY_SOUNDSET"},
+    {SoundName = "SwitchWhiteWarning", AudioName = "SwitchWhiteWarning", AudioRef = "SPECIAL_ABILITY_SOUNDSET"},
+    {SoundName = "CHARACTER SELECT", AudioName = "CHARACTER_SELECT", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "Trevor 4 747 Jet Engine", AudioName = "Trevor_4_747_Jet_Engine", AudioRef = "0"},
+    {SoundName = "Trevor 4 747 Man Sucked In", AudioName = "Trevor_4_747_Man_Sucked_In", AudioRef = "0"},
+    {SoundName = "Trevor 4 747 Tanker Horn", AudioName = "Trevor_4_747_Tanker_Horn", AudioRef = "0"},
+    {SoundName = "Trevor 4 747 Tanker Explosion", AudioName = "Trevor_4_747_Tanker_Explosion", AudioRef = "0"},
+    {SoundName = "Trevor 4 747 Flying Car", AudioName = "Trevor_4_747_Flying_Car", AudioRef = "0"},
+    {SoundName = "Trevor 4 747 Carsplosion", AudioName = "Trevor_4_747_Carsplosion", AudioRef = "0"},
+    {SoundName = "Trevor 4 747 Molly Open Doors", AudioName = "Trevor_4_747_Molly_Open_Doors", AudioRef = "0"},
+    {SoundName = "Trevor 4 747 Loud Fire", AudioName = "Trevor_4_747_Loud_Fire", AudioRef = "0"},
+    {SoundName = "Trevor 4 747 TV", AudioName = "Trevor_4_747_TV", AudioRef = "0"},
+    {SoundName = "CANCEL", AudioName = "CANCEL", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "Phone Generic Key 02", AudioName = "Phone_Generic_Key_02", AudioRef = "HUD_MINIGAME_SOUNDSET"},
+    {SoundName = "Phone Generic Key 03", AudioName = "Phone_Generic_Key_03", AudioRef = "HUD_MINIGAME_SOUNDSET"},
+    {SoundName = "QUIT", AudioName = "QUIT", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "NAV UP DOWN", AudioName = "NAV_UP_DOWN", AudioRef = "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
+    {SoundName = "SELECT", AudioName = "SELECT", AudioRef = "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
+    {SoundName = "BACK", AudioName = "BACK", AudioRef = "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
+    {SoundName = "ERROR", AudioName = "ERROR", AudioRef = "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
+    {SoundName = "Tattooing Oneshot", AudioName = "Tattooing_Oneshot", AudioRef = "TATTOOIST_SOUNDS"},
+    {SoundName = "PURCHASE", AudioName = "PURCHASE", AudioRef = "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
+    {SoundName = "Tattooing Oneshot Remove", AudioName = "Tattooing_Oneshot_Remove", AudioRef = "TATTOOIST_SOUNDS"},
+    {SoundName = "Burglar Bell", AudioName = "Burglar_Bell", AudioRef = "Generic_Alarms"},
+    {SoundName = "Biker Ring Tone", AudioName = "Biker_Ring_Tone", AudioRef = "TREVOR_2_SOUNDS"},
+    {SoundName = "TENNIS MATCH POINT", AudioName = "TENNIS_MATCH_POINT", AudioRef = "HUD_AWARDS"},
+    {SoundName = "TENNIS FOOT SQUEAKS MASTER", AudioName = "TENNIS_FOOT_SQUEAKS_MASTER", AudioRef = "0"},
+    {SoundName = "TENNIS PLYR SMASH MASTER", AudioName = "TENNIS_PLYR_SMASH_MASTER", AudioRef = "TENNIS_NPC_SMASH_MASTER"},
+    {SoundName = "TENNIS PLYR SMASH BACKSLICE MASTER", AudioName = "TENNIS_PLYR_SMASH_BACKSLICE_MASTER", AudioRef = "TENNIS_NPC_SMASH_BACKSLICE_MASTER"},
+    {SoundName = "TENNIS PLYR LOB MASTER", AudioName = "TENNIS_PLYR_LOB_MASTER", AudioRef = "TENNIS_NPC_LOB_MASTER"},
+    {SoundName = "TENNIS PLYR FOREARM MASTER", AudioName = "TENNIS_PLYR_FOREARM_MASTER", AudioRef = "TENNIS_NPC_FOREARM_MASTER"},
+    {SoundName = "TENNIS PLYR BACKSLICE MASTER", AudioName = "TENNIS_PLYR_BACKSLICE_MASTER", AudioRef = "TENNIS_NPC_BACKSLICE_MASTER"},
+    {SoundName = "TENNIS PLYR TOPSPIN MASTER", AudioName = "TENNIS_PLYR_TOPSPIN_MASTER", AudioRef = "TENNIS_NPC_TOPSPIN_MASTER"},
+    {SoundName = "TENNIS PLYR FOREARM MASTER", AudioName = "TENNIS_PLYR_FOREARM_MASTER", AudioRef = "0"},
+    {SoundName = "TENNIS NET BALL MEDIUM MASTER", AudioName = "TENNIS_NET_BALL_MEDIUM_MASTER", AudioRef = "0"},
+    {SoundName = "TENNIS NET BALL SKIM MASTER", AudioName = "TENNIS_NET_BALL_SKIM_MASTER", AudioRef = "0"},
+    {SoundName = "TENNIS CLS BALL HARD MASTER", AudioName = "TENNIS_CLS_BALL_HARD_MASTER", AudioRef = "0"},
+    {SoundName = "TENNIS CLS BALL MASTER", AudioName = "TENNIS_CLS_BALL_MASTER", AudioRef = "0"},
+    {SoundName = "TENNIS AMB SMASH MASTER", AudioName = "TENNIS_AMB_SMASH_MASTER", AudioRef = "TENNIS_NPC_SMASH_MASTER"},
+    {SoundName = "TENNIS AMB SERVE MASTER", AudioName = "TENNIS_AMB_SERVE_MASTER", AudioRef = "TENNIS_NPC_SERVE_MASTER"},
+    {SoundName = "TENNIS PLYR SMASH MASTER", AudioName = "TENNIS_PLYR_SMASH_MASTER", AudioRef = "0"},
+    {SoundName = "TENNIS PLYR SERVE MASTER", AudioName = "TENNIS_PLYR_SERVE_MASTER", AudioRef = "0"},
+    {SoundName = "LEADERBOARD", AudioName = "LEADERBOARD", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "TENNIS NPC FOREARM MASTER", AudioName = "TENNIS_NPC_FOREARM_MASTER", AudioRef = "0"},
+    {SoundName = "TENNIS NPC BACKSLICE MASTER", AudioName = "TENNIS_NPC_BACKSLICE_MASTER", AudioRef = "0"},
+    {SoundName = "TENNIS NPC TOPSPIN MASTER", AudioName = "TENNIS_NPC_TOPSPIN_MASTER", AudioRef = "0"},
+    {SoundName = "WOUNDED", AudioName = "WOUNDED", AudioRef = "SASQUATCH_01_SOUNDSET"},
+    {SoundName = "ALERT", AudioName = "ALERT", AudioRef = "SASQUATCH_01_SOUNDSET"},
+    {SoundName = "RUNNING", AudioName = "RUNNING", AudioRef = "SASQUATCH_01_SOUNDSET"},
+    {SoundName = "COUGH", AudioName = "COUGH", AudioRef = "SASQUATCH_01_SOUNDSET"},
+    {SoundName = "DLC VW BET DOWN", AudioName = "DLC_VW_BET_DOWN", AudioRef = "dlc_vw_table_games_frontend_sounds"},
+    {SoundName = "TOWING ENGINE TURNING MASTER", AudioName = "TOWING_ENGINE_TURNING_MASTER", AudioRef = "0"},
+    {SoundName = "DRUG TRAFFIC AIR SCREAMS", AudioName = "DRUG_TRAFFIC_AIR_SCREAMS", AudioRef = "0"},
+    {SoundName = "CONFIRM BEEP", AudioName = "CONFIRM_BEEP", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "DRUG TRAFFIC AIR BOMB DROP ERROR MASTER", AudioName = "DRUG_TRAFFIC_AIR_BOMB_DROP_ERROR_MASTER", AudioRef = "0"},
+    {SoundName = "PICK UP WEAPON", AudioName = "PICK_UP_WEAPON", AudioRef = "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+    {SoundName = "TRAFFIC GROUND ENEMY PICK UP WEAPON MASTER", AudioName = "TRAFFIC_GROUND_ENEMY_PICK_UP_WEAPON_MASTER", AudioRef = "0"},
+    {SoundName = "TIMER", AudioName = "TIMER", AudioRef = "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+    {SoundName = "TREVOR 1 RAM TRAILER REVS", AudioName = "TREVOR_1_RAM_TRAILER_REVS", AudioRef = "0"},
+    {SoundName = "TREVOR 1 TRAILER IMPACT MASTER B", AudioName = "TREVOR_1_TRAILER_IMPACT_MASTER_B", AudioRef = "0"},
+    {SoundName = "TREVOR 1 TRAILER IMPACT MASTER A", AudioName = "TREVOR_1_TRAILER_IMPACT_MASTER_A", AudioRef = "0"},
+    {SoundName = "TREVOR 1 TRAILER IMPACT MASTER C", AudioName = "TREVOR_1_TRAILER_IMPACT_MASTER_C", AudioRef = "0"},
+    {SoundName = "TREVOR 1 LEAD OUT CR", AudioName = "TREVOR_1_LEAD_OUT_CR", AudioRef = "0"},
+    {SoundName = "Trevor 2 cargo drop", AudioName = "Trevor_2_cargo_drop", AudioRef = "TREVOR_2_SOUNDS"},
+    {SoundName = "Trevor 2 cargo bay open", AudioName = "Trevor_2_cargo_bay_open", AudioRef = "TREVOR_2_SOUNDS"},
+    {SoundName = "Trevor 2 chopper explode", AudioName = "Trevor_2_chopper_explode", AudioRef = "TREVOR_2_SOUNDS"},
+    {SoundName = "BIKER PROP GRIND", AudioName = "BIKER_PROP_GRIND", AudioRef = "TREVOR_2_SOUNDS"},
+    {SoundName = "TREVOR 2 PLANE START", AudioName = "TREVOR_2_PLANE_START", AudioRef = "TREVOR_2_SOUNDS"},
+    {SoundName = "Trevor 2 van rev", AudioName = "Trevor_2_van_rev", AudioRef = "TREVOR_2_SOUNDS"},
+    {SoundName = "ALARMS KLAXON 03 FAR", AudioName = "ALARMS_KLAXON_03_FAR", AudioRef = "0"},
+    {SoundName = "ALARMS KLAXON 03 CLOSE", AudioName = "ALARMS_KLAXON_03_CLOSE", AudioRef = "0"},
+    {SoundName = "DAMAGED TRUCK IDLE", AudioName = "DAMAGED_TRUCK_IDLE", AudioRef = "0"},
+    {SoundName = "POSITIONED WALLA MASTER", AudioName = "POSITIONED_WALLA_MASTER", AudioRef = "0"},
+    {SoundName = "BACK", AudioName = "BACK", AudioRef = "HUD_MINI_GAME_SOUNDSET"},
+    {SoundName = "Checkpoint Finish", AudioName = "Checkpoint_Finish", AudioRef = "Car_Club_Races_Sprint_Challenge_Sounds"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "Car_Club_Races_Sprint_Challenge_Sounds"},
+    {SoundName = "Go", AudioName = "Go", AudioRef = "DLC_Tuner_Car_Meet_Test_Area_Events_Sounds"},
+    {SoundName = "321", AudioName = "321", AudioRef = "DLC_Tuner_Car_Meet_Test_Area_Events_Sounds"},
+    {SoundName = "Checkpoint Finish Winner", AudioName = "Checkpoint_Finish_Winner", AudioRef = "DLC_Tuner_Car_Meet_Test_Area_Events_Sounds"},
+    {SoundName = "Checkpoint", AudioName = "Checkpoint", AudioRef = "DLC_Tuner_Car_Meet_Test_Area_Events_Sounds"},
+    {SoundName = "Go", AudioName = "Go", AudioRef = "Car_Club_Races_Sprint_Challenge_Sounds"},
+    {SoundName = "321", AudioName = "321", AudioRef = "Car_Club_Races_Sprint_Challenge_Sounds"},
+    {SoundName = "Checkpoint Lap", AudioName = "Checkpoint_Lap", AudioRef = "DLC_Tuner_Car_Meet_Test_Area_Events_Sounds"},
+    {SoundName = "PROPERTY PURCHASE MEDIUM", AudioName = "PROPERTY_PURCHASE_MEDIUM", AudioRef = "HUD_PROPERTY_SOUNDSET"},
+}
+
 local weaponModels = {
     "prop_w_me_dagger", "prop_baseball_bat", "prop_ld_flow_bottle", "prop_tool_crowbar", "prop_ld_ammo_pack_01", "prop_ld_shovel", "prop_golf_iron_01", "prop_tool_hammer", "prop_ld_fireaxe", "prop_ld_handbag", "prop_knife", "prop_ld_w_me_machette", "prop_ld_w_me_switchblade",
     "prop_ld_bat_01", "prop_tool_wrench", "prop_tool_fireaxe", "prop_pool_cue", "prop_melee_rock", "w_pi_pistol", "w_pi_pistol_mk2", "w_pi_combatpistol", "w_pi_appistol", "w_pi_stungun", "w_pi_pistol50", "w_pi_sns_pistol", "w_pi_sns_pistol_mk2", "w_pi_heavy_pistol",
@@ -107,7 +2367,7 @@ local weaponModels = {
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
 local KAOS = gui.get_tab("Extras Addon")
-createText(KAOS, "Welcome to Extras Addon v"..addonVersion.." please read the information below before proceeding to use the menu options.")
+newText(KAOS, "Welcome to Extras Addon v"..addonVersion.." please read the information below before proceeding to use the menu options.", 1)
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
@@ -139,6 +2399,7 @@ Mvmt:add_imgui(function()
         PLAYER.SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), runSpeed/7)
         gui.show_message('Run Speed Modified!', out)
     end
+	toolTip("", "Increase your Walk/Run Speed")
 end)
 
 swimSpeed = 1
@@ -149,9 +2410,8 @@ Mvmt:add_imgui(function()
         PLAYER.SET_SWIM_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), swimSpeed/7)
         gui.show_message('Swim Speed Modified!', out)
     end
+	toolTip("", "Increase your Swimming Speed")
 end)
-Mvmt:add_separator()
-Mvmt:add_text("Slightly increased speed modifiers, similar to Fast Run/Swim")
 
 -- Fun Random Things
 local Fun = Pla:add_tab("Fun Self Options")
@@ -189,7 +2449,7 @@ script.register_looped("FireworkLoop3", function()
         end
     end
 end)
-
+toolTip(Fun, "Toggles Firework particle effect on your player")
 Fun:add_sameline()
 local smokeLoop = Fun:add_checkbox("Smoke (On/Off)")
 function load_smoke()
@@ -215,7 +2475,7 @@ script.register_looped("SmokeLoop", function()
 
                 -- Get random color values
                 local colorR, colorG, colorB = random_color()
-                test = player_coords.z - 2.5
+                test = player_coords.z - 2.0
                 GRAPHICS.USE_PARTICLE_FX_ASSET("scr_sum2_hal")
                 GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
                 GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_sum2_hal_rider_death_blue", player_coords.x, player_coords.y, test, 0, 0, 0, 1, false, false, false, false)
@@ -223,7 +2483,7 @@ script.register_looped("SmokeLoop", function()
         end
     end
 end)
-
+toolTip(Fun, "Toggles Smoke particle effect at your players feet")
 Fun:add_sameline()
 local flameLoop = Fun:add_checkbox("Flames (On/Off)")
 function load_flame()
@@ -257,14 +2517,85 @@ script.register_looped("FlameLoop", function()
         end
     end
 end)
+toolTip(Fun, "Toggles Fire 'Ghostrider' particle effect at your players feet")
+Fun:add_separator()
+shootCB = Fun:add_checkbox("Gun PTFX (Banknotes)")
+
+script.register_looped("particles", function(shoot)
+    if shootCB:is_enabled() then
+        local effect = "scr_rcbarry2"
+        while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect) do
+            STREAMING.REQUEST_NAMED_PTFX_ASSET(effect)
+            shoot:yield()
+        end
+        if PED.IS_PED_SHOOTING(PLAYER.PLAYER_PED_ID()) then
+            local weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
+            local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(weapon, "gun_muzzle")
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+            GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("muz_clown", weapon, 0.0, 0.0, 0.0, 90, 0, 0, boneId, 0.8, false, false, false)
+        end
+    end
+end)
+toolTip(Fun, "Toggles a Clown particle effect on your weapon when its fired")
+Fun:add_sameline()
+shootCB2 = Fun:add_checkbox("Gun PTFX (Blood)")
+
+script.register_looped("particles2", function(shootlol)
+    if shootCB2:is_enabled() then
+        local effect = "scr_michael2"
+        while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect) do
+            STREAMING.REQUEST_NAMED_PTFX_ASSET(effect)
+            shootlol:yield()
+        end
+        if PED.IS_PED_SHOOTING(PLAYER.PLAYER_PED_ID()) then
+            local weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
+            local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(weapon, "gun_muzzle")
+            GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+            GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_mich2_blood_stab", weapon, 0.0, 0.0, 0.0, 0, 0, 0, boneId, 2.5, false, false, false)
+        end
+    end
+end)
+toolTip(Fun, "Toggles Blood particle effect on your weapon when its fired")
+Fun:add_sameline()
+vehCB = Fun:add_checkbox("Wheel PTFX (Fire)")
+
+script.register_looped("particles3", function(wheelOne)
+    if vehCB:is_enabled() then
+        local effect = "scr_bike_adversary"
+        while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect) do
+            STREAMING.REQUEST_NAMED_PTFX_ASSET(effect)
+            wheelOne:yield()
+        end
+            --local weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
+		local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), true)
+		if ENTITY.IS_ENTITY_A_VEHICLE(vehicle) then
+			local class = VEHICLE.GET_VEHICLE_CLASS(vehicle)
+			if class == 8 then
+				local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- Rear Motorcycle Wheel
+				GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+				GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneId, 2, false, false, false)
+			else
+				local boneIdOne = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- left rear wheel
+				local boneIdTwo = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_rr") -- right rear wheel
+				GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+				GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneIdOne, 2, false, false, false)
+				GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+				GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneIdTwo, 2, false, false, false)
+			end	
+        end
+    end
+end)
+toolTip(Fun, "Toggles fire particle effect on your vehicles wheels")
 Fun:add_separator()
 Fun:add_text("Movement Altering")
 local drunkLoop = Fun:add_checkbox("Make Me Drunk")
+toolTip(Fun, "Make your character walk around drunk")
 Fun:add_sameline()
 local acidTripCheckbox = Fun:add_checkbox("Show Drunk VFX")
+toolTip(Fun, "Shows the Drunk visual effects (Only when 'Make Me Drunk' is active)")
 Fun:add_sameline()
 local drunkDrivingCheckbox = Fun:add_checkbox("Drunk Driving")
-
+toolTip(Fun, "Simulates Drunk Driving (Only when 'Make Me Drunk' is active)")
 script.register_looped("drunkLoop", function()
     if drunkLoop:is_enabled() == true then
         local ped = PLAYER.PLAYER_PED_ID()
@@ -299,7 +2630,6 @@ script.register_looped("drunkLoop", function()
         end
     end
 end)
-
 Fun:add_button("Remove Impairments", function()
     if acidTripCheckbox:is_enabled() == true or acidTripCheckbox:is_enabled() == false then
         if drunkLoop:is_enabled() == false then
@@ -314,17 +2644,8 @@ Fun:add_button("Remove Impairments", function()
         end
     end
 end)
+toolTip(Fun, "Removes all impairments (everything must be turned off first)")
 
-local function SessionChanger(session)
-        globals.set_int(1575032, session)
-        if session == -1 then
-            globals.set_int(1574589 + 2, -1)
-        end
-        sleep(0.5)
-        globals.set_int(1574589, 1)
-        sleep(0.5)
-        globals.set_int(1574589, 0)
-    end
     
 -- Stat Editor - Alestarov_Menu // Reset Stats Option
 local Stats = Pla:add_tab("Stats")
@@ -345,6 +2666,7 @@ Stats:add_button("Randomize RP", function()
         SessionChanger(0)
     end)
 end)
+toolTip(Stats, "Randomize your RP/Level")
 Stats:add_sameline()
 Stats:add_button("Lvl 1", function()
     script.run_in_fiber(function (script)
@@ -362,6 +2684,7 @@ Stats:add_button("Lvl 1", function()
         SessionChanger(0)
     end)
 end)
+toolTip(Stats, "Set your level to 1")
 Stats:add_sameline()
 Stats:add_button("Lvl 100", function()
     script.run_in_fiber(function (script)
@@ -379,6 +2702,7 @@ Stats:add_button("Lvl 100", function()
         SessionChanger(0)
     end)
 end)
+toolTip(Stats, "Set your level to 100")
 Stats:add_sameline()
 Stats:add_button("Lvl 420", function()
     script.run_in_fiber(function (script)
@@ -396,6 +2720,7 @@ Stats:add_button("Lvl 420", function()
         SessionChanger(0)
     end)
 end)
+toolTip(Stats, "Set your level to 420")
 Stats:add_sameline()
 Stats:add_button("Lvl 1337", function()
     script.run_in_fiber(function (script)
@@ -413,6 +2738,7 @@ Stats:add_button("Lvl 1337", function()
         SessionChanger(0)
     end)
 end)
+toolTip(Stats, "Set your level to 1337")
 Stats:add_sameline()
 Stats:add_button("Lvl 8000", function()
     script.run_in_fiber(function (script)
@@ -430,6 +2756,7 @@ Stats:add_button("Lvl 8000", function()
         SessionChanger(0)
     end)
 end)
+toolTip(Stats, "Set your level to 8000")
 Stats:add_separator()
 Stats:add_text("Income Statistics")
 Stats:add_button("Reset Income/Spent Stats", function()
@@ -473,15 +2800,17 @@ Stats:add_button("Reset Income/Spent Stats", function()
         SessionChanger(0)
     end)
 end)
+toolTip(Stats, "Reset your Earned income, Overall Income, Casino Chip Earnings, etc. to 0")
 Stats:add_sameline()
 Stats:add_button("Bank 2 Wallet", function()
     NETSHOPPING.NET_GAMESERVER_TRANSFER_BANK_TO_WALLET(stats.get_character_index(), MONEY.NETWORK_GET_VC_BANK_BALANCE(stats.get_character_index()))
 end)
+toolTip(Stats, "Take all your money out of the bank")
 Stats:add_sameline()
 Stats:add_button("Wallet 2 Bank", function()
     NETSHOPPING.NET_GAMESERVER_TRANSFER_WALLET_TO_BANK(stats.get_character_index(), MONEY.NETWORK_GET_VC_WALLET_BALANCE(stats.get_character_index()))
 end)
-
+toolTip(Stats, "Put all your money into the bank")
 Stats:add_separator()
 Stats:add_text("Character Skills")
 Stats:add_button("Max All Skills", function()
@@ -505,6 +2834,7 @@ Stats:add_button("Max All Skills", function()
         SessionChanger(0)
     end)
 end)
+toolTip(Stats, "Max your characters skills (Driving, flying, stamina, etc.)")
 Stats:add_sameline()
 Stats:add_button("Reset All Skills", function()
     script.run_in_fiber(function (script)
@@ -527,9 +2857,7 @@ Stats:add_button("Reset All Skills", function()
         SessionChanger(0)
     end)
 end)
-
-Stats:add_text("Randomize or set your RP amount and/or reset character stats.")
-Stats:add_text("*Reset Income may glitch some owned properties and reset mission progress in freemode*")
+toolTip(Stats, "Resets your skills to minimum values.")
 
 
 -- Autorun Drops
@@ -559,7 +2887,7 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
                 pickup,
                 coords.x,
                 coords.y,
-                coords.z + 0.5,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -572,12 +2900,14 @@ Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-        sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
+		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not princessBubblegumLoop then
             script.unregister_script("princessbubblegumLoop")
         end
     end)
 end)
+toolTip(Drops, "Drops Princess Robot Figurines on a selected player.")
 Drops:add_sameline()
 Drops:add_button("Alien (On/Off)", function()
    alienfigurineLoop = not alienfigurineLoop
@@ -600,7 +2930,7 @@ Drops:add_button("Alien (On/Off)", function()
                 pickup,
                 coords.x,
                 coords.y,
-                coords.z + 0.5,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -613,12 +2943,14 @@ Drops:add_button("Alien (On/Off)", function()
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-        sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
+		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not alienfigurineLoop then
             script.unregister_script("alienfigurineLoop")
         end
     end)
 end)
+toolTip(Drops, "Drops Alien Figurines on a selected player.")
 Drops:add_sameline()
 Drops:add_button("Casino Cards (On/Off)", function()
    casinocardsLoop = not casinocardsLoop
@@ -641,7 +2973,7 @@ Drops:add_button("Casino Cards (On/Off)", function()
                 pickup,
                 coords.x,
                 coords.y,
-                coords.z + 0.5,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -654,12 +2986,14 @@ Drops:add_button("Casino Cards (On/Off)", function()
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-        sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
+		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not casinocardsLoop then
             script.unregister_script("casinocardsLoop")
         end
     end)
 end)
+toolTip(Drops, "Drops Casino Cards on a selected player.")
 Drops:add_sameline()
 Drops:add_button("Cash Loop (On/Off)", function()
 kcashLoop = not kcashLoop
@@ -682,7 +3016,7 @@ kcashLoop = not kcashLoop
                 pickup,
                 coords.x,
                 coords.y,
-                coords.z + 0.5,
+                coords.z + 1,
                 3,
                 money_value,
                 model,
@@ -694,14 +3028,15 @@ kcashLoop = not kcashLoop
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-        sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
+		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not kcashLoop then
             script.unregister_script("kcashLoop")
         end
     end)
 end)
+toolTip(Drops, "Drops Money on a selected player. (Only YOU can see/collect this)")
 Drops:add_separator()
-Drops:add_text("TSE RP/Money")
 Drops:add_button("Give 25k & Random RP", function()
     script.run_in_fiber(function(tse)
         pid = network.get_selected_player()
@@ -722,6 +3057,7 @@ Drops:add_button("Give 25k & Random RP", function()
         end
     end)
 end)
+toolTip(Drops, "Gives the selected player some Money and RP")
 Drops:add_sameline()
 local tseTest = Drops:add_checkbox("Super Fast RP")
 script.register_looped("tseTest", function()
@@ -732,6 +3068,7 @@ script.register_looped("tseTest", function()
         end
     end
 end)
+toolTip(Drops, "Remotely floods the selected player with RP (about 1 level/sec)")
 Drops:add_sameline()
 local ezMoney = Drops:add_checkbox("Money ($225k)")
     script.register_looped("ezMoney", function()
@@ -744,9 +3081,8 @@ local ezMoney = Drops:add_checkbox("Money ($225k)")
             end
         end
     end)
-
+toolTip(Drops, "Sometimes works, sometimes doesn't.  Up to 225k")
 Drops:add_separator()
-Drops:add_text("Cash loop is REAL but only for you, other players cannot see it at all");
 Drops:add_text("You CAN run multiple at once (like Robot bubblegum/Alien)")
 Drops:add_text("Select a Player from the list and toggle");
 
@@ -828,7 +3164,9 @@ locations = {customCoords, ownedCoords}
 Tel:add_imgui(function()
     addBlips(ownedCoords)
     copyLocation = ImGui.Button("Copy Location To Clipboard")
+	toolTip("", "Copies your current location to the clipboard for adding custom coordinates to the menu.")
     locationTypeIndex, locationTypeSelected = ImGui.Combo("Location Type", locationTypeIndex, locationTypes, #locationTypes)
+	toolTip("", "Select a Location Type (Custom Locations | Owned Properties)")
     locationNames = {}
     for i, location in ipairs(locations[locationTypeIndex + 1]) do
         table.insert(locationNames, location[1])
@@ -837,6 +3175,7 @@ Tel:add_imgui(function()
     if locationSelected then
         ENTITY.SET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), locations[locationTypeIndex + 1][locationIndex + 1][2], locations[locationTypeIndex + 1][locationIndex + 1][3], locations[locationTypeIndex + 1][locationIndex + 1][4] - 1, true, false, false, false)
     end
+	toolTip("", "Click to teleport to this location")
     if copyLocation then
         coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
         coordsString = coords.x.. ", ".. coords.y.. ", ".. coords.z
@@ -844,7 +3183,6 @@ Tel:add_imgui(function()
         ImGui.SetClipboardText(coordsString)
     end
 end)
-
 -- CasinoPacino - gir489returns
 casino_gui = Money:add_tab("Casino")
 
@@ -1213,6 +3551,7 @@ script.register_looped("onemLoop", function(script)
         end
     end
 end)
+toolTip(millLoop, "Runs a $1,000,000 loop, will run until its deactivated, does not add to earned or overall income.")
 millLoop:add_sameline()
 local twofiveMillLoop = millLoop:add_checkbox("2.5M Loop")
 script.register_looped("twofmLoop", function(script)
@@ -1226,6 +3565,7 @@ script.register_looped("twofmLoop", function(script)
         end
     end
 end)
+toolTip(millLoop, "Runs a $2,500,000 loop, (does not seem to loop)")
 millLoop:add_sameline()
 local threeSixMillLoop = millLoop:add_checkbox("3.6M Loop")
 script.register_looped("threesmLoop", function(script)
@@ -1239,6 +3579,7 @@ script.register_looped("threesmLoop", function(script)
         end
     end
 end)
+toolTip(millLoop, "Runs a $3,600,000 loop, (does not seem to loop)")
 millLoop:add_sameline()
 local sevenMillLoop = millLoop:add_checkbox("7M Loop")
 script.register_looped("sevenmLoop", function(script)
@@ -1252,6 +3593,7 @@ script.register_looped("sevenmLoop", function(script)
         end
     end
 end)
+toolTip(millLoop, "Runs a $7,000,000 loop, (does not seem to loop)")
 millLoop:add_sameline()
 local fifteenMillLoop = millLoop:add_checkbox("15M Loop")
 script.register_looped("fifteenMLoop", function(script)
@@ -1265,10 +3607,7 @@ script.register_looped("fifteenMLoop", function(script)
         end
     end
 end)
-millLoop:add_separator()
-millLoop:add_text("Money loops are SEVERELY risky, If you overdo them, you WILL GET BANNED!")
-millLoop:add_text("Some loops may not run more than once, the 1m loop runs infinite till stopped")
-millLoop:add_text("It is normal if the 1m loop runs a few seconds longer after its disabled")
+toolTip(millLoop, "Runs a $15,000,000 loop, (seems to loop sometimes, or in certain sessions?)")
 
 moneyRemover = Money:add_tab("Money Remover")
 
@@ -1282,414 +3621,8 @@ moneyRemover:add_button("Set Amount", function()
         gui.show_message("Money Remover", "Amount Successfully Set")
     end
 end)
-
-moneyRemover:add_text("To remove money request ballistic equipment in interaction menu from\n Health and Ammo -> Ballistic Equipment Services -> Request Ballistic Equipment")
-
--- Griefing Options
-local grief = KAOS:add_tab("Grief Options")
-grief:add_text("Kill Options")
-
-grief:add_button("Clown Jet Attack", function()
-    script.run_in_fiber(function (clownJetAttack)
-        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-        local playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
-        local coords = ENTITY.GET_ENTITY_COORDS(player, true)
-        local heading = ENTITY.GET_ENTITY_HEADING(player)
-        local spawnDistance = 250.0 * math.sin(math.rad(heading))
-        local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
-        local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
-        local clown = joaat("s_m_y_clown_01")
-        local jet = joaat("Lazer")
-        local weapon = -1121678507
-
-        STREAMING.REQUEST_MODEL(clown)
-        STREAMING.REQUEST_MODEL(jet)
-        STREAMING.REQUEST_MODEL(weapon)
-
-        while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
-            STREAMING.REQUEST_MODEL(clown)
-            STREAMING.REQUEST_MODEL(jet)
-            clownJetAttack:yield()
-        end
-
-        -- Calculate the spawn position for the jet in the air
-        local jetSpawnX = coords.x + math.random(-1000, 1000)
-        local jetSpawnY = coords.y + math.random(-1000, 1000)
-        local jetSpawnZ = coords.z + math.random(100, 1200)
-        
-        local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
-        local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
-        
-        if jetVehicle ~= 0 then
-            local primaryColor = colors[math.random(#colors)]
-            local secondaryColor = colors[math.random(#colors)]
-
-            -- Set vehicle colors
-            VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
-            -- Spawn clowns inside the jet
-            for seat = -1, -1 do
-                local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
-                
-                if ped ~= 0 then
-                    local group = joaat("HATES_PLAYER")
-                    PED.ADD_RELATIONSHIP_GROUP("clowns", group)
-                    ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
-                    PED.SET_PED_CAN_BE_TARGETTED(ped, false)
-                    WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
-                    PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
-                    TASK.TASK_COMBAT_PED(ped, player, 0, 16)
-                    ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
-                    ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
-                    ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
-                    ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
-                    PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
-                    WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
-                else
-                    gui.show_error("Failed", "Failed to create ped")
-                end
-            end
-        else
-            gui.show_error("Failed", "Failed to create jet")
-        end
-        
-        if jetVehicle == 0 then 
-            gui.show_error("Failed", "Failed to Create Jet")
-        else
-            gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..playerName)
-        end
-
-        -- Release the resources associated with the spawned entities
-        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
-        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
-
-    end)
-end)
-
-local ramLoopz = grief:add_checkbox("Vehicle Sandwich (On/Off)")
-
-script.register_looped("ramLoopz", function()
-    if ramLoopz:is_enabled() then
-        local player_id = network.get_selected_player()
-        if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
-                        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-
-                        -- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
-                        local randomModel = vehicleModels[math.random(1, #vehicleModels)]
-
-                        -- Convert the string vehicle model to its hash value
-                        local modelHash = MISC.GET_HASH_KEY(randomModel)
-
-                        -- Create the vehicle without the last boolean argument (keepTrying)
-                        local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
-                        -- Set vehicle orientation
-                        ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
-                        local networkId = NETWORK.VEH_TO_NET(vehicle)
-                        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
-                            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-                        end
-
-                        if vehicle then
-                            -- Set the falling velocity (adjust the value as needed)
-                            ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000000)
-                            -- Optionally, you can play a sound or customize the ramming effect here
-                            VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
-                        end
-                        
-                        local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
-                        -- Set vehicle orientation
-                        ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
-                        local networkId = NETWORK.VEH_TO_NET(vehicle2)
-                        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
-                            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-                        end
-
-                        if vehicle2 then
-                            -- Set the falling velocity (adjust the value as needed)
-                            ENTITY.SET_ENTITY_VELOCITY(vehicle2, 0, 0, 100000000)
-                            -- Optionally, you can play a sound or customize the ramming effect here
-                            VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
-                        end
-
-                        gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
-
-                        -- Use these lines to delete the vehicle after spawning. 
-                        -- Needs some type of delay between spawning and deleting to function properly
-                        
-                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
-                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
-        end
-
-        -- Sets the timer in seconds for how long this should pause before ramming another player
-        --sleep(0.2)
-    end
-end)
-
--- Griefing Explode Player
-grief:add_sameline()
-local explodeLoop = false
-explodeLoop = grief:add_checkbox("Explosion (On/Off)")
-
-script.register_looped("explodeLoop", function()
-    if explodeLoop:is_enabled() == true then
-        local explosionType = 1  -- Adjust this according to the explosion type you want (1 = GRENADE, 2 = MOLOTOV, etc.)
-        local explosionFx = "explosion_barrel"
-
-                local player_id = network.get_selected_player()
-                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-                
-                FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
-                GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
-                GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
-                
-                gui.show_message("Grief", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
-                -- Optionally, you can play an explosion sound here using AUDIO.PLAY_SOUND_FROM_COORD
-
-        sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
-    end
-end)
-
--- Griefing Burn Player
-grief:add_sameline()
-local burnLoop = false
-burnLoop = grief:add_checkbox("Burn (On/Off)")
-
-script.register_looped("burnLoop", function()
-    if burnLoop:is_enabled() == true then
-        local player_id = network.get_selected_player()
-        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-        local fxType = 3
-        local ptfxAsset = "scr_bike_adversary"
-        local particle = "scr_adversary_foot_flames"
-        
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, fxType, 100000.0, false, false, 0, false)
-        GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
-        GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
-        
-        gui.show_message("Grief", "Burning "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
-
-        -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
-
-        sleep(0.4)  -- Sets the timer in seconds for how long this should pause before burning another player
-    end
-end)
-
--- Griefing Water Spray
-grief:add_sameline()
-local waterLoop = false
-waterLoop = grief:add_checkbox("Water (On/Off)")
-
-script.register_looped("waterLoop", function()
-    if waterLoop:is_enabled() == true then
-        local player_id = network.get_selected_player()
-        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-        local fxType = 13
-        local ptfxAsset = "scr_sum_gy"
-        local particle = "scr_sum_gy_exp_water_bomb"
-        
-        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z - 1, fxType, 100000.0, false, false, 0, false)
-        GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
-        GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z - 1, 0.0, 0.0, 0.0, 1.0, false, true, false)
-        
-        gui.show_message("Grief", "Drowning? "..PLAYER.GET_PLAYER_NAME(player_id))
-
-        -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
-
-        sleep(0.4)  -- Sets the timer in seconds for how long this should pause before burning another player
-    end
-end)
-
--- Troll Options
-grief:add_separator()
-grief:add_text("Troll Options")
-local trollLoop = false
-trollLoop = grief:add_checkbox("Teleport Troll")
-
-script.register_looped("trollLoop", function(script)
-    script:yield()
-    if trollLoop:is_enabled() == true then
-        local localPlayer = PLAYER.PLAYER_ID()
-        local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
-        coords = ENTITY.GET_ENTITY_COORDS(player, true)
-        gui.show_message("Teleport Troll", "Teleporting randomly around "..PLAYER.GET_PLAYER_NAME(network.get_selected_player()))
-        PLAYER.START_PLAYER_TELEPORT(localPlayer, coords.x + math.random(-5, 5), coords.y + math.random(-5, 5), coords.z, 0, true, true, true)
-        sleep(0.1)
-    end
-end)
-
--- Crash Options
-grief:add_separator()
-grief:add_text("Crash Options")
-local prCrash = false
-prCrash = grief:add_checkbox("PR Crash (On/Off)")
-
-script.register_looped("prCrash", function()
-    if prCrash:is_enabled() == true then
-
-        local model = joaat("vw_prop_vw_colle_prbubble")
-        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = network.get_selected_player()
-        local money_value = 1000000
-
-        STREAMING.REQUEST_MODEL(model)
-
-        if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("PR Crash", "Crashing player")
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 0.5,
-                3,
-                money_value,
-                model,
-                true,
-                false
-            )
-
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-        end
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-    end
-end)
--- SCH-Lua
-grief:add_sameline()
-grief:add_button("Fragment crash", function()
-    script.run_in_fiber(function (fragcrash)
-        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-            gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
-            return
-        end
-        fraghash = joaat("prop_fragtest_cnst_04")
-        STREAMING.REQUEST_MODEL(fraghash)
-        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
-        local crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff1, 1, false)
-        local crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff2, 1, false)
-        local crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
-        local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
-        for i = 0, 100 do 
-            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
-                return
-            end    
-            local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
-            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff3, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff4, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
-            fragcrash:sleep(10)
-            delete_entity(crashstaff1)
-            delete_entity(crashstaff2)
-            delete_entity(crashstaff3)
-            delete_entity(crashstaff4)
-        end
-    end)
-    script.run_in_fiber(function (fragcrash2)
-        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
-        fraghash = joaat("prop_fragtest_cnst_04")
-        STREAMING.REQUEST_MODEL(fraghash)
-        for i=1,10 do
-            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
-                return
-            end    
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
-            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
-            fragcrash2:sleep(100)
-            delete_entity(object)
-        end
-    end)
-end)
-grief:add_sameline()
-grief:add_button("TSE Crash", function()
-    local pid = network.get_selected_player()
-    network.trigger_script_event(1 << pid, {1450115979, pid, 1})
-    gui.show_message("Invalid Activity", "TSE Freezing "..PLAYER.GET_PLAYER_NAME(pid))
-end)
-
--- Griefing Sound Spam Targetable
-grief:add_text("Sound Spams")
-local airDefSpam = grief:add_checkbox("Air Defense Spam")
-script.register_looped("airDefSpam", function()
-local targetPlayer = network.get_selected_player()
-    if airDefSpam:is_enabled() == true then
-        AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Air_Defences_Activated", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999)
-        gui.show_message("Sound Spam", "Air Defense spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
-    end
-end)
-grief:add_sameline()
-local sSpamAlarm = grief:add_checkbox("Alarm Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
-script.register_looped("sSpamAlarm", function()
-local targetPlayer = network.get_selected_player()
-    if sSpamAlarm:is_enabled() then
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 999999999)
-                gui.show_message("Sound Spam", "Alarm spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
-    end
-end)
-grief:add_sameline()
-local pSpamAlarm = grief:add_checkbox("Phone Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
-script.register_looped("pSpamAlarm", function()
-local targetPlayer = network.get_selected_player()
-    if pSpamAlarm:is_enabled() then
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), "Phone_SoundSet_Michael", true, 999999999)
-                gui.show_message("Sound Spam", "Phone spamming "..PLAYER.GET_PLAYER_NAME(targetPlayer))
-    end
-end)
-grief:add_sameline()
-local altitudeSpam = grief:add_checkbox("Altitude Spam")
-script.register_looped("altitudeSpam", function()
-local player_id = network.get_selected_player()
-    if altitudeSpam:is_enabled() then
-        AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 999999999)
-        gui.show_message("Sound Spam", "Altitude spamming "..PLAYER.GET_PLAYER_NAME(player_id))
-    end
-end)
-grief:add_button("Stop all local sounds", function()
-    for i=-1,100 do
-        AUDIO.STOP_SOUND(i)
-        AUDIO.RELEASE_SOUND_ID(i)
-    end
-end)
-grief:add_text("Select a player from the list and activate.")
+toolTip(moneyRemover, "Sets the Ballistic Equipment price to the value above, once set, purchase the ballistic equipment inside your interaction menu")
+toolTip(moneyRemover, "'Health and Ammo -> Ballistic Equipment Services -> Request Ballistic Equipment'")
 
 -- Object Spawner (Can be used negatively!) (Originally from Kuter Menu)
 
@@ -1730,14 +3663,19 @@ end
 
 Objets:add_imgui(function()
     orientationPitch, used = ImGui.SliderInt("Pitch", orientationPitch, 0, 360)
+	toolTip("", "Change the Pitch of the object (Side to Side Axis)")
     orientationYaw, used = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
+	toolTip("", "Change the Yaw of the object (Vertical Axis)")
     orientationRoll, used = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
+	toolTip("", "Change the Roll of the object (Front to Back Axis)")
 end)
-
 Objets:add_imgui(function()
     spawnDistance.x, used = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -25, 25)
+	toolTip("", "Change the X coordinates of where the object spawns (Left/Right depending on direction you are facing)")
     spawnDistance.y, used = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -25, 25)
+	toolTip("", "Change the Y coordinates of where the object spawns (Forward/Backwards depending on direction you are facing)")
     spawnDistance.z, used = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -25, 25)
+	toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
 end)
 
 -- Save default values
@@ -1752,6 +3690,7 @@ defaultSpawnDistance.z = spawnDistance.z
 Objets:add_button("Reset Sliders", function()
     resetSliders()
 end)
+toolTip(Objets, "Resets the positioning sliders to default values")
 
 Objets:add_separator()
 -- Objects hashes/names, add to this list (top of file) to have more objects in your listbox on YimMenu
@@ -1778,6 +3717,7 @@ Objets:add_imgui(function()
         is_typing = false
     end
 end)
+toolTip(Objets, "Search for an object to spawn (Example: container or cage)")
 
 local filteredItems = {}
 
@@ -1836,7 +3776,7 @@ Objets:add_button("Spawn Selected", function()
         end
     end)
 end)
-
+toolTip(Objets, "Spawn the selected item on the selected players position, if no player is targeted, it spawns on you")
 -- Vehicle Options Tab
 local Veh = KAOS:add_tab("Vehicle Options")
 
@@ -1865,14 +3805,20 @@ end
 
 vSpawn:add_imgui(function()
     orientationPitch, _ = ImGui.SliderInt("Pitch", orientationPitch, 0, 360)
+	toolTip("", "Change the Pitch of the vehicle (Side to Side Axis)")
     orientationYaw, _ = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
+	toolTip("", "Change the Yaw of the object (Vertical Axis)")
     orientationRoll, _ = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
+	toolTip("", "Change the Roll of the object (Front to Back Axis)")
 end)
 
 vSpawn:add_imgui(function()
     spawnDistance.x, _ = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -25, 25)
+	toolTip("", "Change the X coordinates of where the object spawns (Left/Right depending on direction you are facing)")
     spawnDistance.y, _ = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -25, 25)
+	toolTip("", "Change the Y coordinates of where the object spawns (Forward/Backwards depending on direction you are facing)")
     spawnDistance.z, _ = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -25, 25)
+	toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
 end)
 
 -- Save default values
@@ -1887,7 +3833,7 @@ defaultSpawnDistance.z = spawnDistance.z
 vSpawn:add_button("Reset Sliders", function()
     resetVehicleSliders()
 end)
-
+toolTip(vSpawn, "Reset the sliders to their default values")
 vSpawn:add_separator()
 
 -- Function to spawn the vehicle with specified orientation and spawn position
@@ -1948,7 +3894,7 @@ vSpawn:add_imgui(function()
         is_typing = false
     end
 end)
-
+toolTip(vSpawn, "Search for a vehicle (Example: Adder, Baller, Zentorno)")
 vSpawn:add_imgui(displayVehicleModelsList)
 
 -- Add separator
@@ -1977,22 +3923,9 @@ vSpawn:add_button("Spawn Selected", function()
     end
 --end
 end)
-
+toolTip(vSpawn, "Spawns the vehicle on the selected player, if no player is selected, defaults to you")
 -- Vehicle Gift Options
-function RequestControl(entity)
-    local tick = 0
- 
-    local netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
- 
-    NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
-    NETWORK.NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID)
-    while not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) and tick < 50 do
-        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
-        tick = tick + 1
-    end
- 
-    return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
-end
+
  
 function giftVehToPlayer(vehicle, playerId, playerName)
     if RequestControl(vehicle) then
@@ -2028,7 +3961,8 @@ Gif:add_button("Gift Vehicle", function()
         --ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(targetVehicle)
     end 
 end)
-
+toolTip(Gif, "Spam the gift button after following the Gifting Process until it reads Success to gift the vehicle.")
+Gif:add_sameline()
 Gif:add_button("Get Vehicle Stats", function()
     local selectedPlayer = network.get_selected_player()
     local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
@@ -2050,13 +3984,23 @@ Gif:add_button("Get Vehicle Stats", function()
             " Not_Allow_As_Saved_Veh:"..DECORATOR.DECOR_GET_INT(last_veh , "Not_Allow_As_Saved_Veh"))
     end  
 end)
+toolTip(Gif, "Checks to make sure the vehicle stats are what they need to be (Dev testing button)")
+Gif:add_separator()
+Gif:add_button("How To Gift Vehicles (Hover for tooltip!)", function()
+
+end)
+toolTip(Gif, "To gift vehicles, Make sure all the players vehicles are repaired/returned and that they have a full garage")
+toolTip(Gif, "Have them go into their full garage, drive a vehicle out and back into their garage, then come out on foot")
+toolTip(Gif, "Spawn the vehicle using Extras Addon's Vehicle Spawner, optionally you can get inside and customize it using Yim's LS customs tab (DONT PRESS 'Start LS customs!)")
+toolTip(Gif, "Once you are done, get out and have them get in, then spam the Gift Vehicle button until it reads 'Success' at the top right")
+toolTip(Gif, "NOTE: Gifted vehicles SHOULD come fully insured, MAKE SURE THEY CHECK IT IN LS CUSTOMS!")
 -- Global Player Options
 
 local Global = KAOS:add_tab("Global")
 
 -- Global RP Loop Options
 local PRGBGLoop = false
-Global:add_text("Global Helpful Options")
+Global:add_text("Global Friendly Options")
 rpLoop = Global:add_checkbox("Drop RP (On/Off)")
 
         script.register_looped("PRGBGLoop", function()
@@ -2102,6 +4046,7 @@ rpLoop = Global:add_checkbox("Drop RP (On/Off)")
             --sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
         end
         end)
+toolTip(Global, "Drops Princess Robot Figurines for the entire session (Slightly glitchy)")
 Global:add_sameline()       
 local goodRP = Global:add_checkbox("Fast RP")
 script.register_looped("goodRP", function()
@@ -2117,7 +4062,7 @@ script.register_looped("goodRP", function()
         end
     end
 end)
-
+toolTip(Global, "Floods the entire session with RP (about 1-3 levels per second)")
 Global:add_sameline()
 local goodMoney = Global:add_checkbox("Money")
     script.register_looped("goodMoney", function()
@@ -2137,142 +4082,81 @@ local goodMoney = Global:add_checkbox("Money")
         end
         sleep(0.2)
     end)
-
--- Global Sound Spam Options
+toolTip(Global, "Supposed to give the entire session money and rp")
+--[[ Global Sound Spam Options -- Temporarily Disabled as it causes you to crash on use
 Global:add_separator()
-Global:add_text("Global Sound Options")
-local airDeSpam = Global:add_checkbox("Air Defense Spam")
-script.register_looped("airDeSpam", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if airDeSpam:is_enabled() then
+Global:add_text("Sound Spams")
+local soundIndex = 0
+local isPlaying = false
+
+useLoopedG = false
+local useLoopedG = Global:add_checkbox("Loop?")
+local searchQuery = ""
+local filteredSoundNames = {}
+local selectedFilteredSoundIndex = 0
+
+local function updateFilteredSoundNames()
+    filteredSoundNames = {}
+    for _, sound in ipairs(sounds) do
+        if string.find(string.lower(sound.SoundName), string.lower(searchQuery)) then
+            table.insert(filteredSoundNames, sound.SoundName)
+        end
+    end
+end
+
+-- Function to display the list of sound names
+local function displaySoundNamesList()
+    updateFilteredSoundNames()
+    if selectedFilteredSoundIndex > #filteredSoundNames then
+        selectedFilteredSoundIndex = 0
+    end
+    selectedFilteredSoundIndex, _ = ImGui.Combo("Select Sound", selectedFilteredSoundIndex, filteredSoundNames, #filteredSoundNames)
+end
+
+-- Add search input field and sound selection
+Global:add_imgui(function()
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
+    searchQuery, _ = ImGui.InputText("Search Sounds", searchQuery, 128)
+    if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
+
+    displaySoundNamesList()
+
+    if ImGui.Button("Play") then
+        isPlaying = true
+        local selectedSoundName = filteredSoundNames[selectedFilteredSoundIndex + 1]
         for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Air_Defences_Activated", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999)
-            end
+            local playerIndex = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(i)
+                local selectedSound = sounds[1]
+                for _, sound in ipairs(sounds) do
+                    if sound.SoundName == selectedSoundName then
+                        selectedSound = sound
+                        break
+                    end
+                end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(AUDIO.GET_SOUND_ID(), selectedSound.AudioName, playerIndex, selectedSound.AudioRef, true, 999999999)
+                gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on the entire session.")
         end
     end
 end)
+
+
 Global:add_sameline()
-local altSpam = Global:add_checkbox("Altitude Spam")
-script.register_looped("altSpamLoop", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if altSpam:is_enabled() then
-        for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Altitude_Warning", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "EXILE_1", true, 999999999)
-            end
-        end
-    end
-end)
-Global:add_sameline()
-local sSpam = Global:add_checkbox("Jet Spam")
-script.register_looped("soundSpamLoop", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if sSpam:is_enabled() then
-        for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Jet_Explosions", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "exile_1", true, 999999999)
-            end
-        end
-    end
-end)
-Global:add_sameline()
-local sSpam2 = Global:add_checkbox("Pickup Spam")
-script.register_looped("soundSpam2Loop", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if sSpam2:is_enabled() then
-        for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "PICKUP_DEFAULT", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "HUD_FRONTEND_STANDARD_PICKUPS_SOUNDSET", true, 999999999)
-            end
-        end
-    end
-end)
-Global:add_sameline()
-local sSpam3 = Global:add_checkbox("Phone Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
-script.register_looped("soundSpam3Loop", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if sSpam3:is_enabled() then
-    gui.show_message("Phonecall Spam", "This sound cannot be toggled off once its on.  The only way to stop it is to exit the game")
-        for i = 0, 32 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Remote_Ring", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "Phone_SoundSet_Michael", true, 999999999)
-            end
-        end
-    end
-end)
-Global:add_sameline()
-local sSpam4 = Global:add_checkbox("Wasted Spam")
-script.register_looped("soundSpam4Loop", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if sSpam4:is_enabled() then
-        for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "ScreenFlash", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "WastedSounds", true, 999999999)
-            end
-        end
-    end
-end)
-local sSpam5 = Global:add_checkbox("Bodies Spam")
-script.register_looped("soundSpam5Loop", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if sSpam5:is_enabled() then
-        for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Architect_Fall", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "FBI_HEIST_SOUNDSET", true, 999999999)
-            end
-        end
-    end
-end)
-Global:add_sameline()
-local sSpam6 = Global:add_checkbox("Yacht Spam")
-script.register_looped("soundSpam6Loop", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if sSpam6:is_enabled() then
-        for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "HORN", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_Apt_Yacht_Ambient_Soundset", true, 999999999)
-            end
-        end
-    end
-end)
-Global:add_sameline()
-local sSpam7 = Global:add_checkbox("Whistle Spam")
-script.register_looped("soundSpam7Loop", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if sSpam7:is_enabled() then
-        for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Franklin_Whistle_For_Chop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "SPEECH_RELATED_SOUNDS", true, 999999999)
-            end
-        end
-    end
-end)
-Global:add_sameline()
-local sSpam8 = Global:add_checkbox("Alarm Spam") -- THIS DOES NOT TURN OFF EVEN WHEN UNTOGGLED, SEVERELY ANNOYING
-script.register_looped("soundSpam8Loop", function()
-local localPlayerId = PLAYER.PLAYER_ID()
-    if sSpam8:is_enabled() then
-        for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, "Warning_Alarm_Loop", PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), "DLC_H4_Submarine_Crush_Depth_Sounds", true, 999999999)
-            end
-        end
-    end
-end)
+Global:add_button("Stop Local Sounds", function()
+    isPlaying = false
+    --for i=-1,100 do
+	--local soundId = AUDIO.PLAY_SOUND_FROM_ENTITY(AUDIO.GET_SOUND_ID(), selectedSound.AudioName, playerIndex, selectedSound.AudioRef, true, 999999999)
+		AUDIO.STOP_SOUND(soundId)
+		AUDIO.RELEASE_SOUND_ID(soundId)
+	--end
+end)]]
 
 -- Global Particle Effects
-
 Global:add_separator()
 Global:add_text("PTFX")
 local fireworkLoop = Global:add_checkbox("Fireworks (On/Off)")
@@ -2323,13 +4207,13 @@ script.register_looped("FireworkLoop", function()
                     
                     GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework_v2")
                     GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
-                    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_firework_indep_burst_rwb", player_coords.x, player_coords.y, setExp2, 0, 0, 0, math.random(1, 5), false, false, false, false)
+                    GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_xmas_firework_burst_fizzle", player_coords.x, player_coords.y, setExp2, 0, 0, 0, math.random(1, 5), false, false, false, false)
                 end
             end
         end
     end
 end)
-
+toolTip(Global, "Shoots a sequence of firework effects from every player in the session")
 Global:add_sameline()
 local flameLoopGlobal = Global:add_checkbox("Flames (On/Off)")
 function load_flame()
@@ -2368,7 +4252,7 @@ script.register_looped("FlameLoopGlobal", function()
         end
     end
 end)
-
+toolTip(Global, "Gives every player in the session the 'Ghost Rider' flame effect")
 Global:add_sameline()
 local lightningLoopGlobal = Global:add_checkbox("Lightning (On/Off)")
 function load_lightning()
@@ -2407,7 +4291,7 @@ script.register_looped("lightningLoopGlobal", function()
         end
     end
 end)
-
+toolTip(Global, "Gives the entire session a Lightning/Electricity effect")
 Global:add_sameline()
 local snowLoopGlobal = Global:add_checkbox("Snow (On/Off)")
 function load_snow()
@@ -2446,7 +4330,7 @@ script.register_looped("snowLoopGlobal", function()
         end
     end
 end)
-
+toolTip(Global, "Gives the entire session the effect of being hit with snowballs")
 -- Global Explode
 Global:add_separator()
 
@@ -2493,8 +4377,8 @@ Global:add_button("Boat Skin Crash", function()
         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spped, ppos.x, ppos.y, ppos.z, false, true, true)
     end)
 end)
+toolTip(Global, "Give everyone the boat skin! (Parachute Crash w/ Boat as a parachute, fairly effective) will crash the entire session, does not work on some modders.")
 Global:add_sameline()
-
 Global:add_button("Fragment crash", function()
     script.run_in_fiber(function (fragcrash)
     local localPlayerId = PLAYER.PLAYER_PED_ID()
@@ -2573,6 +4457,21 @@ Global:add_button("Fragment crash", function()
         end
     end)
 end)
+toolTip(Global, "Fragment crash the entire session")
+Global:add_sameline()
+Global:add_button("HUD Breaker", function()
+for p = 0, 31 do
+    local pid = p
+	if p ~= PLAYER.PLAYER_ID() then
+		for i = -1, 1 do
+			network.trigger_script_event(1 << pid, {1450115979, pid, i})
+		end
+	end
+end
+    gui.show_message("HUD Breaker", "You have broken the entire sessions HUD and Interiors.")
+	gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
+end)
+toolTip(Global, "Breaks the HUD for every player in the session, causes their missions to break in freemode, removes their HUD, prevents pausing and prevents entering properties as it removes the entrace markers")
 Global:add_sameline()
 local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
     script.register_looped("clownJetAttack", function()
@@ -2660,7 +4559,7 @@ local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
             sleep(15)
         end
     end)
-
+toolTip(Global, "Spawns Rainbos colored jets with clowns as pilots on the entire session, loops and runs every 15 seconds.")
 local explosionLoop = false
 explosionLoop = Global:add_checkbox("Explosion (On/Off)")
 
@@ -2687,6 +4586,7 @@ script.register_looped("explosionLoop", function()
         sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
     end
 end)
+toolTip(Global, "Explode the entire session")
 Global:add_sameline()
 local ramGlobal = Global:add_checkbox("Vehicle Sandwich (On/Off)")
 
@@ -2751,8 +4651,7 @@ script.register_looped("ramGlobal", function()
         --sleep(0.2)
     end
 end)
-
-
+toolTip(Global, "Sandwich the entire session with vehicles")
 -- Global Crashes
 Global:add_sameline()
 local crashGlobal = Global:add_checkbox("PR Crash All (On/Off)")
@@ -2794,8 +4693,7 @@ script.register_looped("crashGlobal", function()
         end
     end
 end)
-
-
+toolTip(Global, "Spawn overpriced Princess Robot Figurines to crash all players in the session")
 -- Global Weapons
 Global:add_separator()
 Global:add_text("Global Weapons Options")
@@ -2816,6 +4714,7 @@ Global:add_button("Give All Weapons to Players", function()
     network.send_chat_message(msg, false)
     gui.show_message("Global", "Successfully given all weapons to all players")
 end)
+toolTip(Global, "Gives all weapons to the entire session and also announces that you have done so")
 Global:add_sameline()
 Global:add_button("Remove All Weapons from Players", function()
     local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
@@ -2834,7 +4733,7 @@ Global:add_button("Remove All Weapons from Players", function()
     network.send_chat_message(msg, false)
     gui.show_message("Global", "Successfully removed all weapons from all players")
 end)
-
+toolTip(Global, "Removes all weapons from the entire session and also anounces that you have done so")
 -- Story Mode Options
 
 StoryCharacters = KAOS:add_tab("Story Mode")
@@ -2937,6 +4836,7 @@ Weapons:add_button("Remove All Weapons", function()
             end
         end
 end)
+toolTip(Weapons, "Removes all weapons from the selected player")
 Weapons:add_sameline()
 Weapons:add_button("Give All Weapons", function()
         local playerID = network.get_selected_player()
@@ -2951,7 +4851,7 @@ Weapons:add_button("Give All Weapons", function()
             end
         end
 end)
-
+toolTip(Weapons, "Gives all weapons to the selected player")
 Weapons:add_tab("Drops")
 Weapons:add_separator()
 Weapons:add_text("Weapon Drops")
@@ -2985,10 +4885,8 @@ Weapons:add_button("Drop Random Weapon", function()
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
 end)
+toolTip(Weapons, "Drops random weapons on the selected player as pickup items")
 Weapons:add_separator()
-Weapons:add_text("Select a player, click an option")
-Weapons:add_text("Random weapon dropper will drop 1 weapon per click")
-Weapons:add_text("it will drop weapon pickups on the player you selected")
 
 
 -- Business Management
@@ -3027,7 +4925,7 @@ agency:add_imgui(function()
         gui.show_message("Agency", "Contract: " .. contract_names[contractIndexToUse] .. " ID: " .. contractIDToUse .. " Selected")
     end
 end)
-
+toolTip(agency, "Sets the selected contract as the one you are currently playing")
 agency:add_sameline()
 
 agency:add_button("Complete Preps", function()
@@ -3035,11 +4933,12 @@ agency:add_button("Complete Preps", function()
     STATS.STAT_SET_INT(joaat(MPX .. "FIXER_COMPLETED_BS"), -1, true)
     STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_COOLDOWN_POSIX"), -1, true)
 end)
+toolTip(agency, "Completes the preps of your current contract")
 agency:add_sameline()
 agency:add_button("Skip Cooldown", function()
     STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_COOLDOWN"), -1, true)
 end)
-
+toolTip(agency, "Skips the cooldown between playing contracts")
 agency:add_separator()
 agency:add_text("Money")
 local agencySafe = agency:add_checkbox("Agency Safe Loop")
@@ -3052,7 +4951,7 @@ script.register_looped("agencyloop", function(script)
         sleep(0.5)
     end
 end)
-
+toolTip(agency, "Fills your agency safe with money")
 local bunker = Business:add_tab("Bunker")
 
 bunker:add_button("Unlock All Shooting Range", function()
@@ -3075,7 +4974,7 @@ end
     STATS.STAT_SET_BOOL(joaat(MPX .. "SR_TIER_3_REWARD"), true, true)
     STATS.STAT_SET_BOOL(joaat(MPX .. "SR_INCREASE_THROW_CAP"), true, true)
 end)
-
+toolTip(bunker, "Sets all shooting range missions to completed @ 3 stars")
 local bResearch = bunker:add_checkbox("Instant Research Cooldown (Looped)")
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
@@ -3093,7 +4992,7 @@ script.register_looped("bunkerResearch", function()
         gui.show_message("Bunker", "Optionally, you can access the PC and pay to fast track")
     end
 end)
-
+toolTip(bunker, "Speeds up research, toggle with resupply, optionally access the pc and fast track it")
 bunker:add_sameline()
 local bSupplies = bunker:add_checkbox("Resupply Bunker (Looped)")
 script.register_looped("autoGetBunkerCargo", function(script)
@@ -3111,7 +5010,7 @@ script.register_looped("autoGetBunkerCargo", function(script)
         end
     end
 end)
-
+toolTip(bunker, "Instantly resupplies your bunker supplies")
 local Hangar = Business:add_tab("Hangar")
 
 hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
@@ -3126,9 +5025,27 @@ script.register_looped("autoGetHangarCargo", function(script)
         end
     end
 end)
-
+toolTip(Hangar, "Instantly supplies your hangar with random cargo")
 local mcBus = Business:add_tab("Motorcycle Club")
-mcBus:add_text("Resupply your stock in your MC businesses so production stays running")
+
+mcBus:add_button("MC President (On/Off)", function()
+    -- -1 is off, 0 is on
+    playerID = PLAYER.PLAYER_ID()
+    g = 1886967 + (playerID * 609) + 10
+    gb1 = globals.get_int(g + 1)
+    gb2 = globals.get_int(g + 430)
+    if gb1 == playerID and gb2 == 1 then
+        globals.set_int(g + 1, -1)
+        globals.set_int(g + 430, -1)
+        gui.show_message("Motorcycle Club", "You are no longer an MC President")
+    else
+        globals.set_int(g + 1, playerID)
+        globals.set_int(g + 430, 1)
+        gui.show_message("Motorcycle Club", "You are now an MC President")
+    end
+end)
+toolTip(mcBus, "Register as an MC President")
+mcBus:add_text("Resuppliers")
 acidLab = mcBus:add_checkbox("Resupply Acid Lab (Looped)")
 script.register_looped("autoGetAcidCargo", function(script)
     script:yield()
@@ -3141,7 +5058,7 @@ script.register_looped("autoGetAcidCargo", function(script)
         end
     end
 end)
-
+toolTip(mcBus, "Resupply your Acid Lab supplies")
 mcBus:add_sameline()
 docForge = mcBus:add_checkbox("Resupply Document Forge (Looped)")
 script.register_looped("autoGetDocForgeCargo", function(script)
@@ -3155,7 +5072,7 @@ script.register_looped("autoGetDocForgeCargo", function(script)
         end
     end
 end)
-
+toolTip(mcBus, "Resupply your Document Forge supplies")
 weed = mcBus:add_checkbox("Resupply Weed (Looped)")
 script.register_looped("autoGetWeedCargo", function(script)
     script:yield()
@@ -3168,7 +5085,7 @@ script.register_looped("autoGetWeedCargo", function(script)
         end
     end
 end)
-
+toolTip(mcBus, "Resupply your Weed Farm supplies")
 mcBus:add_sameline()
 meth = mcBus:add_checkbox("Resupply Meth (Looped)")
 script.register_looped("autoGetMethCargo", function(script)
@@ -3182,7 +5099,7 @@ script.register_looped("autoGetMethCargo", function(script)
         end
     end
 end)
-
+toolTip(mcBus, "Resupply your Meth Lab supplies")
 mcBus:add_sameline()
 cocaine = mcBus:add_checkbox("Resupply Cocaine (Looped)")
 script.register_looped("autoGetCokeCargo", function(script)
@@ -3196,7 +5113,7 @@ script.register_looped("autoGetCokeCargo", function(script)
         end
     end
 end)
-
+toolTip(mcBus, "Resupply your Cocaine Lockup supplies")
 fakeCash = mcBus:add_checkbox("Resupply Counterfeit Cash (Looped)")
 script.register_looped("autoGetCashCargo", function(script)
     script:yield()
@@ -3209,6 +5126,7 @@ script.register_looped("autoGetCashCargo", function(script)
         end
     end
 end)
+toolTip(mcBus, "Resupply your Counterfeit Cash supplies")
 mcBus:add_separator()
 mcBus:add_button("Resupply All", function()
 globals.set_int(1662873 + 1 + 6, 1)
@@ -3236,9 +5154,30 @@ globals.set_int(1662873 + 1 + 4, 1)
 globals.set_int(1662873 + 1 + 4, 1) -- Cocaine Lockup Supplies
 gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
 end)
-mcBus:add_separator()
-
-mcBus:add_text("You can tick these on and back off for instant resupply, toggles are there for afk constant resupplying.")
+toolTip(mcBus, "Resupplies all your supplies for all businesses")
+mcBus:add_sameline()
+mcBus:add_button("Fast Production", function()
+	globals.set_int(262145 + 17599, 25500) -- prod time for weed
+	globals.set_int(262145 + 17600, 25500) -- prod time for meth
+	globals.set_int(262145 + 17601, 25500) -- prod time for cocaine
+	globals.set_int(262145 + 17602, 25500) -- prod time for document forge
+	globals.set_int(262145 + 17603, 25500) -- prod time for cash
+	--globals.set_int(262145 + 17632, 10000)
+	gui.show_message("Production Speed", "Production speed has been sped up for all businesses")
+	gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar")
+end)
+toolTip(mcBus, "Activates fast production for all MC businesses (read top right for info after pressing the button)")
+mcBus:add_sameline()
+mcBus:add_button("Raise Sale Prices", function()
+	globals.set_int(262145 + 17632, 15000) -- price for weed
+	globals.set_int(262145 + 17631, 60000) -- price for meth
+	globals.set_int(262145 + 17630, 100000) -- price for cocaine
+	globals.set_int(262145 + 17628, 20000) -- price for document forge
+	globals.set_int(262145 + 17629, 30000) -- price for cash
+	--globals.set_int(262145 + 17632, 10000)
+	gui.show_message("Production Value", "Production sale value has been increased for all businesses")
+end)
+toolTip(mcBus, "Raises the sale price for all MC Businesses to over 1 million each")
 mcBus:add_separator()
 mcBus:add_text("Motorcycle Club Name Changer")
 local mcName = ""
@@ -3253,48 +5192,68 @@ mcBus:add_imgui(function()
         is_typing = false
     end
 end)
+toolTip(mcBus, "Change your MC Name to whatever you want")
+checkBoxes = {}
+labels = {"R* Verified Icon", "R* Icon", "R* Created Icon", "Lock Icon", "Copyright"}
+values = {"&#166;", "&#8721;", "&#8249;", "&#937;", "&#169;"}
 
-local rockVeri = mcBus:add_checkbox("R* Verified?")
-local copyright = mcBus:add_checkbox("Copyright?")
+for i, label in ipairs(labels) do
+    checkBox = mcBus:add_checkbox(labels[i])
+    if #labels ~= i then
+        mcBus:add_sameline()
+    end
+    table.insert(checkBoxes, checkBox)
+	toolTip(mcBus, "Toggle an icon to use with your MC Name")
+end
 
 mcBus:add_button("Change MC Name", function()
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+    MPX = PI
+    PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+    if PI == 0 then
+        MPX = "MP0_"
+    else
+        MPX = "MP1_"
+    end
     script.run_in_fiber(function (script)
-        if rockVeri:is_enabled() == true then
-            STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), mcName, true)
-            STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), "&#166;", true)
-            
-            local MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME"), -1)
-            local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
-            gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns R* Verified - "..MCnOne..". Changing sessions to apply")
-            SessionChanger(0)
-        else
-            if copyright:is_enabled() == true then
-                STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "&#169; ", true)
-                STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
-                local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
-                gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns © "..MCnTwo..". Changing sessions to apply")
-                SessionChanger(0)
-            else
-                STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "", true)
-                STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
-                local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
-                gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply")
-                SessionChanger(0)
+        for i, checkBox in ipairs(checkBoxes) do
+            if checkBox:is_enabled() then
+                if labels[i] == "Copyright" then
+                    STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), values[i].. " ", true)
+                    STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
+                    local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+                    gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply")
+                    SessionChanger(0)
+                    return
+                else
+                    STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), mcName, true)
+                    STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), values[i].. " ", true)
+                    local MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME"), -1)
+                    gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply")
+                    SessionChanger(0)
+                    return
+                end
             end
         end
+        STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "", true)
+        STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
+        local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+        gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply")
+        SessionChanger(0)
     end)
 end)
-mcBus:add_separator()
-mcBus:add_text("Do not tick R* verified and Copyright together, one or the other.")
-mcBus:add_text("ticking R* Verified will add a R* Verified logo after your desired club name")
-mcBus:add_text("ticking Copyright will add a copyright symbol before your desired club name.")
+toolTip(mcBus, "Apply changes and switch sessions.")
+script.register_looped("mcNameCB", function(mcName)
+    cbE = 0
+    for i, checkBox in ipairs(checkBoxes) do
+        if checkBox:is_enabled() then
+            cbE = cbE + 1
+        end
+        if cbE > 1 then
+            checkBox:set_enabled(false)
+            gui.show_message("Icons", "you can only select one checkbox")
+        end
+    end
+end)
 
 local arcade = Business:add_tab("Arcade")
 
@@ -3316,7 +5275,7 @@ script.register_looped("arcadeloop", function(script)
         sleep(0.5)
     end
 end)
-
+toolTip(arcade, "Fills your arcade safe with money")
 -- Nightclub Loop - L7Neg
 local Club = Business:add_tab("Nightclub")
 
@@ -3328,7 +5287,7 @@ else
     MPX = "MP1_"
 end
 
-nClub = Club:add_checkbox("Enable Nightclub $250k/15s (Safe AFK)")
+nClub = Club:add_checkbox("Nightclub Safe Loop")
 script.register_looped("nightclubloop", function(script)
     script:yield()
     if nClub:is_enabled() == true then
@@ -3338,13 +5297,31 @@ script.register_looped("nightclubloop", function(script)
         sleep(0.5)
     end
 end)
+toolTip(Club, "Fills your nightclub safe with money")
 Club:add_separator()
 Club:add_button("Max Club Popularity", function()
     STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
 end)
-
+toolTip(Club, "Max your nightclubs popularity")
 local CEO = Business:add_tab("CEO")
 
+CEO:add_button("Register as CEO", function()
+    -- -1 is off, 0 is on
+    playerID = PLAYER.PLAYER_ID()
+    g = 1886967 + (playerID * 609) + 10
+    gb1 = globals.get_int(g + 1)
+    gb2 = globals.get_int(g + 430)
+    if gb1 == playerID and gb2 == 0 then
+        globals.set_int(g + 1, -1)
+        globals.set_int(g + 430, -1)
+        gui.show_message("CEO", "You are no longer a CEO")
+    else
+        globals.set_int(g + 1, playerID)
+        globals.set_int(g + 430, 0)
+        gui.show_message("CEO", "You are now a CEO")
+    end
+end)
+toolTip(CEO, "Register as a CEO")
 local setName = ""
 CEO:add_imgui(function()
     if is_typing then
@@ -3357,37 +5334,57 @@ CEO:add_imgui(function()
         is_typing = false
     end
 end)
+toolTip(CEO, "Change your CEO name to whatever you want.")
 
-local rockVerif = CEO:add_checkbox("R* Verified?")
+checkBoxes = {}
+labels = {"R* Verified Icon", "R* Icon", "R* Created Icon", "Lock Icon", "Copyright"}
+values = {"&#166;", "&#8721;", "&#8249;", "&#937;", "&#169;"}
+
+for i, label in ipairs(labels) do
+    checkBox = CEO:add_checkbox(labels[i])
+    if #labels ~= i then
+        CEO:add_sameline()
+    end
+    table.insert(checkBoxes, checkBox)
+	toolTip(CEO, "Toggle an icon to use with your CEO Name")
+end
 
 CEO:add_button("Change CEO Name", function()
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+    MPX = PI
+    PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+    if PI == 0 then
+        MPX = "MP0_"
+    else
+        MPX = "MP1_"
+    end
     script.run_in_fiber(function (script)
-        if rockVerif:is_enabled() == true then
-            local rockVerif = "&#166;"
-            STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), setName, true)
-            STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), rockVerif, true)
-            
-            local nOne = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), -1)
-            local nTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
-            gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns R* Verified - "..nOne..". Changing sessions to apply")
-            SessionChanger(0)
-        else
-            STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), "&#169;", true)
-            STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), setName, true)
-            local nTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
-            gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..nTwo..". Changing sessions to apply")
-            SessionChanger(0)
+        for i, checkBox in ipairs(checkBoxes) do
+            if checkBox:is_enabled() then
+                if labels[i] == "Copyright" then
+                    STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), values[i].. " ", true)
+                    STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), setName, true)
+                    local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
+                    gui.show_message("Motorcycle Club", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply")
+                    SessionChanger(0)
+                    return
+                else
+                    STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), setName, true)
+                    STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), values[i].. " ", true)
+                    local MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), -1)
+                    gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply")
+                    SessionChanger(0)
+                    return
+                end
+            end
         end
+        STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), "", true)
+        STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), setName, true)
+        local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
+        gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..MCnTwo..". Changing sessions to apply")
+        SessionChanger(0)
     end)
 end)
-
+toolTip(CEO, "Apply changes and switch sessions")
 -- YimCEO -- Alestarov_Menu
 local yimCEO = CEO:add_tab("YimCEO")
 
@@ -3398,14 +5395,14 @@ yimCEO:add_imgui(function()
         globals.set_int(262145 + 15991, cratevalue)
     end
 end)
-
+toolTip(yimCEO, "Set your desired crate value")
 yCEO = yimCEO:add_checkbox("Enable YimCeo")
-
+toolTip(yimCEO, "Set value, Enable yimCEO then click show computer and go to Special cargo > Sell")
 yimCEO:add_button("Show computer", function()
     SCRIPT.REQUEST_SCRIPT("apparcadebusinesshub")
     SYSTEM.START_NEW_SCRIPT("apparcadebusinesshub", 8344)
 end)
-
+toolTip(yimCEO, "Click to show Master Computer (may need to click twice)")
 script.register_looped("yimceoloop", function(script)
     cratevalue = globals.get_int(262145 + 15991)
     globals.set_int(262145 + 15756, 0)
@@ -4785,7 +6782,7 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
     local peds = entities.get_all_peds_as_handles()
     local blackHoleRadiusSquared = blackHoleRadius * blackHoleRadius
     for _, entity in ipairs(vehicles) do
-        if PED.IS_PED_A_PLAYER(entity) == false then
+       -- if PED.IS_PED_A_PLAYER(entity) == false then
             if entities.take_control_of(entity) then
                 local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
                 local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
@@ -4794,14 +6791,14 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
                     local forceY = (playerCoords.y - entityCoord.y) * magnitude
                     local forceZ = (playerCoords.z - entityCoord.z) * magnitude
                     RequestControl(entity)
-                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
             end
-        end
+        --end
     end
     
     for _, entity in ipairs(peds) do
-        if PED.IS_PED_A_PLAYER(entity) == false then
+        --if PED.IS_PED_A_PLAYER(entity) == false then
             if entities.take_control_of(entity) then
                 local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
                 local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
@@ -4810,10 +6807,10 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
                     local forceY = (playerCoords.y - entityCoord.y) * magnitude
                     local forceZ = (playerCoords.z - entityCoord.z) * magnitude
                     RequestControl(entity)
-                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
             end
-        end
+        --end
     end
 end
 
@@ -4871,7 +6868,7 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
 
     -- Apply forces to vehicles
     for _, entity in ipairs(vehicles) do
-        if PED.IS_PED_A_PLAYER(entity) == false then
+        --if PED.IS_PED_A_PLAYER(entity) == false then
             if entities.take_control_of(entity) then
                 local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
                 local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
@@ -4880,15 +6877,15 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
                     local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
                     local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
                     RequestControl(entity)
-                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
             end
-        end
+        --end
     end
 
     -- Comment below to unapply to peds
     for _, entity in ipairs(peds) do
-        if PED.IS_PED_A_PLAYER(entity) == false then
+        --if PED.IS_PED_A_PLAYER(entity) == false then
             if entities.take_control_of(entity) then
                 local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
                 local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
@@ -4897,10 +6894,10 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
                     local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
                     local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
                     RequestControl(entity)
-                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
             end
-        end
+        --end
     end
 end
 
@@ -4993,6 +6990,21 @@ chatOpt:add_button("Menu Info", function()
         network.send_chat_message("[Menu]: "..binfo, false)
 end)
 
+selectedPlayerTab:add_text("Extras Addon v"..addonVersion.." - Player Options")
+selectedPlayerTab:add_separator()
+
+extraGrief = selectedPlayerTab:add_checkbox("Separate Window?")
+extraGrief:set_enabled(true)
+selectedPlayerTab:add_imgui(function()
+	if extraGrief:is_enabled() then
+        if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
+			-- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
+			posX, posY = ImGui.GetWindowPos()
+			ImGui.SetNextWindowPos(posX, posY)
+		end
+	end
+end)
+
 local balls = {
 "p_ld_soc_ball_01",
 "p_ld_am_ball_01",
@@ -5003,17 +7015,37 @@ local balls = {
 "v_ilev_exball_blue"
 }
 
-selectedPlayerTab:add_text("Extras Addon")
-selectedPlayerTab:add_separator()
-
 selectedPlayerTab:add_text("Trolling")
 npcDrive = selectedPlayerTab:add_checkbox("NPCs Drive To This Player")
+toolTip(selectedPlayerTab, "Make all NPC's drive to this player")
+
 selectedPlayerTab:add_sameline()
 dildos = selectedPlayerTab:add_checkbox("Dildos")
+toolTip(selectedPlayerTab, "Spawns Vibrators on the player")
+
 selectedPlayerTab:add_sameline()
 dropBalls = selectedPlayerTab:add_checkbox("Balls")
+toolTip(selectedPlayerTab, "Spawns Volley Balls on the player")
 
 vehicleSpin = selectedPlayerTab:add_checkbox("Spin Vehicle")
+toolTip(selectedPlayerTab, "Spins the players vehicle uncontrollably.")
+
+selectedPlayerTab:add_sameline()
+local trollLoop = false
+trollLoop = selectedPlayerTab:add_checkbox("Teleport Troll")
+
+script.register_looped("trollLoop", function(script)
+    script:yield()
+    if trollLoop:is_enabled() == true then
+        local localPlayer = PLAYER.PLAYER_ID()
+        local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
+        coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        gui.show_message("Teleport Troll", "Teleporting randomly around "..PLAYER.GET_PLAYER_NAME(network.get_selected_player()))
+        PLAYER.START_PLAYER_TELEPORT(localPlayer, coords.x + math.random(-5, 5), coords.y + math.random(-5, 5), coords.z, 0, true, true, true)
+        sleep(0.1)
+    end
+end)
+toolTip(selectedPlayerTab, "Teleports you randomly around the selected player, will destroy vehicles if you are in one when you activate this")
 
 selectedPlayerTab:add_button("Spawn Clone", function()
     script.run_in_fiber(function(spawnClone)
@@ -5053,6 +7085,8 @@ selectedPlayerTab:add_button("Spawn Clone", function()
         end
     end)
 end)
+toolTip(selectedPlayerTab, "Spawns a clone of the player with a homing launcher to kill them.")
+
 selectedPlayerTab:add_sameline()
 selectedPlayerTab:add_button("Clown Attack", function()
     script.run_in_fiber(function (clownAttack)
@@ -5121,18 +7155,112 @@ selectedPlayerTab:add_button("Clown Attack", function()
         end
     end)
 end)
+toolTip(selectedPlayerTab, "Spawns a Clown van full of clowns to chase/gun the player down.")
+
+selectedPlayerTab:add_sameline()
+selectedPlayerTab:add_button("Clown Jet Attack", function()
+    script.run_in_fiber(function (clownJetAttack)
+        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        local playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
+        local coords = ENTITY.GET_ENTITY_COORDS(player, true)
+        local heading = ENTITY.GET_ENTITY_HEADING(player)
+        local spawnDistance = 250.0 * math.sin(math.rad(heading))
+        local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
+        local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+        local clown = joaat("s_m_y_clown_01")
+        local jet = joaat("Lazer")
+        local weapon = -1121678507
+
+        STREAMING.REQUEST_MODEL(clown)
+        STREAMING.REQUEST_MODEL(jet)
+        STREAMING.REQUEST_MODEL(weapon)
+
+        while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
+            STREAMING.REQUEST_MODEL(clown)
+            STREAMING.REQUEST_MODEL(jet)
+            clownJetAttack:yield()
+        end
+
+        -- Calculate the spawn position for the jet in the air
+        local jetSpawnX = coords.x + math.random(-1000, 1000)
+        local jetSpawnY = coords.y + math.random(-1000, 1000)
+        local jetSpawnZ = coords.z + math.random(100, 1200)
+        
+        local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
+        local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
+        
+        if jetVehicle ~= 0 then
+            local primaryColor = colors[math.random(#colors)]
+            local secondaryColor = colors[math.random(#colors)]
+
+            -- Set vehicle colors
+            VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
+            -- Spawn clowns inside the jet
+            for seat = -1, -1 do
+                local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
+                
+                if ped ~= 0 then
+                    local group = joaat("HATES_PLAYER")
+                    PED.ADD_RELATIONSHIP_GROUP("clowns", group)
+                    ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
+                    PED.SET_PED_CAN_BE_TARGETTED(ped, false)
+                    WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
+                    PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
+                    TASK.TASK_COMBAT_PED(ped, player, 0, 16)
+                    ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
+                    ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
+                    ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
+                    ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
+                    PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
+                    WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
+                else
+                    gui.show_error("Failed", "Failed to create ped")
+                end
+            end
+        else
+            gui.show_error("Failed", "Failed to create jet")
+        end
+        
+        if jetVehicle == 0 then 
+            gui.show_error("Failed", "Failed to Create Jet")
+        else
+            gui.show_message("selectedPlayerTabing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..playerName)
+        end
+
+        -- Release the resources associated with the spawned entities
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
+
+    end)
+end)
+toolTip(selectedPlayerTab, "Spawns Randomly colored jets with Clowns as pilots to attack the selected player.")
 
 selectedPlayerTab:add_separator()
 selectedPlayerTab:add_text("Griefing")
 hydrantCB = selectedPlayerTab:add_checkbox("Hydrant")
+toolTip(selectedPlayerTab, "Spawns fire hydrant spray to ragdoll the player")
+
 selectedPlayerTab:add_sameline()
 steamCB = selectedPlayerTab:add_checkbox("Steam")
+toolTip(selectedPlayerTab, "Spawns steam to burn the player")
+
 selectedPlayerTab:add_sameline()
 extinguisherCB = selectedPlayerTab:add_checkbox("Extinguisher")
+toolTip(selectedPlayerTab, "Spawns fire extinguisher spray on the player")
 
 explodeCB = selectedPlayerTab:add_checkbox("Explode")
 selectedPlayerTab:add_sameline()
+toolTip(selectedPlayerTab, "Violently explodes the player and shakes their screen.")
+
 noDamageExplode = selectedPlayerTab:add_checkbox("Screen Shake")
+toolTip(selectedPlayerTab, "Causes a no damage explosion to shake the players screen.")
 
 script.register_looped("extrasAddonLooped", function(script)
     if npcDrive:is_enabled() then
@@ -5212,7 +7340,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 13, 1, true, false, 0)
     end
-
+	
     if explodeCB:is_enabled() then
         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
@@ -5224,4 +7352,346 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 1, 0, true, false, 2147483647)
     end
+end)
+
+-- Grief Burn Player
+selectedPlayerTab:add_sameline()
+local burnLoop = false
+burnLoop = selectedPlayerTab:add_checkbox("Burn")
+
+script.register_looped("burnLoop", function()
+    if burnLoop:is_enabled() == true then
+        local player_id = network.get_selected_player()
+        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+        local fxType = 3
+        local ptfxAsset = "scr_bike_adversary"
+        local particle = "scr_adversary_foot_flames"
+        
+        FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, fxType, 100000.0, false, false, 0, false)
+        GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
+        GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
+        
+        gui.show_message("selectedPlayerTab", "Burning "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
+
+        -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
+
+        sleep(0.4)  -- Sets the timer in seconds for how long this should pause before burning another player
+    end
+end)
+toolTip(selectedPlayerTab, "Repeatedly burns the selected player using molotovs")
+-- Griefing Options
+
+local ramLoopz = selectedPlayerTab:add_checkbox("Vehicle Sandwich (On/Off)")
+
+script.register_looped("ramLoopz", function()
+    if ramLoopz:is_enabled() then
+        local player_id = network.get_selected_player()
+        if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
+                        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+
+                        -- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
+                        local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+
+                        -- Convert the string vehicle model to its hash value
+                        local modelHash = MISC.GET_HASH_KEY(randomModel)
+
+                        -- Create the vehicle without the last boolean argument (keepTrying)
+                        local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
+                        -- Set vehicle orientation
+                        ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
+                        local networkId = NETWORK.VEH_TO_NET(vehicle)
+                        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
+                            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+                        end
+
+                        if vehicle then
+                            -- Set the falling velocity (adjust the value as needed)
+                            ENTITY.SET_ENTITY_VELOCITY(vehicle, 0, 0, -100000000)
+                            -- Optionally, you can play a sound or customize the ramming effect here
+                            VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
+                        end
+                        
+                        local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
+                        -- Set vehicle orientation
+                        ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
+                        local networkId = NETWORK.VEH_TO_NET(vehicle2)
+                        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
+                            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+                        end
+
+                        if vehicle2 then
+                            -- Set the falling velocity (adjust the value as needed)
+                            ENTITY.SET_ENTITY_VELOCITY(vehicle2, 0, 0, 100000000)
+                            -- Optionally, you can play a sound or customize the ramming effect here
+                            VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
+                        end
+
+                        gui.show_message("selectedPlayerTab", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+
+                        -- Use these lines to delete the vehicle after spawning. 
+                        -- Needs some type of delay between spawning and deleting to function properly
+                        
+                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
+                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
+        end
+
+        -- Sets the timer in seconds for how long this should pause before ramming another player
+        --sleep(0.2)
+    end
+end)
+toolTip(selectedPlayerTab, "Sandwiches the selected player between 2 vehicles at high velocity")
+
+-- selectedPlayerTabing Explode Player 2
+selectedPlayerTab:add_sameline()
+local explodeLoop = false
+explodeLoop = selectedPlayerTab:add_checkbox("Explosion")
+
+script.register_looped("explodeLoop", function()
+    if explodeLoop:is_enabled() == true then
+        local explosionType = 1  -- Adjust this according to the explosion type you want (1 = GRENADE, 2 = MOLOTOV, etc.)
+        local explosionFx = "explosion_barrel"
+
+                local player_id = network.get_selected_player()
+                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                
+                FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
+                GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
+                GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
+                
+                gui.show_message("selectedPlayerTab", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
+                -- Optionally, you can play an explosion sound here using AUDIO.PLAY_SOUND_FROM_COORD
+
+        sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
+    end
+end)
+toolTip(selectedPlayerTab, "Repeatedly explodes the selected player using a barrel explosion.")
+
+-- Crash Options
+selectedPlayerTab:add_separator()
+selectedPlayerTab:add_text("Crash Options")
+local prCrash = false
+prCrash = selectedPlayerTab:add_checkbox("PR Crash (On/Off)")
+
+script.register_looped("prCrash", function()
+    if prCrash:is_enabled() == true then
+
+        local model = joaat("vw_prop_vw_colle_prbubble")
+        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+        local player_id = network.get_selected_player()
+        local money_value = 1000000
+
+        STREAMING.REQUEST_MODEL(model)
+
+        if STREAMING.HAS_MODEL_LOADED(model) then
+        gui.show_message("PR Crash", "Crashing player")
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                pickup,
+                coords.x,
+                coords.y,
+                coords.z + 0.5,
+                3,
+                money_value,
+                model,
+                true,
+                false
+            )
+
+            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+        end
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+    end
+end)
+toolTip(selectedPlayerTab, "Spawns Princes Robot figurines worth $1,000,000, causing the player to crash (not very effective on modders)")
+-- SCH-Lua
+selectedPlayerTab:add_sameline()
+selectedPlayerTab:add_button("Fragment crash", function()
+    script.run_in_fiber(function (fragcrash)
+        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+            gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+            return
+        end
+        fraghash = joaat("prop_fragtest_cnst_04")
+        STREAMING.REQUEST_MODEL(fraghash)
+        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        local crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff1, 1, false)
+        local crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff2, 1, false)
+        local crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
+        local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
+        for i = 0, 100 do 
+            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                return
+            end    
+            local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff3, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff4, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
+            fragcrash:sleep(10)
+            delete_entity(crashstaff1)
+            delete_entity(crashstaff2)
+            delete_entity(crashstaff3)
+            delete_entity(crashstaff4)
+        end
+    end)
+    script.run_in_fiber(function (fragcrash2)
+        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        fraghash = joaat("prop_fragtest_cnst_04")
+        STREAMING.REQUEST_MODEL(fraghash)
+        for i=1,10 do
+            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                return
+            end    
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            delete_entity(object)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
+            fragcrash2:sleep(100)
+            delete_entity(object)
+        end
+    end)
+end)
+toolTip(selectedPlayerTab, "Spawns a bunch of objects on the selected player and breaks them into fragments, causing them to crash")
+
+selectedPlayerTab:add_sameline()
+selectedPlayerTab:add_button("Break HUD", function()
+    local pid = network.get_selected_player()
+	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
+    gui.show_message("HUD Breaker", "You have broken "..PLAYER.GET_PLAYER_NAME(pid).."'s HUD and Interiors.")
+	gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
+end)
+toolTip(selectedPlayerTab, "Removes and breaks the HUD of the selected player, this causes them to not be able to pause, enter apartments and ruins their freemode missions")
+
+-- selectedPlayerTabing Sound Spam Targetable
+selectedPlayerTab:add_separator()
+selectedPlayerTab:add_text("Sound Spams")
+local soundIndex = 0
+local isPlaying = false
+
+useLooped = false
+local useLooped = selectedPlayerTab:add_checkbox("Loop Sounds")
+toolTip(selectedPlayerTab, "Loops the selected sound, Extremely annoying, cannot be turned off, period.")
+local searchQuery = ""
+local filteredSoundNames = {}
+local selectedFilteredSoundIndex = 0
+
+local function updateFilteredSoundNames()
+    filteredSoundNames = {}
+    for _, sound in ipairs(sounds) do
+        if string.find(string.lower(sound.SoundName), string.lower(searchQuery)) then
+            table.insert(filteredSoundNames, sound.SoundName)
+        end
+    end
+end
+
+local function displaySoundNamesList()
+    updateFilteredSoundNames()
+    if selectedFilteredSoundIndex > #filteredSoundNames then
+        selectedFilteredSoundIndex = 0
+    end
+    selectedFilteredSoundIndex, _ = ImGui.Combo("Select Sound", selectedFilteredSoundIndex, filteredSoundNames, #filteredSoundNames)
+end
+
+selectedPlayerTab:add_imgui(function()
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
+    searchQuery, _ = ImGui.InputText("Search Sounds", searchQuery, 128)
+    if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
+
+    local soundNames = {}
+    for _, sound in ipairs(sounds) do
+        table.insert(soundNames, sound.SoundName)
+    end
+
+    displaySoundNamesList()
+
+    if ImGui.Button("Play") then
+        isPlaying = true
+        local selectedSoundName = filteredSoundNames[selectedFilteredSoundIndex + 1]
+		local targetPlayer = network.get_selected_player()
+        if useLooped:is_enabled() == true then
+            script.register_looped("soundSpams", function()
+                -- Play the selected sound
+                local selectedSound
+                for _, sound in ipairs(sounds) do
+                    if sound.SoundName == selectedSoundName then
+                        selectedSound = sound
+                        break
+                    end
+                end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, selectedSound.AudioName, PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), selectedSound.AudioRef, true, 999999999)
+                gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on "..PLAYER.GET_PLAYER_NAME(targetPlayer))
+				
+				useLooped:set_enabled(false)
+            end)
+        else
+            script.run_in_fiber(function()
+                -- Play the selected sound
+                local selectedSound
+                for _, sound in ipairs(sounds) do
+                    if sound.SoundName == selectedSoundName then
+                        selectedSound = sound
+                        break
+                    end
+                end
+                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, selectedSound.AudioName, PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), selectedSound.AudioRef, true, 999999999)
+                gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on "..PLAYER.GET_PLAYER_NAME(targetPlayer))
+            end)
+        end
+    end
+end)
+toolTip(selectedPlayerTab, "Plays the selected sound from the dropdown.")
+
+selectedPlayerTab:add_sameline()
+selectedPlayerTab:add_button("Stop Local Sounds", function()
+    isPlaying = false
+	for i = -1, 100 do
+		AUDIO.STOP_SOUND(i)
+		AUDIO.RELEASE_SOUND_ID(i)
+	end
+end)
+toolTip(selectedPlayerTab, "Supposed to stop all sounds, seems broken?.") 
+
+
+
+selectedPlayerTab:add_imgui(function()
+	-- Ends the ImGui wrapper, new additions should be added above this.
+	ImGui.End()
 end)
