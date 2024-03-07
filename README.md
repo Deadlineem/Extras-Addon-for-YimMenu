@@ -1,10 +1,3 @@
-# Custom YimMenu DLL (OPTIONAL)   
-You may compile this yourself directly from [YimMenu's Source](https://github.com/YimMenu/YimMenu).
-1. Open in Visual Studio.
-2. Open these two files and comment the lines shown in green in the [screenshots](https://imgur.com/a/4dMx3mc).
-You DO NOT NEED THIS to use the Extras Addon!  It just makes gifting cars EASIER but pollutes the session.
----
-
 # Extras Addon for YimMenu
 
 ## NOTE TO ALL USERS:
