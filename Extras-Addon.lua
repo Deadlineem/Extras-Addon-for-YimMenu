@@ -6997,9 +6997,16 @@ extraGrief = selectedPlayerTab:add_checkbox("Separate Window?")
 extraGrief:set_enabled(true)
 selectedPlayerTab:add_imgui(function()
 	if extraGrief:is_enabled() then
-	local x = 1072  -- Specify the X coordinate
-    local y = 87  -- Specify the Y coordinate
-    ImGui.SetNextWindowPos(x, y)
+	local parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+        local parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
+        local parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
+        local childWidth, childHeight = 200, 150 -- Size of your child window
+        local offset = 10 -- Offset between parent and child windows
+
+        local x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
+        local y = parentY -- Align the child window vertically with the parent window
+
+        ImGui.SetNextWindowPos(x, y)
         if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
 			-- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
 			posX, posY = ImGui.GetWindowPos()
