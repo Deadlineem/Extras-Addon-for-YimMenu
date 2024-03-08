@@ -7009,8 +7009,6 @@ selectedPlayerTab:add_imgui(function()
         ImGui.SetNextWindowPos(x, y)
         if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
 			-- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
-			posX, posY = ImGui.GetWindowPos()
-			ImGui.SetNextWindowPos(posX, posY)
 		end
 	end
 end)
