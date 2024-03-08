@@ -15,7 +15,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 0.9.9
+        Addon Version: 1.0.0
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -24,7 +24,8 @@ ___________         __
 ]]--
 local addonVersion = "1.0.0"
 
-selectedPlayerTab = gui.get_tab("") -- For Selected Player Options
+griefPlayerTab = gui.get_tab("")
+dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
 
 -- Function to create a text element
 local function createText(tab, text)
@@ -2862,229 +2863,12 @@ toolTip(Stats, "Resets your skills to minimum values.")
 
 -- Autorun Drops
 local Money = KAOS:add_tab("Money Options")
-local Drops = Money:add_tab("Drops")
+--local Drops = Money:add_tab("Drops")
 
-local princessBubblegumLoop = false
-Drops:add_text("Action Figures")
-Drops:add_button("Princess Robot Bubblegum (On/Off)", function()
-    princessBubblegumLoop = not princessBubblegumLoop
 
-    script.register_looped("princessbubblegumLoop", function(script)
-        local model = joaat("vw_prop_vw_colle_prbubble")
-        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = network.get_selected_player()
-        local money_value = 0
-
-        STREAMING.REQUEST_MODEL(model)
-        while STREAMING.HAS_MODEL_LOADED(model) == false do
-            script:yield()
-        end
-
-        if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("RP/Cash Drop Started", "Dropping Princess Robot figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                false,
-                false
-            )
-
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-            
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
-        end
-		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-        if not princessBubblegumLoop then
-            script.unregister_script("princessbubblegumLoop")
-        end
-    end)
-end)
-toolTip(Drops, "Drops Princess Robot Figurines on a selected player.")
-Drops:add_sameline()
-Drops:add_button("Alien (On/Off)", function()
-   alienfigurineLoop = not alienfigurineLoop
-
-    script.register_looped("alienfigurineLoop", function(script)
-        local model = joaat("vw_prop_vw_colle_alien")
-        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = network.get_selected_player()
-        local money_value = 0
-
-        STREAMING.REQUEST_MODEL(model)
-        while STREAMING.HAS_MODEL_LOADED(model) == false do
-            script:yield()
-        end
-
-        if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("RP/Cash Drop Started", "Dropping Alien figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                false,
-                false
-            )
-
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-            
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
-        end
-		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-        if not alienfigurineLoop then
-            script.unregister_script("alienfigurineLoop")
-        end
-    end)
-end)
-toolTip(Drops, "Drops Alien Figurines on a selected player.")
-Drops:add_sameline()
-Drops:add_button("Casino Cards (On/Off)", function()
-   casinocardsLoop = not casinocardsLoop
-
-    script.register_looped("casinocardsLoop", function(script)
-        local model = joaat("vw_prop_vw_lux_card_01a")
-        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = network.get_selected_player()
-        local money_value = 0
-
-        STREAMING.REQUEST_MODEL(model)
-        while STREAMING.HAS_MODEL_LOADED(model) == false do
-            script:yield()
-        end
-
-        if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("RP/Cash Drop Started", "Dropping Casino Cards on "..PLAYER.GET_PLAYER_NAME(player_id))
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                false,
-                false
-            )
-        
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-            
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
-        end
-		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-        if not casinocardsLoop then
-            script.unregister_script("casinocardsLoop")
-        end
-    end)
-end)
-toolTip(Drops, "Drops Casino Cards on a selected player.")
-Drops:add_sameline()
-Drops:add_button("Cash Loop (On/Off)", function()
-kcashLoop = not kcashLoop
-    script.register_looped("kcashLoop", function(script)
-        local model = joaat("ch_prop_ch_cashtrolley_01a")
-        local pickup = joaat("PICKUP_MONEY_VARIABLE")
-        local player_id = network.get_selected_player()
-
-        local money_value = 2000
-
-        STREAMING.REQUEST_MODEL(model)
-        while STREAMING.HAS_MODEL_LOADED(model) == false do
-            script:yield()
-        end
-
-        if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("Cash Drop Started", "LOCAL CASH WORKS ON PICKUP but other players cannot see/pick it up!")
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                false,
-                false
-            )
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-            
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
-        end
-		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-        if not kcashLoop then
-            script.unregister_script("kcashLoop")
-        end
-    end)
-end)
-toolTip(Drops, "Drops Money on a selected player. (Only YOU can see/collect this)")
-Drops:add_separator()
-Drops:add_button("Give 25k & Random RP", function()
-    script.run_in_fiber(function(tse)
-        pid = network.get_selected_player()
-        for i = 0, 9 do
-            for v = 0, 20 do
-                network.trigger_script_event(1 << pid, {968269233, pid, 0, i, v, v, v})
-                for n = 0, 16 do
-                    network.trigger_script_event(1 << pid, {968269233, pid, n, i, v, v, v})
-                end
-            end
-            network.trigger_script_event(1 << pid, {968269233, pid, 1, i, 1, 1, 1})
-            network.trigger_script_event(1 << pid, {968269233, pid, 3, i, 1, 1, 1})
-            network.trigger_script_event(1 << pid, {968269233, pid, 10, i, 1, 1, 1})
-            network.trigger_script_event(1 << pid, {968269233, pid, 0, i, 1, 1, 1})
-            tse:yield()
-            
-            gui.show_message("Bless RP", "Blessing "..PLAYER.GET_PLAYER_NAME(pid).." with 25k RP (1 time)")
-        end
-    end)
-end)
-toolTip(Drops, "Gives the selected player some Money and RP")
-Drops:add_sameline()
-local tseTest = Drops:add_checkbox("Super Fast RP")
-script.register_looped("tseTest", function()
-    if tseTest:is_enabled() == true then
-        pid = network.get_selected_player()
-        for i = 0, 24 do 
-            network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
-        end
-    end
-end)
-toolTip(Drops, "Remotely floods the selected player with RP (about 1 level/sec)")
-Drops:add_sameline()
-local ezMoney = Drops:add_checkbox("Money ($225k)")
-    script.register_looped("ezMoney", function()
-        if ezMoney:is_enabled() == true then
-            local pid = network.get_selected_player()
-            for n = 0, 10 do
-                for l = -10, 10 do
-                    network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
-                end
-            end
-        end
-    end)
-toolTip(Drops, "Sometimes works, sometimes doesn't.  Up to 225k")
-Drops:add_separator()
-Drops:add_text("You CAN run multiple at once (like Robot bubblegum/Alien)")
-Drops:add_text("Select a Player from the list and toggle");
+--Drops:add_separator()
+--Drops:add_text("You CAN run multiple at once (like Robot bubblegum/Alien)")
+--Drops:add_text("Select a Player from the list and toggle");
 
 -- Teleports tab - Credits to USBMenus https://github.com/Deadlineem/Extras-Addon-for-YimMenu/issues/9#issuecomment-1955881222
 
@@ -4852,7 +4636,6 @@ Weapons:add_button("Give All Weapons", function()
         end
 end)
 toolTip(Weapons, "Gives all weapons to the selected player")
-Weapons:add_tab("Drops")
 Weapons:add_separator()
 Weapons:add_text("Weapon Drops")
 Weapons:add_button("Drop Random Weapon", function()
@@ -6990,12 +6773,13 @@ chatOpt:add_button("Menu Info", function()
         network.send_chat_message("[Menu]: "..binfo, false)
 end)
 
-selectedPlayerTab:add_text("Extras Addon v"..addonVersion.." - Player Options")
-selectedPlayerTab:add_separator()
+griefPlayerTab:add_text("Extras Addon v"..addonVersion.." - Player Options")
+griefPlayerTab:add_separator()
 
-extraGrief = selectedPlayerTab:add_checkbox("Separate Window?")
+griefPlayerTab:add_text("Toggle separate windows?")
+extraGrief = griefPlayerTab:add_checkbox("Grief")
 extraGrief:set_enabled(true)
-selectedPlayerTab:add_imgui(function()
+griefPlayerTab:add_imgui(function()
 	if extraGrief:is_enabled() then
 	local parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
         local parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
@@ -7007,8 +6791,9 @@ selectedPlayerTab:add_imgui(function()
         local y = parentY -- Align the child window vertically with the parent window
 
         ImGui.SetNextWindowPos(x, y)
-        if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
+			if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
 			-- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
+			
 		end
 	end
 end)
@@ -7023,24 +6808,24 @@ local balls = {
 "v_ilev_exball_blue"
 }
 
-selectedPlayerTab:add_text("Trolling")
-npcDrive = selectedPlayerTab:add_checkbox("NPCs Drive To This Player")
-toolTip(selectedPlayerTab, "Make all NPC's drive to this player")
+griefPlayerTab:add_text("Trolling")
+npcDrive = griefPlayerTab:add_checkbox("NPCs Drive To This Player")
+toolTip(griefPlayerTab, "Make all NPC's drive to this player")
 
-selectedPlayerTab:add_sameline()
-dildos = selectedPlayerTab:add_checkbox("Dildos")
-toolTip(selectedPlayerTab, "Spawns Vibrators on the player")
+griefPlayerTab:add_sameline()
+dildos = griefPlayerTab:add_checkbox("Dildos")
+toolTip(griefPlayerTab, "Spawns Vibrators on the player")
 
-selectedPlayerTab:add_sameline()
-dropBalls = selectedPlayerTab:add_checkbox("Balls")
-toolTip(selectedPlayerTab, "Spawns Volley Balls on the player")
+griefPlayerTab:add_sameline()
+dropBalls = griefPlayerTab:add_checkbox("Balls")
+toolTip(griefPlayerTab, "Spawns Volley Balls on the player")
 
-vehicleSpin = selectedPlayerTab:add_checkbox("Spin Vehicle")
-toolTip(selectedPlayerTab, "Spins the players vehicle uncontrollably.")
+vehicleSpin = griefPlayerTab:add_checkbox("Spin Vehicle")
+toolTip(griefPlayerTab, "Spins the players vehicle uncontrollably.")
 
-selectedPlayerTab:add_sameline()
+griefPlayerTab:add_sameline()
 local trollLoop = false
-trollLoop = selectedPlayerTab:add_checkbox("Teleport Troll")
+trollLoop = griefPlayerTab:add_checkbox("Teleport Troll")
 
 script.register_looped("trollLoop", function(script)
     script:yield()
@@ -7053,9 +6838,9 @@ script.register_looped("trollLoop", function(script)
         sleep(0.1)
     end
 end)
-toolTip(selectedPlayerTab, "Teleports you randomly around the selected player, will destroy vehicles if you are in one when you activate this")
+toolTip(griefPlayerTab, "Teleports you randomly around the selected player, will destroy vehicles if you are in one when you activate this")
 
-selectedPlayerTab:add_button("Spawn Clone", function()
+griefPlayerTab:add_button("Spawn Clone", function()
     script.run_in_fiber(function(spawnClone)
         local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         local coords = ENTITY.GET_ENTITY_COORDS(player, true)
@@ -7093,10 +6878,10 @@ selectedPlayerTab:add_button("Spawn Clone", function()
         end
     end)
 end)
-toolTip(selectedPlayerTab, "Spawns a clone of the player with a homing launcher to kill them.")
+toolTip(griefPlayerTab, "Spawns a clone of the player with a homing launcher to kill them.")
 
-selectedPlayerTab:add_sameline()
-selectedPlayerTab:add_button("Clown Attack", function()
+griefPlayerTab:add_sameline()
+griefPlayerTab:add_button("Clown Attack", function()
     script.run_in_fiber(function (clownAttack)
         local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         local coords = ENTITY.GET_ENTITY_COORDS(player, true)
@@ -7163,10 +6948,10 @@ selectedPlayerTab:add_button("Clown Attack", function()
         end
     end)
 end)
-toolTip(selectedPlayerTab, "Spawns a Clown van full of clowns to chase/gun the player down.")
+toolTip(griefPlayerTab, "Spawns a Clown van full of clowns to chase/gun the player down.")
 
-selectedPlayerTab:add_sameline()
-selectedPlayerTab:add_button("Clown Jet Attack", function()
+griefPlayerTab:add_sameline()
+griefPlayerTab:add_button("Clown Jet Attack", function()
     script.run_in_fiber(function (clownJetAttack)
         local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         local playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
@@ -7239,7 +7024,7 @@ selectedPlayerTab:add_button("Clown Jet Attack", function()
         if jetVehicle == 0 then 
             gui.show_error("Failed", "Failed to Create Jet")
         else
-            gui.show_message("selectedPlayerTabing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..playerName)
+            gui.show_message("griefPlayerTabing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..playerName)
         end
 
         -- Release the resources associated with the spawned entities
@@ -7248,27 +7033,27 @@ selectedPlayerTab:add_button("Clown Jet Attack", function()
 
     end)
 end)
-toolTip(selectedPlayerTab, "Spawns Randomly colored jets with Clowns as pilots to attack the selected player.")
+toolTip(griefPlayerTab, "Spawns Randomly colored jets with Clowns as pilots to attack the selected player.")
 
-selectedPlayerTab:add_separator()
-selectedPlayerTab:add_text("Griefing")
-hydrantCB = selectedPlayerTab:add_checkbox("Hydrant")
-toolTip(selectedPlayerTab, "Spawns fire hydrant spray to ragdoll the player")
+griefPlayerTab:add_separator()
+griefPlayerTab:add_text("Griefing")
+hydrantCB = griefPlayerTab:add_checkbox("Hydrant")
+toolTip(griefPlayerTab, "Spawns fire hydrant spray to ragdoll the player")
 
-selectedPlayerTab:add_sameline()
-steamCB = selectedPlayerTab:add_checkbox("Steam")
-toolTip(selectedPlayerTab, "Spawns steam to burn the player")
+griefPlayerTab:add_sameline()
+steamCB = griefPlayerTab:add_checkbox("Steam")
+toolTip(griefPlayerTab, "Spawns steam to burn the player")
 
-selectedPlayerTab:add_sameline()
-extinguisherCB = selectedPlayerTab:add_checkbox("Extinguisher")
-toolTip(selectedPlayerTab, "Spawns fire extinguisher spray on the player")
+griefPlayerTab:add_sameline()
+extinguisherCB = griefPlayerTab:add_checkbox("Extinguisher")
+toolTip(griefPlayerTab, "Spawns fire extinguisher spray on the player")
 
-explodeCB = selectedPlayerTab:add_checkbox("Explode")
-selectedPlayerTab:add_sameline()
-toolTip(selectedPlayerTab, "Violently explodes the player and shakes their screen.")
+explodeCB = griefPlayerTab:add_checkbox("Explode")
+griefPlayerTab:add_sameline()
+toolTip(griefPlayerTab, "Violently explodes the player and shakes their screen.")
 
-noDamageExplode = selectedPlayerTab:add_checkbox("Screen Shake")
-toolTip(selectedPlayerTab, "Causes a no damage explosion to shake the players screen.")
+noDamageExplode = griefPlayerTab:add_checkbox("Screen Shake")
+toolTip(griefPlayerTab, "Causes a no damage explosion to shake the players screen.")
 
 script.register_looped("extrasAddonLooped", function(script)
     if npcDrive:is_enabled() then
@@ -7363,9 +7148,9 @@ script.register_looped("extrasAddonLooped", function(script)
 end)
 
 -- Grief Burn Player
-selectedPlayerTab:add_sameline()
+griefPlayerTab:add_sameline()
 local burnLoop = false
-burnLoop = selectedPlayerTab:add_checkbox("Burn")
+burnLoop = griefPlayerTab:add_checkbox("Burn")
 
 script.register_looped("burnLoop", function()
     if burnLoop:is_enabled() == true then
@@ -7379,17 +7164,17 @@ script.register_looped("burnLoop", function()
         GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
         GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
         
-        gui.show_message("selectedPlayerTab", "Burning "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
+        gui.show_message("griefPlayerTab", "Burning "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
 
         -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
 
         sleep(0.4)  -- Sets the timer in seconds for how long this should pause before burning another player
     end
 end)
-toolTip(selectedPlayerTab, "Repeatedly burns the selected player using molotovs")
+toolTip(griefPlayerTab, "Repeatedly burns the selected player using molotovs")
 -- Griefing Options
 
-local ramLoopz = selectedPlayerTab:add_checkbox("Vehicle Sandwich (On/Off)")
+local ramLoopz = griefPlayerTab:add_checkbox("Vehicle Sandwich (On/Off)")
 
 script.register_looped("ramLoopz", function()
     if ramLoopz:is_enabled() then
@@ -7434,7 +7219,7 @@ script.register_looped("ramLoopz", function()
                             VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
                         end
 
-                        gui.show_message("selectedPlayerTab", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+                        gui.show_message("griefPlayerTab", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
 
                         -- Use these lines to delete the vehicle after spawning. 
                         -- Needs some type of delay between spawning and deleting to function properly
@@ -7447,12 +7232,12 @@ script.register_looped("ramLoopz", function()
         --sleep(0.2)
     end
 end)
-toolTip(selectedPlayerTab, "Sandwiches the selected player between 2 vehicles at high velocity")
+toolTip(griefPlayerTab, "Sandwiches the selected player between 2 vehicles at high velocity")
 
--- selectedPlayerTabing Explode Player 2
-selectedPlayerTab:add_sameline()
+-- griefPlayerTabing Explode Player 2
+griefPlayerTab:add_sameline()
 local explodeLoop = false
-explodeLoop = selectedPlayerTab:add_checkbox("Explosion")
+explodeLoop = griefPlayerTab:add_checkbox("Explosion")
 
 script.register_looped("explodeLoop", function()
     if explodeLoop:is_enabled() == true then
@@ -7466,19 +7251,19 @@ script.register_looped("explodeLoop", function()
                 GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
                 
-                gui.show_message("selectedPlayerTab", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
+                gui.show_message("griefPlayerTab", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
                 -- Optionally, you can play an explosion sound here using AUDIO.PLAY_SOUND_FROM_COORD
 
         sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
     end
 end)
-toolTip(selectedPlayerTab, "Repeatedly explodes the selected player using a barrel explosion.")
+toolTip(griefPlayerTab, "Repeatedly explodes the selected player using a barrel explosion.")
 
 -- Crash Options
-selectedPlayerTab:add_separator()
-selectedPlayerTab:add_text("Crash Options")
+griefPlayerTab:add_separator()
+griefPlayerTab:add_text("Crash Options")
 local prCrash = false
-prCrash = selectedPlayerTab:add_checkbox("PR Crash (On/Off)")
+prCrash = griefPlayerTab:add_checkbox("PR Crash (On/Off)")
 
 script.register_looped("prCrash", function()
     if prCrash:is_enabled() == true then
@@ -7511,10 +7296,10 @@ script.register_looped("prCrash", function()
         sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
     end
 end)
-toolTip(selectedPlayerTab, "Spawns Princes Robot figurines worth $1,000,000, causing the player to crash (not very effective on modders)")
+toolTip(griefPlayerTab, "Spawns Princes Robot figurines worth $1,000,000, causing the player to crash (not very effective on modders)")
 -- SCH-Lua
-selectedPlayerTab:add_sameline()
-selectedPlayerTab:add_button("Fragment crash", function()
+griefPlayerTab:add_sameline()
+griefPlayerTab:add_button("Fragment crash", function()
     script.run_in_fiber(function (fragcrash)
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
             gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
@@ -7591,26 +7376,23 @@ selectedPlayerTab:add_button("Fragment crash", function()
         end
     end)
 end)
-toolTip(selectedPlayerTab, "Spawns a bunch of objects on the selected player and breaks them into fragments, causing them to crash")
+toolTip(griefPlayerTab, "Spawns a bunch of objects on the selected player and breaks them into fragments, causing them to crash")
 
-selectedPlayerTab:add_sameline()
-selectedPlayerTab:add_button("Break HUD", function()
+griefPlayerTab:add_sameline()
+griefPlayerTab:add_button("Break HUD", function()
     local pid = network.get_selected_player()
 	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
     gui.show_message("HUD Breaker", "You have broken "..PLAYER.GET_PLAYER_NAME(pid).."'s HUD and Interiors.")
 	gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
 end)
-toolTip(selectedPlayerTab, "Removes and breaks the HUD of the selected player, this causes them to not be able to pause, enter apartments and ruins their freemode missions")
+toolTip(griefPlayerTab, "Removes and breaks the HUD of the selected player, this causes them to not be able to pause, enter apartments and ruins their freemode missions")
 
--- selectedPlayerTabing Sound Spam Targetable
-selectedPlayerTab:add_separator()
-selectedPlayerTab:add_text("Sound Spams")
+-- Grief Sound Spam Targetable
+griefPlayerTab:add_separator()
+griefPlayerTab:add_text("Sound Spams")
 local soundIndex = 0
 local isPlaying = false
 
-useLooped = false
-local useLooped = selectedPlayerTab:add_checkbox("Loop Sounds")
-toolTip(selectedPlayerTab, "Loops the selected sound, Extremely annoying, cannot be turned off, period.")
 local searchQuery = ""
 local filteredSoundNames = {}
 local selectedFilteredSoundIndex = 0
@@ -7632,7 +7414,7 @@ local function displaySoundNamesList()
     selectedFilteredSoundIndex, _ = ImGui.Combo("Select Sound", selectedFilteredSoundIndex, filteredSoundNames, #filteredSoundNames)
 end
 
-selectedPlayerTab:add_imgui(function()
+griefPlayerTab:add_imgui(function()
     if is_typing then
         PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
     end
@@ -7651,25 +7433,8 @@ selectedPlayerTab:add_imgui(function()
     displaySoundNamesList()
 
     if ImGui.Button("Play") then
-        isPlaying = true
         local selectedSoundName = filteredSoundNames[selectedFilteredSoundIndex + 1]
 		local targetPlayer = network.get_selected_player()
-        if useLooped:is_enabled() == true then
-            script.register_looped("soundSpams", function()
-                -- Play the selected sound
-                local selectedSound
-                for _, sound in ipairs(sounds) do
-                    if sound.SoundName == selectedSoundName then
-                        selectedSound = sound
-                        break
-                    end
-                end
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, selectedSound.AudioName, PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), selectedSound.AudioRef, true, 999999999)
-                gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on "..PLAYER.GET_PLAYER_NAME(targetPlayer))
-				
-				useLooped:set_enabled(false)
-            end)
-        else
             script.run_in_fiber(function()
                 -- Play the selected sound
                 local selectedSound
@@ -7679,27 +7444,238 @@ selectedPlayerTab:add_imgui(function()
                         break
                     end
                 end
-                AUDIO.PLAY_SOUND_FROM_ENTITY(-1, selectedSound.AudioName, PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), selectedSound.AudioRef, true, 999999999)
+                soundId = AUDIO.PLAY_SOUND_FROM_ENTITY(-1, selectedSound.AudioName, PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), selectedSound.AudioRef, true, 999999999)
+				soundId = AUDIO.GET_SOUND_ID()
                 gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on "..PLAYER.GET_PLAYER_NAME(targetPlayer))
-            end)
+				gui.show_message("Sound ID", soundId)
+            end)	
+    end
+end)
+toolTip(griefPlayerTab, "Plays the selected sound from the dropdown.")
+
+griefPlayerTab:add_sameline()
+local stopSounds = false
+stopSounds = griefPlayerTab:add_checkbox("Stop Local Sounds")
+	script.register_looped("stopSounds", function(script)
+		if stopSounds:is_enabled() == true then		
+			--soundId = AUDIO.GET_SOUND_ID()
+			--gui.show_message("Sound ID", "Stopped "..soundId)
+			--AUDIO.STOP_SOUND(soundId)
+			--AUDIO.RELEASE_SOUND_ID(soundId)
+			for i = -1, 25 do
+				AUDIO.STOP_SOUND(i)
+				AUDIO.RELEASE_SOUND_ID(i)
+			end
+		end
+	end)
+
+toolTip(griefPlayerTab, "Supposed to stop all sounds, seems broken?.") 
+
+
+
+griefPlayerTab:add_imgui(function()
+	-- Ends the ImGui wrapper, new additions should be added above this.
+	ImGui.End()
+end)
+
+dropsPlayerTab:add_sameline()
+Drops = dropsPlayerTab:add_checkbox("Drops")
+Drops:set_enabled(true)
+dropsPlayerTab:add_imgui(function()
+	if Drops:is_enabled() then
+	local parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+        local parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
+        local parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
+        local childWidth, childHeight = 200, 150 -- Size of your child window
+        local offset = 10 -- Offset between parent and child windows
+
+        local x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
+        local y = parentY + 30-- Align the child window vertically with the parent window
+
+        ImGui.SetNextWindowPos(x, y)
+			if ImGui.Begin("Extras Addon (Drop Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
+		end
+	end
+end)
+
+local princessBubblegumLoop = false
+dropsPlayerTab:add_text("Action Figures")
+dropsPlayerTab:add_button("Princess Robot Bubblegum (On/Off)", function()
+    princessBubblegumLoop = not princessBubblegumLoop
+
+    script.register_looped("princessbubblegumLoop", function(script)
+        local model = joaat("vw_prop_vw_colle_prbubble")
+        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+        local player_id = network.get_selected_player()
+        local money_value = 0
+
+        STREAMING.REQUEST_MODEL(model)
+        while STREAMING.HAS_MODEL_LOADED(model) == false do
+            script:yield()
+        end
+
+        if STREAMING.HAS_MODEL_LOADED(model) then
+        gui.show_message("RP/Cash Drop Started", "Dropping Princess Robot figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                pickup,
+                coords.x,
+                coords.y,
+                coords.z + 1,
+                3,
+                money_value,
+                model,
+                false,
+                false
+            )
+
+            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+            
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+        end
+		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+        if not princessBubblegumLoop then
+            script.unregister_script("princessbubblegumLoop")
+        end
+    end)
+end)
+toolTip(dropsPlayerTab, "Drops Princess Robot Figurines on a selected player.")
+dropsPlayerTab:add_sameline()
+dropsPlayerTab:add_button("Alien (On/Off)", function()
+   alienfigurineLoop = not alienfigurineLoop
+
+    script.register_looped("alienfigurineLoop", function(script)
+        local model = joaat("vw_prop_vw_colle_alien")
+        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+        local player_id = network.get_selected_player()
+        local money_value = 0
+
+        STREAMING.REQUEST_MODEL(model)
+        while STREAMING.HAS_MODEL_LOADED(model) == false do
+            script:yield()
+        end
+
+        if STREAMING.HAS_MODEL_LOADED(model) then
+        gui.show_message("RP/Cash Drop Started", "Dropping Alien figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                pickup,
+                coords.x,
+                coords.y,
+                coords.z + 1,
+                3,
+                money_value,
+                model,
+                false,
+                false
+            )
+
+            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+            
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+        end
+		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+        if not alienfigurineLoop then
+            script.unregister_script("alienfigurineLoop")
+        end
+    end)
+end)
+toolTip(dropsPlayerTab, "Drops Alien Figurines on a selected player.")
+dropsPlayerTab:add_sameline()
+dropsPlayerTab:add_button("Casino Cards (On/Off)", function()
+   casinocardsLoop = not casinocardsLoop
+
+    script.register_looped("casinocardsLoop", function(script)
+        local model = joaat("vw_prop_vw_lux_card_01a")
+        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+        local player_id = network.get_selected_player()
+        local money_value = 0
+
+        STREAMING.REQUEST_MODEL(model)
+        while STREAMING.HAS_MODEL_LOADED(model) == false do
+            script:yield()
+        end
+
+        if STREAMING.HAS_MODEL_LOADED(model) then
+        gui.show_message("RP/Cash Drop Started", "Dropping Casino Cards on "..PLAYER.GET_PLAYER_NAME(player_id))
+            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                pickup,
+                coords.x,
+                coords.y,
+                coords.z + 1,
+                3,
+                money_value,
+                model,
+                false,
+                false
+            )
+        
+            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+            
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+        end
+		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+        if not casinocardsLoop then
+            script.unregister_script("casinocardsLoop")
+        end
+    end)
+end)
+toolTip(dropsPlayerTab, "Drops Casino Cards on a selected player.")
+dropsPlayerTab:add_separator()
+dropsPlayerTab:add_button("Give 25k & Random RP", function()
+    script.run_in_fiber(function(tse)
+        pid = network.get_selected_player()
+        for i = 0, 9 do
+            for v = 0, 20 do
+                network.trigger_script_event(1 << pid, {968269233, pid, 0, i, v, v, v})
+                for n = 0, 16 do
+                    network.trigger_script_event(1 << pid, {968269233, pid, n, i, v, v, v})
+                end
+            end
+            network.trigger_script_event(1 << pid, {968269233, pid, 1, i, 1, 1, 1})
+            network.trigger_script_event(1 << pid, {968269233, pid, 3, i, 1, 1, 1})
+            network.trigger_script_event(1 << pid, {968269233, pid, 10, i, 1, 1, 1})
+            network.trigger_script_event(1 << pid, {968269233, pid, 0, i, 1, 1, 1})
+            tse:yield()
+            
+            gui.show_message("Bless RP", "Blessing "..PLAYER.GET_PLAYER_NAME(pid).." with 25k RP (1 time)")
+        end
+    end)
+end)
+toolTip(dropsPlayerTab, "Gives the selected player some Money and RP")
+dropsPlayerTab:add_sameline()
+local tseTest = dropsPlayerTab:add_checkbox("Super Fast RP")
+script.register_looped("tseTest", function()
+    if tseTest:is_enabled() == true then
+        pid = network.get_selected_player()
+        for i = 0, 24 do 
+            network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
         end
     end
 end)
-toolTip(selectedPlayerTab, "Plays the selected sound from the dropdown.")
+toolTip(dropsPlayerTab, "Remotely floods the selected player with RP (about 1 level/sec)")
+dropsPlayerTab:add_sameline()
+local ezMoney = dropsPlayerTab:add_checkbox("Money ($225k)")
+    script.register_looped("ezMoney", function()
+        if ezMoney:is_enabled() == true then
+            local pid = network.get_selected_player()
+            for n = 0, 10 do
+                for l = -10, 10 do
+                    network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
+                end
+            end
+        end
+    end)
+toolTip(dropsPlayerTab, "Sometimes works, sometimes doesn't.  Up to 225k")
 
-selectedPlayerTab:add_sameline()
-selectedPlayerTab:add_button("Stop Local Sounds", function()
-    isPlaying = false
-	for i = -1, 100 do
-		AUDIO.STOP_SOUND(i)
-		AUDIO.RELEASE_SOUND_ID(i)
-	end
-end)
-toolTip(selectedPlayerTab, "Supposed to stop all sounds, seems broken?.") 
-
-
-
-selectedPlayerTab:add_imgui(function()
+dropsPlayerTab:add_imgui(function()
 	-- Ends the ImGui wrapper, new additions should be added above this.
 	ImGui.End()
 end)
