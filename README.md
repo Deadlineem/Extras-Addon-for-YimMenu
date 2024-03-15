@@ -1,6 +1,8 @@
 
 ![Extras Addon for YimMenu](http://extrasaddon.us.to/img/extras-header-2.png)
 
+[![version](https://img.shields.io/badge/version-1.0.1-yellow.svg)](https://semver.org)
+
 ## NOTE TO ALL USERS:
 
 DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT OFF AND USE THEM AS THE CODES MAY CONFLICT AND CAUSE ISSUES.
