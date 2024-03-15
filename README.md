@@ -1,4 +1,4 @@
-![Extras Addon for YimMenu](http://extrasaddon.us.to/img/extras-header-2.png)
+<div style="text-align:center;">![Extras Addon for YimMenu](http://extrasaddon.us.to/img/extras-header-2.png)</div>
 
 ## NOTE TO ALL USERS:
 
