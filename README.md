@@ -1,4 +1,4 @@
-# Extras Addon for YimMenu
+![Extras Addon for YimMenu](extrasaddon.us.to/img/extras-header-2.png)
 
 ## NOTE TO ALL USERS:
 
