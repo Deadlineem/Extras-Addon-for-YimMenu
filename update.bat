@@ -21,7 +21,7 @@ echo "                                                               "
 echo "                Extras Addon for YimMenu                       "
 echo "                  Addon Version: 1.0.1                         "
 echo "    https://github.com/Deadlineem/Extras-Addon-for-YimMenu     "
-echo "    			  http://extrasaddon.us.to/     				 "
+echo "    		http://extrasaddon.us.to/      		     "
 echo "  ______   ______   ______   ______   ______   ______   ______ "
 echo " /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ "
 
