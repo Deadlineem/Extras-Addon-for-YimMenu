@@ -15,14 +15,15 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 1.0.1
+        Addon Version: 1.0.2
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
       TheKuter, RazorGamerX, USBMenus & More!
 
 ]]--
-local addonVersion = "1.0.1"
+
+local addonVersion = "1.0.2"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -54,21 +55,21 @@ function delete_entity(ent) --discord@rostal315
 end
 
 function toolTip(tab, text)
-	if tab == "" then
-		if ImGui.IsItemHovered() then
-			ImGui.BeginTooltip()
-			ImGui.Text(text)
-			ImGui.EndTooltip()
-		end
-	else
-		tab:add_imgui(function()
-			if ImGui.IsItemHovered() then
-				ImGui.BeginTooltip()
-				ImGui.Text(text)
-				ImGui.EndTooltip()
-			end
-		end)
-	end
+    if tab == "" then
+        if ImGui.IsItemHovered() then
+            ImGui.BeginTooltip()
+            ImGui.Text(text)
+            ImGui.EndTooltip()
+        end
+    else
+        tab:add_imgui(function()
+            if ImGui.IsItemHovered() then
+                ImGui.BeginTooltip()
+                ImGui.Text(text)
+                ImGui.EndTooltip()
+            end
+        end)
+    end
 end
 
 function newText(tab, text, size)
@@ -2409,7 +2410,7 @@ Mvmt:add_imgui(function()
         PLAYER.SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), runSpeed/7)
         gui.show_message('Run Speed Modified!', out)
     end
-	toolTip("", "Increase your Walk/Run Speed")
+    toolTip("", "Increase your Walk/Run Speed")
 end)
 
 swimSpeed = 1
@@ -2420,7 +2421,7 @@ Mvmt:add_imgui(function()
         PLAYER.SET_SWIM_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), swimSpeed/7)
         gui.show_message('Swim Speed Modified!', out)
     end
-	toolTip("", "Increase your Swimming Speed")
+    toolTip("", "Increase your Swimming Speed")
 end)
 
 -- Fun Random Things
@@ -2549,10 +2550,10 @@ script.register_looped("particles2", function(shootlol)
     if shootCB2:is_enabled() then
         if PED.IS_PED_SHOOTING(PLAYER.PLAYER_PED_ID()) then
             local weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
-			local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(weapon, "gun_muzzle")
+            local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(weapon, "gun_muzzle")
 
-			GRAPHICS.USE_PARTICLE_FX_ASSET("scr_michael2")
-			GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE("scr_mich2_blood_stab", weapon, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, boneId, 2.5, false, false, false)
+            GRAPHICS.USE_PARTICLE_FX_ASSET("scr_michael2")
+            GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE("scr_mich2_blood_stab", weapon, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, boneId, 2.5, false, false, false)
         end
     end
 end)
@@ -2568,21 +2569,21 @@ script.register_looped("particles3", function(wheelOne)
             wheelOne:yield()
         end
             --local weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
-		local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), true)
-		if ENTITY.IS_ENTITY_A_VEHICLE(vehicle) then
-			local class = VEHICLE.GET_VEHICLE_CLASS(vehicle)
-			if class == 8 then
-				local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- Rear Motorcycle Wheel
-				GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
-				GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneId, 2, false, false, false)
-			else
-				local boneIdOne = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- left rear wheel
-				local boneIdTwo = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_rr") -- right rear wheel
-				GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
-				GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneIdOne, 2, false, false, false)
-				GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
-				GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneIdTwo, 2, false, false, false)
-			end	
+        local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), true)
+        if ENTITY.IS_ENTITY_A_VEHICLE(vehicle) then
+            local class = VEHICLE.GET_VEHICLE_CLASS(vehicle)
+            if class == 8 then
+                local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- Rear Motorcycle Wheel
+                GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+                GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneId, 2, false, false, false)
+            else
+                local boneIdOne = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- left rear wheel
+                local boneIdTwo = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_rr") -- right rear wheel
+                GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+                GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneIdOne, 2, false, false, false)
+                GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+                GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneIdTwo, 2, false, false, false)
+            end 
         end
     end
 end)
@@ -3616,9 +3617,9 @@ locations = {customCoords, ownedCoords}
 Tel:add_imgui(function()
     addBlips(ownedCoords)
     copyLocation = ImGui.Button("Copy Location To Clipboard")
-	toolTip("", "Copies your current location to the clipboard for adding custom coordinates to the menu.")
+    toolTip("", "Copies your current location to the clipboard for adding custom coordinates to the menu.")
     locationTypeIndex, locationTypeSelected = ImGui.Combo("Location Type", locationTypeIndex, locationTypes, #locationTypes)
-	toolTip("", "Select a Location Type (Custom Locations | Owned Properties)")
+    toolTip("", "Select a Location Type (Custom Locations | Owned Properties)")
     locationNames = {}
     for i, location in ipairs(locations[locationTypeIndex + 1]) do
         table.insert(locationNames, location[1])
@@ -3627,7 +3628,7 @@ Tel:add_imgui(function()
     if locationSelected then
         ENTITY.SET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), locations[locationTypeIndex + 1][locationIndex + 1][2], locations[locationTypeIndex + 1][locationIndex + 1][3], locations[locationTypeIndex + 1][locationIndex + 1][4] - 1, true, false, false, false)
     end
-	toolTip("", "Click to teleport to this location")
+    toolTip("", "Click to teleport to this location")
     if copyLocation then
         coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
         coordsString = coords.x.. ", ".. coords.y.. ", ".. coords.z
@@ -4097,11 +4098,14 @@ local Objets = Obje:add_tab("Spawner")
 local orientationPitch = 0
 local orientationYaw = 0
 local orientationRoll = 0
-local spawnDistance = { x = 0, y = 0, z = -1 }
+local spawnDistance = { x = 0, y = 0, z = 0 }
 local defaultOrientationPitch = 0
 local defaultOrientationYaw = 0
 local defaultOrientationRoll = 0
-local defaultSpawnDistance = { x = 0, y = 0, z = -1 }
+local defaultSpawnDistance = { x = 0, y = 0, z = 0 }
+
+local defaultObjSpawnDistance = 3.0  -- Adjust this distance as needed
+local objSpawnDistance = 3.0  -- Adjust this distance as needed
 
 -- Function to reset sliders to default values
 local function resetSliders()
@@ -4111,23 +4115,49 @@ local function resetSliders()
     spawnDistance.x = defaultSpawnDistance.x
     spawnDistance.y = defaultSpawnDistance.y
     spawnDistance.z = defaultSpawnDistance.z
+    objSpawnDistance = defaultObjSpawnDistance
 end
+
+--[[
+---@class Preview
+Preview = {handle = 0, modelHash = 0}
+Preview.__index = Preview
+
+---@param modelHash Hash
+---@return Preview
+function Preview.new(modelHash)
+    local self = setmetatable({}, Preview)
+    self.modelHash = modelHash
+    return self
+end
+
+---@param pos v3
+function Preview:create(pos, heading)
+    if self:exists() then return end
+    self.handle = VEHICLE.CREATE_VEHICLE(self.modelHash, pos.x, pos.y, pos.z, heading, false, false, false)
+    ENTITY.SET_ENTITY_ALPHA(self.handle, 153, true)
+    ENTITY.SET_ENTITY_COLLISION(self.handle, false, false)
+    ENTITY.SET_CAN_CLIMB_ON_ENTITY(self.handle, false)
+end--]]
+
 
 Objets:add_imgui(function()
     orientationPitch, used = ImGui.SliderInt("Pitch", orientationPitch, 0, 360)
-	toolTip("", "Change the Pitch of the object (Side to Side Axis)")
+    toolTip("", "Change the Pitch of the object (Side to Side Axis)")
     orientationYaw, used = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
-	toolTip("", "Change the Yaw of the object (Vertical Axis)")
+    toolTip("", "Change the Yaw of the object (Vertical Axis)")
     orientationRoll, used = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
-	toolTip("", "Change the Roll of the object (Front to Back Axis)")
+    toolTip("", "Change the Roll of the object (Front to Back Axis)")
 end)
 Objets:add_imgui(function()
     spawnDistance.x, used = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -25, 25)
-	toolTip("", "Change the X coordinates of where the object spawns (Left/Right depending on direction you are facing)")
+    toolTip("", "Change the X coordinates of where the object spawns (Left/Right depending on direction you are facing)")
     spawnDistance.y, used = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -25, 25)
-	toolTip("", "Change the Y coordinates of where the object spawns (Forward/Backwards depending on direction you are facing)")
+    toolTip("", "Change the Y coordinates of where the object spawns (Forward/Backwards depending on direction you are facing)")
     spawnDistance.z, used = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -25, 25)
-	toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
+    toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
+    objSpawnDistance, sdChanged = ImGui.SliderFloat("Distance", objSpawnDistance, 0, 25)
+    toolTip("", "Distance From The Player An The Object")
 end)
 
 -- Save default values
@@ -4152,7 +4182,7 @@ for i, hash in ipairs(objectHashes) do
     table.insert(adultesItems, { hash = hash, nom = objectNames[i] })
 end
 
-local selectedObjectIndex = 1 
+local selectedObjectIndex = 0
 
 Objets:add_text("Object Spawner")
 
@@ -4198,37 +4228,183 @@ Objets:add_imgui(displayFilteredList)
 
 Objets:add_separator()
 
-Objets:add_button("Spawn Selected", function()
-    script.run_in_fiber(function()
-        local selPlayer = network.get_selected_player()
-        local targetPlayerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-        local playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
-        local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
+spawnedObjects = {}
+names = {}
 
-        playerPos.x = playerPos.x + spawnDistance.x
-        playerPos.y = playerPos.y + spawnDistance.y
-        playerPos.z = playerPos.z + spawnDistance.z
+previewObjects = Objets:add_checkbox("Preview")
+toolTip(Objets, "Show a Preview Of The Object Before Spawning It")
 
-        -- Adjust selectedObjectIndex by subtracting 1
+previewSpawned = false
+
+previewObject = nil
+
+previousPreview = nil
+
+script.register_looped("objectsPreview", function()
+    if previewObjects:is_enabled() then
         local selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
         if selectedObjectInfo then
-            while not STREAMING.HAS_MODEL_LOADED(selectedObjectInfo.hash) do
-                STREAMING.REQUEST_MODEL(selectedObjectInfo.hash)
+            -- Get the player's ped handle
+            local playerPed = PLAYER.PLAYER_PED_ID()
+
+            -- Get the player's current position and orientation
+            local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+            local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
+            local forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
+
+            -- Calculate the spawn distance and offset
+            local spawnOffsetX = objSpawnDistance * forwardVector.x
+            local spawnOffsetY = objSpawnDistance * forwardVector.y
+
+            -- Calculate the spawn position based on the offset
+            local spawnX = playerPos.x + spawnOffsetX
+            local spawnY = playerPos.y + spawnOffsetY
+            local spawnZ = playerPos.z  -- Adjust the height if needed
+
+            -- Spawn the object at the calculated position
+            local objectHash = selectedObjectInfo.hash  -- Replace with the object hash or model name
+            while not STREAMING.HAS_MODEL_LOADED(objectHash) do
+                STREAMING.REQUEST_MODEL(objectHash)
                 coroutine.yield()
             end
+            if previewObject ~= objectHash and previewObject ~= nil then
+                delete_entity(previewObject)
+                previewSpawned = false
+            end
+            if not previewSpawned then
+                local spawnedObject = OBJECT.CREATE_OBJECT(objectHash, spawnX, spawnY, spawnZ, true, true, false)
+                ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(spawnedObject)
+                ENTITY.SET_ENTITY_ROTATION(spawnedObject, 0, 0, playerHeading, 2, true)  -- Adjust rotation if needed
+                ENTITY.SET_ENTITY_ALPHA(spawnedObject, 175, true)
+                ENTITY.SET_ENTITY_COLLISION(spawnedObject, false, false)
+                ENTITY.SET_CAN_CLIMB_ON_ENTITY(spawnedObject, false)
+                previewSpawned = true
+                previewObject = spawnedObject
+            end
+            ENTITY.SET_ENTITY_COORDS(previewObject, spawnX + spawnDistance.x, spawnY + spawnDistance.y, spawnZ + spawnDistance.z, true, false, false, false)
+            ENTITY.SET_ENTITY_ROTATION(previewObject, orientationRoll, orientationYaw, playerHeading + orientationPitch, 2, true)
+            --gui.show_message("Preview", "Moved ".. selectedObjectInfo.nom.. " to ".. tostring(spawnX).. ", ".. tostring(spawnY))
+            previousPreview = objectHash
+        else
+            gui.show_message("Object Spawner", "Selected object not found.")
+        end
+    else
+        if previewObject ~= nil then if ENTITY.DOES_ENTITY_EXIST(previewObject) then delete_entity(previewObject) end end
+        previewSpawned = false
+        previewObject = nil
+        previousPreview = nil
+    end
+end)
 
-            local spawnedObject = OBJECT.CREATE_OBJECT(selectedObjectInfo.hash, playerPos.x, playerPos.y, playerPos.z, true, true, false)
-            ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationPitch, orientationYaw, orientationRoll, 2, true) -- Rotate the object
+Objets:add_sameline()
+
+Objets:add_imgui(function()
+    --objSpawnDistance, sdChanged = ImGui.SliderFloat("Distance", objSpawnDistance, 0, 25)
+end)
+
+Objets:add_button("Spawn Selected", function()
+    script.run_in_fiber(function()
+        local selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
+        if selectedObjectInfo then
+            -- Get the player's ped handle
+            local playerPed = PLAYER.PLAYER_PED_ID()
+            playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
+
+            -- Get the player's current position and orientation
+            local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+            local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
+            local forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
+
+            -- Calculate the spawn distance and offset
+            local spawnOffsetX = objSpawnDistance * forwardVector.x
+            local spawnOffsetY = objSpawnDistance * forwardVector.y
+
+            -- Calculate the spawn position based on the offset
+            local spawnX = playerPos.x + spawnOffsetX
+            local spawnY = playerPos.y + spawnOffsetY
+            local spawnZ = playerPos.z - 1.15  -- Adjust the height if needed
+
+            -- Spawn the object at the calculated position
+            local objectHash = selectedObjectInfo.hash  -- Replace with the object hash or model name
+            while not STREAMING.HAS_MODEL_LOADED(objectHash) do
+                STREAMING.REQUEST_MODEL(objectHash)
+                coroutine.yield()
+            end
+            local spawnedObject = OBJECT.CREATE_OBJECT(objectHash, spawnX + spawnDistance.x, spawnY + spawnDistance.y, spawnZ + spawnDistance.z, true, true, false)
+            ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationRoll, orientationYaw, playerHeading + orientationPitch, 2, true)  -- Adjust rotation if needed
+            --gui.show_message("Preview", "Moved ".. selectedObjectInfo.nom.. " to ".. tostring(spawnX).. ", ".. tostring(spawnY))
             local net_id = NETWORK.OBJ_TO_NET(spawnedObject)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(spawnedObject, true)
             gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(spawnedObject)
+            table.insert(spawnedObjects, spawnedObject)
+            table.insert(names, selectedObjectInfo.nom)
         else
             gui.show_message("Object Spawner", "Selected object not found.")
         end
     end)
 end)
 toolTip(Objets, "Spawn the selected item on the selected players position, if no player is targeted, it spawns on you")
+
+objects = 0
+
+Objets:add_imgui(function()
+    for i, object in ipairs(spawnedObjects) do
+        if not ENTITY.DOES_ENTITY_EXIST(object) then
+            delete_entity(object)
+            table.remove(spawnedObjects, i)
+            table.remove(names, i)
+        end
+    end
+    if #names == 0 then
+        objects = ImGui.Combo("", 0, {"Empty"}, 1)
+        toolTip("", "Spawned Objects Will Be Here")
+    else
+        objects = ImGui.Combo("", objects, names, #names)
+        toolTip("", "List Of Spawned Objects")
+        gui.show_message("Spawned Objects", tostring(objects).. " + ".. tostring(names[objects + 1]).. " ".. ENTITY.GET_ENTITY_MODEL(spawnedObjects[objects + 1]))
+    end
+    ImGui.SameLine()
+    if ImGui.Button("Delete") then
+        gui.show_message("Delete", "Deleted ".. spawnedObjects[objects + 1])
+        delete_entity(spawnedObjects[objects + 1])
+        table.remove(spawnedObjects, objects + 1)
+        table.remove(names, objects + 1)
+        --if names[objects] == nil then objects = objects - 1 end
+    end
+    if #spawnedObjects ~= 0 then toolTip("", "Delete This Spawned Object") else toolTip("", "Deletes A Spawned Object") end
+    if #names > 0 then
+        objLoc = ENTITY.GET_ENTITY_COORDS(spawnedObjects[objects + 1], false)
+        rot = ENTITY.GET_ENTITY_ROTATION(spawnedObjects[objects + 1], 2)
+        objLocX, objLocY, objLocZ = objLoc.x, objLoc.y, objLoc.z
+        roll, pitch, yaw = rot.x, rot.y, rot.z
+        objLocX, xChanged = ImGui.SliderFloat("X", objLocX, objLocX - 1, objLocX + 1)
+        if xChanged then
+            ENTITY.SET_ENTITY_COORDS(spawnedObjects[objects + 1], objLocX, objLoc.y, objLoc.z, true, false, false, false)
+        end
+        objLocY, yChanged = ImGui.SliderFloat("Y", objLocY, objLocY - 1, objLocY + 1)
+        if yChanged then
+            ENTITY.SET_ENTITY_COORDS(spawnedObjects[objects + 1], objLoc.x, objLocY, objLoc.z, true, false, false, false)
+        end
+        objLocZ, zChanged = ImGui.SliderFloat("Z", objLocZ, objLocZ - 1, objLocZ + 1)
+        if zChanged then
+            ENTITY.SET_ENTITY_COORDS(spawnedObjects[objects + 1], objLoc.x, objLoc.y, objLocZ, 2, false)
+        end
+        pitch, pitchChanged = ImGui.SliderFloat("Pitch ", pitch, -180, 180)
+        if pitchChanged then
+            ENTITY.SET_ENTITY_ROTATION(spawnedObjects[objects + 1], rot.x, pitch, rot.z, 2, false)
+        end
+        yaw, yawChanged = ImGui.SliderFloat("Yaw ", yaw, -180, 180)
+        if yawChanged then
+            ENTITY.SET_ENTITY_ROTATION(spawnedObjects[objects + 1], rot.x, rot.y, yaw, 2, false)
+        end
+        roll, rollChanged = ImGui.SliderFloat("Roll ", roll, -180, 180)
+        if rollChanged then
+            ENTITY.SET_ENTITY_ROTATION(spawnedObjects[objects + 1], roll, rot.y, rot.z, 2, false)
+        end
+    end
+end)
+
 -- Vehicle Options Tab
 local Veh = KAOS:add_tab("Vehicle Options")
 
@@ -4245,6 +4421,7 @@ local defaultOrientationYaw = 0
 local defaultOrientationRoll = 0
 local defaultSpawnDistance = { x = 0, y = 0, z = -1 }
 
+
 -- Function to reset sliders to default values
 local function resetVehicleSliders()
     orientationPitch = defaultOrientationPitch
@@ -4257,20 +4434,20 @@ end
 
 vSpawn:add_imgui(function()
     orientationPitch, _ = ImGui.SliderInt("Pitch", orientationPitch, 0, 360)
-	toolTip("", "Change the Pitch of the vehicle (Side to Side Axis)")
+    toolTip("", "Change the Pitch of the vehicle (Side to Side Axis)")
     orientationYaw, _ = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
-	toolTip("", "Change the Yaw of the object (Vertical Axis)")
+    toolTip("", "Change the Yaw of the object (Vertical Axis)")
     orientationRoll, _ = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
-	toolTip("", "Change the Roll of the object (Front to Back Axis)")
+    toolTip("", "Change the Roll of the object (Front to Back Axis)")
 end)
 
 vSpawn:add_imgui(function()
     spawnDistance.x, _ = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -25, 25)
-	toolTip("", "Change the X coordinates of where the object spawns (Left/Right depending on direction you are facing)")
+    toolTip("", "Change the X coordinates of where the object spawns (Left/Right depending on direction you are facing)")
     spawnDistance.y, _ = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -25, 25)
-	toolTip("", "Change the Y coordinates of where the object spawns (Forward/Backwards depending on direction you are facing)")
+    toolTip("", "Change the Y coordinates of where the object spawns (Forward/Backwards depending on direction you are facing)")
     spawnDistance.z, _ = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -25, 25)
-	toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
+    toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
 end)
 
 -- Save default values
@@ -4602,10 +4779,10 @@ Global:add_sameline()
 Global:add_button("Stop Local Sounds", function()
     isPlaying = false
     --for i=-1,100 do
-	--local soundId = AUDIO.PLAY_SOUND_FROM_ENTITY(AUDIO.GET_SOUND_ID(), selectedSound.AudioName, playerIndex, selectedSound.AudioRef, true, 999999999)
-		AUDIO.STOP_SOUND(soundId)
-		AUDIO.RELEASE_SOUND_ID(soundId)
-	--end
+    --local soundId = AUDIO.PLAY_SOUND_FROM_ENTITY(AUDIO.GET_SOUND_ID(), selectedSound.AudioName, playerIndex, selectedSound.AudioRef, true, 999999999)
+        AUDIO.STOP_SOUND(soundId)
+        AUDIO.RELEASE_SOUND_ID(soundId)
+    --end
 end)]]
 
 -- Global Particle Effects
@@ -4793,12 +4970,12 @@ script.register_looped("horns", function(hornsTest)
         for i, vehicle in ipairs(vehicles) do
             if request_control(vehicle) then
                 VEHICLE.START_VEHICLE_HORN(vehicle, 1000, 0, true)
-				AUDIO.USE_SIREN_AS_HORN(vehicle, true)
+                AUDIO.USE_SIREN_AS_HORN(vehicle, true)
             end
         end
         hornsTest:yield()
     end
-	sleep(0.2)
+    sleep(0.2)
 end)
 toolTip(Global, "Makes all vehicle horns go off constantly.")
 Global:add_separator()
@@ -4930,14 +5107,14 @@ Global:add_sameline()
 Global:add_button("HUD Breaker", function()
 for p = 0, 31 do
     local pid = p
-	if p ~= PLAYER.PLAYER_ID() then
-		for i = -1, 1 do
-			network.trigger_script_event(1 << pid, {1450115979, pid, i})
-		end
-	end
+    if p ~= PLAYER.PLAYER_ID() then
+        for i = -1, 1 do
+            network.trigger_script_event(1 << pid, {1450115979, pid, i})
+        end
+    end
 end
     gui.show_message("HUD Breaker", "You have broken the entire sessions HUD and Interiors.")
-	gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
+    gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
 end)
 toolTip(Global, "Breaks the HUD for every player in the session, causes their missions to break in freemode, removes their HUD, prevents pausing and prevents entering properties as it removes the entrace markers")
 Global:add_sameline()
@@ -5624,25 +5801,25 @@ end)
 toolTip(mcBus, "Resupplies all your supplies for all businesses")
 mcBus:add_sameline()
 mcBus:add_button("Fast Production", function()
-	globals.set_int(262145 + 17599, 25500) -- prod time for weed
-	globals.set_int(262145 + 17600, 25500) -- prod time for meth
-	globals.set_int(262145 + 17601, 25500) -- prod time for cocaine
-	globals.set_int(262145 + 17602, 25500) -- prod time for document forge
-	globals.set_int(262145 + 17603, 25500) -- prod time for cash
-	--globals.set_int(262145 + 17632, 10000)
-	gui.show_message("Production Speed", "Production speed has been sped up for all businesses")
-	gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar")
+    globals.set_int(262145 + 17599, 25500) -- prod time for weed
+    globals.set_int(262145 + 17600, 25500) -- prod time for meth
+    globals.set_int(262145 + 17601, 25500) -- prod time for cocaine
+    globals.set_int(262145 + 17602, 25500) -- prod time for document forge
+    globals.set_int(262145 + 17603, 25500) -- prod time for cash
+    --globals.set_int(262145 + 17632, 10000)
+    gui.show_message("Production Speed", "Production speed has been sped up for all businesses")
+    gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar")
 end)
 toolTip(mcBus, "Activates fast production for all MC businesses (read top right for info after pressing the button)")
 mcBus:add_sameline()
 mcBus:add_button("Raise Sale Prices", function()
-	globals.set_int(262145 + 17632, 15000) -- price for weed
-	globals.set_int(262145 + 17631, 60000) -- price for meth
-	globals.set_int(262145 + 17630, 100000) -- price for cocaine
-	globals.set_int(262145 + 17628, 20000) -- price for document forge
-	globals.set_int(262145 + 17629, 30000) -- price for cash
-	--globals.set_int(262145 + 17632, 10000)
-	gui.show_message("Production Value", "Production sale value has been increased for all businesses")
+    globals.set_int(262145 + 17632, 15000) -- price for weed
+    globals.set_int(262145 + 17631, 60000) -- price for meth
+    globals.set_int(262145 + 17630, 100000) -- price for cocaine
+    globals.set_int(262145 + 17628, 20000) -- price for document forge
+    globals.set_int(262145 + 17629, 30000) -- price for cash
+    --globals.set_int(262145 + 17632, 10000)
+    gui.show_message("Production Value", "Production sale value has been increased for all businesses")
 end)
 toolTip(mcBus, "Raises the sale price for all MC Businesses to over 1 million each")
 mcBus:add_separator()
@@ -5670,7 +5847,7 @@ for i, label in ipairs(labels) do
         mcBus:add_sameline()
     end
     table.insert(checkBoxes, checkBox)
-	toolTip(mcBus, "Toggle an icon to use with your MC Name")
+    toolTip(mcBus, "Toggle an icon to use with your MC Name")
 end
 
 mcBus:add_button("Change MC Name", function()
@@ -5813,7 +5990,7 @@ for i, label in ipairs(labels) do
         CEO:add_sameline()
     end
     table.insert(checkBoxes, checkBox)
-	toolTip(CEO, "Toggle an icon to use with your CEO Name")
+    toolTip(CEO, "Toggle an icon to use with your CEO Name")
 end
 
 CEO:add_button("Change CEO Name", function()
@@ -6007,6 +6184,14 @@ function calcDistanceFromCoords(player, target)
     local dx = pos.x - target[1]
     local dy = pos.y - target[2]
     local dz = pos.z - target[3]
+    local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
+    return distance
+end
+
+function calcDistanceFromTwoCoords(pos, tarpos)
+    local dx = pos.x - tarpos.x
+    local dy = pos.y - tarpos.y
+    local dz = pos.z - tarpos.z
     local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
     return distance
 end
@@ -7456,8 +7641,8 @@ griefPlayerTab:add_text("Toggle separate windows?")
 extraGrief = griefPlayerTab:add_checkbox("Grief")
 extraGrief:set_enabled(true)
 griefPlayerTab:add_imgui(function()
-	if extraGrief:is_enabled() then
-	local parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+    if extraGrief:is_enabled() then
+    local parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
         local parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
         local parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
         local childWidth, childHeight = 200, 150 -- Size of your child window
@@ -7467,11 +7652,11 @@ griefPlayerTab:add_imgui(function()
         local y = parentY -- Align the child window vertically with the parent window
 
         ImGui.SetNextWindowPos(x, y)
-			if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
-			-- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
-			
-		end
-	end
+            if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
+            -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
+            
+        end
+    end
 end)
 
 local balls = {
@@ -7711,6 +7896,154 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
 end)
 toolTip(griefPlayerTab, "Spawns Randomly colored jets with Clowns as pilots to attack the selected player.")
 
+function request_model(model)
+    script.run_in_fiber(function(script)
+        while not STREAMING.HAS_MODEL_LOADED(model) do
+            STREAMING.REQUEST_MODEL(model)
+            script:yield()
+        end
+    end)
+end
+
+---@param entity Entity
+---@param minDistance number
+---@param maxDistance number
+---@return v3
+function get_random_offset_from_entity(entity, minDistance, maxDistance)
+    local pos = ENTITY.GET_ENTITY_COORDS(entity, false)
+    return get_random_offset_in_range(pos, minDistance, maxDistance)
+end
+
+
+---@param coords v3
+---@param minDistance number
+---@param maxDistance number
+---@return v3
+function get_random_offset_in_range(coords, minDistance, maxDistance)
+    local radius = random_float(minDistance, maxDistance)
+    local angle = random_float(0, 2 * math.pi)
+    local delta = vec3.new(math.cos(angle), math.sin(angle), 0.0)
+    local offsetX = delta.x * radius
+    local offsetY = delta.y * radius
+    local offsetZ = delta.z * radius
+    local newX = coords.x + offsetX
+    local newY = coords.y + offsetY
+    local newZ = coords.z + offsetZ
+    return vec3.new(newX, newY, newZ)
+end
+
+---@param min number
+---@param max number
+---@return number
+function random_float(min, max)
+    return min + math.random() * (max - min)
+end
+
+function request_fx_asset(asset)
+    script.run_in_fiber(function(script)
+        STREAMING.REQUEST_NAMED_PTFX_ASSET(asset)
+        while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(asset) do script:yield() end
+    end)
+end
+
+---@param entity Entity
+---@return boolean
+function request_control_once(entity)
+    if not NETWORK.NETWORK_IS_IN_SESSION() then
+        return true
+    end
+    local netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
+    NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
+    return NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
+end
+
+function atan2(y, x)
+    return math.atan(y / x)
+end
+
+function set_entity_face_entity(entity, target, usePitch)
+    local pos1 = ENTITY.GET_ENTITY_COORDS(entity, false)
+    local pos2 = ENTITY.GET_ENTITY_COORDS(target, false)
+    local relX = pos2.x - pos1.x
+    local relY = pos2.y - pos1.y
+    local relZ = pos2.z - pos1.z
+
+    local heading = atan2(relY, relX) * 180.0 / math.pi
+    if heading < 0 then
+        heading = heading + 360.0
+    end
+
+    ENTITY.SET_ENTITY_HEADING(entity, heading)
+
+    if usePitch then
+        local distXY = math.sqrt(relX * relX + relY * relY)
+        local pitch = math.atan2(-relZ, distXY) * 180.0 / math.pi
+        ENTITY.SET_ENTITY_ROTATION(entity, pitch, 0, heading, 2, false)
+    end
+end
+
+
+griefPlayerTab:add_button("Clown Bombers", function()
+    script.run_in_fiber(function(script)
+        local hash = joaat("s_m_y_clown_01")
+        local asset = "scr_rcbarry2"
+        local explosion = "scr_exp_clown"
+        local appears = "scr_clown_appears"
+        request_model(hash)
+        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        local playerpos = ENTITY.GET_ENTITY_COORDS(player, false)
+        local coord = get_random_offset_from_entity(player, 5.0, 8.0)
+        coord.z = coord.z - 1.0
+        local ped = PED.CREATE_PED(0, hash, coord.x, coord.y, coord.z, 0.0, true, false)
+        if ped == 0 then gui.show_error("Clown Bomber", "Failed to Create Ped\nMost Likely The Model Isnt Loaded\nTry Again.") else gui.show_message("Clown Bomber", "Spawned as ".. tostring(ped)) end
+
+        request_fx_asset(asset)
+        GRAPHICS.USE_PARTICLE_FX_ASSET(asset)
+        GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(
+            appears,
+            ped,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, 0.0,
+            0.5, false, false, false
+        )
+        set_entity_face_entity(ped, player, false)
+        PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
+        TASK.TASK_GO_TO_COORD_ANY_MEANS(ped, playerpos.x, playerpos.y, playerpos.z, 5.0, 0, false, 0, 0.0)
+        local dest = playerpos
+        PED.SET_PED_KEEP_TASK(ped, true)
+        AUDIO.STOP_PED_SPEAKING(ped, true)
+        while not PED.IS_PED_FATALLY_INJURED(ped) and ENTITY.DOES_ENTITY_EXIST(ped) do
+            local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
+            local targetPos = ENTITY.GET_ENTITY_COORDS(player, true)
+            if not ENTITY.DOES_ENTITY_EXIST(ped) or PED.IS_PED_FATALLY_INJURED(ped) then
+                return false
+            elseif calcDistanceFromTwoCoords(pos, targetPos) > 150 and request_control(ped) then
+                ENTITY.DELETE_ENTITY(ped)
+                return false
+            elseif calcDistanceFromTwoCoords(pos, targetPos) < 3.0 and request_control(ped) then
+                request_fx_asset(asset)
+                GRAPHICS.USE_PARTICLE_FX_ASSET(asset)
+                GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
+                    explosion,
+                    pos.x, pos.y, pos.z,
+                    0.0, 0.0, 0.0,
+                    1.0,
+                    false, false, false, false
+                )
+                FIRE.ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1.0, true, true, 1.0, false)
+                ENTITY.SET_ENTITY_VISIBLE(ped, false, false)
+                ENTITY.DELETE_ENTITY(ped)
+                return false
+            elseif calcDistanceFromTwoCoords(targetPos, dest) > 3.0 and request_control_once(ped) then
+                dest = targetPos
+                TASK.TASK_GO_TO_COORD_ANY_MEANS(ped, targetPos.x, targetPos.y, targetPos.z, 5.0, 0, false, 0, 0.0)
+            end
+            script:yield()
+        end
+        ENTITY.DELETE_ENTITY(ped)
+    end)
+end)
+
 griefPlayerTab:add_separator()
 griefPlayerTab:add_text("Griefing")
 hydrantCB = griefPlayerTab:add_checkbox("Hydrant")
@@ -7809,7 +8142,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 13, 1, true, false, 0)
     end
-	
+    
     if explodeCB:is_enabled() then
         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
@@ -8057,9 +8390,9 @@ toolTip(griefPlayerTab, "Spawns a bunch of objects on the selected player and br
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Break HUD", function()
     local pid = network.get_selected_player()
-	network.trigger_script_event(1 << pid, {1450115979, pid, 1})
+    network.trigger_script_event(1 << pid, {1450115979, pid, 1})
     gui.show_message("HUD Breaker", "You have broken "..PLAYER.GET_PLAYER_NAME(pid).."'s HUD and Interiors.")
-	gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
+    gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
 end)
 toolTip(griefPlayerTab, "Removes and breaks the HUD of the selected player, this causes them to not be able to pause, enter apartments and ruins their freemode missions")
 
@@ -8110,7 +8443,7 @@ griefPlayerTab:add_imgui(function()
 
     if ImGui.Button("Play") then
         local selectedSoundName = filteredSoundNames[selectedFilteredSoundIndex + 1]
-		local targetPlayer = network.get_selected_player()
+        local targetPlayer = network.get_selected_player()
             script.run_in_fiber(function()
                 -- Play the selected sound
                 local selectedSound
@@ -8121,10 +8454,10 @@ griefPlayerTab:add_imgui(function()
                     end
                 end
                 soundId = AUDIO.PLAY_SOUND_FROM_ENTITY(-1, selectedSound.AudioName, PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), selectedSound.AudioRef, true, 999999999)
-				soundId = AUDIO.GET_SOUND_ID()
+                soundId = AUDIO.GET_SOUND_ID()
                 gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on "..PLAYER.GET_PLAYER_NAME(targetPlayer))
-				gui.show_message("Sound ID", soundId)
-            end)	
+                gui.show_message("Sound ID", soundId)
+            end)    
     end
 end)
 toolTip(griefPlayerTab, "Plays the selected sound from the dropdown.")
@@ -8132,34 +8465,34 @@ toolTip(griefPlayerTab, "Plays the selected sound from the dropdown.")
 griefPlayerTab:add_sameline()
 local stopSounds = false
 stopSounds = griefPlayerTab:add_checkbox("Stop Local Sounds")
-	script.register_looped("stopSounds", function(script)
-		if stopSounds:is_enabled() == true then		
-			--soundId = AUDIO.GET_SOUND_ID()
-			--gui.show_message("Sound ID", "Stopped "..soundId)
-			--AUDIO.STOP_SOUND(soundId)
-			--AUDIO.RELEASE_SOUND_ID(soundId)
-			for i = -1, 25 do
-				AUDIO.STOP_SOUND(i)
-				AUDIO.RELEASE_SOUND_ID(i)
-			end
-		end
-	end)
+    script.register_looped("stopSounds", function(script)
+        if stopSounds:is_enabled() == true then     
+            --soundId = AUDIO.GET_SOUND_ID()
+            --gui.show_message("Sound ID", "Stopped "..soundId)
+            --AUDIO.STOP_SOUND(soundId)
+            --AUDIO.RELEASE_SOUND_ID(soundId)
+            for i = -1, 25 do
+                AUDIO.STOP_SOUND(i)
+                AUDIO.RELEASE_SOUND_ID(i)
+            end
+        end
+    end)
 
-toolTip(griefPlayerTab, "Supposed to stop all sounds, seems broken?.") 
-
-
+toolTip(griefPlayerTab, "Halts all sounds.") 
 
 griefPlayerTab:add_imgui(function()
-	-- Ends the ImGui wrapper, new additions should be added above this.
-	ImGui.End()
+    -- Ends the ImGui wrapper, new additions should be added above this.
+    ImGui.End()
 end)
+
+
 
 dropsPlayerTab:add_sameline()
 Drops = dropsPlayerTab:add_checkbox("Drops")
 Drops:set_enabled(true)
 dropsPlayerTab:add_imgui(function()
-	if Drops:is_enabled() then
-	local parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+    if Drops:is_enabled() then
+    local parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
         local parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
         local parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
         local childWidth, childHeight = 200, 150 -- Size of your child window
@@ -8169,9 +8502,9 @@ dropsPlayerTab:add_imgui(function()
         local y = parentY + 30-- Align the child window vertically with the parent window
 
         ImGui.SetNextWindowPos(x, y)
-			if ImGui.Begin("Extras Addon (Drop Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
-		end
-	end
+            if ImGui.Begin("Extras Addon (Drop Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
+        end
+    end
 end)
 
 local princessBubblegumLoop = false
@@ -8210,7 +8543,7 @@ dropsPlayerTab:add_button("Princess Robot Bubblegum (On/Off)", function()
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
         sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not princessBubblegumLoop then
             script.unregister_script("princessbubblegumLoop")
@@ -8253,7 +8586,7 @@ dropsPlayerTab:add_button("Alien (On/Off)", function()
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
         sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not alienfigurineLoop then
             script.unregister_script("alienfigurineLoop")
@@ -8296,7 +8629,7 @@ dropsPlayerTab:add_button("Casino Cards (On/Off)", function()
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
         end
-		ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
         sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
         if not casinocardsLoop then
             script.unregister_script("casinocardsLoop")
@@ -8352,6 +8685,6 @@ local ezMoney = dropsPlayerTab:add_checkbox("Money ($225k)")
 toolTip(dropsPlayerTab, "Sometimes works, sometimes doesn't.  Up to 225k")
 
 dropsPlayerTab:add_imgui(function()
-	-- Ends the ImGui wrapper, new additions should be added above this.
-	ImGui.End()
+    -- Ends the ImGui wrapper, new additions should be added above this.
+    ImGui.End()
 end)
