@@ -2588,6 +2588,80 @@ script.register_looped("particles3", function(wheelOne)
     end
 end)
 toolTip(Fun, "Toggles fire particle effects on your vehicles rear wheels")
+
+local effectNames = { "Alien Impact", "Clown Appears", "Blue Sparks", "Alien Disintegration", "Firey Particles" }
+local effects <const> = {
+    {"scr_rcbarry1", "scr_alien_impact_bul", 1.0, 50},
+    {"scr_rcbarry2", "scr_clown_appears", 0.3, 500},
+    {"core", "ent_dst_elec_fire_sp", 1.0, 100},
+    {"scr_rcbarry1", "scr_alien_disintegrate", 0.1, 400},
+    {"scr_rcbarry1", "scr_alien_teleport", 0.1, 400}
+}
+
+function newTimer()
+    local self = {
+        start = os.clock(), -- Start time in seconds
+        m_enabled = false,
+    }
+
+    local function reset()
+        self.start = os.clock()
+        self.m_enabled = true
+    end
+
+    local function elapsed()
+        return (os.clock() - self.start) * 1000 -- Convert seconds to milliseconds
+    end
+
+    local function disable() self.m_enabled = false end
+    local function isEnabled() return self.m_enabled end
+
+    return {
+        isEnabled = isEnabled,
+        reset = reset,
+        elapsed = elapsed,
+        disable = disable,
+    }
+end
+
+
+local selectedOpt = 1
+local lastEffect <const> = newTimer()
+
+tirePTFX = Fun:add_checkbox("Tire PTFX")
+Fun:add_sameline()
+Fun:add_imgui(function()
+    selectedOpt, selected = ImGui.Combo("Effects", selectedOpt, effectNames, #effectNames)
+end)
+
+script.register_looped("tireptfx", function(tire)
+    local effect = effects[selectedOpt + 1]
+    local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false)
+    if tirePTFX:is_enabled() then
+
+        if ENTITY.DOES_ENTITY_EXIST(vehicle) and not ENTITY.IS_ENTITY_DEAD(vehicle, false) and
+        VEHICLE.IS_VEHICLE_DRIVEABLE(vehicle, false) and lastEffect.elapsed() > effect[4] then
+            request_fx_asset(effect[1])
+            for _, boneName in pairs({"wheel_lf", "wheel_lr", "wheel_rf", "wheel_rr"}) do
+                local bone = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, boneName)
+                
+                GRAPHICS.USE_PARTICLE_FX_ASSET(effect[1])
+                GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE(
+                    effect[2],
+                    vehicle,
+                    0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0,
+                    bone,
+                    effect[3],
+                    false, false, false
+                )
+            end
+            lastEffect.reset()
+        end
+    end
+end)
+toolTip(Fun, "Show Particle Effects On Your Tires")
+
 Fun:add_separator()
 Fun:add_text("Movement Altering")
 local drunkLoop = Fun:add_checkbox("Make Me Drunk")
