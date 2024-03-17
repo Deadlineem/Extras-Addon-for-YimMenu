@@ -8117,6 +8117,7 @@ griefPlayerTab:add_button("Clown Bombers", function()
         ENTITY.DELETE_ENTITY(ped)
     end)
 end)
+toolTip(griefPlayerTab, "Spawns a kamikaze clown to kill the player")
 
 griefPlayerTab:add_separator()
 griefPlayerTab:add_text("Griefing")
