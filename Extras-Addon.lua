@@ -4235,7 +4235,7 @@ Objets:add_imgui(function()
     spawnDistance.z, used = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -25, 25)
     toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
     objSpawnDistance, sdChanged = ImGui.SliderFloat("Distance", objSpawnDistance, 0, 25)
-    toolTip("", "Distance From The Player An The Object")
+    toolTip("", "Distance between the object and the player.")
 end)
 
 Objets:add_imgui(function()
@@ -4254,7 +4254,7 @@ defaultSpawnDistance.z = spawnDistance.z
 Objets:add_button("Reset Sliders", function()
     resetSliders()
 end)
-toolTip(Objets, "Resets the positioning sliders to default values")
+toolTip(Objets, "Resets the positioning sliders to the default values")
 
 Objets:add_separator()
 -- Objects hashes/names, add to this list (top of file) to have more objects in your listbox on YimMenu
