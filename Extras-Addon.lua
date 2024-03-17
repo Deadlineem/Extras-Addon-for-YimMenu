@@ -2634,7 +2634,7 @@ Fun:add_imgui(function()
     selectedOpt, selected = ImGui.Combo("Effects", selectedOpt, effectNames, #effectNames)
 end)
 
-script.register_looped("tireptfx", function(tire)
+script.register_looped("tireptfx", function(tire) 
     local effect = effects[selectedOpt + 1]
     local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false)
     if tirePTFX:is_enabled() then
@@ -4181,6 +4181,9 @@ local defaultSpawnDistance = { x = 0, y = 0, z = 0 }
 local defaultObjSpawnDistance = 3.0  -- Adjust this distance as needed
 local objSpawnDistance = 3.0  -- Adjust this distance as needed
 
+local previewAlpha = 175
+local defaultPreviewAlpha = 175
+
 -- Function to reset sliders to default values
 local function resetSliders()
     orientationPitch = defaultOrientationPitch
@@ -4190,6 +4193,7 @@ local function resetSliders()
     spawnDistance.y = defaultSpawnDistance.y
     spawnDistance.z = defaultSpawnDistance.z
     objSpawnDistance = defaultObjSpawnDistance
+    previewAlpha = defaultPreviewAlpha
 end
 
 --[[
@@ -4232,6 +4236,10 @@ Objets:add_imgui(function()
     toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
     objSpawnDistance, sdChanged = ImGui.SliderFloat("Distance", objSpawnDistance, 0, 25)
     toolTip("", "Distance From The Player An The Object")
+end)
+
+Objets:add_imgui(function()
+    previewAlpha, alphaChanged = ImGui.SliderInt("Preview Alpha", previewAlpha, 0, 255)
 end)
 
 -- Save default values
@@ -4319,7 +4327,7 @@ script.register_looped("objectsPreview", function()
         local selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
         if selectedObjectInfo then
             -- Get the player's ped handle
-            local playerPed = PLAYER.PLAYER_PED_ID()
+            local playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
 
             -- Get the player's current position and orientation
             local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
@@ -4357,6 +4365,7 @@ script.register_looped("objectsPreview", function()
             end
             ENTITY.SET_ENTITY_COORDS(previewObject, spawnX + spawnDistance.x, spawnY + spawnDistance.y, spawnZ + spawnDistance.z, true, false, false, false)
             ENTITY.SET_ENTITY_ROTATION(previewObject, orientationRoll, orientationYaw, playerHeading + orientationPitch, 2, true)
+            ENTITY.SET_ENTITY_ALPHA(previewObject, previewAlpha, true)
             --gui.show_message("Preview", "Moved ".. selectedObjectInfo.nom.. " to ".. tostring(spawnX).. ", ".. tostring(spawnY))
             previousPreview = objectHash
         else
@@ -4381,7 +4390,7 @@ Objets:add_button("Spawn Selected", function()
         local selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
         if selectedObjectInfo then
             -- Get the player's ped handle
-            local playerPed = PLAYER.PLAYER_PED_ID()
+            local playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
             playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
 
             -- Get the player's current position and orientation
