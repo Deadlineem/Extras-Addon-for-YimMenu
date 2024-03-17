@@ -4471,7 +4471,7 @@ Objets:add_imgui(function()
         end
         objLocZ, zChanged = ImGui.SliderFloat("Z", objLocZ, objLocZ - 1, objLocZ + 1)
         if zChanged then
-            ENTITY.SET_ENTITY_COORDS(spawnedObjects[objects + 1], objLoc.x, objLoc.y, objLocZ, 2, false)
+            ENTITY.SET_ENTITY_COORDS(spawnedObjects[objects + 1], objLoc.x, objLoc.y, objLocZ, true, false, false, false)
         end
         pitch, pitchChanged = ImGui.SliderFloat("Pitch ", pitch, -180, 180)
         if pitchChanged then
