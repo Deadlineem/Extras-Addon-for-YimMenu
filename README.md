@@ -1,7 +1,7 @@
 
 ![Extras Addon for YimMenu](http://extrasaddon.us.to/img/extras-header-2.png)
 
-[![version](https://img.shields.io/badge/version-1.0.1-red.svg)](http://extrasaddon.us.to/)
+[![version](https://img.shields.io/badge/version-1.0.2-red.svg)](http://extrasaddon.us.to/)
 
 ## NOTE TO ALL USERS:
 
