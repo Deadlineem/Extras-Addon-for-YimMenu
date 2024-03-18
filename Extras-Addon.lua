@@ -4417,7 +4417,7 @@ Objets:add_button("Spawn Selected", function()
             ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationRoll, orientationYaw, playerHeading + orientationPitch, 2, true)  -- Adjust rotation if needed
             --gui.show_message("Preview", "Moved ".. selectedObjectInfo.nom.. " to ".. tostring(spawnX).. ", ".. tostring(spawnY))
             local net_id = NETWORK.OBJ_TO_NET(spawnedObject)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(spawnedObject, true)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
             gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(spawnedObject)
             table.insert(spawnedObjects, spawnedObject)
@@ -5746,7 +5746,7 @@ script.register_looped("autoGetHangarCargo", function(script)
     if hStock:is_enabled() == true then
         autoGetHangarCargo = not autoGetHangarCargo
         if autoGetHangarCargo then
-            stats.set_bool_masked("MP0_DLC22022PSTAT_BOOL3", true, 9)
+            stats.set_bool_masked("MP"..stats.get_int("MPPLY_LAST_MP_CHAR").."_DLC22022PSTAT_BOOL3", true, 9)
             gui.show_message("Hangar", "Restocking hangar cargo, please wait...")
             sleep(0.5)
         end
