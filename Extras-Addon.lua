@@ -5753,7 +5753,7 @@ script.register_looped("autoGetHangarCargo", function(script)
     if hStock:is_enabled() == true then
         autoGetHangarCargo = not autoGetHangarCargo
         if autoGetHangarCargo then
-            stats.set_bool_masked(MPX .. "_DLC22022PSTAT_BOOL3", true, 9)
+            stats.set_bool_masked(MPX .. "DLC22022PSTAT_BOOL3", true, 9)
             gui.show_message("Hangar", "Restocking hangar cargo, please wait...")
             sleep(0.5)
         end
