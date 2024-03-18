@@ -5742,11 +5742,18 @@ local Hangar = Business:add_tab("Hangar")
 
 hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
 script.register_looped("autoGetHangarCargo", function(script)
+  MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
     script:yield()
     if hStock:is_enabled() == true then
         autoGetHangarCargo = not autoGetHangarCargo
         if autoGetHangarCargo then
-            stats.set_bool_masked("MP"..stats.get_int("MPPLY_LAST_MP_CHAR").."_DLC22022PSTAT_BOOL3", true, 9)
+            stats.set_bool_masked(MPX .. "_DLC22022PSTAT_BOOL3", true, 9)
             gui.show_message("Hangar", "Restocking hangar cargo, please wait...")
             sleep(0.5)
         end
