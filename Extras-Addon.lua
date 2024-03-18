@@ -5202,7 +5202,7 @@ end)
 toolTip(Global, "Breaks the HUD for every player in the session, causes their missions to break in freemode, removes their HUD, prevents pausing and prevents entering properties as it removes the entrace markers")
 Global:add_sameline()
 local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
-    script.register_looped("clownJetAttack", function()
+    script.register_looped("clownJetAttack", function(clownJetAttack)
         if clownJetAttack:is_enabled() == true then
             for i = 0, 31 do
                 if i ~= PLAYER.PLAYER_ID() then
@@ -7903,7 +7903,7 @@ toolTip(griefPlayerTab, "Spawns a Clown van full of clowns to chase/gun the play
 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Clown Jet Attack", function()
-    script.run_in_fiber(function (clownJetAttack)
+    script.run_in_fiber(function (clownJetAttackG)
         local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         local playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
         local coords = ENTITY.GET_ENTITY_COORDS(player, true)
@@ -7922,7 +7922,7 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
         while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
             STREAMING.REQUEST_MODEL(clown)
             STREAMING.REQUEST_MODEL(jet)
-            clownJetAttack:yield()
+            clownJetAttackG:yield()
         end
 
         -- Calculate the spawn position for the jet in the air
