@@ -4609,7 +4609,9 @@ function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
         end
-        --ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
+		if endPollution:is_enabled() then
+			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
+		end
     end)
 end
 
@@ -4677,6 +4679,12 @@ vSpawn:add_button("Spawn Selected", function()
 --end
 end)
 toolTip(vSpawn, "Spawns the vehicle on the selected player, if no player is selected, defaults to you")
+
+vSpawn:add_sameline()
+local endPollution = vSpawn:add_checkbox("No Pollution")
+endPollution:set_enabled(true)
+toolTip(vSpawn, "Sets the entity as no longer needed to prevent session pollution of invisible vehicles, turn this off ONLY for gifting cars to others")
+toolTip(vSpawn, "If you disable this, make sure you use the delete gun 'Self > Weapons > Custom gun (enabled) > Delete Gun' and delete the gifted car after its been driven into the garage")
 -- Vehicle Gift Options
 
  
@@ -4744,22 +4752,51 @@ Gif:add_button("How To Gift Vehicles (Hover for tooltip!)", function()
 end)
 toolTip(Gif, "To gift vehicles, Make sure all the players vehicles are repaired/returned and that they have a full garage")
 toolTip(Gif, "Have them go into their full garage, drive a vehicle out and back into their garage, then come out on foot")
-toolTip(Gif, "Spawn the vehicle using Extras Addon's Vehicle Spawner, optionally you can get inside and customize it using Yim's LS customs tab (DONT PRESS 'Start LS customs!)")
+toolTip(Gif, "Spawn the vehicle using Extras Addon's Vehicle Spawner (UNCHECK THE NO POLLUTION BOX!), optionally you can get inside and customize it using Yim's LS customs tab (DONT PRESS 'Start LS customs!)")
 toolTip(Gif, "Once you are done, get out and have them get in, then spam the Gift Vehicle button until it reads 'Success' at the top right")
 toolTip(Gif, "NOTE: Gifted vehicles SHOULD come fully insured, MAKE SURE THEY CHECK IT IN LS CUSTOMS!")
 
---SlidyBoyGoesSkrrt | original script: Shift Drift made by Harmless, tweaked by xesdoog (we need to wait for permission to implement it into Extras-Addon!)
+--SlidyBoyGoesSkrrt | original script: Shift-Drift made by Harmless, tweaked by xesdoog (we need to wait for permission to implement it into Extras-Addon!)
 local slidyboi = Veh:add_tab("SlidyBoyGoesSkrrt")
-local ped = PLAYER.PLAYER_PED_ID()
+script.register_looped("playerID", function(playerID)
+    if NETWORK.NETWORK_IS_SESSION_ACTIVE() then
+        is_online = true
+        onlinePed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+    else
+        is_online = false
+        spPed = self.get_ped()
+    end
+    if is_online then
+        ped = onlinePed
+    else
+        ped = spPed
+    end
+    playerID:yield()
+end)
 local ShiftDrift = false
 local DriftIntensity = 0
 local DriftTires = false
+local new_onlinePed = onlinePed
+local session_changed = false
+local function sessionchange(onlinePed, new_OnlinePed)
+    if new_OnlinePed ~= onlinePed then
+        session_changed = true
+        return session_changed
+    end
+end
+local function resetSlidyBoi()
+    DriftTires = false
+    ShiftDrift = false
+    DriftIntensity = 0
+    shiftDriftToggled = false
+end
 slidyboi:add_imgui(function()
     current_vehicle = PED.GET_VEHICLE_PED_IS_IN(ped, true)
     local vehicle_name = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(current_vehicle))
     local is_car = VEHICLE.IS_THIS_MODEL_A_CAR(ENTITY.GET_ENTITY_MODEL(current_vehicle))
     if PED.IS_PED_IN_ANY_VEHICLE(ped, true) and is_car then
         ImGui.Text("Current Vehicle : '"..vehicle_name.."'")
+        ImGui.Spacing()
         ShiftDrift, shiftDriftToggled = ImGui.Checkbox("Activate Shift Drift", ShiftDrift, true)
         ImGui.SameLine()
         ImGui.TextDisabled("(?)")
@@ -4782,7 +4819,8 @@ slidyboi:add_imgui(function()
             ImGui.EndTooltip()
         end
         if not DriftTires then
-            DriftIntensity, DriftIntensityUsed = ImGui.SliderInt("Intensity", DriftIntensity, 0, 3)
+            ImGui.Spacing()
+            ImGui.Text("Drift Intensity:")
             ImGui.SameLine()
             ImGui.TextDisabled("(?)")
             if ImGui.IsItemHovered() then
@@ -4790,22 +4828,38 @@ slidyboi:add_imgui(function()
                 ImGui.Text("0 : No Grip (very stiff)\n1 : Balanced (Recommended)\n2 : Weak Drift\n3 : Weakest Drift")
                 ImGui.EndTooltip()
             end
+            DriftIntensity, DriftIntensityUsed = ImGui.SliderInt("", DriftIntensity, 0, 3)
         end
     elseif PED.IS_PED_IN_ANY_VEHICLE(ped, true) and not is_car then
 ------reset states otherwise other scripts that use looped script hotkeys will stop working------
-        DriftTires = false
-        ShiftDrift = false
-        shiftDriftToggled = false
--------------------------------------------------------------------------------------------------
+        resetSlidyBoi()
         ImGui.Text("I like where this is going!\n\nUnfortunately, SlidyBoi only works on cars and trucks.")
     else
-        DriftTires = false
-        ShiftDrift = false
-        shiftDriftToggled = false
+        resetSlidyBoi()
         ImGui.Text("Get in a vehicle before using the script!")
     end
+    ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing()
+    ImGui.Separator()
+    ImGui.Text("-- Credits --")
+    if ImGui.IsItemHovered() then
+        ImGui.BeginTooltip()
+        ImGui.Text("Original script made by Harmless05 and tweaked by SAMURAI (xesdoog).\n\n - Visit Harmless's profile on Github: https://github.com/Harmless05\n - Checkout Harmless-Scripts: https://github.com/YimMenu-Lua/Harmless-Scripts")
+        ImGui.EndTooltip()
+    end
 end)
-
+script.register_looped("Session changed", function(newsesh)
+    newsesh:yield()
+    sessionchange()
+    if session_changed then
+        resetSlidyBoi()
+    end
+end)
+event.register_handler(menu_event.MenuUnloaded, function()
+    resetSlidyBoi()
+end)
+event.register_handler(menu_event.ScriptsReloaded, function()
+    resetSlidyBoi()
+end)
 script.register_looped("Shift Drift Loop", function(script)
     script:yield()
     if DriftTires and PAD.IS_CONTROL_PRESSED(0, 21) then
@@ -5318,7 +5372,7 @@ end)
 toolTip(Global, "Breaks the HUD for every player in the session, causes their missions to break in freemode, removes their HUD, prevents pausing and prevents entering properties as it removes the entrace markers")
 Global:add_sameline()
 local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
-    script.register_looped("clownJetAttack", function(clownJetAttack)
+    script.register_looped("clownJetAttack", function(clownJetsOne)
         if clownJetAttack:is_enabled() == true then
             for i = 0, 31 do
                 if i ~= PLAYER.PLAYER_ID() then
@@ -5341,7 +5395,7 @@ local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                     while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
                         STREAMING.REQUEST_MODEL(clown)
                         STREAMING.REQUEST_MODEL(jet)
-                        clownJetAttack:yield()
+                        clownJetsOne:yield()
                     end
 
                     -- Calculate the spawn position for the jet in the air
@@ -8023,7 +8077,7 @@ toolTip(griefPlayerTab, "Spawns a Clown van full of clowns to chase/gun the play
 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Clown Jet Attack", function()
-    script.run_in_fiber(function (clownJetAttackG)
+    script.run_in_fiber(function (clownJetsTwo)
         local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         local playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
         local coords = ENTITY.GET_ENTITY_COORDS(player, true)
@@ -8042,7 +8096,7 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
         while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
             STREAMING.REQUEST_MODEL(clown)
             STREAMING.REQUEST_MODEL(jet)
-            clownJetAttackG:yield()
+            clownJetsTwo:yield()
         end
 
         -- Calculate the spawn position for the jet in the air
