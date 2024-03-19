@@ -56,6 +56,8 @@ end
 
 function toolTip(tab, text)
     if tab == "" then
+        ImGui.SameLine()
+        ImGui.TextDisabled("(?)")
         if ImGui.IsItemHovered() then
             ImGui.BeginTooltip()
             ImGui.Text(text)
@@ -63,6 +65,8 @@ function toolTip(tab, text)
         end
     else
         tab:add_imgui(function()
+            ImGui.SameLine()
+            ImGui.TextDisabled("(?)")
             if ImGui.IsItemHovered() then
                 ImGui.BeginTooltip()
                 ImGui.Text(text)
@@ -4745,7 +4749,7 @@ toolTip(Gif, "Once you are done, get out and have them get in, then spam the Gif
 toolTip(Gif, "NOTE: Gifted vehicles SHOULD come fully insured, MAKE SURE THEY CHECK IT IN LS CUSTOMS!")
 
 --SlidyBoyGoesSkrrt | original script: Shift Drift made by Harmless, tweaked by xesdoog (we need to wait for permission to implement it into Extras-Addon!)
-slidyboi = Veh:add_tab("SlidyBoyGoesSkrrt")
+local slidyboi = Veh:add_tab("SlidyBoyGoesSkrrt")
 local ped = PLAYER.PLAYER_PED_ID()
 local ShiftDrift = false
 local DriftIntensity = 0
@@ -4757,6 +4761,8 @@ slidyboi:add_imgui(function()
     if PED.IS_PED_IN_ANY_VEHICLE(ped, true) and is_car then
         ImGui.Text("Current Vehicle : '"..vehicle_name.."'")
         ShiftDrift, shiftDriftToggled = ImGui.Checkbox("Activate Shift Drift", ShiftDrift, true)
+        ImGui.SameLine()
+        ImGui.TextDisabled("(?)")
         if ImGui.IsItemHovered() then
             ImGui.BeginTooltip()
             ImGui.Text("Hold \"Right Shift\" to drift")
@@ -4768,6 +4774,8 @@ slidyboi:add_imgui(function()
             end
         end
         DriftTires, driftTyresToggled = ImGui.Checkbox("Use Low Grip Tyres", DriftTires, true)
+        ImGui.SameLine()
+        ImGui.TextDisabled("(?)")
         if ImGui.IsItemHovered() then
             ImGui.BeginTooltip()
             ImGui.Text("This will use GTA 5's Low Grip Tires instead")
@@ -4775,6 +4783,8 @@ slidyboi:add_imgui(function()
         end
         if not DriftTires then
             DriftIntensity, DriftIntensityUsed = ImGui.SliderInt("Intensity", DriftIntensity, 0, 3)
+            ImGui.SameLine()
+            ImGui.TextDisabled("(?)")
             if ImGui.IsItemHovered() then
                 ImGui.BeginTooltip()
                 ImGui.Text("0 : No Grip (very stiff)\n1 : Balanced (Recommended)\n2 : Weak Drift\n3 : Weakest Drift")
