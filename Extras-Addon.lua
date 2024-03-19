@@ -4752,7 +4752,7 @@ Gif:add_button("How To Gift Vehicles (Hover for tooltip!)", function()
 end)
 toolTip(Gif, "To gift vehicles, Make sure all the players vehicles are repaired/returned and that they have a full garage")
 toolTip(Gif, "Have them go into their full garage, drive a vehicle out and back into their garage, then come out on foot")
-toolTip(Gif, "Spawn the vehicle using Extras Addon's Vehicle Spawner, optionally you can get inside and customize it using Yim's LS customs tab (DONT PRESS 'Start LS customs!)")
+toolTip(Gif, "Spawn the vehicle using Extras Addon's Vehicle Spawner (UNCHECK THE NO POLLUTION BOX!), optionally you can get inside and customize it using Yim's LS customs tab (DONT PRESS 'Start LS customs!)")
 toolTip(Gif, "Once you are done, get out and have them get in, then spam the Gift Vehicle button until it reads 'Success' at the top right")
 toolTip(Gif, "NOTE: Gifted vehicles SHOULD come fully insured, MAKE SURE THEY CHECK IT IN LS CUSTOMS!")
 
