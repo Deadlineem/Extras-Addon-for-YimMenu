@@ -6561,11 +6561,7 @@ heistTab:add_imgui(function()
         ImGui.Text("and it should kick you out of the screen and complete the setups")
         ImGui.Separator()
         ImGui.Text("For 15 million cuts")
-        ImGui.Text("you must first click on your cut")
-        ImGui.Text("then left click and right click")
-        ImGui.Text("then click your cut again")
-        ImGui.Text("and left click, right, then left click")
-        ImGui.Text("if your cut is negative then click it again")
+        ImGui.Text("hover over your cut and click the button")
     end
 end)
 
