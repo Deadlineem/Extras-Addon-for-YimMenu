@@ -6222,29 +6222,33 @@ end
 
 function cuts(cut)
     script.run_in_fiber(function(cuts)
-        for i = 0, 2 do
-            --cuts:sleep(1000)
-            globals.set_int(1928233 + 1 + 1, 100 - (cut * 4))
-            globals.set_int(1928233 + 1 + 2, cut)
-            globals.set_int(1928233 + 1 + 3, cut)
-            globals.set_int(1928233 + 1 + 4, cut)
-            cuts:sleep(500)
-            globals.set_int(1930201 + 3008 + 1, cut)
-            cuts:yield()
-        end
+        control = 2
+        enter = 201 --enter
+        cancel = 202 --cancel
+        globals.set_int(1928233 + 1 + 1, 100 - (cut * 4))
+        globals.set_int(1928233 + 1 + 2, cut)
+        globals.set_int(1928233 + 1 + 3, cut)
+        globals.set_int(1928233 + 1 + 4, cut)
+        PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, enter, 1)
+        cuts:sleep(1000)
+        PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, cancel, 1)
+        cuts:sleep(1000)
+        globals.set_int(1930201 + 3008 + 1, cut)
     end)
 end
 
 function fleecaCut()
     script.run_in_fiber(function(fleecaCuts)
-        for i = 0, 2 do
-            fleecaCuts:sleep(1000)
-            globals.set_int(1928233 + 1 + 1, 100 - (7453 * 2))
-            globals.set_int(1928233 + 1 + 2, 7453)
-            fleecaCuts:sleep(500)
-            globals.set_int(1930201 + 3008 + 1, 7453)
-            fleecaCuts:yield()
-        end
+        control = 2
+        enter = 201 --enter
+        cancel = 202 --cancel
+        globals.set_int(1928233 + 1 + 1, 100 - (7453 * 2))
+        globals.set_int(1928233 + 1 + 2, 7453)
+        PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, enter, 1)
+        fleecaCuts:sleep(1000)
+        PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, cancel, 1)
+        fleecaCuts:sleep(1000)
+        globals.set_int(1930201 + 3008 + 1, 7453)
     end)
 end
 
