@@ -4609,7 +4609,9 @@ function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
         end
-        --ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
+		if endPollution:is_enabled() then
+			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
+		end
     end)
 end
 
@@ -4677,6 +4679,12 @@ vSpawn:add_button("Spawn Selected", function()
 --end
 end)
 toolTip(vSpawn, "Spawns the vehicle on the selected player, if no player is selected, defaults to you")
+
+vSpawn:add_sameline()
+local endPollution = vSpawn:add_checkbox("No Pollution")
+endPollution:set_enabled(true)
+toolTip(vSpawn, "Sets the entity as no longer needed to prevent session pollution of invisible vehicles, turn this off ONLY for gifting cars to others")
+toolTip(vSpawn, "If you disable this, make sure you use the delete gun 'Self > Weapons > Custom gun (enabled) > Delete Gun' and delete the gifted car after its been driven into the garage")
 -- Vehicle Gift Options
 
  
