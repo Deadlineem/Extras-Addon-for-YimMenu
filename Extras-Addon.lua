@@ -2664,63 +2664,100 @@ toolTip(Fun, "Show Particle Effects On Your Tires")
 
 Fun:add_separator()
 Fun:add_text("Movement Altering")
-local drunkLoop = Fun:add_checkbox("Make Me Drunk")
-toolTip(Fun, "Make your character walk around drunk")
-Fun:add_sameline()
-local acidTripCheckbox = Fun:add_checkbox("Show Drunk VFX")
-toolTip(Fun, "Shows the Drunk visual effects (Only when 'Make Me Drunk' is active)")
-Fun:add_sameline()
-local drunkDrivingCheckbox = Fun:add_checkbox("Drunk Driving")
-toolTip(Fun, "Simulates Drunk Driving (Only when 'Make Me Drunk' is active)")
-script.register_looped("drunkLoop", function()
-    if drunkLoop:is_enabled() == true then
-        local ped = PLAYER.PLAYER_PED_ID()
-        if not STREAMING.HAS_CLIP_SET_LOADED(ped, "move_m@drunk@verydrunk", 1.0) then
-            STREAMING.REQUEST_CLIP_SET("move_m@drunk@verydrunk")
-        end
-        PED.SET_PED_MOVEMENT_CLIPSET(ped, "move_m@drunk@verydrunk", 1.0)
-        gui.show_message("Impairment Success", "You are always drunk")
-
+Fun:add_imgui(function()
+    drunkLoop, enabled = ImGui.Checkbox("Make Me Drunk", drunkLoop, true)
+    ImGui.SameLine()
+    ImGui.TextDisabled("(?)")
+    if ImGui.IsItemHovered() then
+        ImGui.BeginTooltip()
+        ImGui.Text("Makes your character move around drunk.")
+        ImGui.EndTooltip()
+    end
+    ImGui.SameLine()
+    acidTrip, enabled = ImGui.Checkbox("Show Drunk VFX", acidTrip, true)
+    ImGui.SameLine()
+    ImGui.TextDisabled("(?)")
+    if ImGui.IsItemHovered() then
+        ImGui.BeginTooltip()
+        ImGui.Text("Shows the Drunk visual effects (Only when ``Make Me Drunk´´ is active).")
+        ImGui.EndTooltip()
+    end
+    ImGui.SameLine()
+    drunkDriving, enabled = ImGui.Checkbox("Drunk Driving", drunkDriving, true)
+    ImGui.SameLine()
+    ImGui.TextDisabled("(?)")
+    if ImGui.IsItemHovered() then
+        ImGui.BeginTooltip()
+        ImGui.Text("Simulates Drunk Driving (Only when ``Make Me Drunk´´ is active).")
+        ImGui.EndTooltip()
+    end
+    local ped = PLAYER.PLAYER_PED_ID()
+    if drunkLoop then
+        script.run_in_fiber(function()
+            while not STREAMING.HAS_CLIP_SET_LOADED("move_m@drunk@verydrunk") do
+                STREAMING.REQUEST_CLIP_SET("move_m@drunk@verydrunk")
+                coroutine.yield()
+            end
+            PED.SET_PED_MOVEMENT_CLIPSET(ped, "move_m@drunk@verydrunk", 1.0)
+        end)
+            gui.show_message("Impairment:", "You are now drunk!")
+    else
+        PED.RESET_PED_MOVEMENT_CLIPSET(ped, 0.0)
+    end
         -- Apply drunk visual effects if the checkbox is enabled
-        if acidTripCheckbox:is_enabled() == true then
+    if acidTrip then
+        script.run_in_fiber(function()
+            if not drunkLoop then
+                gui.show_warning("Impairment:", "Activate ``Make Me Drunk´´ before using this effect.")
+                acidTrip = false
+            else
             -- Apply acid trip visual effects
             -- Adjust these effects based on your preferences and available native functions
             GRAPHICS.SET_TIMECYCLE_MODIFIER("Drunk") -- Apply drunk timecycle modifier (you can change this to an acid trip modifier or stoned modifier)
             GRAPHICS.SET_TIMECYCLE_MODIFIER_STRENGTH(1.3) -- Adjust strength of distortion
             -- Add additional visual effects here (e.g., screen distortions, color shifts, etc.)
             -- You may need to experiment with different native functions to achieve the desired effect
-        end
-
-        -- Enable drunk driving if the checkbox is enabled
-        if drunkDrivingCheckbox:is_enabled() == true then
+            end
+        end)
+    else
+        GRAPHICS.CLEAR_TIMECYCLE_MODIFIER()
+    end
+end)
+script.register_looped("drunk driving", function(script)
+    script:yield()
+    -- Enable drunk driving if the checkbox is enabled
+    if drunkDriving then
+        if not drunkLoop then
+            gui.show_warning("Impairment:", "Activate ``Make Me Drunk´´ before using this effect.")
+            drunkDriving = false
+        else
             local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false)
-        if vehicle ~= 0 then
-            -- Apply random steering inputs
-            local randomSteering = math.random(-1, 1) -- Random value between -1 and 1
-            VEHICLE.SET_VEHICLE_STEER_BIAS(vehicle, randomSteering)
-            VEHICLE.SET_VEHICLE_STEERING_BIAS_SCALAR(vehicle, 100)
-            VEHICLE.SET_VEHICLE_HANDLING_OVERRIDE(vehicle, MISC.GET_HASH_KEY(vehicle))
-            sleep(0.2)
-            -- Reduce vehicle control
-        end
+            if vehicle ~= 0 then
+                -- Apply random steering inputs
+                local randomSteering = math.random(-1, 1) -- Random value between -1 and 1
+                VEHICLE.SET_VEHICLE_STEER_BIAS(vehicle, randomSteering)
+                VEHICLE.SET_VEHICLE_STEERING_BIAS_SCALAR(vehicle, 100)
+                VEHICLE.SET_VEHICLE_HANDLING_OVERRIDE(vehicle, MISC.GET_HASH_KEY(vehicle))
+                sleep(0.2)
+                -- Reduce vehicle control
+            end
         end
     end
 end)
 Fun:add_button("Remove Impairments", function()
-    if acidTripCheckbox:is_enabled() == true or acidTripCheckbox:is_enabled() == false then
-        if drunkLoop:is_enabled() == false then
-            local ped = PLAYER.PLAYER_PED_ID()
-            PED.RESET_PED_MOVEMENT_CLIPSET(ped, 0.0)
-            gui.show_message("Impairment Removed", "You are no longer impaired. Visual and movement effects removed unless toggled.")
-
-            -- Reset acid trip visual effects when removing drunk movement
-            GRAPHICS.CLEAR_TIMECYCLE_MODIFIER()
-        else
-            gui.show_message("Impairment Error", "Toggle the Drunk Loop off first!")
-        end
+    if drunkLoop then
+        local ped = PLAYER.PLAYER_PED_ID()
+        PED.RESET_PED_MOVEMENT_CLIPSET(ped, 0.0)
+        drunkLoop = false
+        gui.show_message("Impairment Removed", "You are no longer impaired. Visual and movement effects are removed.")
+        -- Reset acid trip visual effects when removing drunk movement
+    end
+    if acidTrip then
+        GRAPHICS.CLEAR_TIMECYCLE_MODIFIER()
+        acidTrip = false
     end
 end)
-toolTip(Fun, "Removes all impairments (everything must be turned off first)")
+toolTip(Fun, "Removes all impairments.")
 
     
 -- Stat Editor - Alestarov_Menu // Reset Stats Option
@@ -4706,6 +4743,75 @@ toolTip(Gif, "Have them go into their full garage, drive a vehicle out and back 
 toolTip(Gif, "Spawn the vehicle using Extras Addon's Vehicle Spawner, optionally you can get inside and customize it using Yim's LS customs tab (DONT PRESS 'Start LS customs!)")
 toolTip(Gif, "Once you are done, get out and have them get in, then spam the Gift Vehicle button until it reads 'Success' at the top right")
 toolTip(Gif, "NOTE: Gifted vehicles SHOULD come fully insured, MAKE SURE THEY CHECK IT IN LS CUSTOMS!")
+
+--SlidyBoyGoesSkrrt | original script: Shift Drift made by Harmless, tweaked by xesdoog (we need to wait for permission to implement it into Extras-Addon!)
+slidyboi = Veh:add_tab("SlidyBoyGoesSkrrt")
+local ped = PLAYER.PLAYER_PED_ID()
+local ShiftDrift = false
+local DriftIntensity = 0
+local DriftTires = false
+slidyboi:add_imgui(function()
+    current_vehicle = PED.GET_VEHICLE_PED_IS_IN(ped, true)
+    local vehicle_name = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(current_vehicle))
+    local is_car = VEHICLE.IS_THIS_MODEL_A_CAR(ENTITY.GET_ENTITY_MODEL(current_vehicle))
+    if PED.IS_PED_IN_ANY_VEHICLE(ped, true) and is_car then
+        ImGui.Text("Current Vehicle : '"..vehicle_name.."'")
+        ShiftDrift, shiftDriftToggled = ImGui.Checkbox("Activate Shift Drift", ShiftDrift, true)
+        if ImGui.IsItemHovered() then
+            ImGui.BeginTooltip()
+            ImGui.Text("Hold \"Right Shift\" to drift")
+            ImGui.EndTooltip()
+        end
+        if shiftDriftToggled then
+            if not ShiftDrift then
+                DriftTires = false
+            end
+        end
+        DriftTires, driftTyresToggled = ImGui.Checkbox("Use Low Grip Tyres", DriftTires, true)
+        if ImGui.IsItemHovered() then
+            ImGui.BeginTooltip()
+            ImGui.Text("This will use GTA 5's Low Grip Tires instead")
+            ImGui.EndTooltip()
+        end
+        if not DriftTires then
+            DriftIntensity, DriftIntensityUsed = ImGui.SliderInt("Intensity", DriftIntensity, 0, 3)
+            if ImGui.IsItemHovered() then
+                ImGui.BeginTooltip()
+                ImGui.Text("0 : No Grip (very stiff)\n1 : Balanced (Recommended)\n2 : Weak Drift\n3 : Weakest Drift")
+                ImGui.EndTooltip()
+            end
+        end
+    elseif PED.IS_PED_IN_ANY_VEHICLE(ped, true) and not is_car then
+------reset states otherwise other scripts that use looped script hotkeys will stop working------
+        DriftTires = false
+        ShiftDrift = false
+        shiftDriftToggled = false
+-------------------------------------------------------------------------------------------------
+        ImGui.Text("I like where this is going!\n\nUnfortunately, SlidyBoi only works on cars and trucks.")
+    else
+        DriftTires = false
+        ShiftDrift = false
+        shiftDriftToggled = false
+        ImGui.Text("Get in a vehicle before using the script!")
+    end
+end)
+
+script.register_looped("Shift Drift Loop", function(script)
+    script:yield()
+    if DriftTires and PAD.IS_CONTROL_PRESSED(0, 21) then
+        VEHICLE.SET_DRIFT_TYRES(current_vehicle, true)
+    else
+        VEHICLE.SET_DRIFT_TYRES(current_vehicle, false)
+    end
+    script:yield()
+    if ShiftDrift and PAD.IS_CONTROL_PRESSED(0, 21) and not DriftTires then
+        VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, true)
+        VEHICLE.SET_VEHICLE_REDUCE_GRIP_LEVEL(current_vehicle, DriftIntensity)
+    else
+        VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, false)
+    end
+end)
+
 -- Global Player Options
 
 local Global = KAOS:add_tab("Global")
