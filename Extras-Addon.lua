@@ -57,21 +57,21 @@ end
 function toolTip(tab, text, seperate)
     seperate = seperate or false
     if tab == "" then
-        --if seperate then --waiting approval
+        if seperate then --waiting approval
             ImGui.SameLine()
             ImGui.TextDisabled("(?)")
-        --end
+        end
         if ImGui.IsItemHovered() then
             ImGui.BeginTooltip()
-            ImGui.Text(text)
+      ImGui.Text(text)
             ImGui.EndTooltip()
         end
     else
         tab:add_imgui(function()
-            --if seperate then
+            if seperate then
                 ImGui.SameLine()
                 ImGui.TextDisabled("(?)")
-            --end
+            end
             if ImGui.IsItemHovered() then
                 ImGui.BeginTooltip()
                 ImGui.Text(text)
@@ -6467,6 +6467,7 @@ function calcDistanceFromTwoCoords(pos, tarpos)
 end
 
 unlockHeist = heistTab:add_checkbox("Play Unavailable Heists")
+toolTip(heistTab, "Lets you play the grayed-out heists on apartment planning screen")
 
 heistTab:add_imgui(function()
     if unlockHeist:is_enabled() then
@@ -6477,10 +6478,12 @@ end)
 heistTab:add_button("Complete All Setups", function()
     stats.set_int(MPX .. "HEIST_PLANNING_STAGE", -1)
 end)
+toolTip(heistTab, "Complete setups for current heist")
 
 heistTab:add_button("Bring Team", function()
     bringTeam()
 end)
+toolTip(heistTab, "Bring every player on your team to you")
 
 heistTab:add_sameline()
 
@@ -6495,6 +6498,7 @@ heistTab:add_button("Bring Everyone", function()
         end
     end)
 end)
+toolTip(heistTab, "Bring everyone to you")
 
 heistTab:add_button("Spawn Tailgater", function()
     script.run_in_fiber(function(script)
@@ -6508,12 +6512,14 @@ heistTab:add_button("Spawn Tailgater", function()
         PED.SET_PED_INTO_VEHICLE(player ,vehicle, -1)
     end)
 end)
+toolTip(heistTab, "Spawns a tailgater(4-door)")
 
 heistTab:add_sameline()
 
 heistTab:add_button("TP To Objective", function()
     command.call("objectivetp", {})
 end)
+toolTip(heistTab, "Teleport yourself to the current objective")
 
 heistTab:add_button("Life Count +5", function()
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then 
@@ -6528,8 +6534,10 @@ heistTab:add_button("Life Count +5", function()
         locals.set_int("fm_mission_controller", 26154 + 1325 + 1, c_tlives_v + 5)
     end
 end)
+toolTip(heistTab, "Increase the life count by 5")
 
 shootEnemies = heistTab:add_checkbox("Kill Enemies")
+toolTip(heistTab, "Shoots every enemy ped within 150m")
 
 heistTab:add_imgui(function()
     --PAD.DISABLE_ALL_CONTROL_ACTIONS(2)
@@ -6539,23 +6547,28 @@ heistTab:add_imgui(function()
     tpdValk = false
     tpdParkingLot = false
     heistIndex = ImGui.Combo("Heist", heistIndex, {"Fleeca Job", "Prison Break", "Humane Labs", "Series A Funding", "Pacific Standard"}, 5, 5)
+    toolTip("", "Heist you wish to edit")
     if heistIndex == 0 then -- fleeca
         ImGui.Text("Fastest as Hacker")
         if (ImGui.Button("15 Million Cuts")) then
             fleecaCut()
         end
+        toolTip("", "Set every players cut to 15 million\nMust be hovering over your cut before clicking")
         if ImGui.Button("Bypass Hack") then
             locals.set_int("fm_mission_controller", 11776 + 24, 7)
         end
+        toolTip("", "Instantly finish hacking")
         if ImGui.Button("Bypass Drill") then
             locals.set_float("fm_mission_controller", 10067 + 11, 100)
         end
+        toolTip("", "Instantly finish drilling")
     end
     if heistIndex == 1 then -- prison break
         ImGui.Text("Fastest as Prison Officer")
         if (ImGui.Button("15 Million Cuts")) then
             cuts(2142)
         end
+        toolTip("", "Set every players cut to 15 million\nMust be hovering over your cut before clicking")
         if (ImGui.Button("TP Prison Bus")) then
             script.run_in_fiber(function(pbus)
                 for i, vehicle in ipairs(entities.get_all_vehicles_as_handles()) do
@@ -6569,20 +6582,15 @@ heistTab:add_imgui(function()
                 end
             end)
         end
+        toolTip("", "Teleports the prison bus infront of the eclipse towers apartment")
     end
     if heistIndex == 2 then -- humane labs
         ImGui.Text("Fastest as Ground Team")
-        all15mil = ImGui.Button("15 Million Cuts")
-        tpValk = ImGui.Button("TP Valkeryie")
-        tunnel = ImGui.Button("Tunnel")
-        if all15mil then
+        if ImGui.Button("15 Million Cuts") then
             cuts(1587)
         end
-        if tunnel then
-            player = PLAYER.PLAYER_PED_ID()
-            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player, 3521.90, 3724.84, -9.47, true, false, false)
-        end
-        if tpValk then
+        toolTip("", "Set every players cut to 15 million\nMust be hovering over your cut before clicking")
+        if ImGui.Button("TP Valkeryie") then
             for i, vehicle in ipairs(entities.get_all_vehicles_as_handles()) do
                 if (ENTITY.GET_ENTITY_MODEL(vehicle) == joaat("valkyrie")) then
                     player = PLAYER.PLAYER_PED_ID()
@@ -6591,17 +6599,23 @@ heistTab:add_imgui(function()
                 end
             end
         end
+        toolTip("", "Teleports the valkyrie infront of the eclipse towers apartment")
+        if ImGui.Button("Tunnel") then
+            player = PLAYER.PLAYER_PED_ID()
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(player, 3521.90, 3724.84, -9.47, true, false, false)
+        end
     end
     if heistIndex == 3 then -- series a funding
-        all15mil = ImGui.Button("15 Million Cuts")
-        if all15mil then
+        if ImGui.Button("15 Million Cuts") then
             cuts(2121)
         end
+        toolTip("", "Set every players cut to 15 million\nMust be hovering over your cut before clicking")
     end
     if heistIndex == 4 then -- pacific standard
         if (ImGui.Button("15 Million Cuts")) then
             cuts(1000)
         end
+        toolTip("", "Set every players cut to 15 million\nMust be hovering over your cut before clicking")
     end
 end)
 
@@ -6615,6 +6629,7 @@ heistTab:add_imgui(function()
         ImGui.Text("For 15 million cuts")
         ImGui.Text("hover over your cut and click the button")
     end
+    toolTip("", "Important information for using this script")
 end)
 
 script.register_looped("heistTabLoop", function(heistTabScript)
