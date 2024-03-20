@@ -54,10 +54,13 @@ function delete_entity(ent) --discord@rostal315
     end
 end
 
-function toolTip(tab, text)
+function toolTip(tab, text, seperate)
+    seperate = seperate or false
     if tab == "" then
-        ImGui.SameLine()
-        ImGui.TextDisabled("(?)")
+        --if seperate then --waiting approval
+            ImGui.SameLine()
+            ImGui.TextDisabled("(?)")
+        --end
         if ImGui.IsItemHovered() then
             ImGui.BeginTooltip()
             ImGui.Text(text)
@@ -65,8 +68,10 @@ function toolTip(tab, text)
         end
     else
         tab:add_imgui(function()
-            ImGui.SameLine()
-            ImGui.TextDisabled("(?)")
+            --if seperate then
+                ImGui.SameLine()
+                ImGui.TextDisabled("(?)")
+            --end
             if ImGui.IsItemHovered() then
                 ImGui.BeginTooltip()
                 ImGui.Text(text)
@@ -4609,9 +4614,9 @@ function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
         end
-		if endPollution:is_enabled() then
-			ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
-		end
+        if endPollution:is_enabled() then
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
+        end
     end)
 end
 
@@ -4862,6 +4867,7 @@ event.register_handler(menu_event.ScriptsReloaded, function()
 end)
 script.register_looped("Shift Drift Loop", function(script)
     script:yield()
+    --if current_vehicle == nil then current_vehicle = 0 end
     if DriftTires and PAD.IS_CONTROL_PRESSED(0, 21) then
         VEHICLE.SET_DRIFT_TYRES(current_vehicle, true)
     else
@@ -7830,6 +7836,43 @@ function V3_DISTANCE_SQUARED(v1, v2)
 end
 
 -- USBMenus (Contributor) Additions
+
+raceTab = KAOS:add_tab("Race Editor")
+raceTab:add_imgui(function()
+    if (ImGui.TreeNode("Drift Races")) then
+        ImGui.SetNextItemWidth(250)
+        maxMultiplier, maxMp = ImGui.InputFloat("Max Multiplier", globals.get_float(262145 + 25983), 0.1, 1, "%.1f")
+        toolTip("", "Max value that the drift multiplier will reach")
+        ImGui.SetNextItemWidth(250)
+        timeDrifting, timeDr = ImGui.InputInt("Time Drifting For Multiplier Increase (ms)", globals.get_int(262145 + 25982), 100, 1000)
+        toolTip("", "Time in miliseconds while drifting that it takes for the multiplier to increase")
+        ImGui.SetNextItemWidth(250)
+        driftMultiplier, driftMp = ImGui.InputFloat("Multiplier Increase Rate", globals.get_float(262145 + 25981), 0.1, 1, "%.1f")
+        toolTip("", "What the multiplier will increase by")
+        ImGui.SetNextItemWidth(250)
+        precisionDrift, precisionDr = ImGui.InputInt("Precision Drift Amount", globals.get_int(262145 + 25984), 100, 1000)
+        toolTip("", "Amount of points rewarded for doing a precision drift")
+        ImGui.SetNextItemWidth(250)
+        respawnPenalty, respawnPn = ImGui.InputInt("Respawn Penalty", globals.get_int(262145 + 25995), 100, 1000)
+        toolTip("", "Amount of points taken when you respawn")
+
+        if maxMp then
+            globals.set_float(262145 + 25983, maxMultiplier)
+        end
+        if timeDr then
+            globals.set_int(262145 + 25982, timeDrifting)
+        end
+        if driftMp then
+            globals.set_float(262145 + 25981, driftMultiplier)
+        end
+        if precisionDr then
+            globals.set_int(262145 + 25984, precisionDrift)
+        end
+        if respawnPn then
+            globals.set_int(262145 + 25995, respawnPenalty)
+        end
+    end
+end)
 
 --Chat Options
 local chatOpt = KAOS:add_tab("Chat Options")
