@@ -109,7 +109,9 @@ goto menu
 
 	echo "Downloading new version of Extras-Addon.lua from the repository..."
 	set "url=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/Extras-Addon.lua"
+	set "url2=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/json.lua"
 	powershell -command "& { Invoke-WebRequest -Uri '%url%' -OutFile '%destinationFolder%\Extras-Addon.lua' }"
+	powershell -command "& { Invoke-WebRequest -Uri '%url2%' -OutFile '%destinationFolder%json.lua' }"
 
 	if not exist "%destinationFolder%\Extras-Addon.lua" (
 		echo "Error: Failed to download Addon. Check the internet connection or the source URL."
