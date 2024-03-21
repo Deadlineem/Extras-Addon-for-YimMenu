@@ -1,4 +1,4 @@
---local json = require('json')
+local json = require('json')
 
 --[[
 
@@ -8997,7 +8997,7 @@ dropsPlayerTab:add_imgui(function()
     ImGui.End()
 end)
 
---[[----------Config--------------------
+----------Config--------------------
 saveConfig = false
 
 function presistEntry(tableEntry, value)
@@ -9045,4 +9045,3 @@ script.register_looped("Extras Addon Config", function(script)
     end
     script:yield()
 end)
-Commented due to bug.]] 
