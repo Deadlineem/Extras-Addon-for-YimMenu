@@ -119,7 +119,7 @@ goto menu
 		echo "Error: Failed to download Json. Check the internet connection or the source URL."
 	) else (
 		echo "Extras Addon downloaded successfully. File Location: %destinationFolder%\Extras-Addon.lua"
-		echo Json downloaded successfully. File Location: %destinationFolder%\json.lua"
+		echo "Json downloaded successfully. File Location: %destinationFolder%\json.lua"
 		echo "Returning to the main menu in 10 seconds."
 	)
 	timeout /t 10 /nobreak >nul
