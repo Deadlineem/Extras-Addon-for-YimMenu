@@ -111,12 +111,15 @@ goto menu
 	set "url=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/Extras-Addon.lua"
 	set "url2=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/json.lua"
 	powershell -command "& { Invoke-WebRequest -Uri '%url%' -OutFile '%destinationFolder%\Extras-Addon.lua' }"
-	powershell -command "& { Invoke-WebRequest -Uri '%url2%' -OutFile '%destinationFolder%json.lua' }"
+	powershell -command "& { Invoke-WebRequest -Uri '%url2%' -OutFile '%destinationFolder%\json.lua' }"
 
 	if not exist "%destinationFolder%\Extras-Addon.lua" (
 		echo "Error: Failed to download Addon. Check the internet connection or the source URL."
+	) else if not exist "%destinationFolder%\json.lua" (
+		echo "Error: Failed to download Json. Check the internet connection or the source URL."
 	) else (
 		echo "Extras Addon downloaded successfully. File Location: %destinationFolder%\Extras-Addon.lua"
+		echo Json downloaded successfully. File Location: %destinationFolder%\json.lua"
 		echo "Returning to the main menu in 10 seconds."
 	)
 	timeout /t 10 /nobreak >nul
