@@ -4374,6 +4374,9 @@ previewObject = nil
 previousPreview = nil
 
 script.register_looped("objectsPreview", function()
+    if not Objets:is_selected() then
+        previewObjects:set_enabled(false)
+    end
     if previewObjects:is_enabled() then
         local selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
         if selectedObjectInfo then
