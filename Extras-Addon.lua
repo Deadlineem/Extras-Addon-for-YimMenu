@@ -4793,7 +4793,7 @@ manufacturer = VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(
 mfr_name = (manufacturer:lower():gsub("^%l", string.upper))
 vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current_vehicle))
  if PED.IS_PED_IN_ANY_VEHICLE(ped, true) and is_car then
-     ImGui.Text("Vehicle: "..manufacturer.." "..vehicle_name)
+     ImGui.Text("Vehicle: "..mfr_name.." "..vehicle_name)
      ImGui.Spacing()
      ShiftDrift, shiftDriftToggled = ImGui.Checkbox("Activate Tokyo Drift", ShiftDrift, true)
      ImGui.SameLine()
