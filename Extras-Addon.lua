@@ -9014,17 +9014,16 @@ dropsPlayerTab:add_imgui(function()
 end)
 
 ----------Config--------------------
+saveConfig = false
 
-function presistEntry(configTable, tableEntry, value)
+function presistEntry(tableEntry, value)
     configTable[tableEntry] = value
 end
 
-function setEntry(configTable, tableEntry, value, saveConfig)
+function setEntry(tableEntry, value)
     if value ~= configTable[tableEntry] then
         configTable[tableEntry] = value
-        return true
-    else
-        return false
+        saveConfig = true
     end
 end
 
@@ -9032,8 +9031,7 @@ local persisted_config = io.open("Extras-Addon.json", "r")
 if persisted_config == nil then
     configTable = {}
     --Add entries here
-    --configTable["tireParticles"] = tirePTFX:is_enabled() --you can do it this way if you wish
-    presistEntry(configTable, "tireParticles", tirePTFX:is_enabled())
+    presistEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)  
     --End Entires
     local new_file = io.open("Extras-Addon.json", "w+")
     new_file:write(json.encode(configTable))
@@ -9042,7 +9040,7 @@ if persisted_config == nil then
 else
     configTable = json.decode(persisted_config:read("*all"))
     --add entries, they need to be set to the values in the config
-    tirePTFX:set_enabled(configTable["tireParticles"])
+    tirePTFX:set_enabled(configTable["tireParticles"]) --sets the value of the component to the value from the config
     --end entries
     persisted_config:close()
 end
@@ -9051,14 +9049,10 @@ script.register_looped("Extras Addon Config", function(script)
     if gui.is_open() then
         saveConfig = false
         --Each entry should look like this
-        --[[if tirePTFX:is_enabled() ~= configTable["tireParticles"] then
-            configTable["tireParticles"] = tirePTFX:is_enabled()
-            saveConfig = true
-        end--]]
-        saveConfig = setEntry(configTable, "tireParticles", tirePTFX:is_enabled()) --this is easier but you can do it the other way if you wish
+        setEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)
         --End Entries
         if saveConfig then
-            --gui.show_message("Config", "Saving")
+            gui.show_message("Config", "Saving")
             local json_file = io.open("Extras-Addon.json", "w")
             json_file:write(json.encode(configTable))
             json_file:flush()
