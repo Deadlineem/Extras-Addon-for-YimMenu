@@ -4766,8 +4766,7 @@ toolTip(Gif, "Spawn the vehicle using Extras Addon's Vehicle Spawner (UNCHECK TH
 toolTip(Gif, "Once you are done, get out and have them get in, then spam the Gift Vehicle button until it reads 'Success' at the top right")
 toolTip(Gif, "NOTE: Gifted vehicles SHOULD come fully insured, MAKE SURE THEY CHECK IT IN LS CUSTOMS!")
 
---SlidyBoyGoesSkrrt | original script: Shift-Drift made by Harmless, tweaked by xesdoog (we need to wait for permission to implement it into Extras-Addon!)
-local slidyboi = Veh:add_tab("SlidyBoyGoesSkrrt")
+local tokyodrift = Veh:add_tab("Tokyo Drift")
 script.register_looped("playerID", function(playerID)
     if NETWORK.NETWORK_IS_SESSION_ACTIVE() then
         is_online = true
@@ -4786,159 +4785,141 @@ end)
 local ShiftDrift = false
 local DriftIntensity = 0
 local DriftTires = false
-local new_onlinePed = onlinePed
-local session_changed = false
-local function sessionchange(onlinePed, new_OnlinePed)
-    if new_OnlinePed ~= onlinePed then
-        session_changed = true
-        return session_changed
-    end
-end
-local function resetSlidyBoi()
+local function resettokyodrift()
     DriftTires = false
     ShiftDrift = false
     DriftIntensity = 0
     shiftDriftToggled = false
 end
-slidyboi:add_imgui(function()
-    current_vehicle = PED.GET_VEHICLE_PED_IS_IN(ped, true)
-    local vehicle_name = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(current_vehicle))
-    local is_car = VEHICLE.IS_THIS_MODEL_A_CAR(ENTITY.GET_ENTITY_MODEL(current_vehicle))
-    if PED.IS_PED_IN_ANY_VEHICLE(ped, true) and is_car then
-        ImGui.Text("Current Vehicle : '"..vehicle_name.."'")
-        ImGui.Spacing()
-        ShiftDrift, shiftDriftToggled = ImGui.Checkbox("Activate Shift Drift", ShiftDrift, true)
-        ImGui.SameLine()
-        ImGui.TextDisabled("(?)")
-        if ImGui.IsItemHovered() then
-            ImGui.BeginTooltip()
-            ImGui.Text("Hold \"Right Shift\" to drift")
-            ImGui.EndTooltip()
-        end
-        if shiftDriftToggled then
-            if not ShiftDrift then
-                DriftTires = false
-            end
-        end
-        DriftTires, driftTyresToggled = ImGui.Checkbox("Use Low Grip Tyres", DriftTires, true)
-        ImGui.SameLine()
-        ImGui.TextDisabled("(?)")
-        if ImGui.IsItemHovered() then
-            ImGui.BeginTooltip()
-            ImGui.Text("This will use GTA 5's Low Grip Tires instead")
-            ImGui.EndTooltip()
-        end
-        if not DriftTires then
-            ImGui.Spacing()
-            ImGui.Text("Drift Intensity:")
-            ImGui.SameLine()
-            ImGui.TextDisabled("(?)")
-            if ImGui.IsItemHovered() then
-                ImGui.BeginTooltip()
-                ImGui.Text("0 : No Grip (very stiff)\n1 : Balanced (Recommended)\n2 : Weak Drift\n3 : Weakest Drift")
-                ImGui.EndTooltip()
-            end
-            DriftIntensity, DriftIntensityUsed = ImGui.SliderInt("", DriftIntensity, 0, 3)
-        end
-    elseif PED.IS_PED_IN_ANY_VEHICLE(ped, true) and not is_car then
-------reset states otherwise other scripts that use looped script hotkeys will stop working------
-        resetSlidyBoi()
-        ImGui.Text("I like where this is going!\n\nUnfortunately, SlidyBoi only works on cars and trucks.")
-    else
-        resetSlidyBoi()
-        ImGui.Text("Get in a vehicle before using the script!")
-    end
-    ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing()
-    ImGui.Separator()
-    ImGui.Text("-- Credits --")
-    if ImGui.IsItemHovered() then
-        ImGui.BeginTooltip()
-        ImGui.Text("Original script made by Harmless05 and tweaked by SAMURAI (xesdoog).\n\n - Visit Harmless's profile on Github: https://github.com/Harmless05\n - Checkout Harmless-Scripts: https://github.com/YimMenu-Lua/Harmless-Scripts")
-        ImGui.EndTooltip()
-    end
-end)
-script.register_looped("Session changed", function(newsesh)
-    newsesh:yield()
-    sessionchange()
-    if session_changed then
-        resetSlidyBoi()
-    end
+tokyodrift:add_imgui(function()
+current_vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
+is_car = VEHICLE.IS_THIS_MODEL_A_CAR(ENTITY.GET_ENTITY_MODEL(current_vehicle))
+manufacturer = VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(current_vehicle))
+mfr_name = (manufacturer:lower():gsub("^%l", string.upper))
+vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current_vehicle))
+ if PED.IS_PED_IN_ANY_VEHICLE(ped, true) and is_car then
+     ImGui.Text("Vehicle: "..mfr_name.." "..vehicle_name)
+     ImGui.Spacing()
+     ShiftDrift, shiftDriftToggled = ImGui.Checkbox("Activate Tokyo Drift", ShiftDrift, true)
+     ImGui.SameLine()
+     ImGui.TextDisabled("(?)")
+     if ImGui.IsItemHovered() then
+         ImGui.BeginTooltip()
+         ImGui.Text("Hold \"Right Shift\" to drift")
+         ImGui.EndTooltip()
+     end
+     if shiftDriftToggled then
+         if not ShiftDrift then
+             DriftTires = false
+         end
+     end
+     DriftTires, driftTyresToggled = ImGui.Checkbox("Use Low Grip Tires", DriftTires, true)
+     ImGui.SameLine()
+     ImGui.TextDisabled("(?)")
+     if ImGui.IsItemHovered() then
+         ImGui.BeginTooltip()
+         ImGui.Text("This will use GTA 5's low grip tires instead.")
+         ImGui.EndTooltip()
+     end
+     if not DriftTires then
+         ImGui.Spacing()
+         ImGui.Text("Intensity:")
+         DriftIntensity, DriftIntensityUsed = ImGui.SliderInt("", DriftIntensity, 0, 3)
+         if ImGui.IsItemHovered() then
+             ImGui.BeginTooltip()
+             ImGui.Text("0: No Grip (very stiff).\n1: Balanced (Recommended).\n2: Weak Drift.\n3: Weakest Drift.")
+             ImGui.EndTooltip()
+         end
+     end
+ elseif PED.IS_PED_IN_ANY_VEHICLE(ped, true) and not is_car then
+     ImGui.Text("Tokyo Drift only works on cars and trucks.\n"..current_vehicle)
+ else
+     ImGui.Text("Get in a vehicle before using the script!")
+ end
+ ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing()
+ ImGui.Separator()
+ ImGui.Text("-- Credits --")
+ if ImGui.IsItemHovered() then
+     ImGui.BeginTooltip()
+     ImGui.Text("Original script Shift-Drift, made by Harmless05 and tweaked by SAMURAI (xesdoog).")
+     ImGui.BulletText("Visit Harmless's profile on Github: https://github.com/Harmless05")
+     ImGui.BulletText("Checkout Harmless-Scripts: https://github.com/YimMenu-Lua/Harmless-Scripts")
+     ImGui.EndTooltip()
+ end
 end)
 event.register_handler(menu_event.MenuUnloaded, function()
-    resetSlidyBoi()
+ resettokyodrift()
 end)
 event.register_handler(menu_event.ScriptsReloaded, function()
-    resetSlidyBoi()
+ resettokyodrift()
 end)
-script.register_looped("Shift Drift Loop", function(script)
-    script:yield()
-    --if current_vehicle == nil then current_vehicle = 0 end
-    if DriftTires and PAD.IS_CONTROL_PRESSED(0, 21) then
-        VEHICLE.SET_DRIFT_TYRES(current_vehicle, true)
-    else
-        VEHICLE.SET_DRIFT_TYRES(current_vehicle, false)
-    end
-    script:yield()
-    if ShiftDrift and PAD.IS_CONTROL_PRESSED(0, 21) and not DriftTires then
-        VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, true)
-        VEHICLE.SET_VEHICLE_REDUCE_GRIP_LEVEL(current_vehicle, DriftIntensity)
-    else
-        VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, false)
-    end
+script.register_looped("Drift Loop", function(script)
+ script:yield()
+ if is_car and DriftTires and PAD.IS_CONTROL_PRESSED(0, 21) then
+     VEHICLE.SET_DRIFT_TYRES(current_vehicle, true)
+ else
+     VEHICLE.SET_DRIFT_TYRES(current_vehicle, false)
+ end
+ script:yield()
+ if is_car and ShiftDrift and PAD.IS_CONTROL_PRESSED(0, 21) and not DriftTires then
+     VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, true)
+     VEHICLE.SET_VEHICLE_REDUCE_GRIP_LEVEL(current_vehicle, DriftIntensity)
+ else
+     VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, false)
+ end
 end)
-
--- Global Player Options
-
-local Global = KAOS:add_tab("Global")
-
--- Global RP Loop Options
-local PRGBGLoop = false
-Global:add_text("Global Friendly Options")
-rpLoop = Global:add_checkbox("Drop RP (On/Off)")
-
-        script.register_looped("PRGBGLoop", function()
-        if rpLoop:is_enabled() == true then
-            local model = joaat("vw_prop_vw_colle_prbubble")
-            local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-            local money_value = 0
-            gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
-            STREAMING.REQUEST_MODEL(model)
-            while STREAMING.HAS_MODEL_LOADED(model) == false do
-                sleep(1)
-            end
-        
-            if STREAMING.HAS_MODEL_LOADED(model) then
-                local localPlayerId = PLAYER.PLAYER_ID()
-                local player_count = PLAYER.GET_NUMBER_OF_PLAYERS() - 1 -- Minus 1 player (yourself) from the drop count.
-                gui.show_message("Global", "Dropping figurines to ".. player_count.." Players in the session.")
-
-                for i = 0, 31 do
-                    if i ~= localPlayerId then
-                        local player_id = i
-                        
-                        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-                        local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                            pickup,
-                            coords.x - 0,
-                            coords.y + 0,
-                            coords.z + 0.4,
-                            3,
-                            money_value,
-                            model,
-                            true,
-                            false
-                        )
-                        ENTITY.SET_ENTITY_VISIBLE(objectIdSpawned, true, false)
-                        local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-                        NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-                        
-                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
-                    end
-                end
-            end
-            --sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
-        end
-        end)
+ -- Global Player Options
+ 
+ local Global = KAOS:add_tab("Global")
+ 
+ -- Global RP Loop Options
+ local PRGBGLoop = false
+ Global:add_text("Global Friendly Options")
+ rpLoop = Global:add_checkbox("Drop RP (On/Off)")
+ 
+     script.register_looped("PRGBGLoop", function()
+     if rpLoop:is_enabled() == true then
+         local model = joaat("vw_prop_vw_colle_prbubble")
+         local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+         local money_value = 0
+         gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
+         STREAMING.REQUEST_MODEL(model)
+         while STREAMING.HAS_MODEL_LOADED(model) == false do
+             sleep(1)
+         end
+     
+         if STREAMING.HAS_MODEL_LOADED(model) then
+             local localPlayerId = PLAYER.PLAYER_ID()
+             local player_count = PLAYER.GET_NUMBER_OF_PLAYERS() - 1 -- Minus 1 player (yourself) from the drop count.
+             gui.show_message("Global", "Dropping figurines to ".. player_count.." Players in the session.")
+ 
+             for i = 0, 31 do
+                 if i ~= localPlayerId then
+                     local player_id = i
+                     
+                     local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                     local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                         pickup,
+                         coords.x - 0,
+                         coords.y + 0,
+                         coords.z + 0.4,
+                         3,
+                         money_value,
+                         model,
+                         true,
+                         false
+                     )
+                     ENTITY.SET_ENTITY_VISIBLE(objectIdSpawned, true, false)
+                     local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+                     NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+                     
+                     ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+                 end
+             end
+         end
+         --sleep(0.2) -- Sets the timer in seconds for how long this should pause before sending another figure
+     end
+     end)
 toolTip(Global, "Drops Princess Robot Figurines for the entire session (Slightly glitchy)")
 Global:add_sameline()       
 local goodRP = Global:add_checkbox("Fast RP")
