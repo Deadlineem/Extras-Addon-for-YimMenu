@@ -1,3 +1,5 @@
+local json = require('json')
+
 --[[
 
 
@@ -2673,6 +2675,9 @@ toolTip(Fun, "Show Particle Effects On Your Tires")
 
 Fun:add_separator()
 Fun:add_text("Movement Altering")
+drunkLoop = false
+acidTrip = false
+drunkDriving = false
 Fun:add_imgui(function()
     drunkLoop, enabled = ImGui.Checkbox("Make Me Drunk", drunkLoop, true)
     ImGui.SameLine()
@@ -9006,4 +9011,59 @@ toolTip(dropsPlayerTab, "Sometimes works, sometimes doesn't.  Up to 225k")
 dropsPlayerTab:add_imgui(function()
     -- Ends the ImGui wrapper, new additions should be added above this.
     ImGui.End()
+end)
+
+----------Config--------------------
+
+function presistEntry(configTable, tableEntry, value)
+    configTable[tableEntry] = value
+end
+
+function setEntry(configTable, tableEntry, value, saveConfig)
+    if value ~= configTable[tableEntry] then
+        configTable[tableEntry] = value
+        return true
+    else
+        return false
+    end
+end
+
+local persisted_config = io.open("Extras-Addon.json", "r")
+if persisted_config == nil then
+    configTable = {}
+    --Add entries here
+    --configTable["tireParticles"] = tirePTFX:is_enabled() --you can do it this way if you wish
+    presistEntry(configTable, "tireParticles", tirePTFX:is_enabled())
+    --End Entires
+    local new_file = io.open("Extras-Addon.json", "w+")
+    new_file:write(json.encode(configTable))
+    new_file:flush()
+    new_file:close()
+else
+    configTable = json.decode(persisted_config:read("*all"))
+    --add entries, they need to be set to the values in the config
+    tirePTFX:set_enabled(configTable["tireParticles"])
+    --end entries
+    persisted_config:close()
+end
+
+script.register_looped("Extras Addon Config", function(script)
+    if gui.is_open() then
+        saveConfig = false
+        --Each entry should look like this
+        --[[if tirePTFX:is_enabled() ~= configTable["tireParticles"] then
+            configTable["tireParticles"] = tirePTFX:is_enabled()
+            saveConfig = true
+        end--]]
+        saveConfig = setEntry(configTable, "tireParticles", tirePTFX:is_enabled()) --this is easier but you can do it the other way if you wish
+        --End Entries
+        if saveConfig then
+            --gui.show_message("Config", "Saving")
+            local json_file = io.open("Extras-Addon.json", "w")
+            json_file:write(json.encode(configTable))
+            json_file:flush()
+            json_file:close()
+        end
+    end
+    script:yield()
 end)
