@@ -4858,6 +4858,7 @@ event.register_handler(menu_event.ScriptsReloaded, function()
 end)
 script.register_looped("Drift Loop", function(script)
  script:yield()
+ if current_vehicle == nil then current_vehicle = 0 end
  if is_car and DriftTires and PAD.IS_CONTROL_PRESSED(0, 21) then
      VEHICLE.SET_DRIFT_TYRES(current_vehicle, true)
  else
@@ -9000,33 +9001,38 @@ end)
 ----------Config--------------------
 saveConfig = false
 
-function presistEntry(tableEntry, value)
+function extractText(component)
+    str = tostring(component)
+    local afterGui = string.match(str, "sol.lua::gui::(.-)[:*]")
+    return afterGui
+end
+
+function presistEntry(tableEntry, value) --might update to fit the same params as getEntry
     configTable[tableEntry] = value
 end
 
-function setEntry(tableEntry, value)
+function setEntry(tableEntry, value) --might update to fit the same params as getEntry
     if value ~= configTable[tableEntry] then
         configTable[tableEntry] = value
         saveConfig = true
     end
 end
 
-local persisted_config = io.open("Extras-Addon.json", "r")
-if persisted_config == nil then
-    configTable = {}
-    --Add entries here
-    presistEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)  
-    --End Entires
-    local new_file = io.open("Extras-Addon.json", "w+")
-    new_file:write(json.encode(configTable))
-    new_file:flush()
-    new_file:close()
-else
-    configTable = json.decode(persisted_config:read("*all"))
-    --add entries, they need to be set to the values in the config
-    tirePTFX:set_enabled(configTable["tireParticles"]) --sets the value of the component to the value from the config
-    --end entries
-    persisted_config:close()
+function getEntry(tableEntry, var)
+    v = extractText(var)
+    entry = configTable[tableEntry]
+    if v == "checkbox" then
+        if entry == nil then entry = var:is_enabled() end
+        var:set_enabled(entry)
+    end
+    if v == "input_int" then --coming soon?
+    end
+    if v == "input_string" then
+    end
+    if v == "input_float" then
+    end
+    if v == "nil" then
+    end
 end
 
 script.register_looped("Extras Addon Config", function(script)
@@ -9034,6 +9040,8 @@ script.register_looped("Extras Addon Config", function(script)
         saveConfig = false
         --Each entry should look like this
         setEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)
+        setEntry("dropsTab", Drops:is_enabled())
+        setEntry("griefTab", extraGrief:is_enabled())
         --End Entries
         if saveConfig then
             gui.show_message("Config", "Saving")
@@ -9045,3 +9053,25 @@ script.register_looped("Extras Addon Config", function(script)
     end
     script:yield()
 end)
+
+local persisted_config = io.open("Extras-Addon.json", "r")
+    if persisted_config == nil then
+    configTable = {}
+    --Add entries here
+    presistEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)  
+    presistEntry("dropsTab", Drops:is_enabled())
+    presistEntry("griefTab", extraGrief:is_enabled())
+    --End Entires
+    local new_file = io.open("Extras-Addon.json", "w+")
+    new_file:write(json.encode(configTable))
+    new_file:flush()
+    new_file:close()
+else
+    configTable = json.decode(persisted_config:read("*all"))
+    --add entries, they need to be set to the values in the config
+    getEntry("tireParticles", tirePTFX) --param0 is the entry in the config table, param1 is the variable for the component(only supports checkboxes atm)
+    getEntry("dropsTab", Drops)
+    getEntry("griefTab", extraGrief)
+    --end entries
+    persisted_config:close()
+end
