@@ -1502,7 +1502,7 @@ Tel:add_imgui(function()
         ImGui.SetClipboardText(coordsString)
     end
 end)
-local YimActions = Pla:add_tab("YimActions")
+local YimActions = Pla:add_tab("Samurai's YimActions")
 local anim_index = 0
 local scenario_index = 0
 local switch = 0
