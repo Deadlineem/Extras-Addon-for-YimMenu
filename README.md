@@ -4,7 +4,7 @@
 
 ## NOTE TO ALL USERS:
 
-#Make sure you Download the latest UPDATE.BAT and use/update the script using it to keep it up to date!  There are new changes/additions OFTEN!
+# Make sure you Download the latest UPDATE.BAT and use/update the script using it to keep it up to date!  There are new changes/additions OFTEN!
 
 DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT OFF AND USE THEM AS THE CODES MAY CONFLICT AND CAUSE ISSUES.
 
