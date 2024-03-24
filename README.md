@@ -1,9 +1,10 @@
-
 ![Extras Addon for YimMenu](http://extrasaddon.us.to/img/extras-header-2.png)
 
 [![version](https://img.shields.io/badge/version-1.0.2-red.svg)](http://extrasaddon.us.to/)
 
 ## NOTE TO ALL USERS:
+
+#Make sure you Download the latest UPDATE.BAT and use/update the script using it to keep it up to date!  There are new changes/additions OFTEN!
 
 DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT OFF AND USE THEM AS THE CODES MAY CONFLICT AND CAUSE ISSUES.
 
