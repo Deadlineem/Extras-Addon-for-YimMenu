@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 1.0.2
+        Addon Version: 1.0.3
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
-local addonVersion = "1.0.2"
+local addonVersion = "1.0.3"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
