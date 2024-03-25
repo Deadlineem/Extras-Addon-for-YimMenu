@@ -1834,6 +1834,11 @@ YimActions:add_imgui(function()
             elseif info.type == 5 then
                 cleanup()
                 script.run_in_fiber(function(type5)
+                    while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
+                        STREAMING.REQUEST_ANIM_DICT(info.dict)
+                        coroutine.yield()
+                    end
+                    TASK.TASK_PLAY_ANIM(ped, info.dict, info.anim, 4.0, -4.0, -1, flag, 0.0, false, false, false)
                     if not disableProps then
                         while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
                             STREAMING.REQUEST_MODEL(info.prop1)
@@ -1847,15 +1852,10 @@ YimActions:add_imgui(function()
                             STREAMING.REQUEST_NAMED_PTFX_ASSET(info.ptfxdict)
                             coroutine.yield()
                         end
+                        type5:sleep(info.ptfxdelay)
                         GRAPHICS.USE_PARTICLE_FX_ASSET(info.ptfxdict)
                         loopedFX = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(info.ptfxname, prop1, info.ptfxOffx, info.ptfxOffy, info.ptfxOffz, info.ptfxrotx, info.ptfxroty, info.ptfxrotz, info.ptfxscale, false, false, false, 0, 0, 0, 0)
-                        type5:sleep(50)
                     end
-                    while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
-                        STREAMING.REQUEST_ANIM_DICT(info.dict)
-                        coroutine.yield()
-                    end
-                    TASK.TASK_PLAY_ANIM(ped, info.dict, info.anim, 4.0, -4.0, -1, flag, 0.0, false, false, false)
                     is_playing_anim = true
                 end)
             elseif info.type == 6 then
