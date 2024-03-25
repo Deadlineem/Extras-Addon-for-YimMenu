@@ -1511,6 +1511,14 @@ local filteredScenarios = {}
 local spawned_props = {}
 local searchQuery = ""
 local is_typing = false
+local clumsy = false
+local rod = false
+local manualFlags = false
+local disableProps = false
+local controllable = false
+local looped = false
+local upperbody = false
+local freeze = false
 is_playing_anim = false
 is_playing_scenario = false
 script.register_looped("playerID", function(playerID)
@@ -1542,7 +1550,7 @@ script.register_looped("Ragdoll Loop", function(script)
         script:sleep(100)
         clumsy = false
         if PAD.IS_CONTROL_PRESSED(0, 252) then
-            PED.SET_PED_TO_RAGDOLL(ped, 2000, 3000, 0, false)
+            PED.SET_PED_TO_RAGDOLL(ped, 1500, 0, 0, false)
         end
     end
     script:yield()
@@ -1699,13 +1707,16 @@ YimActions:add_imgui(function()
     else
         is_typing = false
     end
-    ImGui.BeginTabBar("YimActions", ImGuiTabBarFlags.None)
+    ImGui.BeginTabBar("Samurai's YimActions", ImGuiTabBarFlags.None)
     if ImGui.BeginTabItem("Animations") then
         ImGui.PushItemWidth(350)
         displayFilteredAnims()
         ImGui.Separator()
-        manualFlags, used = ImGui.Checkbox("Edit Animation Flags", manualFlags, true)
+        manualFlags, used = ImGui.Checkbox("Edit Flags", manualFlags, true)
         helpmarker("Allows you to customize how the animation plays.\nExample: if an animation is set to loop but you want it to freeze, activate this then choose your desired settings.")
+        ImGui.SameLine()
+        disableProps, used = ImGui.Checkbox("Disable Props", disableProps, true)
+        helpmarker("Choose whether to play animations with props or not. Check or Un-check this before playing the animation.")
         if manualFlags then
             ImGui.Separator()
             controllable, used = ImGui.Checkbox("Allow Control", controllable, true)
@@ -1745,13 +1756,15 @@ YimActions:add_imgui(function()
             if info.type == 1 then
                 cleanup()
                 script.run_in_fiber(function()
-                    while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
-                        STREAMING.REQUEST_MODEL(info.prop1)
-                        coroutine.yield()
+                    if not disableProps then
+                        while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
+                            STREAMING.REQUEST_MODEL(info.prop1)
+                            coroutine.yield()
+                        end
+                        prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, true)
+                        table.insert(spawned_props, prop1)
+                        ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, ped, boneIndex, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
                     end
-                    prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, true)
-                    table.insert(spawned_props, prop1)
-                    ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, ped, boneIndex, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
                     while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
                         STREAMING.REQUEST_ANIM_DICT(info.dict)
                         coroutine.yield()
@@ -1779,14 +1792,16 @@ YimActions:add_imgui(function()
             elseif info.type == 3 then
                 cleanup()
                 script.run_in_fiber(function()
-                    while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
-                        STREAMING.REQUEST_MODEL(info.prop1)
-                        coroutine.yield()
+                    if not disableProps then
+                        while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
+                            STREAMING.REQUEST_MODEL(info.prop1)
+                            coroutine.yield()
+                        end
+                        prop1 = OBJECT.CREATE_OBJECT(info.prop1, coords.x + forwardX /1.7, coords.y + forwardY /1.7, coords.z, true, true, false)
+                        table.insert(spawned_props, prop1)
+                        ENTITY.SET_ENTITY_HEADING(prop1, heading + info.rotz)
+                        OBJECT.PLACE_OBJECT_ON_GROUND_PROPERLY(prop1)
                     end
-                    prop1 = OBJECT.CREATE_OBJECT(info.prop1, coords.x + forwardX /1.7, coords.y + forwardY /1.7, coords.z, true, true, false)
-                    table.insert(spawned_props, prop1)
-                    ENTITY.SET_ENTITY_HEADING(prop1, heading + info.rotz)
-                    OBJECT.PLACE_OBJECT_ON_GROUND_PROPERLY(prop1)
                     while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
                         STREAMING.REQUEST_ANIM_DICT(info.dict)
                         coroutine.yield()
@@ -1797,41 +1812,45 @@ YimActions:add_imgui(function()
             elseif info.type == 4 then
                 cleanup()
                 script.run_in_fiber(function(type4)
-                    while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
-                        STREAMING.REQUEST_MODEL(info.prop1)
-                        coroutine.yield()
+                    if not disableProps then
+                        while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
+                            STREAMING.REQUEST_MODEL(info.prop1)
+                            coroutine.yield()
+                        end
+                        prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
+                        table.insert(spawned_props, prop1)
+                        ENTITY.SET_ENTITY_COORDS(prop1, bonecoords.x + info.posx, bonecoords.y + info.posy, bonecoords.z + info.posz)
+                        type4:sleep(20)
+                        OBJECT.PLACE_OBJECT_ON_GROUND_PROPERLY(prop1)
+                        ENTITY.SET_ENTITY_COLLISION(prop1, info.propColl, info.propColl)
                     end
                     while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
                         STREAMING.REQUEST_ANIM_DICT(info.dict)
                         coroutine.yield()
                     end
                     TASK.TASK_PLAY_ANIM(ped, info.dict, info.anim, 4.0, -4.0, -1, flag, 1.0, false, false, false)
-                    prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
-                    table.insert(spawned_props, prop1)
-                    ENTITY.SET_ENTITY_COORDS(prop1, bonecoords.x + info.posx, bonecoords.y + info.posy, bonecoords.z + info.posz)
-                    type4:sleep(20)
-                    OBJECT.PLACE_OBJECT_ON_GROUND_PROPERLY(prop1)
-                    ENTITY.SET_ENTITY_COLLISION(prop1, info.propColl, info.propColl)
                     is_playing_anim = true
                 end)
             elseif info.type == 5 then
                 cleanup()
                 script.run_in_fiber(function(type5)
-                    while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
-                        STREAMING.REQUEST_MODEL(info.prop1)
-                        coroutine.yield()
+                    if not disableProps then
+                        while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
+                            STREAMING.REQUEST_MODEL(info.prop1)
+                            coroutine.yield()
+                        end
+                        prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
+                        table.insert(spawned_props, prop1)
+                        ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, ped, boneIndex, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
+                        type5:sleep(50)
+                        while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(info.ptfxdict) do
+                            STREAMING.REQUEST_NAMED_PTFX_ASSET(info.ptfxdict)
+                            coroutine.yield()
+                        end
+                        GRAPHICS.USE_PARTICLE_FX_ASSET(info.ptfxdict)
+                        loopedFX = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(info.ptfxname, prop1, info.ptfxOffx, info.ptfxOffy, info.ptfxOffz, info.ptfxrotx, info.ptfxroty, info.ptfxrotz, info.ptfxscale, false, false, false, 0, 0, 0, 0)
+                        type5:sleep(50)
                     end
-                    prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
-                    table.insert(spawned_props, prop1)
-                    ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, ped, boneIndex, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
-                    type5:sleep(50)
-                    while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(info.ptfxdict) do
-                        STREAMING.REQUEST_NAMED_PTFX_ASSET(info.ptfxdict)
-                        coroutine.yield()
-                    end
-                    GRAPHICS.USE_PARTICLE_FX_ASSET(info.ptfxdict)
-                    loopedFX = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(info.ptfxname, prop1, info.ptfxOffx, info.ptfxOffy, info.ptfxOffz, info.ptfxrotx, info.ptfxroty, info.ptfxrotz, info.ptfxscale, false, false, false, 0, 0, 0, 0)
-                    type5:sleep(50)
                     while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
                         STREAMING.REQUEST_ANIM_DICT(info.dict)
                         coroutine.yield()
@@ -1842,20 +1861,22 @@ YimActions:add_imgui(function()
             elseif info.type == 6 then
                     cleanup()
                     script.run_in_fiber(function()
-                        while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
-                            STREAMING.REQUEST_MODEL(info.prop1)
-                            coroutine.yield()
+                        if not disableProps then
+                            while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
+                                STREAMING.REQUEST_MODEL(info.prop1)
+                                coroutine.yield()
+                            end
+                            prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
+                            table.insert(spawned_props, prop1)
+                            ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, ped, boneIndex, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
+                            while not STREAMING.HAS_MODEL_LOADED(info.prop2) do
+                                STREAMING.REQUEST_MODEL(info.prop2)
+                                coroutine.yield()
+                            end
+                            prop2 = OBJECT.CREATE_OBJECT(info.prop2, 0.0, 0.0, 0.0, true, true, false)
+                            table.insert(spawned_props, prop2)
+                            ENTITY.ATTACH_ENTITY_TO_ENTITY(prop2, ped, PED.GET_PED_BONE_INDEX(ped, info.bone2), info.posx2, info.posy2, info.posz2, info.rotx2, info.roty2, info.rotz2, false, false, false, false, 2, true, 1)
                         end
-                        prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
-                        table.insert(spawned_props, prop1)
-                        ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, ped, boneIndex, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
-                        while not STREAMING.HAS_MODEL_LOADED(info.prop2) do
-                            STREAMING.REQUEST_MODEL(info.prop2)
-                            coroutine.yield()
-                        end
-                        prop2 = OBJECT.CREATE_OBJECT(info.prop2, 0.0, 0.0, 0.0, true, true, false)
-                        table.insert(spawned_props, prop2)
-                        ENTITY.ATTACH_ENTITY_TO_ENTITY(prop2, ped, PED.GET_PED_BONE_INDEX(ped, info.bone2), info.posx2, info.posy2, info.posz2, info.rotx2, info.roty2, info.rotz2, false, false, false, false, 2, true, 1)
                         while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
                             STREAMING.REQUEST_ANIM_DICT(info.dict)
                             coroutine.yield()
@@ -3100,6 +3121,8 @@ script.register_looped("playerID", function(playerID)
     else
         ped = spPed
     end
+    current_vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
+    is_car = VEHICLE.IS_THIS_MODEL_A_CAR(ENTITY.GET_ENTITY_MODEL(current_vehicle))
     playerID:yield()
 end)
 local ShiftDrift = false
@@ -3112,8 +3135,6 @@ local function resettokyodrift()
     shiftDriftToggled = false
 end
 tokyodrift:add_imgui(function()
-current_vehicle = PED.GET_VEHICLE_PED_IS_USING(ped)
-is_car = VEHICLE.IS_THIS_MODEL_A_CAR(ENTITY.GET_ENTITY_MODEL(current_vehicle))
 manufacturer = VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(current_vehicle))
 mfr_name = (manufacturer:lower():gsub("^%l", string.upper))
 vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current_vehicle))
