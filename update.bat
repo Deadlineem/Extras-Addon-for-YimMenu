@@ -1,5 +1,30 @@
 @ECHO OFF
 
+:: Set environment variables
+set "scriptFolder=%~dp0"
+set "updateScriptUrl=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/update.bat"
+
+:: Check for updates
+echo Checking Repository for updates to update.bat...
+powershell -command "& { Invoke-WebRequest -Uri '%updateScriptUrl%' -OutFile '%scriptFolder%update.bat.new' }"
+
+:: Compare the current script with the updated version
+fc "%scriptFolder%update.bat.new" "%scriptFolder%update.bat" >nul
+if errorlevel 1 (
+    echo Update found! Updating script...
+    move /y "%scriptFolder%update.bat.new" "%scriptFolder%update.bat" >nul
+    echo Script updated successfully!
+	echo "Returning to the main menu in 5 seconds."
+	timeout /t 5 /nobreak >nul
+) else (
+    echo No updates found.
+    del "%scriptFolder%update.bat.new" >nul
+	echo "Returning to the main menu in 5 seconds."
+	timeout /t 5 /nobreak >nul
+)
+:: Continue with the main script
+goto menu
+
 :menu
 echo "  ______   ______   ______   ______   ______   ______   ______ "
 echo " /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ "
