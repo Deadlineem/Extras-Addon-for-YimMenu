@@ -23,6 +23,7 @@ DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT O
 (More options may be added in future releases)
 ## How to Update Extras Addon/YimMenu
 
+(Make sure you have the latest update.bat, it does not update itself because its only a batch file.)
 1. Run `update.bat` and simply select the option, the application will download/install the latest versions of the addon and YimMenu for you.
 
 
