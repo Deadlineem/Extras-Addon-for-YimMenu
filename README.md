@@ -1,17 +1,18 @@
 ![Extras Addon for YimMenu](http://extrasaddon.us.to/img/extras-header-2.png)
 
-[![version](https://img.shields.io/badge/version-1.0.2-red.svg)](http://extrasaddon.us.to/)
+[![version](https://img.shields.io/badge/version-1.0.3-red.svg)](http://extrasaddon.us.to/)
 
 ## NOTE TO ALL USERS:
 
-### Make sure you Download the latest UPDATE.BAT and use/update the script with it to keep everything up to date!  There are new changes/additions OFTEN!
+### `Update.bat` now updates itself when its opened, so be sure you have the latest version!
 
 DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT OFF AND USE THEM AS THE CODES MAY CONFLICT AND CAUSE ISSUES.
 
 ## How to Use/Install
 
-1. To install the extras addon, simply download the `update.bat` from above; you do not need to download the entire zip folder!
-2. After downloading, double click `update.bat`, it will open with a prompt to select an option:
+1. To install the extras addon, simply download the [Update.bat](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat) you do not need to download the entire zip folder!
+
+2. After downloading, double click `update.bat`, it will check for updates to its own script every time its opened, after its finished, simply select an option:
    - Press 1 to Download/Install Extras Addon (Only use after you've installed/used YimMenu)
    - Press 2 to Download YimMenu (Goes to your Downloads folder)
    - Press 3 to Download FateInjector (Goes to your Downloads folder)
@@ -21,11 +22,11 @@ DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT O
    - Press 7 to Exit the Application
 
 (More options may be added in future releases)
-## How to Update Extras Addon/YimMenu
+## How to Update the update.bat
 
-(Make sure you have the latest update.bat, it does not update itself because its only a batch file.)
-1. Run `update.bat` and simply select the option, the application will download/install the latest versions of the addon and YimMenu for you.
+If you have the latest version (v1.0.3) of the update.bat, simply open it and it will update itself (You'll see it show "Checking Extras Repository for updates to update.bat..." at the top)
 
+If you do not have the latest version, you can get it Here -> [Update.bat](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat)
 
 ### NOTE:
 
