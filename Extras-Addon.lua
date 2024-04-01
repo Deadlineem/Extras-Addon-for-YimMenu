@@ -6261,15 +6261,26 @@ end)
 chatOpt:add_sameline()
 local isTeam = chatOpt:add_checkbox("Team Only")
 chatOpt:add_button("Send Message", function()
-    if isTeam:is_enabled() == false then
-        if chatBox ~= "" then
-            network.send_chat_message("[Extras Addon]: "..chatBox, false)
-        end
-    else
-        if chatBox ~= "" then
-            network.send_chat_message("[Extras Addon]: "..chatBox, true)
-        end
+	if isCooldown then
+        gui.show_message('Chat', "There is a delay before sending another chat message.")
+        return
     end
+
+    isCooldown = true
+	
+	script.run_in_fiber(function(chatMsg)
+        if isTeam:is_enabled() == false then
+            if chatBox ~= "" then
+                network.send_chat_message("[Extras Addon]: "..chatBox, false)
+            end
+        else
+            if chatBox ~= "" then
+                network.send_chat_message("[Extras Addon]: "..chatBox, true)
+            end
+        end
+        sleep(5)
+        isCooldown = false  -- Reset the cooldown after the delay
+    end)
 end)
 
 chatOpt:add_separator()
@@ -6290,19 +6301,52 @@ end)
 
 chatOpt:add_button("Send", function()
     if discordBox ~= "" then
-        network.send_chat_message("[Add My Discord]: "..discordBox, false)
+		if isCooldown then
+            gui.show_message('Chat', "There is a delay before sending another discord message.")
+            return
+        end
+
+        isCooldown = true
+
+        script.run_in_fiber(function(discordMsg)
+            network.send_chat_message("[Add My Discord]: "..discordBox, false)
+            sleep(5)
+            isCooldown = false  -- Reset the cooldown after the delay
+        end)
     end
 end)
 
 chatOpt:add_separator()
 chatOpt:add_button("Addon Info", function()
+	if isCooldown then
+        gui.show_message('Chat', "There is a delay before sending another addon info message.")
+        return
+    end
+
+    isCooldown = true
+
+    script.run_in_fiber(function(addonMsg)
         local ainfo = "Extras Addon for YimMenu v"..addonVersion..", find it on Github for FREE @ https://github.com/Deadlineem/Extras-Addon-for-YimMenu!"
         network.send_chat_message("[Lua Script]: "..ainfo, false)
+        sleep(5)
+        isCooldown = false  -- Reset the cooldown after the delay
+    end)
 end)
 chatOpt:add_sameline()
 chatOpt:add_button("Menu Info", function()
+	if isCooldown then
+        gui.show_message('Chat', "There is a delay before sending another menu info message.")
+        return
+    end
+
+    isCooldown = true
+
+    script.run_in_fiber(function(spawnClone)
         local binfo = "YimMenu version 1.68, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
         network.send_chat_message("[Menu]: "..binfo, false)
+        sleep(5)
+        isCooldown = false  -- Reset the cooldown after the delay
+    end)
 end)
 
 griefPlayerTab:add_text("Extras Addon v"..addonVersion.." - Player Options")
