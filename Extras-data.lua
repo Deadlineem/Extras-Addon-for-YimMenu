@@ -2670,21 +2670,33 @@ function RequestControl(entity, netID, ticks)
     end)
 end
 
-function entToNet(entity, netID)
+function entToNet(netID)
     script.run_in_fiber(function()
+      local retry = 0
+        while not NETWORK.NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID) do
+          NETWORK.NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netID)
+          coroutine.yield()
+          if retry > 150 then
+            return
+          else
+            retry = retry + 1
+          end
+        end
         if NETWORK.NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID) then
+            NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(netID)
             NETWORK.SET_NETWORK_ID_VISIBLE_IN_CUTSCENE(netID, false, true)
-            NETWORK.NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(entity, false)
-            NETWORK.SET_NETWORK_ID_ALWAYS_EXISTS_FOR_PLAYER(netID, ped, true)
-            NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, false)
         end
     end)
 end
 
-function playSelected(target, propPed, targetBone, targetCoords, targetHeading, targetForwardX, targetForwardY, targetBoneCoords)
+function playSelected(target, prop1, prop2, loopedFX, propPed, targetBone, targetCoords, targetHeading, targetForwardX, targetForwardY, targetBoneCoords, ent, propTable, ptfxTable)
     if info.type == 1 then
+      if ent == "self" then
         cleanup()
+      else
+        cleanupNPC()
+      end
         script.run_in_fiber(function()
             if not disableProps then
                 while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
@@ -2692,7 +2704,7 @@ function playSelected(target, propPed, targetBone, targetCoords, targetHeading, 
                     coroutine.yield()
                 end
                 prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, true)
-                table.insert(spawned_entities, prop1)
+                table.insert(propTable, prop1)
                 ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, target, targetBone, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
                 ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(prop1)
             end
@@ -2705,7 +2717,11 @@ function playSelected(target, propPed, targetBone, targetCoords, targetHeading, 
             is_playing_anim = true
         end)
     elseif info.type == 2 then
+      if ent == "self" then
         cleanup()
+      else
+        cleanupNPC()
+      end
         script.run_in_fiber(function(type2)
             while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(info.ptfxdict) do
                 STREAMING.REQUEST_NAMED_PTFX_ASSET(info.ptfxdict)
@@ -2721,9 +2737,14 @@ function playSelected(target, propPed, targetBone, targetCoords, targetHeading, 
             type2:sleep(info.ptfxdelay)
             GRAPHICS.USE_PARTICLE_FX_ASSET(info.ptfxdict)
             loopedFX = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(info.ptfxname, target, info.ptfxOffx, info.ptfxOffy, info.ptfxOffz, info.ptfxrotx, info.ptfxroty, info.ptfxrotz, targetBone, info.ptfxscale, false, false, false, 0, 0, 0, 0)
+            table.insert(ptfxTable, loopedFX)
         end)
     elseif info.type == 3 then
+      if ent == "self" then
         cleanup()
+      else
+        cleanupNPC()
+      end
         script.run_in_fiber(function()
             if not disableProps then
                 while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
@@ -2731,7 +2752,7 @@ function playSelected(target, propPed, targetBone, targetCoords, targetHeading, 
                     coroutine.yield()
                 end
                 prop1 = OBJECT.CREATE_OBJECT(info.prop1, targetCoords.x + targetForwardX /1.7, targetCoords.y + targetForwardY /1.7, targetCoords.z, true, true, false)
-                table.insert(spawned_entities, prop1)
+                table.insert(propTable, prop1)
                 ENTITY.SET_ENTITY_HEADING(prop1, targetHeading + info.rotz)
                 OBJECT.PLACE_OBJECT_ON_GROUND_PROPERLY(prop1)
                 ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(prop1)
@@ -2745,7 +2766,11 @@ function playSelected(target, propPed, targetBone, targetCoords, targetHeading, 
             is_playing_anim = true
         end)
     elseif info.type == 4 then
+      if ent == "self" then
         cleanup()
+      else
+        cleanupNPC()
+      end
         script.run_in_fiber(function(type4)
             if not disableProps then
                 while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
@@ -2753,8 +2778,8 @@ function playSelected(target, propPed, targetBone, targetCoords, targetHeading, 
                     coroutine.yield()
                 end
                 prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
-                table.insert(spawned_entities, prop1)
-                ENTITY.SET_ENTITY_Coords(prop1, targetBoneCoords.x + info.posx, targetBoneCoords.y + info.posy, targetBoneCoords.z + info.posz)
+                table.insert(propTable, prop1)
+                ENTITY.SET_ENTITY_COORDS(prop1, targetBoneCoords.x + info.posx, targetBoneCoords.y + info.posy, targetBoneCoords.z + info.posz)
                 type4:sleep(20)
                 OBJECT.PLACE_OBJECT_ON_GROUND_PROPERLY(prop1)
                 ENTITY.SET_ENTITY_COLLISION(prop1, info.propColl, info.propColl)
@@ -2769,7 +2794,11 @@ function playSelected(target, propPed, targetBone, targetCoords, targetHeading, 
             is_playing_anim = true
         end)
     elseif info.type == 5 then
+      if ent == "self" then
         cleanup()
+      else
+        cleanupNPC()
+      end
         script.run_in_fiber(function(type5)
             while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
                 STREAMING.REQUEST_ANIM_DICT(info.dict)
@@ -2783,7 +2812,7 @@ function playSelected(target, propPed, targetBone, targetCoords, targetHeading, 
                     coroutine.yield()
                 end
                 prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
-                table.insert(spawned_entities, prop1)
+                table.insert(propTable, prop1)
                 ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, target, targetBone, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
                 ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(prop1)
                 type5:sleep(50)
@@ -2798,75 +2827,87 @@ function playSelected(target, propPed, targetBone, targetCoords, targetHeading, 
             is_playing_anim = true
         end)
     elseif info.type == 6 then
-            cleanup()
-            script.run_in_fiber(function()
-                if not disableProps then
-                    while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
-                        STREAMING.REQUEST_MODEL(info.prop1)
-                        coroutine.yield()
-                    end
-                    prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
-                    table.insert(spawned_entities, prop1)
-                    ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, target, targetBone, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
-                    while not STREAMING.HAS_MODEL_LOADED(info.prop2) do
-                        STREAMING.REQUEST_MODEL(info.prop2)
-                        coroutine.yield()
-                    end
-                    prop2 = OBJECT.CREATE_OBJECT(info.prop2, 0.0, 0.0, 0.0, true, true, false)
-                    table.insert(spawned_entities, prop2)
-                    ENTITY.ATTACH_ENTITY_TO_ENTITY(prop2, target, PED.GET_PED_BONE_INDEX(target, info.bone2), info.posx2, info.posy2, info.posz2, info.rotx2, info.roty2, info.rotz2, false, false, false, false, 2, true, 1)
-                    ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(prop2)
-                end
-                while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
-                    STREAMING.REQUEST_ANIM_DICT(info.dict)
-                    coroutine.yield()
-                end
-                TASK.TASK_PLAY_ANIM(target, info.dict, info.anim, 4.0, -4.0, -1, flag, 1.0, false, false, false)
-                PED.SET_PED_CONFIG_FLAG(target, 179, true)
-                is_playing_anim = true
-            end)
+      if ent == "self" then
+        cleanup()
+      else
+        cleanupNPC()
+      end
+      script.run_in_fiber(function()
+          if not disableProps then
+              while not STREAMING.HAS_MODEL_LOADED(info.prop1) do
+                  STREAMING.REQUEST_MODEL(info.prop1)
+                  coroutine.yield()
+              end
+              prop1 = OBJECT.CREATE_OBJECT(info.prop1, 0.0, 0.0, 0.0, true, true, false)
+              table.insert(propTable, prop1)
+              ENTITY.ATTACH_ENTITY_TO_ENTITY(prop1, target, targetBone, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, false, false, false, 2, true, 1)
+              while not STREAMING.HAS_MODEL_LOADED(info.prop2) do
+                  STREAMING.REQUEST_MODEL(info.prop2)
+                  coroutine.yield()
+              end
+              prop2 = OBJECT.CREATE_OBJECT(info.prop2, 0.0, 0.0, 0.0, true, true, false)
+              table.insert(propTable, prop2)
+              ENTITY.ATTACH_ENTITY_TO_ENTITY(prop2, target, PED.GET_PED_BONE_INDEX(target, info.bone2), info.posx2, info.posy2, info.posz2, info.rotx2, info.roty2, info.rotz2, false, false, false, false, 2, true, 1)
+              ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(prop2)
+          end
+          while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
+              STREAMING.REQUEST_ANIM_DICT(info.dict)
+              coroutine.yield()
+          end
+          TASK.TASK_PLAY_ANIM(target, info.dict, info.anim, 4.0, -4.0, -1, flag, 1.0, false, false, false)
+          PED.SET_PED_CONFIG_FLAG(target, 179, true)
+          is_playing_anim = true
+      end)
     elseif info.type == 7 then
+      if ent == "self" then
         cleanup()
-        script.run_in_fiber(function()
-            if not disableProps then
-                while not STREAMING.HAS_MODEL_LOADED(info.pedHash) do
-                    STREAMING.REQUEST_MODEL(info.pedHash)
-                    coroutine.yield()
-                end
-                propPed = PED.CREATE_PED(info.pedType, info.pedHash, 0.0, 0.0, 0.0, 0.0, true, false)
-                ENTITY.ATTACH_ENTITY_TO_ENTITY(propPed, target, targetBone, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, true, false, true, 1, true, 1)
-                ENTITY.SET_ENTITY_INVINCIBLE(propPed, true)
-                table.insert(spawned_entities, propPed)
-                npcNetID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(propPed)
-                RequestControl(propPed, npcNetID, 250)
-                entToNet(propPed, npcNetID)
-                while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict2) do
-                    STREAMING.REQUEST_ANIM_DICT(info.dict2)
-                    coroutine.yield()
-                end
-                TASK.TASK_PLAY_ANIM(propPed, info.dict2, info.anim2, 4.0, -4.0, -1, flag, 1.0, false, false, false)
-                PED.SET_PED_CONFIG_FLAG(propPed, 179, true)
-                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(propPed, true)
-            end
-            while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
-                STREAMING.REQUEST_ANIM_DICT(info.dict)
-                coroutine.yield()
-            end
-            TASK.TASK_PLAY_ANIM(target, info.dict, info.anim, 4.0, -4.0, -1, flag, 1.0, false, false, false)
-            PED.SET_PED_CONFIG_FLAG(target, 179, true)
-            TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(propPed, true)
-            is_playing_anim = true
-        end)
+      else
+        cleanupNPC()
+      end
+      script.run_in_fiber(function()
+          if not disableProps then
+              while not STREAMING.HAS_MODEL_LOADED(info.pedHash) do
+                  STREAMING.REQUEST_MODEL(info.pedHash)
+                  coroutine.yield()
+              end
+              propPed = PED.CREATE_PED(info.pedType, info.pedHash, 0.0, 0.0, 0.0, 0.0, true, false)
+              ENTITY.ATTACH_ENTITY_TO_ENTITY(propPed, target, targetBone, info.posx, info.posy, info.posz, info.rotx, info.roty, info.rotz, false, true, false, true, 1, true, 1)
+              ENTITY.SET_ENTITY_INVINCIBLE(propPed, true)
+              table.insert(propTable, propPed)
+              npcNetID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(propPed)
+              RequestControl(propPed, npcNetID, 250)
+              entToNet(propPed, npcNetID)
+              while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict2) do
+                  STREAMING.REQUEST_ANIM_DICT(info.dict2)
+                  coroutine.yield()
+              end
+              TASK.TASK_PLAY_ANIM(propPed, info.dict2, info.anim2, 4.0, -4.0, -1, flag, 1.0, false, false, false)
+              PED.SET_PED_CONFIG_FLAG(propPed, 179, true)
+              PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(propPed, true)
+          end
+          while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
+              STREAMING.REQUEST_ANIM_DICT(info.dict)
+              coroutine.yield()
+          end
+          TASK.TASK_PLAY_ANIM(target, info.dict, info.anim, 4.0, -4.0, -1, flag, 1.0, false, false, false)
+          PED.SET_PED_CONFIG_FLAG(target, 179, true)
+          TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(propPed, true)
+          is_playing_anim = true
+      end)
     else
+      if ent == "self" then
         cleanup()
-        script.run_in_fiber(function()
-            while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
-                STREAMING.REQUEST_ANIM_DICT(info.dict)
-                coroutine.yield()
-            end
-            TASK.TASK_PLAY_ANIM(target, info.dict, info.anim, 4.0, -4.0, -1, flag, 0.0, false, false, false)
-            PED.SET_PED_CONFIG_FLAG(target, 179, true)
-            is_playing_anim = true
-        end)
+      else
+        cleanupNPC()
+      end
+      script.run_in_fiber(function()
+          while not STREAMING.HAS_ANIM_DICT_LOADED(info.dict) do
+              STREAMING.REQUEST_ANIM_DICT(info.dict)
+              coroutine.yield()
+          end
+          TASK.TASK_PLAY_ANIM(target, info.dict, info.anim, 4.0, -4.0, -1, flag, 0.0, false, false, false)
+          PED.SET_PED_CONFIG_FLAG(target, 179, true)
+          is_playing_anim = true
+      end)
     end
 end
