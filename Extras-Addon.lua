@@ -93,17 +93,11 @@ function newText(tab, text, size)
 end
 
 function RequestControl(entity)
-    local tick = 0
- 
-    local netID = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
- 
-    NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netID, true)
-    NETWORK.NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID)
-    while not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) and tick < 50 do
+    if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) then
+        local netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
+        NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
-        tick = tick + 1
     end
- 
     return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
 end
 
