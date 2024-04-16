@@ -1510,11 +1510,15 @@ local x = 0
 local counter = 0
 local clumsy = false
 local rod = false
-spawned_entities = {}
+plyrProps = {}
+npcProps = {}
+selfPTFX = {}
+npcPTFX = {}
 spawned_npcs = {}
 is_playing_anim = false
 is_playing_scenario = false
 disableProps = false
+npc_godMode = false
 local disableTooltips = false
 local phoneAnim = false
 local sprintInside = false
@@ -1681,11 +1685,9 @@ script.register_looped("follow ped", function(follow)
     for k, v in ipairs(spawned_npcs) do
         if ENTITY.DOES_ENTITY_EXIST(v) then
             if ENTITY.IS_ENTITY_DEAD(v) then
-                follow:sleep(2000)
-                PED.RESURRECT_PED(v)
-                TASK.CLEAR_PED_TASKS_IMMEDIATELY(v)
-                TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
-                PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(v, true)
+                follow:sleep(3000)
+                PED.DELETE_PED(v)
+                table.remove(spawned_npcs, k)
             elseif PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), true) and not PED.IS_PED_SITTING_IN_ANY_VEHICLE(v) then
                 veh = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
                 if VEHICLE.IS_VEHICLE_SEAT_FREE(veh, 0, 0) then
@@ -1747,21 +1749,29 @@ Yim_Actions:add_imgui(function()
         function cleanup()
             script.run_in_fiber(function()
                 TASK.CLEAR_PED_TASKS(self.get_ped())
-                GRAPHICS.STOP_PARTICLE_FX_LOOPED(loopedFX)
                 STREAMING.REMOVE_ANIM_DICT(info.dict)
                 STREAMING.REMOVE_NAMED_PTFX_ASSET(info.ptfxdict)
-                if ENTITY.DOES_ENTITY_EXIST(sexPed) then
-                    PED.DELETE_PED(sexPed)
-                end
-                if spawned_entities[1] ~= nil then
-                    for _, v in ipairs(spawned_entities) do
+                if plyrProps[1] ~= nil then
+                    for k, v in ipairs(plyrProps) do
                         script.run_in_fiber(function(script)
+                            if ENTITY.DOES_ENTITY_EXIST(v) then
+                                PED.DELETE_PED(v)
+                            end
                             if ENTITY.DOES_ENTITY_EXIST(v) then
                                 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(v)
                                 script:sleep(100)
                                 ENTITY.DELETE_ENTITY(v)
                             end
                         end)
+                        table.remove(plyrProps, k)
+                    end
+                end
+                if selfPTFX[1] ~= nil then
+                    for k, v in ipairs(selfPTFX) do
+                        script.run_in_fiber(function()
+                            GRAPHICS.STOP_PARTICLE_FX_LOOPED(v)
+                        end)
+                        table.remove(selfPTFX, k)
                     end
                 end
             end)
@@ -1778,7 +1788,7 @@ Yim_Actions:add_imgui(function()
             else
                 flag = info.flag
             end
-            playSelected(self.get_ped(), sexPed, boneIndex, coords, heading, forwardX, forwardY, bonecoords)
+            playSelected(self.get_ped(), selfprop1, selfprop2, selfloopedFX, selfSexPed, boneIndex, coords, heading, forwardX, forwardY, bonecoords, "self", plyrProps, selfPTFX)
             is_playing_anim = true
         end
         ImGui.SameLine()
@@ -1797,32 +1807,47 @@ Yim_Actions:add_imgui(function()
         widgetToolTip(false, "TIP: You can also stop animations by pressing [G] on keyboard or [DPAD LEFT] on controller.")
         ImGui.SameLine()
         local errCol = {}
-        if spawned_entities[1] ~= nil then
+        if plyrProps[1] ~= nil then
             errCol = {104, 247, 114, 0.2}
         else
             errCol = {225, 0, 0, 0.5}
         end
         if Button("Remove Attachments", {104, 247, 114, 0.6}, {104, 247, 114, 0.5}, errCol) then
-            if spawned_entities[1] ~= nil then
-                for k, v in ipairs(spawned_entities) do
-                    script.run_in_fiber(function()
-                        if ENTITY.DOES_ENTITY_EXIST(v) then
-                            ENTITY.DETACH_ENTITY(v)
-                            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(v)
-                            TASK.CLEAR_PED_TASKS(self.get_ped())
-                            TASK.CLEAR_PED_TASKS(npc)
-                            TASK.CLEAR_PED_TASKS(sexPed)
-                            TASK.CLEAR_PED_TASKS(sexPed2)
-                            is_playing_anim = false
-                        end
-                    end)
-                    table.remove(spawned_entities, k)
+            all_objects = entities.get_all_objects_as_handles()
+            for _, v in ipairs(all_objects) do
+                script.run_in_fiber(function()
+                    modelHash = ENTITY.GET_ENTITY_MODEL(v)
+                    attachedObject = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(self.get_ped(), modelHash)
+                    if ENTITY.DOES_ENTITY_EXIST(attachedObject) then
+                        ENTITY.DETACH_ENTITY(attachedObject)
+                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(attachedObject)
+                        TASK.CLEAR_PED_TASKS(self.get_ped())
+                    end
+                end)
+            end
+            all_peds = entities.get_all_peds_as_handles()
+            for _, p in ipairs(all_peds) do
+                script.run_in_fiber(function()
+                    pedHash = ENTITY.GET_ENTITY_MODEL(p)
+                    attachedPed = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(self.get_ped(), pedHash)
+                    if ENTITY.DOES_ENTITY_EXIST(attachedPed) then
+                        ENTITY.DETACH_ENTITY(attachedPed)
+                        TASK.CLEAR_PED_TASKS(self.get_ped())
+                        TASK.CLEAR_PED_TASKS(attachedPed)
+                        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(attachedPed)
+                    end
+                end)
+            end
+            is_playing_anim = false
+            if plyrProps[1] ~= nil then
+                for k, _ in ipairs(plyrProps) do
+                    plyrProps[k] = nil
                 end
             else
-                gui.show_error("Yim_Actions", "There are no attachments to remove!")
+                gui.show_error("YimActions", "There are no objects or peds attached.")
             end
         end
-        widgetToolTip(false, "Detaches any attached or stuck props/peds.\n(Only works on attachments from this script)")
+        widgetToolTip(false, "Detaches all props.")
         ImGui.Separator()
         ImGui.Text("Ragdoll Options:")
         ImGui.Spacing()
@@ -1877,25 +1902,38 @@ Yim_Actions:add_imgui(function()
                     TASK.CLEAR_PED_TASKS(v)
                     PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(v, true)
                 end
-                if spawned_entities[1] ~= nil then
-                    for _, b in ipairs(spawned_entities) do
+                if npcProps[1] ~= nil then
+                    for k, v in ipairs(npcProps) do
                         script.run_in_fiber(function(script)
-                            if ENTITY.DOES_ENTITY_EXIST(b) then
-                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(b)
+                            if ENTITY.DOES_ENTITY_EXIST(v) then
+                                PED.DELETE_PED(v)
+                            end
+                            if ENTITY.DOES_ENTITY_EXIST(v) then
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(v)
                                 script:sleep(100)
-                                ENTITY.DELETE_ENTITY(b)
+                                ENTITY.DELETE_ENTITY(v)
                             end
                         end)
+                        table.remove(npcProps, k)
                     end
                 end
-                if ENTITY.DOES_ENTITY_EXIST(sexPed2) then
-                    PED.DELETE_PED(sexPed2)
+                if ENTITY.DOES_ENTITY_EXIST(npcSexPed) then
+                    PED.DELETE_PED(npcSexPed)
                 end
-                GRAPHICS.STOP_PARTICLE_FX_LOOPED(loopedFX2)
+                if npcPTFX[1] ~= nil then
+                    for key, value in ipairs(npcPTFX) do
+                        script.run_in_fiber(function()
+                            GRAPHICS.STOP_PARTICLE_FX_LOOPED(value)
+                        end)
+                        table.remove(npcPTFX, key)
+                    end
+                end
                 STREAMING.REMOVE_ANIM_DICT(info.dict)
                 STREAMING.REMOVE_NAMED_PTFX_ASSET(info.ptfxdict)
             end)
         end
+        npc_godMode, used = ImGui.Checkbox("Invincible", npc_godMode, true)
+        widgetToolTip(false, "Spawn NPCs in godmode.")
         if ImGui.Button("Spawn") then
             script.run_in_fiber(function(script)
                 local pedCoords = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
@@ -1907,16 +1945,18 @@ Yim_Actions:add_imgui(function()
                     coroutine.yield()
                 end
                 npc = PED.CREATE_PED(npcData.group, npcData.hash, 0.0, 0.0, 0.0, 0.0, true, false)
-                ENTITY.SET_ENTITY_INVINCIBLE(npc, true)
                 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(npc, pedCoords.x + pedForwardX * 1.4, pedCoords.y + pedForwardY * 1.4, pedCoords.z, true, false, false)
                 ENTITY.SET_ENTITY_HEADING(npc, pedHeading - 180)
                 table.insert(spawned_npcs, npc)
                 npcNetID2 = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(npc)
-                RequestControl(npc, npcNetID2, 250)
+                controlled = entities.take_control_of(npc, 300)
                 script:sleep(500)
-                entToNet(npc, npcNetID2)
+                entToNet(npcNetID2)
                 TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(npc, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
                 PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(npc, true)
+                if npc_godMode then
+                    ENTITY.SET_ENTITY_INVINCIBLE(npc, true)
+                end
             end)
         end
         ImGui.SameLine()
@@ -1929,6 +1969,7 @@ Yim_Actions:add_imgui(function()
                 end
             end)
         end
+        ImGui.SameLine()
         if ImGui.Button(" Play On NPC ") then
             if spawned_npcs[1] ~= nil then
                 for _, v in ipairs(spawned_npcs) do
@@ -1944,7 +1985,7 @@ Yim_Actions:add_imgui(function()
                         else
                             flag = info.flag
                         end
-                        playSelected(v, sexPed2, npcBoneIndex, npcCoords, npcHeading, npcForwardX, npcForwardY, npcBboneCoords)
+                        playSelected(v, npcprop1, npcprop2, npcloopedFX, npcSexPed, npcBoneIndex, npcCoords, npcHeading, npcForwardX, npcForwardY, npcBboneCoords, "npc", npcProps, npcPTFX)
                     end
                 end
             else
@@ -1971,9 +2012,14 @@ Yim_Actions:add_imgui(function()
             PED.SET_PED_RAGDOLL_ON_COLLISION(self.get_ped(), false)
             if is_playing_anim then
                 TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
-                GRAPHICS.STOP_PARTICLE_FX_LOOPED(loopedFX)
                 STREAMING.REMOVE_NAMED_PTFX_ASSET(info.ptfxdict)
                 STREAMING.REMOVE_ANIM_DICT(info.dict)
+                if selfPTFX ~= nil then
+                    for k, v in ipairs(selfPTFX) do
+                        GRAPHICS.STOP_PARTICLE_FX_LOOPED(v)
+                        table.remove(selfPTFX, k)
+                    end
+                end
             -- //fix player clipping through the ground after ending low-positioned anims//
                 local current_coords = ENTITY.GET_ENTITY_COORDS(self.get_ped())
                 if PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), false) then
@@ -1983,21 +2029,24 @@ Yim_Actions:add_imgui(function()
                     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self.get_ped(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
                 end
                 is_playing_anim = false
-                if spawned_entities[1] ~= nil then
-                    for _, v in ipairs(spawned_entities) do
+                if plyrProps[1] ~= nil then
+                    for k, v in ipairs(plyrProps) do
                         if ENTITY.DOES_ENTITY_EXIST(v) then
                             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(v)
                             script:sleep(100)
                             ENTITY.DELETE_ENTITY(v)
                         end
+                        table.remove(plyrProps, k)
                     end
                 end
             end
             if spawned_npcs[1] ~= nil then
-                for _, v in ipairs(spawned_npcs) do
+                cleanupNPC()
+                for k, v in ipairs(spawned_npcs) do
                     if ENTITY.DOES_ENTITY_EXIST(v) then
                         ENTITY.DELETE_ENTITY(v)
                     end
+                    table.remove(plyrProps, k)
                 end
             end
         end)
@@ -2006,9 +2055,14 @@ Yim_Actions:add_imgui(function()
             PED.SET_PED_RAGDOLL_ON_COLLISION(self.get_ped(), false)
             if is_playing_anim then
                 TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
-                GRAPHICS.STOP_PARTICLE_FX_LOOPED(loopedFX)
                 STREAMING.REMOVE_NAMED_PTFX_ASSET(info.ptfxdict)
                 STREAMING.REMOVE_ANIM_DICT(info.dict)
+                if selfPTFX ~= nil then
+                    for k, v in ipairs(selfPTFX) do
+                        GRAPHICS.STOP_PARTICLE_FX_LOOPED(v)
+                        table.remove(selfPTFX, k)
+                    end
+                end
             -- //fix player clipping through the ground after ending low-positioned anims//
                 local current_coords = ENTITY.GET_ENTITY_COORDS(self.get_ped())
                 if PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), false) then
@@ -2018,21 +2072,23 @@ Yim_Actions:add_imgui(function()
                     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self.get_ped(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
                 end
                 is_playing_anim = false
-                if spawned_entities[1] ~= nil then
-                    for _, v in ipairs(spawned_entities) do
+                if plyrProps[1] ~= nil then
+                    for k, v in ipairs(plyrProps) do
                         if ENTITY.DOES_ENTITY_EXIST(v) then
                             ENTITY.SET_ENTITY_AS_MISSION_ENTITY(v)
                             script:sleep(100)
                             ENTITY.DELETE_ENTITY(v)
                         end
+                        table.remove(plyrProps, k)
                     end
                 end
             end
             if spawned_npcs[1] ~= nil then
-                for _, v in ipairs(spawned_npcs) do
+                for k, v in ipairs(spawned_npcs) do
                     if ENTITY.DOES_ENTITY_EXIST(v) then
                         ENTITY.DELETE_ENTITY(v)
                     end
+                    table.remove(spawned_npcs, k)
                 end
             end
         end)
@@ -2125,6 +2181,8 @@ Yim_Actions:add_imgui(function()
         ImGui.PopItemWidth()
         ImGui.SameLine()
         local npcData = filteredNpcs[npc_index + 1]
+        npc_godMode, used = ImGui.Checkbox("Invincible", npc_godMode, true)
+        widgetToolTip(false, "Spawn NPCs in godmode.")
         if ImGui.Button("Spawn") then
             local pedCoords = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
             local pedHeading = ENTITY.GET_ENTITY_HEADING(self.get_ped())
@@ -2141,8 +2199,8 @@ Yim_Actions:add_imgui(function()
                 ENTITY.SET_ENTITY_HEADING(npc, pedHeading - 180)
                 table.insert(spawned_npcs, npc)
                 npcNetID2 = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(npc)
-                RequestControl(npc, npcNetID2, 250)
-                entToNet(npc, npcNetID2)
+                controlled = entities.take_control_of(npc, 300)
+                entToNet(npcNetID2)
                 TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(npc, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
                 PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(npc, true) --keeps them from acting like pussies and running away.
                 -- TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(npc, true) --complements the previous native but in this case it stops them from following the player.
@@ -2155,77 +2213,73 @@ Yim_Actions:add_imgui(function()
                     PED.DELETE_PED(npc)
                 end
                 for k, v in ipairs(spawned_npcs) do
+                    if ENTITY.DOES_ENTITY_EXIST(v) then
+                        ENTITY.DELETE_ENTITY(v)
+                    end
                     table.remove(spawned_npcs, k)
-                    ENTITY.DELETE_ENTITY(v) -- useless
                 end
             end)
         end
+        ImGui.SameLine()
         if ImGui.Button(" Play On NPC ") then
-            if ENTITY.DOES_ENTITY_EXIST(npc) then
+            if spawned_npcs[1] ~= nil then
                 if is_playing_anim then
-                    script.run_in_fiber(function()
-                        TASK.CLEAR_PED_TASKS(npc)
-                        ENTITY.DELETE_ENTITY(prop1)
-                        ENTITY.DELETE_ENTITY(prop2)
-                        GRAPHICS.STOP_PARTICLE_FX_LOOPED(loopedFX)
-                        if ENTITY.DOES_ENTITY_EXIST(sexPed) then
-                            PED.DELETE_PED(sexPed)
-                        end
-                    end)
+                    cleanupNPC()
                 end
                 local data = filteredScenarios[scenario_index+1]
-                local npcCoords = ENTITY.GET_ENTITY_COORDS(npc, false)
-                local npcHeading = ENTITY.GET_ENTITY_HEADING(npc)
-                local npcForwardX = ENTITY.GET_ENTITY_FORWARD_X(npc)
-                local npcForwardY = ENTITY.GET_ENTITY_FORWARD_Y(npc)
-                if data.name == "Cook On BBQ" then
-                    script.run_in_fiber(function()
-                        while not STREAMING.HAS_MODEL_LOADED(286252949) do
-                            STREAMING.REQUEST_MODEL(286252949)
-                            coroutine.yield()
-                        end
-                        bbq = OBJECT.CREATE_OBJECT(286252949, npcCoords.x + (npcForwardX), npcCoords.y + (npcForwardY), npcCoords.z, true, true, false)
-                        ENTITY.SET_ENTITY_HEADING(bbq, npcHeading)
-                        OBJECT.PLACE_OBJECT_ON_GROUND_PROPERLY(bbq)
-                        TASK.CLEAR_PED_TASKS_IMMEDIATELY(npc)
-                        TASK.TASK_START_SCENARIO_IN_PLACE(npc, data.scenario, -1, true)
-                        is_playing_scenario = true
-                    end)
-                else
-                    script.run_in_fiber(function()
-                        TASK.CLEAR_PED_TASKS_IMMEDIATELY(npc)
-                        TASK.TASK_START_SCENARIO_IN_PLACE(npc, data.scenario, -1, true)
-                        is_playing_scenario = true
-                        if ENTITY.DOES_ENTITY_EXIST(bbq) then
-                            ENTITY.DELETE_ENTITY(bbq)
-                        end
-                    end)
+                for _, v in ipairs(spawned_npcs) do
+                    local npcCoords = ENTITY.GET_ENTITY_COORDS(v, false)
+                    local npcHeading = ENTITY.GET_ENTITY_HEADING(v)
+                    local npcForwardX = ENTITY.GET_ENTITY_FORWARD_X(v)
+                    local npcForwardY = ENTITY.GET_ENTITY_FORWARD_Y(v)
+                    if data.name == "Cook On BBQ" then
+                        script.run_in_fiber(function()
+                            while not STREAMING.HAS_MODEL_LOADED(286252949) do
+                                STREAMING.REQUEST_MODEL(286252949)
+                                coroutine.yield()
+                            end
+                            bbq = OBJECT.CREATE_OBJECT(286252949, npcCoords.x + (npcForwardX), npcCoords.y + (npcForwardY), npcCoords.z, true, true, false)
+                            ENTITY.SET_ENTITY_HEADING(bbq, npcHeading)
+                            OBJECT.PLACE_OBJECT_ON_GROUND_PROPERLY(bbq)
+                            TASK.CLEAR_PED_TASKS_IMMEDIATELY(v)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(v, data.scenario, -1, true)
+                            is_playing_scenario = true
+                        end)
+                    else
+                        script.run_in_fiber(function()
+                            TASK.CLEAR_PED_TASKS_IMMEDIATELY(v)
+                            TASK.TASK_START_SCENARIO_IN_PLACE(v, data.scenario, -1, true)
+                            is_playing_scenario = true
+                            if ENTITY.DOES_ENTITY_EXIST(bbq) then
+                                ENTITY.DELETE_ENTITY(bbq)
+                            end
+                        end)
+                    end
                 end
             else
-                gui.show_error("Yim_Actions", "Spawn an NPC first!")
+                gui.show_error("YimActions", "Spawn an NPC first!")
             end
         end
         ImGui.SameLine()
-        if ImGui.Button("  Stop   ") then
+        if ImGui.Button("Stop NPC") then
             if is_playing_scenario then
                 script.run_in_fiber(function(script)
                     busyspinner("Stopping scenario...", 3)
-                        TASK.CLEAR_PED_TASKS(npc)
-                        TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(npc, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
-                        PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(npc, true)
-                        is_playing_scenario = false
-                        script:sleep(1000)
-                        HUD.BUSYSPINNER_OFF()
+                    for _, v in ipairs(spawned_npcs) do
+                        TASK.CLEAR_PED_TASKS(v)
+                        TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
+                        PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(v, true)
+                    end
+                    is_playing_scenario = false
                     if ENTITY.DOES_ENTITY_EXIST(bbq) then
                         ENTITY.DELETE_ENTITY(bbq)
                     end
+                    script:sleep(800)
+                    HUD.BUSYSPINNER_OFF()
                 end)
             end
         end
         event.register_handler(menu_event.ScriptsReloaded, function()
-            if ENTITY.DOES_ENTITY_EXIST(npc) then
-                PED.DELETE_PED(npc)
-            end
             if is_playing_scenario then
                 TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
                 TASK.CLEAR_PED_TASKS_IMMEDIATELY(npc)
@@ -2233,18 +2287,30 @@ Yim_Actions:add_imgui(function()
                 if ENTITY.DOES_ENTITY_EXIST(bbq) then
                     ENTITY.DELETE_ENTITY(bbq)
                 end
+                if spawned_npcs[1] ~= nil then
+                    for k, v in ipairs(spawned_npcs) do
+                        if ENTITY.DOES_ENTITY_EXIST(v) then
+                            ENTITY.DELETE_ENTITY(v)
+                        end
+                        table.remove(spawned_npcs, k)
+                    end
+                end
             end
         end)
         event.register_handler(menu_event.MenuUnloaded, function()
-            if ENTITY.DOES_ENTITY_EXIST(npc) then
-                PED.DELETE_PED(npc)
-            end
             if is_playing_scenario then
                 TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
-                TASK.CLEAR_PED_TASKS_IMMEDIATELY(npc)
                 is_playing_scenario = false
                 if ENTITY.DOES_ENTITY_EXIST(bbq) then
                     ENTITY.DELETE_ENTITY(bbq)
+                end
+                if spawned_npcs[1] ~= nil then
+                    for k, v in ipairs(spawned_npcs) do
+                        if ENTITY.DOES_ENTITY_EXIST(v) then
+                            ENTITY.DELETE_ENTITY(v)
+                        end
+                        table.remove(spawned_npcs, k)
+                    end
                 end
             end
         end)
@@ -2277,15 +2343,17 @@ Yim_Actions:add_imgui(function()
         lockPick, used = ImGui.Checkbox("Use Lockpick Animation", lockPick, true)
         helpmarker(false, "When stealing vehicles, your character will use the lockpick animation instead of breaking the window.")
         usePlayKey, used = ImGui.Checkbox("Use Hotkeys For Animations", usePlayKey, true)
-        ImGui.SameLine(); ImGui.TextDisabled("(?)")
-        if ImGui.IsItemHovered() then
-            ImGui.SetNextWindowBgAlpha(0.75)
-            ImGui.BeginTooltip()
-            ImGui.PushTextWrapPos(ImGui.GetFontSize() * 20)
-            ImGui.TextWrapped("Select an animation from the list then use [DELETE] on Keyboard or [X] on Controller to play it while the menu is closed. You can also select the previous/next animation by pressing [PAGE DOWN] to go down the list and [PAGE UP] to go up.\nNOTE: For these hotkeys to work, you have to open Yim_Actions GUI at least once. Browsing the list while the menu is closed is currently not supported for controller.")
-            ImGui.PopTextWrapPos()
-            coloredText("EXPERIMENTAL: This is the only way to use hotkeys with YimMenu at the moment. This was annoying to implement and it will likely be buggy. If it causes issues for you, disable it from Settings. The stop animation hotkey won't be affected.", {240, 3, 50, 0.8})
-            ImGui.EndTooltip()
+        if not disableTooltips then
+            ImGui.SameLine(); ImGui.TextDisabled("(?)")
+            if ImGui.IsItemHovered() then
+                ImGui.SetNextWindowBgAlpha(0.75)
+                ImGui.BeginTooltip()
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 20)
+                ImGui.TextWrapped("Select an animation from the list then use [DELETE] on Keyboard or [X] on Controller to play it while the menu is closed. You can also select the previous/next animation by pressing [PAGE DOWN] to go down the list and [PAGE UP] to go up.\nNOTE: For these hotkeys to work, you have to open Yim_Actions GUI at least once. Browsing the list while the menu is closed is currently not supported for controller.")
+                ImGui.PopTextWrapPos()
+                coloredText("EXPERIMENTAL: This is the only way to use hotkeys with YimMenu at the moment. This was annoying to implement and it will likely be buggy. If it causes issues for you, disable it from Settings. The stop animation hotkey won't be affected.", {240, 3, 50, 0.8})
+                ImGui.EndTooltip()
+            end
         end
         ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing()
         ImGui.Separator()
