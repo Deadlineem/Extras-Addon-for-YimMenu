@@ -11,7 +11,7 @@ powershell -command "& { Invoke-WebRequest -Uri '%updateScriptUrl%' -OutFile '%s
 :: Compare the current script with the updated version
 fc "%scriptFolder%update.bat.new" "%scriptFolder%update.bat" >nul
 if errorlevel 1 (
-    echo Update found! Updating script...
+    echo Update found! Updating your update.bat to the latest version...
     move /y "%scriptFolder%update.bat.new" "%scriptFolder%update.bat" >nul
     echo Script updated successfully!
 	echo "Returning to the main menu in 5 seconds."
@@ -170,9 +170,9 @@ if not exist "%destinationFolder2%\YimMenu.dll" (
     echo "Error: Failed to download YimMenu. Check the internet connection or the source URL."
 ) else (
     echo "YimMenu downloaded successfully. File Location: %destinationFolder2%\YimMenu.dll"
-    echo "Returning to the main menu in 10 seconds."
+    echo "Returning to the main menu in 5 seconds."
 )
-timeout /t 10 /nobreak >nul
+timeout /t 5 /nobreak >nul
 cls
 goto menu
 
@@ -200,9 +200,9 @@ if not exist "%destinationFolder3%\FateInjector.exe" (
     echo "Error: Failed to download FateInjector. Check the internet connection or the source URL."
 ) else (
     echo "FateInjector downloaded successfully. File Location: %destinationFolder3%\FateInjector.exe"
-    echo "Returning to the main menu in 10 seconds."
+    echo "Returning to the main menu in 5 seconds."
 )
-timeout /t 10 /nobreak >nul
+timeout /t 5 /nobreak >nul
 cls
 goto menu
 
@@ -229,7 +229,7 @@ start "XML Maps" "https://mega.nz/folder/BnM2jQoT#Lb6MG4m24nGv0GkNGsD3sQ"
 cscript //nologo BringToFront.vbs
 echo To use these, download the file as zip and extract the corresponding contents to %APPDATA%\YimMenu\xml_maps and xml_vehicles
 echo Returning to Optional Downloads Menu
-timeout /t 10 /nobreak >nul
+timeout /t 5 /nobreak >nul
 goto optional_downloads
 
 :download_file_2
@@ -248,9 +248,9 @@ cls
 		echo "Error: Failed to download Animations. Check the internet connection or the source URL."
 	) else (
 		echo "Extras Addon downloaded successfully. File Location: %APPDATA%\YimMenu\animDictsCompact.json"
-		echo "Returning to the main menu in 10 seconds."
+		echo "Returning to the main menu in 5 seconds."
 	)
-	timeout /t 10 /nobreak >nul
+	timeout /t 5 /nobreak >nul
 	cls
 	goto optional_downloads
 
