@@ -2590,6 +2590,70 @@ casino_heist_weapons       = 0
 casino_heist_cars          = 0
 casino_heist_masks         = 0
 
+casino_gui:add_text("Lucky Wheel")
+casino_gui:add_button("Give Podium Vehicle", function ()
+    script.run_in_fiber(function (script)
+        if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 18)
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+        end
+    end)
+end)
+casino_gui:add_sameline()
+casino_gui:add_button("Give Mystery Prize", function ()
+    script.run_in_fiber(function (script)
+        if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 11)
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+        end
+    end)
+end)
+casino_gui:add_sameline()
+casino_gui:add_button("Give $50,000", function ()
+    script.run_in_fiber(function (script)
+        if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 19)
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+        end
+    end)
+end)
+casino_gui:add_sameline()
+casino_gui:add_button("Give 25,000 Chips", function ()
+    script.run_in_fiber(function (script)
+        if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 15)
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+        end
+    end)
+end)
+casino_gui:add_button("Give 15,000RP", function ()
+    script.run_in_fiber(function (script)
+        if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 17)
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+        end
+    end)
+end)
+casino_gui:add_sameline()
+casino_gui:add_button("Give Discount", function ()
+    script.run_in_fiber(function (script)
+        if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 4)
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+        end
+    end)
+end)
+casino_gui:add_sameline()
+casino_gui:add_button("Give Clothing", function ()
+    script.run_in_fiber(function (script)
+        if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 8)
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+        end
+    end)
+end)
+
+casino_gui:add_separator()
 casino_gui:add_text("Slots")
 bypass_casino_bans = casino_gui:add_checkbox("Bypass Casino Cooldown")
 casino_gui:add_sameline()
