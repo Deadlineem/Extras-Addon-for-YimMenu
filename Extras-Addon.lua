@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 1.0.3
+        Addon Version: 1.0.4
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
-local addonVersion = "1.0.3"
+local addonVersion = "1.0.4"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -2548,36 +2548,37 @@ end)
 -- CasinoPacino - gir489returns
 casino_gui = Money:add_tab("Casino")
 
-blackjack_cards         = 112
-blackjack_table_players = 1772
-blackjack_decks         = 846
- 
-three_card_poker_cards           = blackjack_cards
-three_card_poker_table           = 745
+blackjack_cards              = 114
+blackjack_decks              = 846
+blackjack_table_players      = 1774
+blackjack_table_players_size = 8
+
+three_card_poker_table           = 747
+three_card_poker_table_size      = 9
+three_card_poker_cards           = 114
 three_card_poker_current_deck    = 168
-three_card_poker_anti_cheat      = 1034
+three_card_poker_anti_cheat      = 1036
 three_card_poker_anti_cheat_deck = 799
 three_card_poker_deck_size       = 55
- 
-roulette_master_table   = 120
+
+roulette_master_table   = 122
 roulette_outcomes_table = 1357
 roulette_ball_table     = 153
- 
-slots_random_results_table = 1344
- 
-prize_wheel_win_state   = 276
+
+slots_random_results_table = 1346
+slots_slot_machine_state   = 1636
+
+prize_wheel_win_state   = 278
 prize_wheel_prize       = 14
 prize_wheel_prize_state = 45
- 
-globals_tuneable        = 262145
- 
-casino_heist_cut        = 1971696
-casino_heist_cut_offset = 1497 + 736 + 92
-casino_heist_lester_cut = 28998
-casino_heist_gunman_cut = 29024
-casino_heist_driver_cut = 29029
-casino_heist_hacker_cut = 29035
- 
+
+gb_casino_heist_planning            = 1963945
+gb_casino_heist_planning_cut_offset = 1497 + 736 + 92
+
+fm_mission_controller_cart_grab       = 10253
+fm_mission_controller_cart_grab_speed = 14
+fm_mission_controller_cart_autograb   = true
+
 casino_heist_approach      = 0
 casino_heist_target        = 0
 casino_heist_last_approach = 0
@@ -2588,10 +2589,6 @@ casino_heist_hacker        = 0
 casino_heist_weapons       = 0
 casino_heist_cars          = 0
 casino_heist_masks         = 0
- 
-fm_mission_controller_cart_grab       = 10247
-fm_mission_controller_cart_grab_speed = 14
-fm_mission_controller_cart_autograb   = true
 
 casino_gui:add_text("Slots")
 bypass_casino_bans = casino_gui:add_checkbox("Bypass Casino Cooldown")
