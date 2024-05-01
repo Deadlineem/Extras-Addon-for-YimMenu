@@ -3543,8 +3543,9 @@ local endPollution = vSpawn:add_checkbox("No Pollution")
 endPollution:set_enabled(true)
 toolTip(vSpawn, "Sets the entity as no longer needed to prevent session pollution of invisible vehicles, turn this off ONLY for gifting cars to others")
 toolTip(vSpawn, "If you disable this, make sure you use the delete gun 'Self > Weapons > Custom gun (enabled) > Delete Gun' and delete the gifted car after its been driven into the garage")
--- Vehicle Gift Options
 
+-- Vehicle Gift Options
+giftedsucc = false
  
 function giftVehToPlayer(vehicle, playerId, playerName)
     if request_control(vehicle) then
@@ -3555,30 +3556,39 @@ function giftVehToPlayer(vehicle, playerId, playerName)
         DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
         DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
- 
-        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName)
+       
+        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName) 
+        giftedsucc = true
     else
         gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
+        giftedsucc = false
     end
 end
-
+ 
 -- Assuming gui provides a 'show_message' method
-local Gif = Veh:add_tab("Gifting")
- 
--- Assuming gui provides a 'add_button' method
+--local Gif = Veh:add_tab("Gifting")
+local Gif = gui.get_tab("") -- put in player options tab so ezer bc u have to click them to set as active player anyway -- wafflesgaming
 Gif:add_button("Gift Vehicle", function()
-    local selectedPlayer = network.get_selected_player()
  
-    -- Check if a player is selected
-    local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
-    local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+    script.run_in_fiber(function(script)
  
-    if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
-        local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
-        giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
-        --sleep(5)
-        --ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(targetVehicle)
-    end 
+        local selectedPlayer = network.get_selected_player()
+            
+        -- Check if a player is selected
+        local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+        local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+        
+        if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
+            local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+ 
+            repeat
+                giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
+                script:sleep(200) 
+            until(giftedsucc == true)
+ 
+            giftedsucc = false -- set false to make sure next gifted car doesnt instantly stop repeating when it should still be repeating
+        end 
+    end)
 end)
 toolTip(Gif, "Spam the gift button after following the Gifting Process until it reads Success to gift the vehicle.")
 Gif:add_sameline()
