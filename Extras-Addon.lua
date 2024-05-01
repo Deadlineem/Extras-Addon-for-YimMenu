@@ -1,4 +1,4 @@
-local json = require('json')
+ json = require('json')
 
 --[[
 
@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 1.0.4
+        Addon Version: 1.0.5
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -25,18 +25,19 @@ ___________         __
 
 ]]--
 
-local addonVersion = "1.0.4"
+ addonVersion = "1.0.5"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
+giftPlayerTab = gui.get_tab("")
 
 -- Function to create a text element
-local function createText(tab, text)
+ function createText(tab, text)
     tab:add_text(text)
 end
 
 function sleep(seconds)
-    local start = os.clock()
+     start = os.clock()
     while os.clock() - start < seconds do
         -- Yield the CPU to avoid high CPU usage during the delay
         coroutine.yield()
@@ -94,7 +95,7 @@ end
 
 function RequestControl(entity)
     if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) then
-        local netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
+         netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
         NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
     end
@@ -103,7 +104,7 @@ end
 
 function request_control(entity)
     if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) then
-        local netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
+         netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
         NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
         NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
     end
@@ -122,7 +123,7 @@ function SessionChanger(session)
 end
 
 -- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
-local KAOS = gui.get_tab("Extras Addon")
+ KAOS = gui.get_tab("Extras Addon")
 require("Extras-data")
 newText(KAOS, "Welcome to Extras Addon v"..addonVersion.." please read the information below before proceeding to use the menu options.", 1)
 KAOS:add_separator()
@@ -143,10 +144,10 @@ createText(KAOS, "for your inputs on my comments, I have done alot of reading, s
 createText(KAOS, "Brought to you by - DeadlineEm & USBMenus")
 
 -- Player Options Tab
-local Pla = KAOS:add_tab("Player Options")
+ Pla = KAOS:add_tab("Player Options")
 
 -- Movement Tab with Slider for Movement Speed
-local Mvmt = Pla:add_tab("Movement")
+ Mvmt = Pla:add_tab("Movement")
 
 runSpeed = 1
 Mvmt:add_imgui(function()
@@ -171,9 +172,9 @@ Mvmt:add_imgui(function()
 end)
 
 -- Fun Random Things
-local Fun = Pla:add_tab("Fun Self Options")
+ Fun = Pla:add_tab("Fun Self Options")
 Fun:add_text("PTFX")
-local fireworkLoop3 = Fun:add_checkbox("Firework (On/Off)")
+ fireworkLoop3 = Fun:add_checkbox("Firework (On/Off)")
 
 function load_fireworks()
     STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_indep_firework")
@@ -193,11 +194,11 @@ end
 script.register_looped("FireworkLoop3", function()
     if fireworkLoop3:is_enabled() == true then
         if load_fireworks() then
-            local localPlayerId = PLAYER.PLAYER_ID()
-                local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
+             PlayerId = PLAYER.PLAYER_ID()
+                 player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerId), true)
 
                 -- Get random color values
-                local colorR, colorG, colorB = random_color()
+                 colorR, colorG, colorB = random_color()
                 test = player_coords.z - 1
                 GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework")
                 GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
@@ -208,7 +209,7 @@ script.register_looped("FireworkLoop3", function()
 end)
 toolTip(Fun, "Toggles Firework particle effect on your player")
 Fun:add_sameline()
-local smokeLoop = Fun:add_checkbox("Smoke (On/Off)")
+ smokeLoop = Fun:add_checkbox("Smoke (On/Off)")
 function load_smoke()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_sum2_hal")
@@ -227,11 +228,11 @@ end
 script.register_looped("SmokeLoop", function()
     if smokeLoop:is_enabled() == true then
         if load_smoke() then
-            local localPlayerId = PLAYER.PLAYER_ID()
-                local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
+             PlayerId = PLAYER.PLAYER_ID()
+                 player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerId), true)
 
                 -- Get random color values
-                local colorR, colorG, colorB = random_color()
+                 colorR, colorG, colorB = random_color()
                 test = player_coords.z - 2.0
                 GRAPHICS.USE_PARTICLE_FX_ASSET("scr_sum2_hal")
                 GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
@@ -242,7 +243,7 @@ script.register_looped("SmokeLoop", function()
 end)
 toolTip(Fun, "Toggles Smoke particle effect at your players feet")
 Fun:add_sameline()
-local flameLoop = Fun:add_checkbox("Flames (On/Off)")
+ flameLoop = Fun:add_checkbox("Flames (On/Off)")
 function load_flame()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_bike_adversary")
@@ -261,11 +262,11 @@ end
 script.register_looped("FlameLoop", function()
     if flameLoop:is_enabled() == true then
         if load_flame() then
-            local localPlayerId = PLAYER.PLAYER_ID()
-                local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(localPlayerId), true)
+             PlayerId = PLAYER.PLAYER_ID()
+                 player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PlayerId), true)
 
                 -- Get random color values
-                local colorR, colorG, colorB = random_color()
+                 colorR, colorG, colorB = random_color()
                 test = player_coords.z - 1
                 GRAPHICS.USE_PARTICLE_FX_ASSET("scr_bike_adversary")
                 GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
@@ -281,8 +282,8 @@ shootCB = Fun:add_checkbox("Gun PTFX (Banknotes)")
 script.register_looped("particles", function(shoot)
     if shootCB:is_enabled() then
         if PED.IS_PED_SHOOTING(PLAYER.PLAYER_PED_ID()) then
-            local weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
-            local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(weapon, "gun_muzzle")
+             weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
+             boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(weapon, "gun_muzzle")
             GRAPHICS.USE_PARTICLE_FX_ASSET("scr_rcbarry2")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE("muz_clown", weapon, 0.0, 0.0, 0.0, 90, 0, 0, boneId, 0.8, false, false, false)
         end
@@ -295,8 +296,8 @@ shootCB2 = Fun:add_checkbox("Gun PTFX (Blood)")
 script.register_looped("particles2", function(shootlol)
     if shootCB2:is_enabled() then
         if PED.IS_PED_SHOOTING(PLAYER.PLAYER_PED_ID()) then
-            local weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
-            local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(weapon, "gun_muzzle")
+             weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
+             boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(weapon, "gun_muzzle")
 
             GRAPHICS.USE_PARTICLE_FX_ASSET("scr_michael2")
             GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE("scr_mich2_blood_stab", weapon, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, boneId, 2.5, false, false, false)
@@ -309,22 +310,22 @@ vehCB = Fun:add_checkbox("Rear Wheel Flames")
 
 script.register_looped("particles3", function(wheelOne)
     if vehCB:is_enabled() then
-        local effect = "scr_bike_adversary"
+         effect = "scr_bike_adversary"
         while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect) do
             STREAMING.REQUEST_NAMED_PTFX_ASSET(effect)
             wheelOne:yield()
         end
-            --local weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
-        local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), true)
+            -- weapon = WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PLAYER.PLAYER_PED_ID(), 0)
+         vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), true)
         if ENTITY.IS_ENTITY_A_VEHICLE(vehicle) then
-            local class = VEHICLE.GET_VEHICLE_CLASS(vehicle)
+             class = VEHICLE.GET_VEHICLE_CLASS(vehicle)
             if class == 8 then
-                local boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- Rear Motorcycle Wheel
+                 boneId = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- Rear Motorcycle Wheel
                 GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneId, 2, false, false, false)
             else
-                local boneIdOne = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- left rear wheel
-                local boneIdTwo = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_rr") -- right rear wheel
+                 boneIdOne = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_lr") -- left rear wheel
+                 boneIdTwo = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "wheel_rr") -- right rear wheel
                 GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneIdOne, 2, false, false, false)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
@@ -335,8 +336,8 @@ script.register_looped("particles3", function(wheelOne)
 end)
 toolTip(Fun, "Toggles fire particle effects on your vehicles rear wheels")
 
-local effectNames = { "Alien Impact", "Clown Appears", "Blue Sparks", "Alien Disintegration", "Firey Particles" }
-local effects <const> = {
+ effectNames = { "Alien Impact", "Clown Appears", "Blue Sparks", "Alien Disintegration", "Firey Particles" }
+ local effects <const> = {
     {"scr_rcbarry1", "scr_alien_impact_bul", 1.0, 50},
     {"scr_rcbarry2", "scr_clown_appears", 0.3, 500},
     {"core", "ent_dst_elec_fire_sp", 1.0, 100},
@@ -345,22 +346,22 @@ local effects <const> = {
 }
 
 function newTimer()
-    local self = {
+     self = {
         start = os.clock(), -- Start time in seconds
         m_enabled = false,
     }
 
-    local function reset()
+     function reset()
         self.start = os.clock()
         self.m_enabled = true
     end
 
-    local function elapsed()
+     function elapsed()
         return (os.clock() - self.start) * 1000 -- Convert seconds to milliseconds
     end
 
-    local function disable() self.m_enabled = false end
-    local function isEnabled() return self.m_enabled end
+     function disable() self.m_enabled = false end
+     function isEnabled() return self.m_enabled end
 
     return {
         isEnabled = isEnabled,
@@ -371,8 +372,8 @@ function newTimer()
 end
 
 
-local selectedOpt = 1
-local lastEffect <const> = newTimer()
+ selectedOpt = 1
+ local lastEffect <const> = newTimer()
 
 tirePTFX = Fun:add_checkbox("Tire PTFX")
 Fun:add_sameline()
@@ -381,15 +382,15 @@ Fun:add_imgui(function()
 end)
 
 script.register_looped("tireptfx", function(tire) 
-    local effect = effects[selectedOpt + 1]
-    local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false)
+     effect = effects[selectedOpt + 1]
+     vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false)
     if tirePTFX:is_enabled() then
 
         if ENTITY.DOES_ENTITY_EXIST(vehicle) and not ENTITY.IS_ENTITY_DEAD(vehicle, false) and
         VEHICLE.IS_VEHICLE_DRIVEABLE(vehicle, false) and lastEffect.elapsed() > effect[4] then
             request_fx_asset(effect[1])
             for _, boneName in pairs({"wheel_lf", "wheel_lr", "wheel_rf", "wheel_rr"}) do
-                local bone = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, boneName)
+                 bone = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, boneName)
                 
                 GRAPHICS.USE_PARTICLE_FX_ASSET(effect[1])
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE(
@@ -440,7 +441,7 @@ Fun:add_imgui(function()
         ImGui.Text("Simulates Drunk Driving (Only when ``Make Me Drunk´´ is active).")
         ImGui.EndTooltip()
     end
-    local ped = PLAYER.PLAYER_PED_ID()
+     ped = PLAYER.PLAYER_PED_ID()
     if drunkLoop then
         script.run_in_fiber(function()
             while not STREAMING.HAS_CLIP_SET_LOADED("move_m@drunk@verydrunk") do
@@ -480,10 +481,10 @@ script.register_looped("drunk driving", function(script)
             gui.show_warning("Impairment:", "Activate ``Make Me Drunk´´ before using this effect.")
             drunkDriving = false
         else
-            local vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false)
+             vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false)
             if vehicle ~= 0 then
                 -- Apply random steering inputs
-                local randomSteering = math.random(-1, 1) -- Random value between -1 and 1
+                 randomSteering = math.random(-1, 1) -- Random value between -1 and 1
                 VEHICLE.SET_VEHICLE_STEER_BIAS(vehicle, randomSteering)
                 VEHICLE.SET_VEHICLE_STEERING_BIAS_SCALAR(vehicle, 100)
                 VEHICLE.SET_VEHICLE_HANDLING_OVERRIDE(vehicle, MISC.GET_HASH_KEY(vehicle))
@@ -495,7 +496,7 @@ script.register_looped("drunk driving", function(script)
 end)
 Fun:add_button("Remove Impairments", function()
     if drunkLoop then
-        local ped = PLAYER.PLAYER_PED_ID()
+         ped = PLAYER.PLAYER_PED_ID()
         PED.RESET_PED_MOVEMENT_CLIPSET(ped, 0.0)
         drunkLoop = false
         gui.show_message("Impairment Removed", "You are no longer impaired. Visual and movement effects are removed.")
@@ -510,7 +511,7 @@ toolTip(Fun, "Removes all impairments.")
 
     
 -- Stat Editor - Alestarov_Menu // Reset Stats Option
-local Stats = Pla:add_tab("Stats")
+ Stats = Pla:add_tab("Stats")
 Stats:add_text("Change Levels")
 Stats:add_button("Randomize RP", function()
     script.run_in_fiber(function (script)
@@ -521,7 +522,7 @@ Stats:add_button("Randomize RP", function()
         else
             MPX = "MP1_"
         end
-        local randomizeRP = math.random(1, 1787576850) -- 1 Rp to 1787576850 Rp (lvl 1 to 8000)
+         randomizeRP = math.random(1, 1787576850) -- 1 Rp to 1787576850 Rp (lvl 1 to 8000)
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
         gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP")
         sleep(1)
@@ -539,7 +540,7 @@ Stats:add_button("Lvl 1", function()
         else
             MPX = "MP1_"
         end
-        local rpLevel = 1 -- Level 1 -- https://www.unknowncheats.me/forum/2458458-post691.html
+         rpLevel = 1 -- Level 1 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 1, changing session and applying RP")
         sleep(1)
@@ -557,7 +558,7 @@ Stats:add_button("Lvl 100", function()
         else
             MPX = "MP1_"
         end
-        local rpLevel = 1584350 -- Level 100 -- https://www.unknowncheats.me/forum/2458458-post691.html
+         rpLevel = 1584350 -- Level 100 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 100, changing session and applying RP")
         sleep(1)
@@ -575,7 +576,7 @@ Stats:add_button("Lvl 420", function()
         else
             MPX = "MP1_"
         end
-        local rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
+         rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 420, changing session and applying RP")
         sleep(1)
@@ -593,7 +594,7 @@ Stats:add_button("Lvl 1337", function()
         else
             MPX = "MP1_"
         end
-        local rpLevel = 75185850 -- Level 1337 -- https://www.unknowncheats.me/forum/2458458-post691.html
+         rpLevel = 75185850 -- Level 1337 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 1337, changing session and applying RP")
         sleep(1)
@@ -611,7 +612,7 @@ Stats:add_button("Lvl 8000", function()
         else
             MPX = "MP1_"
         end
-        local rpLevel = 1787576850 -- Level 8000 -- https://www.unknowncheats.me/forum/2458458-post691.html
+         rpLevel = 1787576850 -- Level 8000 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 8000, changing session and applying RP")
         sleep(1)
@@ -728,13 +729,13 @@ function unlock_packed_bools(from, to)
     end
 end
 
-local current_objectives_global = 2359296
-local weekly_words_global = 2737646
-local objectives_state_global = 1574743
+ current_objectives_global = 2359296
+ weekly_words_global = 2737646
+ objectives_state_global = 1574743
 
 Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
     script.run_in_fiber(function (script)
-        local is_player_male = (ENTITY.GET_ENTITY_MODEL(PLAYER.PLAYER_PED_ID()) == joaat('mp_m_freemode_01'))
+         is_player_male = (ENTITY.GET_ENTITY_MODEL(PLAYER.PLAYER_PED_ID()) == joaat('mp_m_freemode_01'))
         unlock_packed_bools(110, 113) --Red Check Pajamas, Green Check Pajamas, Black Check Pajamas, I Heart LC T-shirt
         unlock_packed_bools(115, 115) --Roosevelt
         unlock_packed_bools(124, 124) --Sanctus
@@ -1380,7 +1381,7 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         stats.set_int("MPX_COUNT_HOTRING_RACE", 20) -- Liveries for hotring
         stats.set_int("MPX_FINISHED_SASS_RACE_TOP_3", 20) -- Trade price for hotring/everon2
         for i = 0, 2 do --Unlock all daily rewards.
-            local objective = globals.get_int(current_objectives_global + (1 + (0 * 5569)) + 681 + 4243 + (1 + (i * 3)))
+             objective = globals.get_int(current_objectives_global + (1 + (0 * 5569)) + 681 + 4243 + (1 + (i * 3)))
             globals.set_int(objectives_state_global + 1 + (1 + (i * 1)), objective)
         end
         globals.set_int(objectives_state_global, 1)
@@ -1391,8 +1392,8 @@ end)
 toolTip(Stats, "Unlocks everything in the game, untouched script by ShinyWasabi")
 
 -- Autorun Drops
-local Money = KAOS:add_tab("Money Options")
---local Drops = Money:add_tab("Drops")
+ Money = KAOS:add_tab("Money Options")
+-- Drops = Money:add_tab("Drops")
 
 
 --Drops:add_separator()
@@ -1401,10 +1402,10 @@ local Money = KAOS:add_tab("Money Options")
 
 -- Teleports tab - Credits to USBMenus https://github.com/Deadlineem/Extras-Addon-for-YimMenu/issues/9#issuecomment-1955881222
 
-local Tel = Pla:add_tab("Teleports")
+ Tel = Pla:add_tab("Teleports")
 
 -- Define your array with names and IDs
-local properties = {
+ properties = {
     {name = "Safehouse", id = 40}, {name = "Office", id = 475}, {name = "Arena", id = 643}, {name = "Bunker", id = 557}, {name = "Arcade", id = 740},
     {name = "Auto Shop", id = 779}, {name = "Agency", id = 826}, {name = "Clubhouse", id = 492}, {name = "Hangar", id = 569}, {name = "Facility", id = 590},
     {name = "Night Club", id = 614}, {name = "Freakshop", id = 847}, {name = "Salvage Yard", id = 867}, {name = "Eclipse Garage", id = 856}, {name = "Yacht", id = 455},
@@ -1413,15 +1414,15 @@ local properties = {
     -- Cayo Drainage = 768
 }
 
-local function findNearestBlip(propertyId)
-    local ped = PLAYER.PLAYER_PED_ID()
-    local minDistanceSquared = math.huge
-    local nearestBlipId = nil
-    local iterator = propertyId
-    local blipId = HUD.GET_FIRST_BLIP_INFO_ID(iterator)
+ function findNearestBlip(propertyId)
+     ped = PLAYER.PLAYER_PED_ID()
+     minDistanceSquared = math.huge
+     nearestBlipId = nil
+     iterator = propertyId
+     blipId = HUD.GET_FIRST_BLIP_INFO_ID(iterator)
     while blipId ~= 0 do
-        local blipCoords = HUD.GET_BLIP_COORDS(blipId)
-        local distanceSquared = MISC.GET_DISTANCE_BETWEEN_COORDS(ped, blipCoords.x, blipCoords.y, blipCoords.z, 1, 0, false)
+         blipCoords = HUD.GET_BLIP_COORDS(blipId)
+         distanceSquared = MISC.GET_DISTANCE_BETWEEN_COORDS(ped, blipCoords.x, blipCoords.y, blipCoords.z, 1, 0, false)
         if distanceSquared < minDistanceSquared and blipId ~= propertyId then
             minDistanceSquared = distanceSquared
             nearestBlipId = blipId
@@ -1432,15 +1433,15 @@ local function findNearestBlip(propertyId)
 end
 
 
-local function addBlips(array)
+ function addBlips(array)
     for k in pairs(array) do
         array[k] = nil
     end
     for _, property in ipairs(properties) do
-        local ped = PLAYER.PLAYER_PED_ID()
-        local nearestBlipId = findNearestBlip(property.id)
+         ped = PLAYER.PLAYER_PED_ID()
+         nearestBlipId = findNearestBlip(property.id)
         if nearestBlipId then
-            local blipCoords = HUD.GET_BLIP_COORDS(nearestBlipId)
+             blipCoords = HUD.GET_BLIP_COORDS(nearestBlipId)
             if property.id == 760 then
                 table.insert(array, {property.name, blipCoords.x, blipCoords.y, blipCoords.z + 8})
             elseif property.id == 740 then
@@ -1452,8 +1453,8 @@ local function addBlips(array)
     end
 end
 
-local locationIndex = 0
-local locationTypeIndex = 0
+ locationIndex = 0
+ locationTypeIndex = 0
 
 locationTypes = {"Custom", "Owned"}
 
@@ -1496,20 +1497,20 @@ Tel:add_imgui(function()
         ImGui.SetClipboardText(coordsString)
     end
 end)
-local Yim_Actions = Pla:add_tab("Samurai's Yim_Actions")
-local anim_index = 0
-local scenario_index = 0
-local npc_index = 0
-local switch = 0
-local filteredAnims = {}
-local filteredScenarios = {}
-local searchQuery = ""
-local is_typing = false
-local searchBar = true
-local x = 0
-local counter = 0
-local clumsy = false
-local rod = false
+ Yim_Actions = Pla:add_tab("Samurai's Yim_Actions")
+ anim_index = 0
+ scenario_index = 0
+ npc_index = 0
+ switch = 0
+ filteredAnims = {}
+ filteredScenarios = {}
+ searchQuery = ""
+ is_typing = false
+ searchBar = true
+ x = 0
+ counter = 0
+ clumsy = false
+ rod = false
 plyrProps = {}
 npcProps = {}
 selfPTFX = {}
@@ -1519,16 +1520,16 @@ is_playing_anim = false
 is_playing_scenario = false
 disableProps = false
 npc_godMode = false
-local disableTooltips = false
-local phoneAnim = false
-local sprintInside = false
-local lockPick = false
-local manualFlags = false
-local controllable = false
-local looped = false
-local upperbody = false
-local freeze = false
-local usePlayKey = false
+ disableTooltips = false
+ phoneAnim = false
+ sprintInside = false
+ lockPick = false
+ manualFlags = false
+ controllable = false
+ looped = false
+ upperbody = false
+ freeze = false
+ usePlayKey = false
 script.register_looped("game input", function()
         if is_typing then
             PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -1539,7 +1540,7 @@ script.register_looped("game input", function()
             stopButton = "[DPAD LEFT]"
         end
 end)
-local function updatefilteredAnims()
+ function updatefilteredAnims()
     filteredAnims = {}
     for _, anim in ipairs(animlist) do
         if string.find(string.lower(anim.name), string.lower(searchQuery)) then
@@ -1550,15 +1551,15 @@ local function updatefilteredAnims()
         return a.name < b.name
     end)
 end
-local function displayFilteredAnims()
+ function displayFilteredAnims()
     updatefilteredAnims()
-    local animNames = {}
+     animNames = {}
     for _, anim in ipairs(filteredAnims) do
         table.insert(animNames, anim.name)
     end
     anim_index, used = ImGui.ListBox("##animlistbox", anim_index, animNames, #filteredAnims)
 end
-local function updateNpcs()
+ function updateNpcs()
     filteredNpcs = {}
     for _, npc in ipairs(npcList) do
             table.insert(filteredNpcs, npc)
@@ -1567,15 +1568,15 @@ local function updateNpcs()
         return a.name < b.name
     end)
 end
-local function displayNpcs()
+ function displayNpcs()
     updateNpcs()
-    local npcNames = {}
+     npcNames = {}
     for _, npc in ipairs(filteredNpcs) do
         table.insert(npcNames, npc.name)
     end
     npc_index, used = ImGui.Combo("##npcList", npc_index, npcNames, #filteredNpcs)
 end
-local function setmanualflag()
+ function setmanualflag()
     if looped then
         flag_loop = 1
     else
@@ -1598,49 +1599,49 @@ local function setmanualflag()
     end
     flag = flag_loop + flag_freeze + flag_upperbody + flag_control
 end
-local function setdrunk()
+ function setdrunk()
     script.run_in_fiber(function()
         while not STREAMING.HAS_CLIP_SET_LOADED("MOVE_M@DRUNK@VERYDRUNK") do
             STREAMING.REQUEST_CLIP_SET("MOVE_M@DRUNK@VERYDRUNK")
             coroutine.yield()
         end
-        PED.SET_PED_MOVEMENT_CLIPSET(self.get_ped(), "MOVE_M@DRUNK@VERYDRUNK", 1.0)
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "MOVE_M@DRUNK@VERYDRUNK", 1.0)
     end)
 end
-local function sethoe()
+ function sethoe()
     script.run_in_fiber(function()
         while not STREAMING.HAS_CLIP_SET_LOADED("move_f@maneater") do
             STREAMING.REQUEST_CLIP_SET("move_f@maneater")
             coroutine.yield()
         end
-        PED.SET_PED_MOVEMENT_CLIPSET(self.get_ped(), "move_f@maneater", 1.0)
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "move_f@maneater", 1.0)
     end)
 end
-local function setcrouched()
+ function setcrouched()
     script.run_in_fiber(function()
         while not STREAMING.HAS_CLIP_SET_LOADED("move_ped_crouched") do
             STREAMING.REQUEST_CLIP_SET("move_ped_crouched")
             coroutine.yield()
         end
-        PED.SET_PED_MOVEMENT_CLIPSET(self.get_ped(), "move_ped_crouched", 0.3)
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "move_ped_crouched", 0.3)
     end)
 end
-local function setlester()
+ function setlester()
     script.run_in_fiber(function()
         while not STREAMING.HAS_CLIP_SET_LOADED("move_heist_lester") do
             STREAMING.REQUEST_CLIP_SET("move_heist_lester")
             coroutine.yield()
         end
-        PED.SET_PED_MOVEMENT_CLIPSET(self.get_ped(), "move_heist_lester", 0.4)
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "move_heist_lester", 0.4)
     end)
 end
-local function setballistic()
+ function setballistic()
     script.run_in_fiber(function()
         while not STREAMING.HAS_CLIP_SET_LOADED("anim_group_move_ballistic") do
             STREAMING.REQUEST_CLIP_SET("anim_group_move_ballistic")
             coroutine.yield()
         end
-        PED.SET_PED_MOVEMENT_CLIPSET(self.get_ped(), "anim_group_move_ballistic", 1)           
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "anim_group_move_ballistic", 1)           
     end)
 end
 function resetCheckBoxes()
@@ -1669,14 +1670,14 @@ end)
 script.register_looped("Ragdoll Loop", function(script)
     script:yield()
     if clumsy then
-        if PED.IS_PED_RAGDOLL(self.get_ped()) then
+        if PED.IS_PED_RAGDOLL(PLAYER.PLAYER_PED_ID()) then
             script:sleep(2500)
             return
         end
-        PED.SET_PED_RAGDOLL_ON_COLLISION(self.get_ped(), true)
+        PED.SET_PED_RAGDOLL_ON_COLLISION(PLAYER.PLAYER_PED_ID(), true)
     elseif rod then
         if PAD.IS_CONTROL_PRESSED(0, 252) then
-            PED.SET_PED_TO_RAGDOLL(self.get_ped(), 1500, 0, 0, false)
+            PED.SET_PED_TO_RAGDOLL(PLAYER.PLAYER_PED_ID(), 1500, 0, 0, false)
         end
     end
     script:yield()
@@ -1688,8 +1689,8 @@ script.register_looped("follow ped", function(follow)
                 follow:sleep(3000)
                 PED.DELETE_PED(v)
                 table.remove(spawned_npcs, k)
-            elseif PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), true) and not PED.IS_PED_SITTING_IN_ANY_VEHICLE(v) then
-                veh = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
+            elseif PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) and not PED.IS_PED_SITTING_IN_ANY_VEHICLE(v) then
+                veh = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
                 if VEHICLE.IS_VEHICLE_SEAT_FREE(veh, 0, 0) then
                     seat = 0
                 else
@@ -1698,10 +1699,10 @@ script.register_looped("follow ped", function(follow)
                 TASK.CLEAR_PED_TASKS_IMMEDIATELY(v)
                 TASK.TASK_ENTER_VEHICLE(v, veh, 20000, seat, 2.0, 16, 0)
                 follow:sleep(2000)
-            elseif PED.IS_PED_SITTING_IN_ANY_VEHICLE(v) and not PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), false) then
+            elseif PED.IS_PED_SITTING_IN_ANY_VEHICLE(v) and not PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), false) then
                 TASK.CLEAR_PED_TASKS(v)
                 TASK.TASK_LEAVE_VEHICLE(v, veh, 0)
-                TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
+                TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, PLAYER.PLAYER_PED_ID(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
                 PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(v, true)
             end
         end
@@ -1709,7 +1710,7 @@ script.register_looped("follow ped", function(follow)
     end
     
     if VEHICLE.IS_THIS_MODEL_A_BIKE(ENTITY.GET_ENTITY_MODEL(veh)) then
-        PED.SET_PED_CONFIG_FLAG(self.get_ped(), 424, true)
+        PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 424, true)
     end
 end)
 Yim_Actions:add_imgui(function()
@@ -1748,7 +1749,7 @@ Yim_Actions:add_imgui(function()
         end
         function cleanup()
             script.run_in_fiber(function()
-                TASK.CLEAR_PED_TASKS(self.get_ped())
+                TASK.CLEAR_PED_TASKS(PLAYER.PLAYER_PED_ID())
                 STREAMING.REMOVE_ANIM_DICT(info.dict)
                 STREAMING.REMOVE_NAMED_PTFX_ASSET(info.ptfxdict)
                 if plyrProps[1] ~= nil then
@@ -1777,36 +1778,36 @@ Yim_Actions:add_imgui(function()
             end)
         end
         if ImGui.Button("   Play   ") then
-            local coords = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
-            local heading = ENTITY.GET_ENTITY_HEADING(self.get_ped())
-            local forwardX = ENTITY.GET_ENTITY_FORWARD_X(self.get_ped())
-            local forwardY = ENTITY.GET_ENTITY_FORWARD_Y(self.get_ped())
-            local boneIndex = PED.GET_PED_BONE_INDEX(self.get_ped(), info.boneID)
-            local bonecoords = PED.GET_PED_BONE_COORDS(self.get_ped(), info.boneID)
+             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+             heading = ENTITY.GET_ENTITY_HEADING(PLAYER.PLAYER_PED_ID())
+             forwardX = ENTITY.GET_ENTITY_FORWARD_X(PLAYER.PLAYER_PED_ID())
+             forwardY = ENTITY.GET_ENTITY_FORWARD_Y(PLAYER.PLAYER_PED_ID())
+             boneIndex = PED.GET_PED_BONE_INDEX(PLAYER.PLAYER_PED_ID(), info.boneID)
+             bonecoords = PED.GET_PED_BONE_COORDS(PLAYER.PLAYER_PED_ID(), info.boneID)
             if manualFlags then
                 setmanualflag()
             else
                 flag = info.flag
             end
-            playSelected(self.get_ped(), selfprop1, selfprop2, selfloopedFX, selfSexPed, boneIndex, coords, heading, forwardX, forwardY, bonecoords, "self", plyrProps, selfPTFX)
+            playSelected(PLAYER.PLAYER_PED_ID(), selfprop1, selfprop2, selfloopedFX, selfSexPed, boneIndex, coords, heading, forwardX, forwardY, bonecoords, "self", plyrProps, selfPTFX)
             is_playing_anim = true
         end
         ImGui.SameLine()
         if ImGui.Button("   Stop   ") then
-            if PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), false) then
+            if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), false) then
                 cleanup()
-                local veh = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
-                PED.SET_PED_INTO_VEHICLE(self.get_ped(), veh, -1)
+                 veh = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
+                PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), veh, -1)
             else
                 cleanup()
-                local current_coords = ENTITY.GET_ENTITY_COORDS(self.get_ped())
-                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self.get_ped(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
+                 current_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
             end
             is_playing_anim = false
         end
         widgetToolTip(false, "TIP: You can also stop animations by pressing [G] on keyboard or [DPAD LEFT] on controller.")
         ImGui.SameLine()
-        local errCol = {}
+         errCol = {}
         if plyrProps[1] ~= nil then
             errCol = {104, 247, 114, 0.2}
         else
@@ -1817,11 +1818,11 @@ Yim_Actions:add_imgui(function()
             for _, v in ipairs(all_objects) do
                 script.run_in_fiber(function()
                     modelHash = ENTITY.GET_ENTITY_MODEL(v)
-                    attachedObject = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(self.get_ped(), modelHash)
+                    attachedObject = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(PLAYER.PLAYER_PED_ID(), modelHash)
                     if ENTITY.DOES_ENTITY_EXIST(attachedObject) then
                         ENTITY.DETACH_ENTITY(attachedObject)
                         ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(attachedObject)
-                        TASK.CLEAR_PED_TASKS(self.get_ped())
+                        TASK.CLEAR_PED_TASKS(PLAYER.PLAYER_PED_ID())
                     end
                 end)
             end
@@ -1829,10 +1830,10 @@ Yim_Actions:add_imgui(function()
             for _, p in ipairs(all_peds) do
                 script.run_in_fiber(function()
                     pedHash = ENTITY.GET_ENTITY_MODEL(p)
-                    attachedPed = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(self.get_ped(), pedHash)
+                    attachedPed = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(PLAYER.PLAYER_PED_ID(), pedHash)
                     if ENTITY.DOES_ENTITY_EXIST(attachedPed) then
                         ENTITY.DETACH_ENTITY(attachedPed)
-                        TASK.CLEAR_PED_TASKS(self.get_ped())
+                        TASK.CLEAR_PED_TASKS(PLAYER.PLAYER_PED_ID())
                         TASK.CLEAR_PED_TASKS(attachedPed)
                         ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(attachedPed)
                     end
@@ -1865,10 +1866,10 @@ Yim_Actions:add_imgui(function()
         ImGui.Spacing()
         ImGui.Text("Movement Options:")
         ImGui.Spacing()
-        local isChanged = false
+         isChanged = false
         switch, isChanged = ImGui.RadioButton("Normal", switch, 0)
         if isChanged then
-            PED.RESET_PED_MOVEMENT_CLIPSET(self.get_ped(), 0.0)
+            PED.RESET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), 0.0)
             isChanged = false
         end
         ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine()
@@ -1895,7 +1896,7 @@ Yim_Actions:add_imgui(function()
         displayNpcs()
         ImGui.PopItemWidth()
         ImGui.SameLine()
-        local npcData = filteredNpcs[npc_index + 1]
+         npcData = filteredNpcs[npc_index + 1]
         function cleanupNPC()
             script.run_in_fiber(function()
                 for _, v in ipairs(spawned_npcs) do
@@ -1936,10 +1937,10 @@ Yim_Actions:add_imgui(function()
         widgetToolTip(false, "Spawn NPCs in godmode.")
         if ImGui.Button("Spawn") then
             script.run_in_fiber(function(script)
-                local pedCoords = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
-                local pedHeading = ENTITY.GET_ENTITY_HEADING(self.get_ped())
-                local pedForwardX = ENTITY.GET_ENTITY_FORWARD_X(self.get_ped())
-                local pedForwardY = ENTITY.GET_ENTITY_FORWARD_Y(self.get_ped())
+                 pedCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+                 pedHeading = ENTITY.GET_ENTITY_HEADING(PLAYER.PLAYER_PED_ID())
+                 pedForwardX = ENTITY.GET_ENTITY_FORWARD_X(PLAYER.PLAYER_PED_ID())
+                 pedForwardY = ENTITY.GET_ENTITY_FORWARD_Y(PLAYER.PLAYER_PED_ID())
                 while not STREAMING.HAS_MODEL_LOADED(npcData.hash) do
                     STREAMING.REQUEST_MODEL(npcData.hash)
                     coroutine.yield()
@@ -1952,7 +1953,7 @@ Yim_Actions:add_imgui(function()
                 controlled = entities.take_control_of(npc, 300)
                 script:sleep(500)
                 entToNet(npcNetID2)
-                TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(npc, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
+                TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(npc, PLAYER.PLAYER_PED_ID(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
                 PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(npc, true)
                 if npc_godMode then
                     ENTITY.SET_ENTITY_INVINCIBLE(npc, true)
@@ -1974,12 +1975,12 @@ Yim_Actions:add_imgui(function()
             if spawned_npcs[1] ~= nil then
                 for _, v in ipairs(spawned_npcs) do
                     if ENTITY.DOES_ENTITY_EXIST(v) then
-                        local npcCoords = ENTITY.GET_ENTITY_COORDS(v, false)
-                        local npcHeading = ENTITY.GET_ENTITY_HEADING(v)
-                        local npcForwardX = ENTITY.GET_ENTITY_FORWARD_X(v)
-                        local npcForwardY = ENTITY.GET_ENTITY_FORWARD_Y(v)
-                        local npcBoneIndex = PED.GET_PED_BONE_INDEX(v, info.boneID)
-                        local npcBboneCoords = PED.GET_PED_BONE_COORDS(v, info.boneID)
+                         npcCoords = ENTITY.GET_ENTITY_COORDS(v, false)
+                         npcHeading = ENTITY.GET_ENTITY_HEADING(v)
+                         npcForwardX = ENTITY.GET_ENTITY_FORWARD_X(v)
+                         npcForwardY = ENTITY.GET_ENTITY_FORWARD_Y(v)
+                         npcBoneIndex = PED.GET_PED_BONE_INDEX(v, info.boneID)
+                         npcBboneCoords = PED.GET_PED_BONE_COORDS(v, info.boneID)
                         if manualFlags then
                             setmanualflag()
                         else
@@ -1997,10 +1998,10 @@ Yim_Actions:add_imgui(function()
             cleanupNPC()
             for _, v in ipairs(spawned_npcs) do
                 script.run_in_fiber(function()
-                    TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
+                    TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, PLAYER.PLAYER_PED_ID(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
                     PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(v, true)
                     if PED.IS_PED_IN_ANY_VEHICLE(v, false) then
-                        local veh = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
+                         veh = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
                         PED.SET_PED_INTO_VEHICLE(v, veh, 0)
                         PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(v, true)
                     end
@@ -2008,10 +2009,10 @@ Yim_Actions:add_imgui(function()
             end
         end
         event.register_handler(menu_event.ScriptsReloaded, function()
-            PED.RESET_PED_MOVEMENT_CLIPSET(self.get_ped(), 0.0)
-            PED.SET_PED_RAGDOLL_ON_COLLISION(self.get_ped(), false)
+            PED.RESET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), 0.0)
+            PED.SET_PED_RAGDOLL_ON_COLLISION(PLAYER.PLAYER_PED_ID(), false)
             if is_playing_anim then
-                TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
+                TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.PLAYER_PED_ID())
                 STREAMING.REMOVE_NAMED_PTFX_ASSET(info.ptfxdict)
                 STREAMING.REMOVE_ANIM_DICT(info.dict)
                 if selfPTFX ~= nil then
@@ -2021,12 +2022,12 @@ Yim_Actions:add_imgui(function()
                     end
                 end
             -- //fix player clipping through the ground after ending low-positioned anims//
-                local current_coords = ENTITY.GET_ENTITY_COORDS(self.get_ped())
-                if PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), false) then
-                    local veh = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
-                    PED.SET_PED_INTO_VEHICLE(self.get_ped(), veh, -1)
+                 current_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
+                if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), false) then
+                     veh = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
+                    PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), veh, -1)
                 else
-                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self.get_ped(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
                 end
                 is_playing_anim = false
                 if plyrProps[1] ~= nil then
@@ -2051,10 +2052,10 @@ Yim_Actions:add_imgui(function()
             end
         end)
         event.register_handler(menu_event.MenuUnloaded, function()
-            PED.RESET_PED_MOVEMENT_CLIPSET(self.get_ped(), 0.0)
-            PED.SET_PED_RAGDOLL_ON_COLLISION(self.get_ped(), false)
+            PED.RESET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), 0.0)
+            PED.SET_PED_RAGDOLL_ON_COLLISION(PLAYER.PLAYER_PED_ID(), false)
             if is_playing_anim then
-                TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
+                TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.PLAYER_PED_ID())
                 STREAMING.REMOVE_NAMED_PTFX_ASSET(info.ptfxdict)
                 STREAMING.REMOVE_ANIM_DICT(info.dict)
                 if selfPTFX ~= nil then
@@ -2064,12 +2065,12 @@ Yim_Actions:add_imgui(function()
                     end
                 end
             -- //fix player clipping through the ground after ending low-positioned anims//
-                local current_coords = ENTITY.GET_ENTITY_COORDS(self.get_ped())
-                if PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), false) then
-                    local veh = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
-                    PED.SET_PED_INTO_VEHICLE(self.get_ped(), veh, -1)
+                 current_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
+                if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), false) then
+                     veh = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
+                    PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), veh, -1)
                 else
-                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self.get_ped(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
+                    ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
                 end
                 is_playing_anim = false
                 if plyrProps[1] ~= nil then
@@ -2096,7 +2097,7 @@ Yim_Actions:add_imgui(function()
     end
     if ImGui.BeginTabItem("Scenarios") then
         ImGui.PushItemWidth(335)
-        local function updatefilteredScenarios()
+         function updatefilteredScenarios()
             filteredScenarios = {}
             for _, scene in ipairs(ped_scenarios) do
                 if string.find(string.lower(scene.name), string.lower(searchQuery)) then
@@ -2104,9 +2105,9 @@ Yim_Actions:add_imgui(function()
                 end
             end
         end
-        local function displayFilteredScenarios()
+         function displayFilteredScenarios()
             updatefilteredScenarios()
-            local scenarioNames = {}
+             scenarioNames = {}
             for _, scene in ipairs(filteredScenarios) do
                 table.insert(scenarioNames, scene.name)
             end
@@ -2117,7 +2118,7 @@ Yim_Actions:add_imgui(function()
         if ImGui.Button("   Play    ") then
             if is_playing_anim then
                 script.run_in_fiber(function()
-                    TASK.CLEAR_PED_TASKS(self.get_ped())
+                    TASK.CLEAR_PED_TASKS(PLAYER.PLAYER_PED_ID())
                     ENTITY.DELETE_ENTITY(prop1)
                     ENTITY.DELETE_ENTITY(prop2)
                     GRAPHICS.STOP_PARTICLE_FX_LOOPED(loopedFX)
@@ -2126,11 +2127,11 @@ Yim_Actions:add_imgui(function()
                     end
                 end)
             end
-            local data = filteredScenarios[scenario_index+1]
-            local coords = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
-            local heading = ENTITY.GET_ENTITY_HEADING(self.get_ped())
-            local forwardX = ENTITY.GET_ENTITY_FORWARD_X(self.get_ped())
-            local forwardY = ENTITY.GET_ENTITY_FORWARD_Y(self.get_ped())
+             data = filteredScenarios[scenario_index+1]
+             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+             heading = ENTITY.GET_ENTITY_HEADING(PLAYER.PLAYER_PED_ID())
+             forwardX = ENTITY.GET_ENTITY_FORWARD_X(PLAYER.PLAYER_PED_ID())
+             forwardY = ENTITY.GET_ENTITY_FORWARD_Y(PLAYER.PLAYER_PED_ID())
             if data.name == "Cook On BBQ" then
                 script.run_in_fiber(function()
                     while not STREAMING.HAS_MODEL_LOADED(286252949) do
@@ -2140,14 +2141,14 @@ Yim_Actions:add_imgui(function()
                     bbq = OBJECT.CREATE_OBJECT(286252949, coords.x + (forwardX), coords.y + (forwardY), coords.z, true, true, false)
                     ENTITY.SET_ENTITY_HEADING(bbq, heading)
                     OBJECT.PLACE_OBJECT_ON_GROUND_PROPERLY(bbq)
-                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
-                    TASK.TASK_START_SCENARIO_IN_PLACE(self.get_ped(), data.scenario, -1, true)
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.PLAYER_PED_ID())
+                    TASK.TASK_START_SCENARIO_IN_PLACE(PLAYER.PLAYER_PED_ID(), data.scenario, -1, true)
                     is_playing_scenario = true
                 end)
             else
                 script.run_in_fiber(function()
-                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
-                    TASK.TASK_START_SCENARIO_IN_PLACE(self.get_ped(), data.scenario, -1, true)
+                    TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.PLAYER_PED_ID())
+                    TASK.TASK_START_SCENARIO_IN_PLACE(PLAYER.PLAYER_PED_ID(), data.scenario, -1, true)
                     is_playing_scenario = true
                     if ENTITY.DOES_ENTITY_EXIST(bbq) then
                         ENTITY.DELETE_ENTITY(bbq)
@@ -2161,7 +2162,7 @@ Yim_Actions:add_imgui(function()
             if is_playing_scenario then
                 script.run_in_fiber(function(script)
                     busyspinner("Stopping scenario...", 3)
-                    TASK.CLEAR_PED_TASKS(self.get_ped())
+                    TASK.CLEAR_PED_TASKS(PLAYER.PLAYER_PED_ID())
                     is_playing_scenario = false
                     script:sleep(1000)
                     HUD.BUSYSPINNER_OFF()
@@ -2180,14 +2181,14 @@ Yim_Actions:add_imgui(function()
         displayNpcs()
         ImGui.PopItemWidth()
         ImGui.SameLine()
-        local npcData = filteredNpcs[npc_index + 1]
+         npcData = filteredNpcs[npc_index + 1]
         npc_godMode, used = ImGui.Checkbox("Invincible", npc_godMode, true)
         widgetToolTip(false, "Spawn NPCs in godmode.")
         if ImGui.Button("Spawn") then
-            local pedCoords = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
-            local pedHeading = ENTITY.GET_ENTITY_HEADING(self.get_ped())
-            local pedForwardX = ENTITY.GET_ENTITY_FORWARD_X(self.get_ped())
-            local pedForwardY = ENTITY.GET_ENTITY_FORWARD_Y(self.get_ped())
+             pedCoords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+             pedHeading = ENTITY.GET_ENTITY_HEADING(PLAYER.PLAYER_PED_ID())
+             pedForwardX = ENTITY.GET_ENTITY_FORWARD_X(PLAYER.PLAYER_PED_ID())
+             pedForwardY = ENTITY.GET_ENTITY_FORWARD_Y(PLAYER.PLAYER_PED_ID())
             script.run_in_fiber(function(script)
                 while not STREAMING.HAS_MODEL_LOADED(npcData.hash) do
                     STREAMING.REQUEST_MODEL(npcData.hash)
@@ -2201,7 +2202,7 @@ Yim_Actions:add_imgui(function()
                 npcNetID2 = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(npc)
                 controlled = entities.take_control_of(npc, 300)
                 entToNet(npcNetID2)
-                TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(npc, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
+                TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(npc, PLAYER.PLAYER_PED_ID(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
                 PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(npc, true) --keeps them from acting like pussies and running away.
                 -- TASK.TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(npc, true) --complements the previous native but in this case it stops them from following the player.
             end)
@@ -2226,12 +2227,12 @@ Yim_Actions:add_imgui(function()
                 if is_playing_anim then
                     cleanupNPC()
                 end
-                local data = filteredScenarios[scenario_index+1]
+                 data = filteredScenarios[scenario_index+1]
                 for _, v in ipairs(spawned_npcs) do
-                    local npcCoords = ENTITY.GET_ENTITY_COORDS(v, false)
-                    local npcHeading = ENTITY.GET_ENTITY_HEADING(v)
-                    local npcForwardX = ENTITY.GET_ENTITY_FORWARD_X(v)
-                    local npcForwardY = ENTITY.GET_ENTITY_FORWARD_Y(v)
+                     npcCoords = ENTITY.GET_ENTITY_COORDS(v, false)
+                     npcHeading = ENTITY.GET_ENTITY_HEADING(v)
+                     npcForwardX = ENTITY.GET_ENTITY_FORWARD_X(v)
+                     npcForwardY = ENTITY.GET_ENTITY_FORWARD_Y(v)
                     if data.name == "Cook On BBQ" then
                         script.run_in_fiber(function()
                             while not STREAMING.HAS_MODEL_LOADED(286252949) do
@@ -2267,7 +2268,7 @@ Yim_Actions:add_imgui(function()
                     busyspinner("Stopping scenario...", 3)
                     for _, v in ipairs(spawned_npcs) do
                         TASK.CLEAR_PED_TASKS(v)
-                        TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
+                        TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, PLAYER.PLAYER_PED_ID(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
                         PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(v, true)
                     end
                     is_playing_scenario = false
@@ -2281,7 +2282,7 @@ Yim_Actions:add_imgui(function()
         end
         event.register_handler(menu_event.ScriptsReloaded, function()
             if is_playing_scenario then
-                TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
+                TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.PLAYER_PED_ID())
                 TASK.CLEAR_PED_TASKS_IMMEDIATELY(npc)
                 is_playing_scenario = false
                 if ENTITY.DOES_ENTITY_EXIST(bbq) then
@@ -2299,7 +2300,7 @@ Yim_Actions:add_imgui(function()
         end)
         event.register_handler(menu_event.MenuUnloaded, function()
             if is_playing_scenario then
-                TASK.CLEAR_PED_TASKS_IMMEDIATELY(self.get_ped())
+                TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.PLAYER_PED_ID())
                 is_playing_scenario = false
                 if ENTITY.DOES_ENTITY_EXIST(bbq) then
                     ENTITY.DELETE_ENTITY(bbq)
@@ -2316,7 +2317,7 @@ Yim_Actions:add_imgui(function()
         end)
         ImGui.EndTabItem()
     end
-    local function progressBar()
+     function progressBar()
         x = x + 0.01
         if x > 1 then
             x = 1
@@ -2325,7 +2326,7 @@ Yim_Actions:add_imgui(function()
             progessMessage = "Please Wait..."
         end
     end
-    local function displayProgressBar()
+     function displayProgressBar()
         ImGui.Text(progessMessage)
         progressBar()
         ImGui.ProgressBar(x, 250, 25)
@@ -2386,27 +2387,27 @@ script.register_looped("side features", function(script)
     script:yield()
     if phoneAnim then
         if is_online then
-            if not ENTITY.IS_ENTITY_DEAD(self.get_ped()) then
-                PED.SET_PED_CONFIG_FLAG(self.get_ped(), 242, false)
-                PED.SET_PED_CONFIG_FLAG(self.get_ped(), 243, false)
-                PED.SET_PED_CONFIG_FLAG(self.get_ped(), 244, false)
+            if not ENTITY.IS_ENTITY_DEAD(PLAYER.PLAYER_PED_ID()) then
+                PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 242, false)
+                PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 243, false)
+                PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 244, false)
                 MOBILE.CELL_SET_INPUT(5)
             end
         end
     else
-        PED.SET_PED_CONFIG_FLAG(self.get_ped(), 242, true)
-        PED.SET_PED_CONFIG_FLAG(self.get_ped(), 243, true)
-        PED.SET_PED_CONFIG_FLAG(self.get_ped(), 244, true)
+        PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 242, true)
+        PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 243, true)
+        PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 244, true)
     end
     if sprintInside then
-        PED.SET_PED_CONFIG_FLAG(self.get_ped(), 427, true)
+        PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 427, true)
     else
-        PED.SET_PED_CONFIG_FLAG(self.get_ped(), 427, false)
+        PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 427, false)
     end
     if lockPick then
-        PED.SET_PED_CONFIG_FLAG(self.get_ped(), 426, true)
+        PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 426, true)
     else
-        PED.SET_PED_CONFIG_FLAG(self.get_ped(), 426, false)
+        PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 426, false)
     end
 end)
 script.register_looped("scenario hotkey", function(hotkey)
@@ -2415,9 +2416,9 @@ script.register_looped("scenario hotkey", function(hotkey)
         if PAD.IS_CONTROL_PRESSED(0, 47) then
             script.run_in_fiber(function(script)
                 busyspinner("Stopping scenario...", 3)
-                TASK.CLEAR_PED_TASKS(self.get_ped())
+                TASK.CLEAR_PED_TASKS(PLAYER.PLAYER_PED_ID())
                 TASK.CLEAR_PED_TASKS(npc)
-                TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(npc, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
+                TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(npc, PLAYER.PLAYER_PED_ID(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
                 script:sleep(1000)
                 HUD.BUSYSPINNER_OFF()
                 if ENTITY.DOES_ENTITY_EXIST(bbq) then
@@ -2471,20 +2472,20 @@ script.register_looped("animation hotkey", function(script)
         if spawned_npcs[1] ~= nil then
             if PAD.IS_CONTROL_PRESSED(0, 47) then
                 for k, v in ipairs(spawned_npcs) do
-                    if PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), false) then
-                        local veh = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
+                    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), false) then
+                         veh = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
                         cleanup()
-                        PED.SET_PED_INTO_VEHICLE(self.get_ped(), veh, -1)
+                        PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), veh, -1)
                         cleanupNPC()
                         PED.SET_PED_INTO_VEHICLE(v, veh, 0)
                     else
                         cleanup()
                         cleanupNPC()
-                        local current_coords = ENTITY.GET_ENTITY_COORDS(self.get_ped())
-                        local npc_coords = ENTITY.GET_ENTITY_COORDS(v)
-                        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(self.get_ped(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
+                         current_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
+                         npc_coords = ENTITY.GET_ENTITY_COORDS(v)
+                        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.PLAYER_PED_ID(), current_coords.x, current_coords.y, current_coords.z, true, false, false)
                         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(v, npc_coords.x, npc_coords.y, npc_coords.z, true, false, false)
-                        TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, self.get_ped(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
+                        TASK.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(v, PLAYER.PLAYER_PED_ID(), 0.5, 0.5, 0.0, -1, -1, 1.4, true)
                         PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(v, true)
                     end
                 end
@@ -2523,18 +2524,18 @@ script.register_looped("animation hotkey", function(script)
         if PAD.IS_CONTROL_PRESSED(0, 256) then
             if not is_playing_anim then
                 if info ~= nil then
-                    local coords = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
-                    local heading = ENTITY.GET_ENTITY_HEADING(self.get_ped())
-                    local forwardX = ENTITY.GET_ENTITY_FORWARD_X(self.get_ped())
-                    local forwardY = ENTITY.GET_ENTITY_FORWARD_Y(self.get_ped())
-                    local boneIndex = PED.GET_PED_BONE_INDEX(self.get_ped(), info.boneID)
-                    local bonecoords = PED.GET_PED_BONE_COORDS(self.get_ped(), info.boneID)
+                     coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+                     heading = ENTITY.GET_ENTITY_HEADING(PLAYER.PLAYER_PED_ID())
+                     forwardX = ENTITY.GET_ENTITY_FORWARD_X(PLAYER.PLAYER_PED_ID())
+                     forwardY = ENTITY.GET_ENTITY_FORWARD_Y(PLAYER.PLAYER_PED_ID())
+                     boneIndex = PED.GET_PED_BONE_INDEX(PLAYER.PLAYER_PED_ID(), info.boneID)
+                     bonecoords = PED.GET_PED_BONE_COORDS(PLAYER.PLAYER_PED_ID(), info.boneID)
                     if manualFlags then
                         setmanualflag()
                     else
                         flag = info.flag
                     end
-                    playSelected(self.get_ped(), sexPed, boneIndex, coords, heading, forwardX, forwardY, bonecoords)
+                    playSelected(PLAYER.PLAYER_PED_ID(), sexPed, boneIndex, coords, heading, forwardX, forwardY, bonecoords)
                     script:sleep(200)
                 end
             else
@@ -2594,8 +2595,8 @@ casino_gui:add_text("Lucky Wheel")
 casino_gui:add_button("Give Podium Vehicle", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 18)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 18)
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
         end
     end)
 end)
@@ -2603,8 +2604,8 @@ casino_gui:add_sameline()
 casino_gui:add_button("Give Mystery Prize", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 11)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 11)
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
         end
     end)
 end)
@@ -2612,8 +2613,8 @@ casino_gui:add_sameline()
 casino_gui:add_button("Give $50,000", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 19)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 19)
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
         end
     end)
 end)
@@ -2621,16 +2622,16 @@ casino_gui:add_sameline()
 casino_gui:add_button("Give 25,000 Chips", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 15)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 15)
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
         end
     end)
 end)
 casino_gui:add_button("Give 15,000RP", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 17)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 17)
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
         end
     end)
 end)
@@ -2638,8 +2639,8 @@ casino_gui:add_sameline()
 casino_gui:add_button("Give Discount", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 4)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 4)
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
         end
     end)
 end)
@@ -2647,8 +2648,8 @@ casino_gui:add_sameline()
 casino_gui:add_button("Give Clothing", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 8)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 8)
+            s.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
         end
     end)
 end)
@@ -2668,12 +2669,12 @@ set_dealers_poker_cards = casino_gui:add_checkbox("Force Dealer's Hand to Bad Be
 set_dealers_poker_cards:set_enabled(true)
  
 function set_poker_cards(player_id, players_current_table, card_one, card_two, card_three)
-    locals.set_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (1) + (player_id * 3), card_one)
-    locals.set_int("three_card_poker", (three_card_poker_anti_cheat) + (three_card_poker_anti_cheat_deck) + (1) + (1 + (players_current_table * three_card_poker_deck_size)) + (1) + (player_id * 3), card_one)
-    locals.set_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (2) + (player_id * 3), card_two)
-    locals.set_int("three_card_poker", (three_card_poker_anti_cheat) + (three_card_poker_anti_cheat_deck) + (1) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (player_id * 3), card_two)
-    locals.set_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (3) + (player_id * 3), card_three)
-    locals.set_int("three_card_poker", (three_card_poker_anti_cheat) + (three_card_poker_anti_cheat_deck) + (1) + (1 + (players_current_table * three_card_poker_deck_size)) + (3) + (player_id * 3), card_three)
+    s.set_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (1) + (player_id * 3), card_one)
+    s.set_int("three_card_poker", (three_card_poker_anti_cheat) + (three_card_poker_anti_cheat_deck) + (1) + (1 + (players_current_table * three_card_poker_deck_size)) + (1) + (player_id * 3), card_one)
+    s.set_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (2) + (player_id * 3), card_two)
+    s.set_int("three_card_poker", (three_card_poker_anti_cheat) + (three_card_poker_anti_cheat_deck) + (1) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (player_id * 3), card_two)
+    s.set_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (3) + (player_id * 3), card_three)
+    s.set_int("three_card_poker", (three_card_poker_anti_cheat) + (three_card_poker_anti_cheat_deck) + (1) + (1 + (players_current_table * three_card_poker_deck_size)) + (3) + (player_id * 3), card_three)
 end
  
 function get_cardname_from_index(card_index)
@@ -2681,9 +2682,9 @@ function get_cardname_from_index(card_index)
         return "Rolling"
     end
  
-    local card_number = math.fmod(card_index, 13)
-    local cardName = ""
-    local cardSuit = ""
+     card_number = math.fmod(card_index, 13)
+     cardName = ""
+     cardSuit = ""
  
     if card_number == 1 then
         cardName = "Ace"
@@ -2718,18 +2719,18 @@ dealers_card_gui_element = casino_gui:add_input_string("##dealers_card_gui_eleme
  
 casino_gui:add_button("Set Dealer's Hand To Bust", function()
     script.run_in_fiber(function (script)
-        local player_id = PLAYER.PLAYER_ID()
+         player_id = PLAYER.PLAYER_ID()
         while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 3, 0) ~= player_id do 
             network.force_script_host("blackjack")
             gui.show_message("CasinoPacino", "Taking control of the blackjack script.") --If you see this spammed, someone if fighting you for control.
             script:yield()
         end
-        local blackjack_table = locals.get_int("blackjack", blackjack_table_players + 1 + (player_id * 8) + 4) --The Player's current table he is sitting at.
+         blackjack_table = s.get_int("blackjack", blackjack_table_players + 1 + (player_id * 8) + 4) --The Player's current table he is sitting at.
         if blackjack_table ~= -1 then
-            locals.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 1, 11)
-            locals.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 2, 12)
-            locals.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 3, 13)
-            locals.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 12, 3)
+            s.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 1, 11)
+            s.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 2, 12)
+            s.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 3, 13)
+            s.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 12, 3)
         end
     end)
 end)
@@ -2738,7 +2739,7 @@ casino_gui:add_separator()
 casino_gui:add_text("Roulette")
 force_roulette_wheel = casino_gui:add_checkbox("Activate Roulette Rig")
 
-local player_id = PLAYER.PLAYER_ID()
+ player_id = PLAYER.PLAYER_ID()
 
         casVal = -1
         casino_gui:add_imgui(function()
@@ -2753,22 +2754,22 @@ casino_gui:add_text("Using these options are risky, especially if you use the co
  
 script.register_looped("Casino Pacino Thread", function (script)
     if force_poker_cards:is_enabled() then
-        local player_id = PLAYER.PLAYER_ID()
+         player_id = PLAYER.PLAYER_ID()
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("three_card_poker")) ~= 0 then
             while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 3, 0) ~= player_id do 
                 network.force_script_host("three_card_poker")
                 gui.show_message("CasinoPacino", "Taking control of the three_card_poker script.") --If you see this spammed, someone if fighting you for control.
                 script:sleep(500)
             end
-            local players_current_table = locals.get_int("three_card_poker", three_card_poker_table + 1 + (player_id * 9) + 2) --The Player's current table he is sitting at.
+             players_current_table = s.get_int("three_card_poker", three_card_poker_table + 1 + (player_id * 9) + 2) --The Player's current table he is sitting at.
             if (players_current_table ~= -1) then -- If the player is sitting at a poker table
-                local player_0_card_1 = locals.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (1) + (0 * 3))
-                local player_0_card_2 = locals.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (2) + (0 * 3))
-                local player_0_card_3 = locals.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (3) + (0 * 3))
+                 player_0_card_1 = s.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (1) + (0 * 3))
+                 player_0_card_2 = s.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (2) + (0 * 3))
+                 player_0_card_3 = s.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (3) + (0 * 3))
                 if player_0_card_1 ~= 50 or player_0_card_2 ~= 51 or player_0_card_3 ~= 52 then --Check if we need to overwrite the deck.
-                    local total_players = 0
+                     total_players = 0
                     for player_iter = 0, 31, 1 do
-                        local player_table = locals.get_int("three_card_poker", three_card_poker_table + 1 + (player_iter * 9) + 2)
+                         player_table = s.get_int("three_card_poker", three_card_poker_table + 1 + (player_iter * 9) + 2)
                         if player_iter ~= player_id and player_table == players_current_table then --An additional player is sitting at the user's table.
                             total_players = total_players + 1
                         end
@@ -2784,10 +2785,10 @@ script.register_looped("Casino Pacino Thread", function (script)
         end
     end
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("blackjack")) ~= 0 then
-        local dealers_card = 0
-        local blackjack_table = locals.get_int("blackjack", blackjack_table_players + 1 + (PLAYER.PLAYER_ID() * 8) + 4) --The Player's current table he is sitting at.
+         dealers_card = 0
+         blackjack_table = s.get_int("blackjack", blackjack_table_players + 1 + (PLAYER.PLAYER_ID() * 8) + 4) --The Player's current table he is sitting at.
         if blackjack_table ~= -1 then
-            dealers_card = locals.get_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 1) --Dealer's facedown card.
+            dealers_card = s.get_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 1) --Dealer's facedown card.
             dealers_card_gui_element:set_value(get_cardname_from_index(dealers_card))
         else
             dealers_card_gui_element:set_value("Not sitting at a Blackjack table.")
@@ -2796,7 +2797,7 @@ script.register_looped("Casino Pacino Thread", function (script)
         dealers_card_gui_element:set_value("Not in Casino.")
     end
     if force_roulette_wheel:is_enabled() then
-         local player_id = PLAYER.PLAYER_ID()
+          player_id = PLAYER.PLAYER_ID()
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casinoroulette")) ~= 0 then
             while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 3, 0) ~= player_id do 
                 network.force_script_host("casinoroulette")
@@ -2804,27 +2805,27 @@ script.register_looped("Casino Pacino Thread", function (script)
                 script:sleep(500)
             end
             for tabler_iter = 0, 6, 1 do
-                locals.set_int("casinoroulette", (roulette_master_table) + (roulette_outcomes_table) + (roulette_ball_table) + (tabler_iter), valz)
+                s.set_int("casinoroulette", (roulette_master_table) + (roulette_outcomes_table) + (roulette_ball_table) + (tabler_iter), valz)
                 gui.show_message("CasinoPacino Activated!", "Winning Number: "..valz)
             end
         end
     end
 
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_slots")) ~= 0 then
-        local needs_run = false
+         needs_run = false
         if rig_slot_machine:is_enabled() then
             for slots_iter = 3, 195, 1 do
                 if slots_iter ~= 67 and slots_iter ~= 132 then
-                    if locals.get_int("casino_slots", (slots_random_results_table) + (slots_iter)) ~= 6 then
+                    if s.get_int("casino_slots", (slots_random_results_table) + (slots_iter)) ~= 6 then
                         needs_run = true
                     end
                 end
             end
         else
-            local sum = 0
+             sum = 0
             for slots_iter = 3, 195, 1 do
                 if slots_iter ~= 67 and slots_iter ~= 132 then
-                    sum = sum + locals.get_int("casino_slots", (slots_random_results_table) + (slots_iter))
+                    sum = sum + s.get_int("casino_slots", (slots_random_results_table) + (slots_iter))
                 end
             end
             needs_run = sum == 1146
@@ -2832,12 +2833,12 @@ script.register_looped("Casino Pacino Thread", function (script)
         if needs_run then
             for slots_iter = 3, 195, 1 do
                 if slots_iter ~= 67 and slots_iter ~= 132 then
-                    local slot_result = 6
+                     slot_result = 6
                     if rig_slot_machine:is_enabled() == false then
                         math.randomseed(os.time()+slots_iter)
                         slot_result = math.random(0, 7)
                     end
-                    locals.set_int("casino_slots", (slots_random_results_table) + (slots_iter), slot_result)
+                    s.set_int("casino_slots", (slots_random_results_table) + (slots_iter), slot_result)
                 end
             end
         end
@@ -2887,7 +2888,7 @@ casino_gui:add_button("How To Bet", function()
     if dealers_card_gui_element:get_value() ~= "Not in Casino." then
         if force_roulette_wheel:is_enabled() then
             if casVal == -1 then 
-                local casVal = "00"
+                 casVal = "00"
                 network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
             else
                 network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
@@ -2919,7 +2920,7 @@ local TransactionManager <const> = {};
 TransactionManager.__index = TransactionManager
 
 function TransactionManager:New()
-    local self = setmetatable({}, TransactionManager);
+     self = setmetatable({}, TransactionManager);
 -- hashes for other loops in case you wanted to change the ones I added, or add more options.
     self.m_transactions = {
         {label = "15M (Bend Job Limited)", hash = 0x176D9D54},
@@ -2960,9 +2961,9 @@ function TransactionManager:TriggerTransaction(hash, amount)
     globals.set_int(4537212, 1)
 end
 
-local millLoop = Money:add_tab("Loops")
+ millLoop = Money:add_tab("Loops")
 millLoop:add_text("Money Loops (SEVERELY RISKY!)")
-local oneMillLoop = millLoop:add_checkbox("1M Loop")
+ oneMillLoop = millLoop:add_checkbox("1M Loop")
 script.register_looped("onemLoop", function(script)
     script:yield()
     if oneMillLoop:is_enabled() == true then
@@ -2976,7 +2977,7 @@ script.register_looped("onemLoop", function(script)
 end)
 toolTip(millLoop, "Runs a $1,000,000 loop, will run until its deactivated, does not add to earned or overall income.")
 millLoop:add_sameline()
-local twofiveMillLoop = millLoop:add_checkbox("2.5M Loop")
+ twofiveMillLoop = millLoop:add_checkbox("2.5M Loop")
 script.register_looped("twofmLoop", function(script)
     script:yield()
     if twofiveMillLoop:is_enabled() == true then
@@ -2990,7 +2991,7 @@ script.register_looped("twofmLoop", function(script)
 end)
 toolTip(millLoop, "Runs a $2,500,000 loop, (does not seem to loop)")
 millLoop:add_sameline()
-local threeSixMillLoop = millLoop:add_checkbox("3.6M Loop")
+ threeSixMillLoop = millLoop:add_checkbox("3.6M Loop")
 script.register_looped("threesmLoop", function(script)
     script:yield()
     if threeSixMillLoop:is_enabled() == true then
@@ -3004,7 +3005,7 @@ script.register_looped("threesmLoop", function(script)
 end)
 toolTip(millLoop, "Runs a $3,600,000 loop, (does not seem to loop)")
 millLoop:add_sameline()
-local sevenMillLoop = millLoop:add_checkbox("7M Loop")
+ sevenMillLoop = millLoop:add_checkbox("7M Loop")
 script.register_looped("sevenmLoop", function(script)
     script:yield()
     if sevenMillLoop:is_enabled() == true then
@@ -3018,7 +3019,7 @@ script.register_looped("sevenmLoop", function(script)
 end)
 toolTip(millLoop, "Runs a $7,000,000 loop, (does not seem to loop)")
 millLoop:add_sameline()
-local fifteenMillLoop = millLoop:add_checkbox("15M Loop")
+ fifteenMillLoop = millLoop:add_checkbox("15M Loop")
 script.register_looped("fifteenMLoop", function(script)
     script:yield()
     if fifteenMillLoop:is_enabled() == true then
@@ -3050,38 +3051,38 @@ toolTip(moneyRemover, "'Health and Ammo -> Ballistic Equipment Services -> Reque
 -- Object Spawner (Can be used negatively!) (Originally from Kuter Menu)
 
 -- Function to convert object names to hashes using joaat()
-local function getObjectHashes(names)
-    local hashes = {}
+ function getObjectHashes(names)
+     hashes = {}
     for _, name in ipairs(names) do
-        local hash = joaat(name)
+         hash = joaat(name)
         table.insert(hashes, hash)
     end
     return hashes
 end
 
 -- Get object hashes
-local objectHashes = getObjectHashes(objectNames)
+ objectHashes = getObjectHashes(objectNames)
 
-local Obje = KAOS:add_tab("Object Options")
-local Objets = Obje:add_tab("Spawner")
+ Obje = KAOS:add_tab("Object Options")
+ Objets = Obje:add_tab("Spawner")
 
-local orientationPitch = 0
-local orientationYaw = 0
-local orientationRoll = 0
-local spawnDistance = { x = 0, y = 0, z = 0 }
-local defaultOrientationPitch = 0
-local defaultOrientationYaw = 0
-local defaultOrientationRoll = 0
-local defaultSpawnDistance = { x = 0, y = 0, z = 0 }
+ orientationPitch = 0
+ orientationYaw = 0
+ orientationRoll = 0
+ spawnDistance = { x = 0, y = 0, z = 0 }
+ defaultOrientationPitch = 0
+ defaultOrientationYaw = 0
+ defaultOrientationRoll = 0
+ defaultSpawnDistance = { x = 0, y = 0, z = 0 }
 
-local defaultObjSpawnDistance = 3.0  -- Adjust this distance as needed
-local objSpawnDistance = 3.0  -- Adjust this distance as needed
+ defaultObjSpawnDistance = 3.0  -- Adjust this distance as needed
+ objSpawnDistance = 3.0  -- Adjust this distance as needed
 
-local previewAlpha = 175
-local defaultPreviewAlpha = 175
+ previewAlpha = 175
+ defaultPreviewAlpha = 175
 
 -- Function to reset sliders to default values
-local function resetSliders()
+ function resetSliders()
     orientationPitch = defaultOrientationPitch
     orientationYaw = defaultOrientationYaw
     orientationRoll = defaultOrientationRoll
@@ -3100,7 +3101,7 @@ Preview.__index = Preview
 ---@param modelHash Hash
 ---@return Preview
 function Preview.new(modelHash)
-    local self = setmetatable({}, Preview)
+     self = setmetatable({}, Preview)
     self.modelHash = modelHash
     return self
 end
@@ -3154,18 +3155,18 @@ toolTip(Objets, "Resets the positioning sliders to the default values")
 
 Objets:add_separator()
 -- Objects hashes/names, add to this list (top of file) to have more objects in your listbox on YimMenu
-local adultesItems = {}
+ adultesItems = {}
 
 for i, hash in ipairs(objectHashes) do
     table.insert(adultesItems, { hash = hash, nom = objectNames[i] })
 end
 
-local selectedObjectIndex = 0
+ selectedObjectIndex = 0
 
 Objets:add_text("Object Spawner")
 
 -- Add search input field
-local searchQuery = ""
+ searchQuery = ""
 Objets:add_imgui(function()
     if is_typing then
         PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -3179,10 +3180,10 @@ Objets:add_imgui(function()
 end)
 toolTip(Objets, "Search for an object to spawn (Example: container or cage)")
 
-local filteredItems = {}
+ filteredItems = {}
 
 -- Function to update filtered items based on search query
-local function updateFilteredItems()
+ function updateFilteredItems()
     filteredItems = {}
     for _, item in ipairs(adultesItems) do
         if string.find(string.lower(item.nom), string.lower(searchQuery)) then
@@ -3192,10 +3193,10 @@ local function updateFilteredItems()
 end
 
 -- Function to display the filtered list
-local function displayFilteredList()
+ function displayFilteredList()
     updateFilteredItems()
 
-    local itemNames = {}
+     itemNames = {}
     for _, item in ipairs(filteredItems) do
         table.insert(itemNames, item.nom)
     end
@@ -3223,27 +3224,27 @@ script.register_looped("objectsPreview", function()
         previewObjects:set_enabled(false)
     end
     if previewObjects:is_enabled() then
-        local selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
+         selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
         if selectedObjectInfo then
             -- Get the player's ped handle
-            local playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+             playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
 
             -- Get the player's current position and orientation
-            local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
-            local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
-            local forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
+             playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+             playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
+             forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
 
             -- Calculate the spawn distance and offset
-            local spawnOffsetX = objSpawnDistance * forwardVector.x
-            local spawnOffsetY = objSpawnDistance * forwardVector.y
+             spawnOffsetX = objSpawnDistance * forwardVector.x
+             spawnOffsetY = objSpawnDistance * forwardVector.y
 
             -- Calculate the spawn position based on the offset
-            local spawnX = playerPos.x + spawnOffsetX
-            local spawnY = playerPos.y + spawnOffsetY
-            local spawnZ = playerPos.z  -- Adjust the height if needed
+             spawnX = playerPos.x + spawnOffsetX
+             spawnY = playerPos.y + spawnOffsetY
+             spawnZ = playerPos.z  -- Adjust the height if needed
 
             -- Spawn the object at the calculated position
-            local objectHash = selectedObjectInfo.hash  -- Replace with the object hash or model name
+             objectHash = selectedObjectInfo.hash  -- Replace with the object hash or model name
             while not STREAMING.HAS_MODEL_LOADED(objectHash) do
                 STREAMING.REQUEST_MODEL(objectHash)
                 coroutine.yield()
@@ -3253,7 +3254,7 @@ script.register_looped("objectsPreview", function()
                 previewSpawned = false
             end
             if not previewSpawned then
-                local spawnedObject = OBJECT.CREATE_OBJECT(objectHash, spawnX, spawnY, spawnZ, true, true, false)
+                 spawnedObject = OBJECT.CREATE_OBJECT(objectHash, spawnX, spawnY, spawnZ, true, true, false)
                 ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(spawnedObject)
                 ENTITY.SET_ENTITY_ROTATION(spawnedObject, 0, 0, playerHeading, 2, true)  -- Adjust rotation if needed
                 ENTITY.SET_ENTITY_ALPHA(spawnedObject, 175, true)
@@ -3286,36 +3287,36 @@ end)
 
 Objets:add_button("Spawn Selected", function()
     script.run_in_fiber(function()
-        local selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
+         selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
         if selectedObjectInfo then
             -- Get the player's ped handle
-            local playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+             playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
             playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
 
             -- Get the player's current position and orientation
-            local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
-            local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
-            local forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
+             playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+             playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
+             forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
 
             -- Calculate the spawn distance and offset
-            local spawnOffsetX = objSpawnDistance * forwardVector.x
-            local spawnOffsetY = objSpawnDistance * forwardVector.y
+             spawnOffsetX = objSpawnDistance * forwardVector.x
+             spawnOffsetY = objSpawnDistance * forwardVector.y
 
             -- Calculate the spawn position based on the offset
-            local spawnX = playerPos.x + spawnOffsetX
-            local spawnY = playerPos.y + spawnOffsetY
-            local spawnZ = playerPos.z - 1.15  -- Adjust the height if needed
+             spawnX = playerPos.x + spawnOffsetX
+             spawnY = playerPos.y + spawnOffsetY
+             spawnZ = playerPos.z - 1.15  -- Adjust the height if needed
 
             -- Spawn the object at the calculated position
-            local objectHash = selectedObjectInfo.hash  -- Replace with the object hash or model name
+             objectHash = selectedObjectInfo.hash  -- Replace with the object hash or model name
             while not STREAMING.HAS_MODEL_LOADED(objectHash) do
                 STREAMING.REQUEST_MODEL(objectHash)
                 coroutine.yield()
             end
-            local spawnedObject = OBJECT.CREATE_OBJECT(objectHash, spawnX + spawnDistance.x, spawnY + spawnDistance.y, spawnZ + spawnDistance.z, true, true, false)
+             spawnedObject = OBJECT.CREATE_OBJECT(objectHash, spawnX + spawnDistance.x, spawnY + spawnDistance.y, spawnZ + spawnDistance.z, true, true, false)
             ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationRoll, orientationYaw, playerHeading + orientationPitch, 2, true)  -- Adjust rotation if needed
             --gui.show_message("Preview", "Moved ".. selectedObjectInfo.nom.. " to ".. tostring(spawnX).. ", ".. tostring(spawnY))
-            local net_id = NETWORK.OBJ_TO_NET(spawnedObject)
+             net_id = NETWORK.OBJ_TO_NET(spawnedObject)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
             gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(spawnedObject)
@@ -3388,24 +3389,24 @@ Objets:add_imgui(function()
 end)
 
 -- Vehicle Options Tab
-local Veh = KAOS:add_tab("Vehicle Options")
+ Veh = KAOS:add_tab("Vehicle Options")
 
 -- Vehicle Spawner
-local vSpawn = Veh:add_tab("Vehicle Spawner")
+ vSpawn = Veh:add_tab("Vehicle Spawner")
 
 -- Orientation sliders and Spawn X Y Z sliders
-local orientationPitch = 0
-local orientationYaw = 0
-local orientationRoll = 0
-local spawnDistance = { x = 0, y = 0, z = -1 }
-local defaultOrientationPitch = 0
-local defaultOrientationYaw = 0
-local defaultOrientationRoll = 0
-local defaultSpawnDistance = { x = 0, y = 0, z = -1 }
+ orientationPitch = 0
+ orientationYaw = 0
+ orientationRoll = 0
+ spawnDistance = { x = 0, y = 0, z = -1 }
+ defaultOrientationPitch = 0
+ defaultOrientationYaw = 0
+ defaultOrientationRoll = 0
+ defaultSpawnDistance = { x = 0, y = 0, z = -1 }
 
 
 -- Function to reset sliders to default values
-local function resetVehicleSliders()
+ function resetVehicleSliders()
     orientationPitch = defaultOrientationPitch
     orientationYaw = defaultOrientationYaw
     orientationRoll = defaultOrientationRoll
@@ -3450,7 +3451,7 @@ vSpawn:add_separator()
 -- Function to spawn the vehicle with specified orientation and spawn position
 function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
     script.run_in_fiber(function (script)
-        local load_counter = 0
+         load_counter = 0
         while STREAMING.HAS_MODEL_LOADED(vehicle_joaat) == false do
             STREAMING.REQUEST_MODEL(vehicle_joaat)
             script:yield()
@@ -3460,24 +3461,22 @@ function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
                 load_counter = load_counter + 1
             end
         end
-        local veh = VEHICLE.CREATE_VEHICLE(vehicle_joaat, pos.x, pos.y, pos.z, yaw, true, true, false)
+         veh = VEHICLE.CREATE_VEHICLE(vehicle_joaat, pos.x, pos.y, pos.z, yaw, true, true, false)
         -- Set vehicle orientation
         ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 2, true)
-        local networkId = NETWORK.VEH_TO_NET(veh)
+         networkId = NETWORK.VEH_TO_NET(veh)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
         end
-        if endPollution:is_enabled() then
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
-        end
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
     end)
 end
 
 -- Function to display the list of vehicle models with search functionality
-local searchQuery = ""
-local filteredVehicleModels = {}
+ searchQuery = ""
+ filteredVehicleModels = {}
 
-local function updateFilteredVehicleModels()
+ function updateFilteredVehicleModels()
     filteredVehicleModels = {}
     for _, model in ipairs(vehicleModels) do
         if string.find(string.lower(model), string.lower(searchQuery)) then
@@ -3486,9 +3485,9 @@ local function updateFilteredVehicleModels()
     end
 end
 
-local function displayVehicleModelsList()
+ function displayVehicleModelsList()
     updateFilteredVehicleModels()
-    local vehicleModelNames = {}
+     vehicleModelNames = {}
     for _, item in ipairs(filteredVehicleModels) do
         table.insert(vehicleModelNames, vehicles.get_vehicle_display_name(item))
     end
@@ -3516,18 +3515,22 @@ vSpawn:add_separator()
 -- Spawn Selected button with orientation and spawn position
 
 vSpawn:add_button("Spawn Selected", function()
-    local selectedModelIndex = selectedObjectIndex + 1
+     selectedModelIndex = selectedObjectIndex + 1
     if selectedModelIndex > 0 then
-        local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
+         selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
         if selectedVehicleModel then
-            local vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
-            local selPlayer = network.get_selected_player()
-            local targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
-            local playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
-            local playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
-            playerPos.x = playerPos.x + spawnDistance.x
-            playerPos.y = playerPos.y + spawnDistance.y
-            playerPos.z = playerPos.z + spawnDistance.z
+             vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
+             selPlayer = PLAYER.PLAYER_ID()
+             targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+             playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
+             -- Get the player's forward vector
+			playerForward = ENTITY.GET_ENTITY_FORWARD_VECTOR(targetPlayerPed)
+
+			playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
+			playerPos.x = playerPos.x + playerForward.x * spawnDistance.x
+			playerPos.y = playerPos.y + playerForward.y * spawnDistance.x
+			playerPos.z = playerPos.z + playerForward.z * spawnDistance.x
+
             spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
             gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
         end
@@ -3536,113 +3539,27 @@ vSpawn:add_button("Spawn Selected", function()
     end
 --end
 end)
-toolTip(vSpawn, "Spawns the vehicle on the selected player, if no player is selected, defaults to you")
+toolTip(vSpawn, "Spawns the selected vehicle")
 
-vSpawn:add_sameline()
-local endPollution = vSpawn:add_checkbox("No Pollution")
-endPollution:set_enabled(true)
-toolTip(vSpawn, "Sets the entity as no longer needed to prevent session pollution of invisible vehicles, turn this off ONLY for gifting cars to others")
-toolTip(vSpawn, "If you disable this, make sure you use the delete gun 'Self > Weapons > Custom gun (enabled) > Delete Gun' and delete the gifted car after its been driven into the garage")
-
--- Vehicle Gift Options
-giftedsucc = false
- 
-function giftVehToPlayer(vehicle, playerId, playerName)
-    if request_control(vehicle) then
-        local netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
- 
-        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 8)
-        DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
-        DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
-        DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
-        DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
-       
-        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName) 
-        giftedsucc = true
-    else
-        gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
-        giftedsucc = false
-    end
-end
- 
--- Assuming gui provides a 'show_message' method
---local Gif = Veh:add_tab("Gifting")
-local Gif = gui.get_tab("") -- put in player options tab so ezer bc u have to click them to set as active player anyway -- wafflesgaming
-Gif:add_button("Gift Vehicle", function()
- 
-    script.run_in_fiber(function(script)
- 
-        local selectedPlayer = network.get_selected_player()
-            
-        -- Check if a player is selected
-        local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
-        local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
-        
-        if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
-            local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
- 
-            repeat
-                giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
-                script:sleep(200) 
-            until(giftedsucc == true)
- 
-            giftedsucc = false -- set false to make sure next gifted car doesnt instantly stop repeating when it should still be repeating
-        end 
-    end)
-end)
-toolTip(Gif, "Spam the gift button after following the Gifting Process until it reads Success to gift the vehicle.")
-Gif:add_sameline()
-Gif:add_button("Get Vehicle Stats", function()
-    local selectedPlayer = network.get_selected_player()
-    local targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
- 
-    if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
-        last_veh = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
-    end 
- 
- 
-    if last_veh  then 
-        local playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
-        gui.show_message("Info", 
-            "user :"..PLAYER.GET_PLAYER_NAME(selectedPlayer).."->"..NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(selectedPlayer).."->".. joaat(playerName).."\n".. --NETWORK.GET_HASH_KEY(playerName).."\n"..
-            " Previous_Owner:"..DECORATOR.DECOR_GET_INT(last_veh , "Previous_Owner").."\n"..
-            " Vehicle Model:"..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(last_veh)).."\n"..
-            " Player_Vehicle:"..DECORATOR.DECOR_GET_INT(last_veh , "Player_Vehicle").."\n"..
-            " MPBitset:"..DECORATOR.DECOR_GET_INT(last_veh , "MPBitset").."\n"..
-            " Veh_Modded_By_Player:"..DECORATOR.DECOR_GET_INT(last_veh , "Veh_Modded_By_Player").."\n"..
-            " Not_Allow_As_Saved_Veh:"..DECORATOR.DECOR_GET_INT(last_veh , "Not_Allow_As_Saved_Veh"))
-    end  
-end)
-toolTip(Gif, "Checks to make sure the vehicle stats are what they need to be (Dev testing button)")
-Gif:add_separator()
-Gif:add_button("How To Gift Vehicles (Hover for tooltip!)", function()
-
-end)
-toolTip(Gif, "To gift vehicles, Make sure all the players vehicles are repaired/returned and that they have a full garage")
-toolTip(Gif, "Have them go into their full garage, drive a vehicle out and back into their garage, then come out on foot")
-toolTip(Gif, "Spawn the vehicle using Extras Addon's Vehicle Spawner (UNCHECK THE NO POLLUTION BOX!), optionally you can get inside and customize it using Yim's LS customs tab (DONT PRESS 'Start LS customs!)")
-toolTip(Gif, "Once you are done, get out and have them get in, then spam the Gift Vehicle button until it reads 'Success' at the top right")
-toolTip(Gif, "NOTE: Gifted vehicles SHOULD come fully insured, MAKE SURE THEY CHECK IT IN LS CUSTOMS!")
-
-local flatbedScript = Veh:add_tab("FlatbedScript")
+flatbedScript = Veh:add_tab("FlatbedScript")
 attached_vehicle = {}
-local debug = false
--- local validModel = false
-local modelOverride = false
+ debug = false
+--  validModel = false
+ modelOverride = false
 flatbedScript:add_imgui(function()
-    local vehicleHandles = entities.get_all_vehicles_as_handles()
-    local flatbedModel = 1353720154
-    local current_vehicle = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
-    local vehicle_model = ENTITY.GET_ENTITY_MODEL(current_vehicle)
-    local playerPosition = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
-    local playerForwardX = ENTITY.GET_ENTITY_FORWARD_X(self.get_ped())
-    local playerForwardY = ENTITY.GET_ENTITY_FORWARD_Y(self.get_ped())
--- local closestVehicle = VEHICLE.GET_CLOSEST_VEHICLE(playerPosition.x, playerPosition.y, playerPosition.z, 10.0, 0, 70) --doesn't return cop cars or occupied PVs.
+     vehicleHandles = entities.get_all_vehicles_as_handles()
+     flatbedModel = 1353720154
+     current_vehicle = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
+     vehicle_model = ENTITY.GET_ENTITY_MODEL(current_vehicle)
+     playerPosition = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+     playerForwardX = ENTITY.GET_ENTITY_FORWARD_X(PLAYER.PLAYER_PED_ID())
+     playerForwardY = ENTITY.GET_ENTITY_FORWARD_Y(PLAYER.PLAYER_PED_ID())
+--  closestVehicle = VEHICLE.GET_CLOSEST_VEHICLE(playerPosition.x, playerPosition.y, playerPosition.z, 10.0, 0, 70) --doesn't return cop cars or occupied PVs.
     for _, veh in ipairs(vehicleHandles) do
         script.run_in_fiber(function(script)
-            local detectPos = vec3:new(playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z)
-            local vehPos = ENTITY.GET_ENTITY_COORDS(veh, false)
-            local vDist = SYSTEM.VDIST(detectPos.x, detectPos.y, detectPos.z, vehPos.x, vehPos.y, vehPos.z)
+             detectPos = vec3:new(playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z)
+             vehPos = ENTITY.GET_ENTITY_COORDS(veh, false)
+             vDist = SYSTEM.VDIST(detectPos.x, detectPos.y, detectPos.z, vehPos.x, vehPos.y, vehPos.z)
             if vDist <= 5 then
                 closestVehicle = veh
             else
@@ -3652,10 +3569,10 @@ flatbedScript:add_imgui(function()
             end
         end)
     end
-    local closestVehicleModel = ENTITY.GET_ENTITY_MODEL(closestVehicle)
-    local is_car = VEHICLE.IS_THIS_MODEL_A_CAR(closestVehicleModel)
-    local is_bike = VEHICLE.IS_THIS_MODEL_A_BIKE(closestVehicleModel)
-    local closestVehicleName = vehicles.get_vehicle_display_name(closestVehicleModel)
+     closestVehicleModel = ENTITY.GET_ENTITY_MODEL(closestVehicle)
+     is_car = VEHICLE.IS_THIS_MODEL_A_CAR(closestVehicleModel)
+     is_bike = VEHICLE.IS_THIS_MODEL_A_BIKE(closestVehicleModel)
+     closestVehicleName = vehicles.get_vehicle_display_name(closestVehicleModel)
     if vehicle_model == flatbedModel then
         is_in_flatbed = true
     else
@@ -3716,7 +3633,7 @@ flatbedScript:add_imgui(function()
                         if controlled then
                             flatbedHeading = ENTITY.GET_ENTITY_HEADING(current_vehicle)
                             flatbedBone = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, "chassis_dummy")
-                            local vehicleClass = VEHICLE.GET_VEHICLE_CLASS(closestVehicle)
+                             vehicleClass = VEHICLE.GET_VEHICLE_CLASS(closestVehicle)
                             if vehicleClass == 1 then
                                 zAxis = 0.9
                                 yAxis = -2.3
@@ -3761,8 +3678,8 @@ flatbedScript:add_imgui(function()
         if ImGui.Button(" Detach ") then
             for _, v in ipairs(vehicleHandles) do
                 script.run_in_fiber(function()
-                    local modelHash = ENTITY.GET_ENTITY_MODEL(v)
-                    local attachedVehicle = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(PED.GET_VEHICLE_PED_IS_USING(self.get_ped()), modelHash)
+                     modelHash = ENTITY.GET_ENTITY_MODEL(v)
+                     attachedVehicle = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID()), modelHash)
                     controlled = entities.take_control_of(attachedVehicle, 300)
                     if ENTITY.DOES_ENTITY_EXIST(attachedVehicle) then
                         if controlled then
@@ -3775,8 +3692,8 @@ flatbedScript:add_imgui(function()
             end
             for key, value in ipairs(attached_vehicle) do
                 script.run_in_fiber(function()
-                    local modelHash = ENTITY.GET_ENTITY_MODEL(value)
-                    local attachedVehicle = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(PED.GET_VEHICLE_PED_IS_USING(self.get_ped()), modelHash)
+                     modelHash = ENTITY.GET_ENTITY_MODEL(value)
+                     attachedVehicle = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID()), modelHash)
                     if ENTITY.DOES_ENTITY_EXIST(attachedVehicle) then
                         ENTITY.DETACH_ENTITY(attachedVehicle)
                         ENTITY.SET_ENTITY_COORDS(attachedVehicle, playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z, false, false, false, false)
@@ -3790,7 +3707,7 @@ flatbedScript:add_imgui(function()
         ImGui.Text("Get inside a flatbed truck to use the script.")
         if ImGui.Button("Spawn Flatbed Truck") then
             script.run_in_fiber(function(script)
-                local try = 0
+                 try = 0
                 while not STREAMING.HAS_MODEL_LOADED(flatbedModel) do
                     STREAMING.REQUEST_MODEL(flatbedModel)
                     script:yield()
@@ -3800,9 +3717,9 @@ flatbedScript:add_imgui(function()
                         try = try + 1
                     end
                 end
-                fltbd = VEHICLE.CREATE_VEHICLE(flatbedModel, playerPosition.x, playerPosition.y, playerPosition.z, ENTITY.GET_ENTITY_HEADING(self.get_ped()), true, false, false)
+                fltbd = VEHICLE.CREATE_VEHICLE(flatbedModel, playerPosition.x, playerPosition.y, playerPosition.z, ENTITY.GET_ENTITY_HEADING(PLAYER.PLAYER_PED_ID()), true, false, false)
                 -- script:sleep(200)
-                PED.SET_PED_INTO_VEHICLE(self.get_ped(), fltbd, -1)
+                PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), fltbd, -1)
                 ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(fltbd)
             end)
         end
@@ -3816,10 +3733,10 @@ flatbedScript:add_imgui(function()
         if ImGui.Button("debug") then
             for _, veh in ipairs(vehicleHandles) do
                 script.run_in_fiber(function(script)
-                    local detectPos = vec3:new(playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z)
-                    local vehPos = ENTITY.GET_ENTITY_COORDS(veh, false)
-                    local vDist = SYSTEM.VDIST(detectPos.x, detectPos.y, detectPos.z, vehPos.x, vehPos.y, vehPos.z)
-                    local vHash =  ENTITY.GET_ENTITY_MODEL(veh)
+                     detectPos = vec3:new(playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z)
+                     vehPos = ENTITY.GET_ENTITY_COORDS(veh, false)
+                     vDist = SYSTEM.VDIST(detectPos.x, detectPos.y, detectPos.z, vehPos.x, vehPos.y, vehPos.z)
+                     vHash =  ENTITY.GET_ENTITY_MODEL(veh)
                     vehicleClass = VEHICLE.GET_VEHICLE_CLASS(closestVehicle)
                 end)
             end
@@ -3831,26 +3748,26 @@ flatbedScript:add_imgui(function()
 end)
 script.register_looped("flatbed script", function(script)
     -- script:yield()
-    local vehicleHandles = entities.get_all_vehicles_as_handles()
-    local current_vehicle = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
-    local vehicle_model = ENTITY.GET_ENTITY_MODEL(current_vehicle)
-    local flatbedHeading = ENTITY.GET_ENTITY_HEADING(current_vehicle)
-    local flatbedBone = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, "chassis")
-    local playerPosition = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
-    local playerForwardX = ENTITY.GET_ENTITY_FORWARD_X(self.get_ped())
-    local playerForwardY = ENTITY.GET_ENTITY_FORWARD_Y(self.get_ped())
+     vehicleHandles = entities.get_all_vehicles_as_handles()
+     current_vehicle = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
+     vehicle_model = ENTITY.GET_ENTITY_MODEL(current_vehicle)
+     flatbedHeading = ENTITY.GET_ENTITY_HEADING(current_vehicle)
+     flatbedBone = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, "chassis")
+     playerPosition = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+     playerForwardX = ENTITY.GET_ENTITY_FORWARD_X(PLAYER.PLAYER_PED_ID())
+     playerForwardY = ENTITY.GET_ENTITY_FORWARD_Y(PLAYER.PLAYER_PED_ID())
     for _, veh in ipairs(vehicleHandles) do
-        local detectPos = vec3:new(playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z)
-        local vehPos = ENTITY.GET_ENTITY_COORDS(veh, false)
-        local vDist = SYSTEM.VDIST(detectPos.x, detectPos.y, detectPos.z, vehPos.x, vehPos.y, vehPos.z)
+         detectPos = vec3:new(playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z)
+         vehPos = ENTITY.GET_ENTITY_COORDS(veh, false)
+         vDist = SYSTEM.VDIST(detectPos.x, detectPos.y, detectPos.z, vehPos.x, vehPos.y, vehPos.z)
         if vDist <= 5 then
             closestVehicle = veh
         end
     end
-    local closestVehicleModel = ENTITY.GET_ENTITY_MODEL(closestVehicle)
-    local is_car = VEHICLE.IS_THIS_MODEL_A_CAR(closestVehicleModel)
-    local is_bike = VEHICLE.IS_THIS_MODEL_A_BIKE(closestVehicleModel)
-    local validModel = false
+     closestVehicleModel = ENTITY.GET_ENTITY_MODEL(closestVehicle)
+     is_car = VEHICLE.IS_THIS_MODEL_A_CAR(closestVehicleModel)
+     is_bike = VEHICLE.IS_THIS_MODEL_A_BIKE(closestVehicleModel)
+     validModel = false
     if modelOverride then
         validModel = true
     else
@@ -3878,7 +3795,7 @@ script.register_looped("flatbed script", function(script)
             script:sleep(200)
             controlled = entities.take_control_of(closestVehicle, 350)
             if controlled then
-                local vehicleClass = VEHICLE.GET_VEHICLE_CLASS(closestVehicle)
+                 vehicleClass = VEHICLE.GET_VEHICLE_CLASS(closestVehicle)
                 if vehicleClass == 1 then
                     zAxis = 0.9
                     yAxis = -2.3
@@ -3920,10 +3837,10 @@ script.register_looped("flatbed script", function(script)
     elseif is_in_flatbed and attached_vehicle[1] ~= nil then
         if PAD.IS_CONTROL_PRESSED(0, 73) then
             script:sleep(200)
-            local vehicleHandles = entities.get_all_vehicles_as_handles()
+             vehicleHandles = entities.get_all_vehicles_as_handles()
             for _, v in ipairs(vehicleHandles) do
-                local modelHash = ENTITY.GET_ENTITY_MODEL(v)
-                local attachedVehicle = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(current_vehicle, modelHash)
+                 modelHash = ENTITY.GET_ENTITY_MODEL(v)
+                 attachedVehicle = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(current_vehicle, modelHash)
                 controlled = entities.take_control_of(attachedVehicle, 350)
                 if ENTITY.DOES_ENTITY_EXIST(attachedVehicle) then
                     if controlled then
@@ -3934,8 +3851,8 @@ script.register_looped("flatbed script", function(script)
                 end
             end
             for key, value in ipairs(attached_vehicle) do
-                local modelHash = ENTITY.GET_ENTITY_MODEL(value)
-                local attachedVehicle = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(PED.GET_VEHICLE_PED_IS_USING(self.get_ped()), modelHash)
+                 modelHash = ENTITY.GET_ENTITY_MODEL(value)
+                 attachedVehicle = ENTITY.GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID()), modelHash)
                     if ENTITY.DOES_ENTITY_EXIST(attachedVehicle) then
                         ENTITY.DETACH_ENTITY(attachedVehicle)
                         ENTITY.SET_ENTITY_COORDS(attachedVehicle, playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z, 0, 0, 0, 0)
@@ -3950,32 +3867,32 @@ end)
 script.register_looped("TowPos Marker", function()
     if towPos then
         if is_in_flatbed and attached_vehicle[1] == nil then
-            local playerPosition = ENTITY.GET_ENTITY_COORDS(self.get_ped(), false)
-            local playerForwardX = ENTITY.GET_ENTITY_FORWARD_X(self.get_ped())
-            local playerForwardY = ENTITY.GET_ENTITY_FORWARD_Y(self.get_ped())
-            local detectPos = vec3:new(playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z)
+             playerPosition = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
+             playerForwardX = ENTITY.GET_ENTITY_FORWARD_X(PLAYER.PLAYER_PED_ID())
+             playerForwardY = ENTITY.GET_ENTITY_FORWARD_Y(PLAYER.PLAYER_PED_ID())
+             detectPos = vec3:new(playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z)
             GRAPHICS.DRAW_MARKER_SPHERE(detectPos.x, detectPos.y, detectPos.z, 2.5, 180, 128, 0, 0.115)
         end
     end
 end)
 
-local tokyodrift = Veh:add_tab("Tokyo Drift")
+ tokyodrift = Veh:add_tab("Tokyo Drift")
 script.register_looped("vars", function(vars)
     if NETWORK.NETWORK_IS_SESSION_ACTIVE() then
         is_online = true
     else
         is_online = false
     end
-    if PED.IS_PED_IN_ANY_VEHICLE(self.get_ped()) then
-        current_vehicle = PED.GET_VEHICLE_PED_IS_USING(self.get_ped())
+    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID()) then
+        current_vehicle = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
         is_car = VEHICLE.IS_THIS_MODEL_A_CAR(ENTITY.GET_ENTITY_MODEL(current_vehicle))
     end
     vars:yield()
 end)
-local ShiftDrift = false
-local DriftIntensity = 0
-local DriftTires = false
-local function resettokyodrift()
+ ShiftDrift = false
+ DriftIntensity = 0
+ DriftTires = false
+ function resettokyodrift()
     DriftTires = false
     ShiftDrift = false
     DriftIntensity = 0
@@ -3985,7 +3902,7 @@ tokyodrift:add_imgui(function()
 manufacturer = VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(current_vehicle))
 mfr_name = (manufacturer:lower():gsub("^%l", string.upper))
 vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current_vehicle))
-    if PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), true) and is_car then
+    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) and is_car then
         ImGui.Text("Vehicle: "..mfr_name.." "..vehicle_name)
         ImGui.Spacing()
         ShiftDrift, shiftDriftToggled = ImGui.Checkbox("Activate Tokyo Drift", ShiftDrift, true)
@@ -4021,7 +3938,7 @@ vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current
             end
             ImGui.PopItemWidth()
         end
-    elseif PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), true) and not is_car then
+    elseif PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) and not is_car then
         ImGui.Text("Tokyo Drift only works on cars and trucks.")
     else
         ImGui.Text("Get in a vehicle before using the script!")
@@ -4071,7 +3988,7 @@ event.register_handler(menu_event.ScriptsReloaded, function()
 end)
 script.register_looped("Drift Loop", function(script)
     script:yield()
-    if PED.IS_PED_IN_ANY_VEHICLE(self.get_ped(), true) then
+    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) then
         if is_car and DriftTires and PAD.IS_CONTROL_PRESSED(0, 21) then
             VEHICLE.SET_DRIFT_TYRES(current_vehicle, true)
         else
@@ -4088,18 +4005,18 @@ script.register_looped("Drift Loop", function(script)
 end)
  -- Global Player Options
  
- local Global = KAOS:add_tab("Global")
+  Global = KAOS:add_tab("Global")
  
  -- Global RP Loop Options
- local PRGBGLoop = false
+  PRGBGLoop = false
  Global:add_text("Global Friendly Options")
  rpLoop = Global:add_checkbox("Drop RP (On/Off)")
  
      script.register_looped("PRGBGLoop", function()
      if rpLoop:is_enabled() == true then
-         local model = joaat("vw_prop_vw_colle_prbubble")
-         local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-         local money_value = 0
+          model = joaat("vw_prop_vw_colle_prbubble")
+          pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+          money_value = 0
          gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
          STREAMING.REQUEST_MODEL(model)
          while STREAMING.HAS_MODEL_LOADED(model) == false do
@@ -4107,16 +4024,16 @@ end)
          end
      
          if STREAMING.HAS_MODEL_LOADED(model) then
-             local localPlayerId = PLAYER.PLAYER_ID()
-             local player_count = PLAYER.GET_NUMBER_OF_PLAYERS() - 1 -- Minus 1 player (yourself) from the drop count.
+              PlayerId = PLAYER.PLAYER_ID()
+              player_count = PLAYER.GET_NUMBER_OF_PLAYERS() - 1 -- Minus 1 player (yourself) from the drop count.
              gui.show_message("Global", "Dropping figurines to ".. player_count.." Players in the session.")
  
              for i = 0, 31 do
-                 if i ~= localPlayerId then
-                     local player_id = i
+                 if i ~= PlayerId then
+                      player_id = i
                      
-                     local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-                     local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                      coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                      objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                          pickup,
                          coords.x - 0,
                          coords.y + 0,
@@ -4128,7 +4045,7 @@ end)
                          false
                      )
                      ENTITY.SET_ENTITY_VISIBLE(objectIdSpawned, true, false)
-                     local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+                      net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
                      NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
                      
                      ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
@@ -4140,14 +4057,14 @@ end)
      end)
 toolTip(Global, "Drops Princess Robot Figurines for the entire session (Slightly glitchy)")
 Global:add_sameline()       
-local goodRP = Global:add_checkbox("Fast RP")
+ goodRP = Global:add_checkbox("Fast RP")
 script.register_looped("goodRP", function()
     if goodRP:is_enabled() == true then
         for p = 0, 31 do
             if p ~= PLAYER.PLAYER_ID() then
                 for i = 20, 24 do 
                     network.trigger_script_event(1 << p, {968269233 , p, 1, 4, i, 1, 1, 1, 1})
-                    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
+                     player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
                     gui.show_message("Fast RP", "Giving massive amounts of RP to "..player_count.." players in the session")
                 end
             end
@@ -4156,13 +4073,13 @@ script.register_looped("goodRP", function()
 end)
 toolTip(Global, "Floods the entire session with RP (about 1-3 levels per second)")
 Global:add_sameline()
-local goodMoney = Global:add_checkbox("Money")
+ goodMoney = Global:add_checkbox("Money")
     script.register_looped("goodMoney", function()
         if goodMoney:is_enabled() == true then
             for i = 0, 31 do
                 pid = i
-                local localPlayerId = PLAYER.PLAYER_ID()
-                if pid ~= localPlayerId then
+                 PlayerId = PLAYER.PLAYER_ID()
+                if pid ~= PlayerId then
                     for n = 0, 10 do
                         for l = -10, 10 do
                             network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
@@ -4178,16 +4095,16 @@ toolTip(Global, "Supposed to give the entire session money and rp")
 --[[ Global Sound Spam Options -- Temporarily Disabled as it causes you to crash on use
 Global:add_separator()
 Global:add_text("Sound Spams")
-local soundIndex = 0
-local isPlaying = false
+ soundIndex = 0
+ isPlaying = false
 
 useLoopedG = false
-local useLoopedG = Global:add_checkbox("Loop?")
-local searchQuery = ""
-local filteredSoundNames = {}
-local selectedFilteredSoundIndex = 0
+ useLoopedG = Global:add_checkbox("Loop?")
+ searchQuery = ""
+ filteredSoundNames = {}
+ selectedFilteredSoundIndex = 0
 
-local function updateFilteredSoundNames()
+ function updateFilteredSoundNames()
     filteredSoundNames = {}
     for _, sound in ipairs(sounds) do
         if string.find(string.lower(sound.SoundName), string.lower(searchQuery)) then
@@ -4197,7 +4114,7 @@ local function updateFilteredSoundNames()
 end
 
 -- Function to display the list of sound names
-local function displaySoundNamesList()
+ function displaySoundNamesList()
     updateFilteredSoundNames()
     if selectedFilteredSoundIndex > #filteredSoundNames then
         selectedFilteredSoundIndex = 0
@@ -4221,10 +4138,10 @@ Global:add_imgui(function()
 
     if ImGui.Button("Play") then
         isPlaying = true
-        local selectedSoundName = filteredSoundNames[selectedFilteredSoundIndex + 1]
+         selectedSoundName = filteredSoundNames[selectedFilteredSoundIndex + 1]
         for i = 0, 31 do
-            local playerIndex = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(i)
-                local selectedSound = sounds[1]
+             playerIndex = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(i)
+                 selectedSound = sounds[1]
                 for _, sound in ipairs(sounds) do
                     if sound.SoundName == selectedSoundName then
                         selectedSound = sound
@@ -4239,10 +4156,10 @@ end)
 
 
 Global:add_sameline()
-Global:add_button("Stop Local Sounds", function()
+Global:add_button("Stop  Sounds", function()
     isPlaying = false
     --for i=-1,100 do
-    --local soundId = AUDIO.PLAY_SOUND_FROM_ENTITY(AUDIO.GET_SOUND_ID(), selectedSound.AudioName, playerIndex, selectedSound.AudioRef, true, 999999999)
+    -- soundId = AUDIO.PLAY_SOUND_FROM_ENTITY(AUDIO.GET_SOUND_ID(), selectedSound.AudioName, playerIndex, selectedSound.AudioRef, true, 999999999)
         AUDIO.STOP_SOUND(soundId)
         AUDIO.RELEASE_SOUND_ID(soundId)
     --end
@@ -4251,7 +4168,7 @@ end)]]
 -- Global Particle Effects
 Global:add_separator()
 Global:add_text("PTFX")
-local fireworkLoop = Global:add_checkbox("Fireworks (On/Off)")
+ fireworkLoop = Global:add_checkbox("Fireworks (On/Off)")
 
 function load_fireworks()
 
@@ -4277,14 +4194,14 @@ end
 script.register_looped("FireworkLoop", function()
     if fireworkLoop:is_enabled() == true then
         if load_fireworks() then
-            local localPlayerId = PLAYER.PLAYER_ID()
+             PlayerId = PLAYER.PLAYER_ID()
             for i = 0, 31 do
-                if i ~= localPlayerId then
-                    local player_id = i
-                    local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                if i ~= PlayerId then
+                     player_id = i
+                     player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
                     -- Get random color values
-                    local colorR, colorG, colorB = random_color()
+                     colorR, colorG, colorB = random_color()
                     player_coords.z = player_coords.z - 1
                     setExp1 = player_coords.z + 25
                     setExp2 = player_coords.z + 35
@@ -4307,7 +4224,7 @@ script.register_looped("FireworkLoop", function()
 end)
 toolTip(Global, "Shoots a sequence of firework effects from every player in the session")
 Global:add_sameline()
-local flameLoopGlobal = Global:add_checkbox("Flames (On/Off)")
+ flameLoopGlobal = Global:add_checkbox("Flames (On/Off)")
 function load_flame()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_bike_adversary")
@@ -4326,14 +4243,14 @@ end
 script.register_looped("FlameLoopGlobal", function()
     if flameLoopGlobal:is_enabled() == true then
         if load_flame() then
-            local localPlayerId = PLAYER.PLAYER_ID()
+             PlayerId = PLAYER.PLAYER_ID()
             for i = 0, 31 do
-                if i ~= localPlayerId then
-                    local player_id = i
-                    local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                if i ~= PlayerId then
+                     player_id = i
+                     player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
                     -- Get random color values
-                    local colorR, colorG, colorB = random_color()
+                     colorR, colorG, colorB = random_color()
                     test = player_coords.z - 1
                     GRAPHICS.USE_PARTICLE_FX_ASSET("scr_bike_adversary")
                     GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
@@ -4346,7 +4263,7 @@ script.register_looped("FlameLoopGlobal", function()
 end)
 toolTip(Global, "Gives every player in the session the 'Ghost Rider' flame effect")
 Global:add_sameline()
-local lightningLoopGlobal = Global:add_checkbox("Lightning (On/Off)")
+ lightningLoopGlobal = Global:add_checkbox("Lightning (On/Off)")
 function load_lightning()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("des_tv_smash")
@@ -4365,14 +4282,14 @@ end
 script.register_looped("lightningLoopGlobal", function()
     if lightningLoopGlobal:is_enabled() == true then
         if load_lightning() then
-            local localPlayerId = PLAYER.PLAYER_ID()
+             PlayerId = PLAYER.PLAYER_ID()
             for i = 0, 31 do
-                if i ~= localPlayerId then
-                    local player_id = i
-                    local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                if i ~= PlayerId then
+                     player_id = i
+                     player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
                     -- Get random color values
-                    local colorR, colorG, colorB = random_color()
+                     colorR, colorG, colorB = random_color()
                     test = player_coords.z
                     GRAPHICS.USE_PARTICLE_FX_ASSET("des_tv_smash")
                     GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
@@ -4385,7 +4302,7 @@ script.register_looped("lightningLoopGlobal", function()
 end)
 toolTip(Global, "Gives the entire session a Lightning/Electricity effect")
 Global:add_sameline()
-local snowLoopGlobal = Global:add_checkbox("Snow (On/Off)")
+ snowLoopGlobal = Global:add_checkbox("Snow (On/Off)")
 function load_snow()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_xmas_snowball")
@@ -4404,14 +4321,14 @@ end
 script.register_looped("snowLoopGlobal", function()
     if snowLoopGlobal:is_enabled() == true then
         if load_snow() then
-            local localPlayerId = PLAYER.PLAYER_ID()
+             PlayerId = PLAYER.PLAYER_ID()
             for i = 0, 32 do
-                if i ~= localPlayerId then
-                    local player_id = i
-                    local player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                if i ~= PlayerId then
+                     player_id = i
+                     player_coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
                     -- Get random color values
-                    local colorR, colorG, colorB = random_color()
+                     colorR, colorG, colorB = random_color()
                     test = player_coords.z
                     GRAPHICS.USE_PARTICLE_FX_ASSET("proj_xmas_snowball")
                     GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
@@ -4426,10 +4343,10 @@ toolTip(Global, "Gives the entire session the effect of being hit with snowballs
 -- Global Explode
 Global:add_separator()
 Global:add_text("Troll Options")
-local hornsCB = Global:add_checkbox("Horns")
+ hornsCB = Global:add_checkbox("Horns")
 script.register_looped("horns", function(hornsTest)
     if hornsCB:is_enabled() then
-        local vehicles = entities.get_all_vehicles_as_handles()
+         vehicles = entities.get_all_vehicles_as_handles()
         for i, vehicle in ipairs(vehicles) do
             if request_control(vehicle) then
                 VEHICLE.START_VEHICLE_HORN(vehicle, 1000, 0, true)
@@ -4447,10 +4364,10 @@ Global:add_button("Boat Skin Crash", function()
     script.run_in_fiber(function (pedpacrash)
         gui.show_message("Boat Skin", "Giving everyone the boat skin.")
         PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), -74.94, -818.58, 327)
-        local spped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
-        local ppos = ENTITY.GET_ENTITY_COORDS(spped, true)
+         spped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+         ppos = ENTITY.GET_ENTITY_COORDS(spped, true)
         for n = 0 , 5 do
-            local object_hash = joaat("prop_byard_rowboat4")
+             object_hash = joaat("prop_byard_rowboat4")
             STREAMING.REQUEST_MODEL(object_hash)
               while not STREAMING.HAS_MODEL_LOADED(object_hash) do
                 pedpacrash:yield()
@@ -4466,7 +4383,7 @@ Global:add_button("Boat Skin Crash", function()
             pedpacrash:sleep(1000)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spped, ppos.x, ppos.y, ppos.z, false, true, true)
     
-            local object_hash2 = joaat("prop_byard_rowboat4")
+             object_hash2 = joaat("prop_byard_rowboat4")
             STREAMING.REQUEST_MODEL(object_hash2)
             while not STREAMING.HAS_MODEL_LOADED(object_hash2) do
                 pedpacrash:yield()
@@ -4489,23 +4406,23 @@ toolTip(Global, "Give everyone the boat skin! (Parachute Crash w/ Boat as a para
 Global:add_sameline()
 Global:add_button("Fragment crash", function()
     script.run_in_fiber(function (fragcrash)
-    local localPlayerId = PLAYER.PLAYER_PED_ID()
+     PlayerId = PLAYER.PLAYER_PED_ID()
         for i = 0, 31 do
-            if i ~= localPlayerId then
-                local players = i
+            if i ~= PlayerId then
+                 players = i
                 fraghash = joaat("prop_fragtest_cnst_04")
                 STREAMING.REQUEST_MODEL(fraghash)
-                local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(selPlayer), false)
-                local crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                 TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(selPlayer), false)
+                 crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff1, 1, false)
-                local crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                 crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff2, 1, false)
-                local crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                 crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
-                local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                 crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
                 for v = 0, 100 do   
-                    local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+                     TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
                     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
                     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
                     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff3, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
@@ -4520,43 +4437,43 @@ Global:add_button("Fragment crash", function()
         end
     end)
     script.run_in_fiber(function (fragcrash2)
-    local localPlayerId = PLAYER.PLAYER_ID()
+     PlayerId = PLAYER.PLAYER_ID()
         for i = 0, 31 do
-            if i ~= localPlayerId then
-                local players = i
-                local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(players), false)
+            if i ~= PlayerId then
+                 players = i
+                 TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(players), false)
                 fraghash = joaat("prop_fragtest_cnst_04")
                 STREAMING.REQUEST_MODEL(fraghash)
                 for v=1,10 do
                  
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
-                    local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+                     object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     fragcrash2:sleep(100)
                     delete_entity(object)
@@ -4569,7 +4486,7 @@ toolTip(Global, "Fragment crash the entire session")
 Global:add_sameline()
 Global:add_button("HUD Breaker", function()
 for p = 0, 31 do
-    local pid = p
+     pid = p
     if p ~= PLAYER.PLAYER_ID() then
         for i = -1, 1 do
             network.trigger_script_event(1 << pid, {1450115979, pid, i})
@@ -4581,22 +4498,22 @@ end
 end)
 toolTip(Global, "Breaks the HUD for every player in the session, causes their missions to break in freemode, removes their HUD, prevents pausing and prevents entering properties as it removes the entrace markers")
 Global:add_sameline()
-local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
+ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
     script.register_looped("clownJetAttack", function(clownJetsOne)
         if clownJetAttack:is_enabled() == true then
             for i = 0, 31 do
                 if i ~= PLAYER.PLAYER_ID() then
-                    local player = i
-                    local players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
-                    local playerName = PLAYER.GET_PLAYER_NAME(players)
-                    local coords = ENTITY.GET_ENTITY_COORDS(players, true)
-                    local heading = ENTITY.GET_ENTITY_HEADING(players)
-                    local spawnDistance = 250.0 * math.sin(math.rad(heading))
-                    local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
-                    local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
-                    local clown = joaat("s_m_y_clown_01")
-                    local jet = joaat("Lazer")
-                    local weapon = -1121678507
+                     player = i
+                     players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
+                     playerName = PLAYER.GET_PLAYER_NAME(players)
+                     coords = ENTITY.GET_ENTITY_COORDS(players, true)
+                     heading = ENTITY.GET_ENTITY_HEADING(players)
+                     spawnDistance = 250.0 * math.sin(math.rad(heading))
+                     spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
+                     isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+                     clown = joaat("s_m_y_clown_01")
+                     jet = joaat("Lazer")
+                     weapon = -1121678507
 
                     STREAMING.REQUEST_MODEL(clown)
                     STREAMING.REQUEST_MODEL(jet)
@@ -4609,24 +4526,24 @@ local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                     end
 
                     -- Calculate the spawn position for the jet in the air
-                    local jetSpawnX = coords.x + math.random(-1000, 1000)
-                    local jetSpawnY = coords.y + math.random(-1000, 1000)
-                    local jetSpawnZ = coords.z + math.random(100, 1200)
+                     jetSpawnX = coords.x + math.random(-1000, 1000)
+                     jetSpawnY = coords.y + math.random(-1000, 1000)
+                     jetSpawnZ = coords.z + math.random(100, 1200)
                     
-                    local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
-                    local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
+                     colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
+                     jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
                     if jetVehicle ~= 0 then
-                        local primaryColor = colors[math.random(#colors)]
-                        local secondaryColor = colors[math.random(#colors)]
+                         primaryColor = colors[math.random(#colors)]
+                         secondaryColor = colors[math.random(#colors)]
 
                         -- Set vehicle colors
                         VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
                         -- Spawn clowns inside the jet
                         for seat = -1, -1 do
-                            local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
+                             ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
                             
                             if ped ~= 0 then
-                                local group = joaat("HATES_PLAYER")
+                                 group = joaat("HATES_PLAYER")
                                 PED.ADD_RELATIONSHIP_GROUP("clowns", group)
                                 ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
                                 PED.SET_PED_CAN_BE_TARGETTED(ped, false)
@@ -4668,19 +4585,19 @@ local clownJetAttack = Global:add_checkbox("Clown Jet Attack")
         end
     end)
 toolTip(Global, "Spawns Rainbos colored jets with clowns as pilots on the entire session, loops and runs every 15 seconds.")
-local explosionLoop = false
+ explosionLoop = false
 explosionLoop = Global:add_checkbox("Explosion (On/Off)")
 
 script.register_looped("explosionLoop", function()
     if explosionLoop:is_enabled() == true then
-        local explosionType = 1  -- Adjust this according to the explosion type you want (1 = GRENADE, 2 = MOLOTOV, etc.)
-        local explosionFx = "explosion_barrel"
-        local localPlayerId = PLAYER.PLAYER_ID()
+         explosionType = 1  -- Adjust this according to the explosion type you want (1 = GRENADE, 2 = MOLOTOV, etc.)
+         explosionFx = "explosion_barrel"
+         PlayerId = PLAYER.PLAYER_ID()
 
         for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+            if i ~= PlayerId then
+                 player_id = i
+                 coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                 gui.show_message("Global (Toxic)", "Exploding " .. PLAYER.GET_PLAYER_NAME(player_id) .. " repeatedly")
                 
                 FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
@@ -4696,28 +4613,28 @@ script.register_looped("explosionLoop", function()
 end)
 toolTip(Global, "Explode the entire session")
 Global:add_sameline()
-local ramGlobal = Global:add_checkbox("Vehicle Sandwich (On/Off)")
+ ramGlobal = Global:add_checkbox("Vehicle Sandwich (On/Off)")
 
 script.register_looped("ramGlobal", function()
     if ramGlobal:is_enabled() then
-    local localPlayerId = PLAYER.PLAYER_ID()
+     PlayerId = PLAYER.PLAYER_ID()
          for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
+            if i ~= PlayerId then
+                 player_id = i
                     if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
-                        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                         coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
                         -- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
-                        local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+                         randomModel = vehicleModels[math.random(1, #vehicleModels)]
 
                         -- Convert the string vehicle model to its hash value
-                        local modelHash = MISC.GET_HASH_KEY(randomModel)
+                         modelHash = MISC.GET_HASH_KEY(randomModel)
 
                         -- Create the vehicle without the last boolean argument (keepTrying)
-                        local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
+                         vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
                         -- Set vehicle orientation
                         ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
-                        local networkId = NETWORK.VEH_TO_NET(vehicle)
+                         networkId = NETWORK.VEH_TO_NET(vehicle)
                         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
                             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
                         end
@@ -4729,10 +4646,10 @@ script.register_looped("ramGlobal", function()
                             VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
                         end
                         
-                        local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
+                         vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
                         -- Set vehicle orientation
                         ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
-                        local networkId = NETWORK.VEH_TO_NET(vehicle2)
+                         networkId = NETWORK.VEH_TO_NET(vehicle2)
                         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
                             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
                         end
@@ -4762,24 +4679,24 @@ end)
 toolTip(Global, "Sandwich the entire session with vehicles")
 -- Global Crashes
 Global:add_sameline()
-local crashGlobal = Global:add_checkbox("PR Crash All (On/Off)")
+ crashGlobal = Global:add_checkbox("PR Crash All (On/Off)")
 
 script.register_looped("crashGlobal", function()
     if crashGlobal:is_enabled() then
-    local localPlayerId = PLAYER.PLAYER_ID()
+     PlayerId = PLAYER.PLAYER_ID()
          for i = 0, 31 do
-            if i ~= localPlayerId then
-                local player_id = i
-                local model = joaat("vw_prop_vw_colle_prbubble")
-                local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-                local money_value = 100000000000
+            if i ~= PlayerId then
+                 player_id = i
+                 model = joaat("vw_prop_vw_colle_prbubble")
+                 pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+                 money_value = 100000000000
 
                 STREAMING.REQUEST_MODEL(model)
 
                 if STREAMING.HAS_MODEL_LOADED(model) then
                 gui.show_message("Global (Toxic)", "Crashing " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with figurines")
-                    local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-                    local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+                     coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                     objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                         pickup,
                         coords.x,
                         coords.y,
@@ -4791,7 +4708,7 @@ script.register_looped("crashGlobal", function()
                         false
                     )
 
-                    local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+                     net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
                     NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
                     
                     ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
@@ -4806,38 +4723,38 @@ toolTip(Global, "Spawn overpriced Princess Robot Figurines to crash all players 
 Global:add_separator()
 Global:add_text("Global Weapons Options")
 Global:add_button("Give All Weapons to Players", function()
-    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
+     player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
 
     for i = 0, 31 do
-        local playerID = i
-        local ent = PLAYER.GET_PLAYER_PED(playerID)
+         playerID = i
+         ent = PLAYER.GET_PLAYER_PED(playerID)
         if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
             for _, name in ipairs(weaponNamesString) do
-                local weaponHash = MISC.GET_HASH_KEY(name)
+                 weaponHash = MISC.GET_HASH_KEY(name)
                 WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
             end
         end
     end
-    local msg = "I have given the entire lobby all weapons.  This only lasts until you switch sessions, enjoy!"
+     msg = "I have given the entire lobby all weapons.  This only lasts until you switch sessions, enjoy!"
     network.send_chat_message(msg, false)
     gui.show_message("Global", "Successfully given all weapons to all players")
 end)
 toolTip(Global, "Gives all weapons to the entire session and also announces that you have done so")
 Global:add_sameline()
 Global:add_button("Remove All Weapons from Players", function()
-    local player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
+     player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
 
     for i = 0, 31 do
-        local playerID = i
-        local ent = PLAYER.GET_PLAYER_PED(playerID)
+         playerID = i
+         ent = PLAYER.GET_PLAYER_PED(playerID)
         if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
             for _, name in ipairs(weaponNamesString) do
-                local weaponHash = MISC.GET_HASH_KEY(name)
+                 weaponHash = MISC.GET_HASH_KEY(name)
                 WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
             end
         end
     end
-    local msg = "I have removed all weapons from the entire lobby.  This only lasts until you switch sessions, have fun!"
+     msg = "I have removed all weapons from the entire lobby.  This only lasts until you switch sessions, have fun!"
     network.send_chat_message(msg, false)
     gui.show_message("Global", "Successfully removed all weapons from all players")
 end)
@@ -4929,15 +4846,15 @@ StoryCharacters = KAOS:add_tab("Story Mode")
     
 -- Weapons Tab
 
-local Weapons = KAOS:add_tab("Weapons")
+ Weapons = KAOS:add_tab("Weapons")
 
 Weapons:add_button("Remove All Weapons", function()
-        local playerID = network.get_selected_player()
-        local ent = PLAYER.GET_PLAYER_PED(playerID)
+         playerID = network.get_selected_player()
+         ent = PLAYER.GET_PLAYER_PED(playerID)
         out = "Successfully removed all weapons from "..PLAYER.GET_PLAYER_NAME(playerID)
         if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
             for _, name in ipairs(weaponNamesString) do
-                local weaponHash = MISC.GET_HASH_KEY(name)
+                 weaponHash = MISC.GET_HASH_KEY(name)
                 WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
                 gui.show_message('Weapons', out)
                 
@@ -4947,12 +4864,12 @@ end)
 toolTip(Weapons, "Removes all weapons from the selected player")
 Weapons:add_sameline()
 Weapons:add_button("Give All Weapons", function()
-        local playerID = network.get_selected_player()
-        local ent = PLAYER.GET_PLAYER_PED(playerID)
+         playerID = network.get_selected_player()
+         ent = PLAYER.GET_PLAYER_PED(playerID)
         out = "Successfully given all weapons to "..PLAYER.GET_PLAYER_NAME(playerID)
         if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
             for _, name in ipairs(weaponNamesString) do
-                local weaponHash = MISC.GET_HASH_KEY(name)
+                 weaponHash = MISC.GET_HASH_KEY(name)
                 WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
                 gui.show_message('Weapons', out)
                 
@@ -4963,20 +4880,20 @@ toolTip(Weapons, "Gives all weapons to the selected player")
 Weapons:add_separator()
 Weapons:add_text("Weapon Drops")
 Weapons:add_button("Drop Random Weapon", function()
-        local weaponName = weaponNamesString[math.random(1, #weaponNamesString)]
-        local money_value = 0
-        local player_id = network.get_selected_player()
-        local model = weaponModels[math.random(1, #weaponModels)]
+         weaponName = weaponNamesString[math.random(1, #weaponNamesString)]
+         money_value = 0
+         player_id = network.get_selected_player()
+         model = weaponModels[math.random(1, #weaponModels)]
 
-        local modelHash = joaat(model)
+         modelHash = joaat(model)
         STREAMING.REQUEST_MODEL(modelHash)
         while STREAMING.HAS_MODEL_LOADED(modelHash) == false do
             script:yield()
         end
         if STREAMING.HAS_MODEL_LOADED(modelHash) then
             gui.show_message("Weapon Drop Started", "Dropping " .. weaponName .. " on "..PLAYER.GET_PLAYER_NAME(player_id))
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+             objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 joaat("PICKUP_" .. string.upper(weaponName)),
                 coords.x,
                 coords.y,
@@ -4988,7 +4905,7 @@ Weapons:add_button("Drop Random Weapon", function()
                 false
             )
 
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
 end)
@@ -4997,9 +4914,9 @@ Weapons:add_separator()
 
 
 -- Business Management
-local Business = KAOS:add_tab("Business Manager")
+ Business = KAOS:add_tab("Business Manager")
 
-local agency = Business:add_tab("Agency")
+ agency = Business:add_tab("Agency")
 
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
@@ -5009,15 +4926,15 @@ else
     MPX = "MP1_"
 end
 
-local contract_id = {3, 4, 12, 28, 60, 124, 252, 508, 2044, 4095, -1}
-local contract_names = {"The Nightclub", "The Marina", "Nightlife Leak", "The Country Club", "Guest List", "High Society Leak", "Davis", "The Ballas", "The South Central Leak", "Studio Time", "Don't Fuck With Dre"}
-local selectedContractIndex = 0
-local selectedContractID = contract_id[selectedContractIndex + 1]
+ contract_id = {3, 4, 12, 28, 60, 124, 252, 508, 2044, 4095, -1}
+ contract_names = {"The Nightclub", "The Marina", "Nightlife Leak", "The Country Club", "Guest List", "High Society Leak", "Davis", "The Ballas", "The South Central Leak", "Studio Time", "Don't Fuck With Dre"}
+ selectedContractIndex = 0
+ selectedContractID = contract_id[selectedContractIndex + 1]
 
 agency:add_text("Agency Contract Selection")
 
 -- Display the listbox
-local contractChanged = false
+ contractChanged = false
 
 agency:add_imgui(function()
     selectedContractIndex, used = ImGui.ListBox("##ContractList", selectedContractIndex, contract_names, #contract_names) -- Display the listbox
@@ -5026,8 +4943,8 @@ agency:add_imgui(function()
     end
 
     if ImGui.Button("Select Contract") then
-        local contractIndexToUse = selectedContractIndex + 1  -- Adjusted index for contract names
-        local contractIDToUse = contract_id[contractIndexToUse]
+         contractIndexToUse = selectedContractIndex + 1  -- Adjusted index for contract names
+         contractIDToUse = contract_id[contractIndexToUse]
         STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), contractIDToUse, true)
         gui.show_message("Agency", "Contract: " .. contract_names[contractIndexToUse] .. " ID: " .. contractIDToUse .. " Selected")
     end
@@ -5048,7 +4965,7 @@ end)
 toolTip(agency, "Skips the cooldown between playing contracts")
 agency:add_separator()
 agency:add_text("Money")
-local agencySafe = agency:add_checkbox("Agency Safe Loop")
+ agencySafe = agency:add_checkbox("Agency Safe Loop")
 script.register_looped("agencyloop", function(script)
     script:yield()
     if agencySafe:is_enabled() == true then
@@ -5059,7 +4976,7 @@ script.register_looped("agencyloop", function(script)
     end
 end)
 toolTip(agency, "Fills your agency safe with money")
-local bunker = Business:add_tab("Bunker")
+ bunker = Business:add_tab("Bunker")
 
 bunker:add_button("Unlock All Shooting Range", function()
 MPX = PI
@@ -5082,7 +4999,7 @@ end
     STATS.STAT_SET_BOOL(joaat(MPX .. "SR_INCREASE_THROW_CAP"), true, true)
 end)
 toolTip(bunker, "Sets all shooting range missions to completed @ 3 stars")
-local bResearch = bunker:add_checkbox("Instant Research Cooldown (Looped)")
+ bResearch = bunker:add_checkbox("Instant Research Cooldown (Looped)")
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
@@ -5101,7 +5018,7 @@ script.register_looped("bunkerResearch", function()
 end)
 toolTip(bunker, "Speeds up research, toggle with resupply, optionally access the pc and fast track it")
 bunker:add_sameline()
-local bSupplies = bunker:add_checkbox("Resupply Bunker (Looped)")
+ bSupplies = bunker:add_checkbox("Resupply Bunker (Looped)")
 script.register_looped("autoGetBunkerCargo", function(script)
     script:yield()
     if bSupplies:is_enabled() == true then
@@ -5118,7 +5035,7 @@ script.register_looped("autoGetBunkerCargo", function(script)
     end
 end)
 toolTip(bunker, "Instantly resupplies your bunker supplies")
-local Hangar = Business:add_tab("Hangar")
+ Hangar = Business:add_tab("Hangar")
 
 hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
 script.register_looped("autoGetHangarCargo", function(script)
@@ -5140,7 +5057,7 @@ script.register_looped("autoGetHangarCargo", function(script)
     end
 end)
 toolTip(Hangar, "Instantly supplies your hangar with random cargo")
-local mcBus = Business:add_tab("Motorcycle Club")
+ mcBus = Business:add_tab("Motorcycle Club")
 
 mcBus:add_button("MC President (On/Off)", function()
     -- -1 is off, 0 is on
@@ -5294,7 +5211,7 @@ end)
 toolTip(mcBus, "Raises the sale price for all MC Businesses to over 1 million each")
 mcBus:add_separator()
 mcBus:add_text("Motorcycle Club Name Changer")
-local mcName = ""
+ mcName = ""
 mcBus:add_imgui(function()
     if is_typing then
         PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -5334,14 +5251,14 @@ mcBus:add_button("Change MC Name", function()
                 if labels[i] == "Copyright" then
                     STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), values[i].. " ", true)
                     STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
-                    local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+                     MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
                     gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply")
                     SessionChanger(0)
                     return
                 else
                     STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), mcName, true)
                     STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), values[i].. " ", true)
-                    local MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME"), -1)
+                     MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME"), -1)
                     gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply")
                     SessionChanger(0)
                     return
@@ -5350,7 +5267,7 @@ mcBus:add_button("Change MC Name", function()
         end
         STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME"), "", true)
         STATS.STAT_SET_STRING(joaat(MPX .. "MC_GANG_NAME2"), mcName, true)
-        local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
+         MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "MC_GANG_NAME2"), -1)
         gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply")
         SessionChanger(0)
     end)
@@ -5369,7 +5286,7 @@ script.register_looped("mcNameCB", function(mcName)
     end
 end)
 
-local arcade = Business:add_tab("Arcade")
+ arcade = Business:add_tab("Arcade")
 
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
@@ -5379,7 +5296,7 @@ else
     MPX = "MP1_"
 end
 
-local arcadeSafe = arcade:add_checkbox("Arcade Safe Loop")
+ arcadeSafe = arcade:add_checkbox("Arcade Safe Loop")
 script.register_looped("arcadeloop", function(script)
     script:yield()
     if arcadeSafe:is_enabled() == true then
@@ -5391,7 +5308,7 @@ script.register_looped("arcadeloop", function(script)
 end)
 toolTip(arcade, "Fills your arcade safe with money")
 -- Nightclub Loop - L7Neg
-local Club = Business:add_tab("Nightclub")
+ Club = Business:add_tab("Nightclub")
 
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
@@ -5417,7 +5334,7 @@ Club:add_button("Max Club Popularity", function()
     STATS.STAT_SET_INT(joaat(MPX .. "CLUB_POPULARITY"), 1000, true)
 end)
 toolTip(Club, "Max your nightclubs popularity")
-local CEO = Business:add_tab("CEO")
+ CEO = Business:add_tab("CEO")
 
 CEO:add_button("Register as CEO", function()
     -- -1 is off, 0 is on
@@ -5436,7 +5353,7 @@ CEO:add_button("Register as CEO", function()
     end
 end)
 toolTip(CEO, "Register as a CEO")
-local setName = ""
+ setName = ""
 CEO:add_imgui(function()
     if is_typing then
         PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -5477,14 +5394,14 @@ CEO:add_button("Change CEO Name", function()
                 if labels[i] == "Copyright" then
                     STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), values[i].. " ", true)
                     STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), setName, true)
-                    local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
+                     MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
                     gui.show_message("Motorcycle Club", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply")
                     SessionChanger(0)
                     return
                 else
                     STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), setName, true)
                     STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), values[i].. " ", true)
-                    local MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), -1)
+                     MCnOne = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), -1)
                     gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply")
                     SessionChanger(0)
                     return
@@ -5493,14 +5410,14 @@ CEO:add_button("Change CEO Name", function()
         end
         STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME"), "", true)
         STATS.STAT_SET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), setName, true)
-        local MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
+         MCnTwo = STATS.STAT_GET_STRING(joaat(MPX .. "GB_OFFICE_NAME2"), -1)
         gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..MCnTwo..". Changing sessions to apply")
         SessionChanger(0)
     end)
 end)
 toolTip(CEO, "Apply changes and switch sessions")
 -- YimCEO -- Alestarov_Menu
-local yimCEO = CEO:add_tab("YimCEO")
+ yimCEO = CEO:add_tab("YimCEO")
 
 cratevalue = 10000
 yimCEO:add_imgui(function()
@@ -5528,27 +5445,27 @@ script.register_looped("yimceoloop", function(script)
 
         if yCEO:is_enabled() == true then
         gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
-            if locals.get_int("appsecuroserv", 2) == 1 then
+            if s.get_int("appsecuroserv", 2) == 1 then
                 script:sleep(500)
-                locals.set_int("appsecuroserv", 740, 1)
+                s.set_int("appsecuroserv", 740, 1)
                 script:sleep(200)
-                locals.set_int("appsecuroserv", 739, 1)
+                s.set_int("appsecuroserv", 739, 1)
                 script:sleep(200)
-                locals.set_int("appsecuroserv", 558, 3012)
+                s.set_int("appsecuroserv", 558, 3012)
                 script:sleep(1000)
             end 
-            if locals.get_int("gb_contraband_sell", 2) == 1 then
-                locals.set_int("gb_contraband_sell", 543 + 595, 1)
-                locals.set_int("gb_contraband_sell", 543 + 55, 0)
-                locals.set_int("gb_contraband_sell", 543 + 584, 0)
-                locals.set_int("gb_contraband_sell", 543 + 7, 7)
+            if s.get_int("gb_contraband_sell", 2) == 1 then
+                s.set_int("gb_contraband_sell", 543 + 595, 1)
+                s.set_int("gb_contraband_sell", 543 + 55, 0)
+                s.set_int("gb_contraband_sell", 543 + 584, 0)
+                s.set_int("gb_contraband_sell", 543 + 7, 7)
                 script:sleep(500)
-                locals.set_int("gb_contraband_sell", 543 + 1, 99999)
+                s.set_int("gb_contraband_sell", 543 + 1, 99999)
             end
-            if locals.get_int("gb_contraband_buy", 2) == 1 then
-                locals.set_int("gb_contraband_buy", 601 + 5, 1)
-                locals.set_int("gb_contraband_buy", 601 + 191, 6)
-                locals.set_int("gb_contraband_buy", 601 + 192, 4)
+            if s.get_int("gb_contraband_buy", 2) == 1 then
+                s.set_int("gb_contraband_buy", 601 + 5, 1)
+                s.set_int("gb_contraband_buy", 601 + 191, 6)
+                s.set_int("gb_contraband_buy", 601 + 192, 4)
                 gui.show_message("Warehouse full!")
             end
         end
@@ -5574,7 +5491,7 @@ FMC2020 = "fm_mission_controller_2020"
 HIP = "heist_island_planning"
 
 -- Editor Stuff // Mashup Scripts L7Neg/Alestarov
-local heistEditor = KAOS:add_tab("Heist Editor")
+ heistEditor = KAOS:add_tab("Heist Editor")
     MPX = PI
     PI = stats.get_int("MPPLY_LAST_MP_CHAR")
     if PI == 0 then
@@ -5646,27 +5563,27 @@ end
 function calcDistance(player, target)
     pos = ENTITY.GET_ENTITY_COORDS(player, true)
     tarpos = ENTITY.GET_ENTITY_COORDS(target, true)
-    local dx = pos.x - tarpos.x
-    local dy = pos.y - tarpos.y
-    local dz = pos.z - tarpos.z
-    local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
+     dx = pos.x - tarpos.x
+     dy = pos.y - tarpos.y
+     dz = pos.z - tarpos.z
+     distance = math.sqrt(dx*dx + dy*dy + dz*dz)
     return distance
 end
 
 function calcDistanceFromCoords(player, target)
     pos = ENTITY.GET_ENTITY_COORDS(player, true)
-    local dx = pos.x - target[1]
-    local dy = pos.y - target[2]
-    local dz = pos.z - target[3]
-    local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
+     dx = pos.x - target[1]
+     dy = pos.y - target[2]
+     dz = pos.z - target[3]
+     distance = math.sqrt(dx*dx + dy*dy + dz*dz)
     return distance
 end
 
 function calcDistanceFromTwoCoords(pos, tarpos)
-    local dx = pos.x - tarpos.x
-    local dy = pos.y - tarpos.y
-    local dz = pos.z - tarpos.z
-    local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
+     dx = pos.x - tarpos.x
+     dy = pos.y - tarpos.y
+     dz = pos.z - tarpos.z
+     distance = math.sqrt(dx*dx + dy*dy + dz*dz)
     return distance
 end
 
@@ -5728,14 +5645,14 @@ toolTip(heistTab, "Teleport yourself to the current objective")
 heistTab:add_button("Life Count +5", function()
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then 
         network.force_script_host("fm_mission_controller_2020")
-        c_tlives_v = locals.get_int("fm_mission_controller_2020", 55004 + 873 + 1)
-        locals.set_int("fm_mission_controller_2020", 55004 + 873 + 1, c_tlives_v + 5)
+        c_tlives_v = s.get_int("fm_mission_controller_2020", 55004 + 873 + 1)
+        s.set_int("fm_mission_controller_2020", 55004 + 873 + 1, c_tlives_v + 5)
     end
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then 
         network.force_script_host("fm_mission_controller")
         globals.set_int(4718592 + 3318 + 1 + 38, 1)
-        c_tlives_v = locals.get_int("fm_mission_controller", 26154 + 1325 + 1)
-        locals.set_int("fm_mission_controller", 26154 + 1325 + 1, c_tlives_v + 5)
+        c_tlives_v = s.get_int("fm_mission_controller", 26154 + 1325 + 1)
+        s.set_int("fm_mission_controller", 26154 + 1325 + 1, c_tlives_v + 5)
     end
 end)
 toolTip(heistTab, "Increase the life count by 5")
@@ -5759,11 +5676,11 @@ heistTab:add_imgui(function()
         end
         toolTip("", "Set every players cut to 15 million\nMust be hovering over your cut before clicking")
         if ImGui.Button("Bypass Hack") then
-            locals.set_int("fm_mission_controller", 11776 + 24, 7)
+            s.set_int("fm_mission_controller", 11776 + 24, 7)
         end
         toolTip("", "Instantly finish hacking")
         if ImGui.Button("Bypass Drill") then
-            locals.set_float("fm_mission_controller", 10067 + 11, 100)
+            s.set_float("fm_mission_controller", 10067 + 11, 100)
         end
         toolTip("", "Instantly finish drilling")
     end
@@ -5842,10 +5759,10 @@ script.register_looped("heistTabLoop", function(heistTabScript)
     end
 
     if  shootEnemies:is_enabled() then
-        local pedtable = entities.get_all_peds_as_handles()
+         pedtable = entities.get_all_peds_as_handles()
         for _, peds in pairs(pedtable) do
-            local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
-            local ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
+             selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+             ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
             if (PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 4 or PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 5 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 1 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 49 or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Swat_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Sheriff_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Sheriff_01")) and peds ~= PLAYER.PLAYER_PED_ID() and not PED.IS_PED_DEAD_OR_DYING(peds,true)  and PED.IS_PED_A_PLAYER(peds) ~= 1 and calcDistance(PLAYER.PLAYER_PED_ID(), peds) <= 100 then 
                 if PED.IS_PED_IN_ANY_VEHICLE(peds, true) then
                     request_control(peds)
@@ -5862,7 +5779,7 @@ script.register_looped("heistTabLoop", function(heistTabScript)
 
 end)
 
-local casinoHeist = heistEditor:add_tab("Casino Editor")
+ casinoHeist = heistEditor:add_tab("Casino Editor")
 casinoHeist:add_text("Casino Heist Setups")
 
 casinoHeist:add_button("Silent & Sneaky", function()
@@ -5935,7 +5852,7 @@ casinoHeist:add_button("Skip Cooldown", function()
     STATS.STAT_SET_INT(joaat(MPX .. "H3_COMPLETEDPOSIX"), -1, true)
     STATS.STAT_SET_INT(joaat(MPX .. "MPPLY_H3_COOLDOWN"), -1, true)
 end)
-local deleteNPCs = casinoHeist:add_checkbox("Delete Mission NPC's")
+ deleteNPCs = casinoHeist:add_checkbox("Delete Mission NPC's")
     script.register_looped("deleteNPCsLoopScript", function(script)
         if deleteNPCs:is_enabled() then
             for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
@@ -5958,7 +5875,7 @@ casinoHeist:add_text("Click Skip cooldown (if applicable), then pay the 25k")
 casinoHeist:add_text("After that back off the board and press a preset.")
 
 -- Cayo Heist Editor - converted from L7Negs Ultimate Menu for Kiddions and some features like remove CCTV from Alestarov.
-local cayoHeist = heistEditor:add_tab("Cayo Perico Editor")
+ cayoHeist = heistEditor:add_tab("Cayo Perico Editor")
 
 cayoHeist:add_text("Non-Legit Presets")
 
@@ -6518,26 +6435,26 @@ end)
 cayoHeist:add_separator()
 cayoHeist:add_text("Press this after clicking one of the above presets")
 cayoHeist:add_button("Reset Kosatka Board", function()
-        locals.set_int(HIP, 1544, 2)
+        s.set_int(HIP, 1544, 2)
         gui.show_message("Cayo Heist", "Planning board has been reset!")
 end)
 
 cayoHeist:add_separator()
 cayoHeist:add_text("During Heist")
 cayoHeist:add_button("Skip Drainage Cut", function()
-    locals.set_int(FMC2020, 29118, 6)
+    s.set_int(FMC2020, 29118, 6)
     gui.show_message("Cayo Heist", "Bypassed Drainage Cut")
 end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Skip Fingerprint Scanner", function()
-   locals.set_int(FMC2020, 24333, 5)
+   s.set_int(FMC2020, 24333, 5)
    gui.show_message("Cayo Heist", "Bypassed Fingerprint Scanner")
 end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Skip Glass Cut", function()
-    locals.set_float(FMC2020, 30357 + 3, 100.0)
+    s.set_float(FMC2020, 30357 + 3, 100.0)
     gui.show_message("Cayo Heist", "Bypassed Plasma Cutter")
 end)
 
@@ -6563,7 +6480,7 @@ CamList = {
 cayoHeist:add_sameline()
 cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX for the help on this
     for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
-        local model = ENTITY.GET_ENTITY_MODEL(ped)
+         model = ENTITY.GET_ENTITY_MODEL(ped)
         if model == 0x7ED5AD78 or model == 0x6C8C08E5 or model == 0x995B3F9F or model == 0xB881AEE then 
                 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
                 PED.DELETE_PED(ped)
@@ -6594,21 +6511,21 @@ end
     gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters")
 end)
 
-local properties = {
+ properties = {
     {name = "Drainage", id = 768}, {name = "Gold", id = 618}, {name = "Fingerprint Scanner", id = 619}, {name = "Main Gate", id = 770}, {name = "Kosatka", id = 760},
     -- Add more properties as needed
     -- Cayo Drainage = 768
 }
 
 -- Function to create buttons dynamically
-local function createCayoButtons(cayoHeist)
-    local buttonsPerRow = 5
-    local buttonCount = 0
+ function createCayoButtons(cayoHeist)
+     buttonsPerRow = 5
+     buttonCount = 0
     for _, property in ipairs(properties) do
         cayoHeist:add_button(property.name, function()
-            local ped = PLAYER.PLAYER_PED_ID()
-            local blip_info = HUD.GET_FIRST_BLIP_INFO_ID(property.id)
-            local coords = HUD.GET_BLIP_COORDS(blip_info)
+             ped = PLAYER.PLAYER_PED_ID()
+             blip_info = HUD.GET_FIRST_BLIP_INFO_ID(property.id)
+             coords = HUD.GET_BLIP_COORDS(blip_info)
             
             if HUD.DOES_BLIP_EXIST(blip_info) then
                 if property.id == 740 then
@@ -6635,7 +6552,7 @@ cayoHeist:add_text("Make sure you have completed the heist and you are standing 
 cayoHeist:add_text("Click Skip Cooldown, then click on your Preset and click Reset Kosatka Board")
 
 -- Cayo Bag Size & Value Editor
-local cayoSizeEditor = cayoHeist:add_tab("Size/Value Editor")
+ cayoSizeEditor = cayoHeist:add_tab("Size/Value Editor")
 cayoSizeEditor:add_text("Bag Size Editor")
 bagSizeVal = 1800
 cayoSizeEditor:add_imgui(function()
@@ -6802,13 +6719,13 @@ cayoSizeEditor:add_text("Minimum values are exact defaults for ALL targets.")
 cayoSizeEditor:add_separator()
 cayoSizeEditor:add_text("Press this after setting values.")
 cayoSizeEditor:add_button("Reset Kosatka Board", function()
-        locals.set_int(HIP, 1544, 2)
+        s.set_int(HIP, 1544, 2)
         gui.show_message("Cayo Heist", "Planning board has been reset!")
 end)
 
 -- Doomsday Heist Editor
 
-local DP = heistEditor:add_tab("Doomsday Editor")
+ DP = heistEditor:add_tab("Doomsday Editor")
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
@@ -6819,14 +6736,14 @@ end
 
 a48 = 1
 
-local contract_id = {0, 2, 3, 4} -- Assuming these are the IDs for "Select", "Data Breaches", "Bogdan Problem", "Doomsday Scenario"
-local contract_names = {"Select", "Data Breaches", "Bogdan Problem", "Doomsday Scenario"}
-local selectedContractIndex = 0
-local selectedContractID = contract_id[selectedContractIndex + 1]
+ contract_id = {0, 2, 3, 4} -- Assuming these are the IDs for "Select", "Data Breaches", "Bogdan Problem", "Doomsday Scenario"
+ contract_names = {"Select", "Data Breaches", "Bogdan Problem", "Doomsday Scenario"}
+ selectedContractIndex = 0
+ selectedContractID = contract_id[selectedContractIndex + 1]
 
 DP:add_text("Doomsday Act Selection")
 
-local function DoomsdayActSetter(progress, status)
+ function DoomsdayActSetter(progress, status)
     STATS.STAT_SET_INT(joaat(MPX .. "GANGOPS_FLOW_MISSION_PROG"), progress, true)
     STATS.STAT_SET_INT(joaat(MPX .. "GANGOPS_HEIST_STATUS"), status, true)
    STATS.STAT_SET_INT(joaat(MPX .. "GANGOPS_FLOW_NOTIFICATIONS"), 1557, true)
@@ -6857,11 +6774,11 @@ DP:add_button("Reset Preps", function() DoomsdayActSetter(240, 0) end)
 DP:add_text("After all choices and pressing Complete Preps")
 DP:add_text("leave your facility and go back inside")
 
-local valEdit = DP:add_tab("Payout Editor")
+ valEdit = DP:add_tab("Payout Editor")
 
-local h2_d1_awd = valEdit:add_input_int("Data Breaches")
-local h2_d2_awd = valEdit:add_input_int("Bogdan Problem")
-local h2_d3_awd = valEdit:add_input_int("Doomsday Scenario")
+ h2_d1_awd = valEdit:add_input_int("Data Breaches")
+ h2_d2_awd = valEdit:add_input_int("Bogdan Problem")
+ h2_d3_awd = valEdit:add_input_int("Doomsday Scenario")
 
 valEdit:add_button("Retrieve Payouts", function()
     h2_d1_awd:set_value(tunables.get_int("GANGOPS_THE_IAA_JOB_CASH_REWARD"))
@@ -6884,12 +6801,12 @@ h2_awd_lock = valEdit:add_checkbox("Apply Payouts")
     end
     
 -- Magnet/Forcefield
-local xmen = Fun:add_tab("Magnet/Forcefield")
+ xmen = Fun:add_tab("Magnet/Forcefield")
 xmen:add_text("Magnetic field attracts all peds/vehicles")
-local blackHoleLoopCheckbox = xmen:add_checkbox("Magnet")
-local blackHoleRadius = 2.0
-local blackHoleMarkerVisible = false
-local magnitude = 1.0 -- Initialize the magnitude variable
+ blackHoleLoopCheckbox = xmen:add_checkbox("Magnet")
+ blackHoleRadius = 2.0
+ blackHoleMarkerVisible = false
+ magnitude = 1.0 -- Initialize the magnitude variable
 
 xmen:add_imgui(function()
     blackHoleRadius, used = ImGui.SliderFloat("Magnet Radius", blackHoleRadius, 0.0, 100.0)
@@ -6908,25 +6825,25 @@ xmen:add_imgui(function()
     
     -- Draw black hole marker
     if blackHoleMarkerVisible then
-        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
-        local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+         playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         GRAPHICS.DRAW_MARKER_SPHERE(playerCoords.x, playerCoords.y, playerCoords.z, blackHoleRadius, 255, 0, 0, 0.3)
     end
 end)
 
-local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Include magnitude parameter
-    local vehicles = entities.get_all_vehicles_as_handles()
-    local peds = entities.get_all_peds_as_handles()
-    local blackHoleRadiusSquared = blackHoleRadius * blackHoleRadius
+ function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Include magnitude parameter
+     vehicles = entities.get_all_vehicles_as_handles()
+     peds = entities.get_all_peds_as_handles()
+     blackHoleRadiusSquared = blackHoleRadius * blackHoleRadius
     for _, entity in ipairs(vehicles) do
         if PED.IS_PED_A_PLAYER(entity) == false then
             if entities.take_control_of(entity) then
-                local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
-                local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                 entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                 distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
                 if distanceSquared <= blackHoleRadiusSquared then
-                    local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
-                    local forceY = (playerCoords.y - entityCoord.y) * magnitude
-                    local forceZ = (playerCoords.z - entityCoord.z) * magnitude
+                     forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
+                     forceY = (playerCoords.y - entityCoord.y) * magnitude
+                     forceZ = (playerCoords.z - entityCoord.z) * magnitude
                     RequestControl(entity)
                     ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
@@ -6937,12 +6854,12 @@ local function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Inclu
     for _, entity in ipairs(peds) do
         if PED.IS_PED_A_PLAYER(entity) == false then
             if entities.take_control_of(entity) then
-                local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
-                local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                 entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                 distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
                 if distanceSquared <= blackHoleRadiusSquared then
-                    local forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
-                    local forceY = (playerCoords.y - entityCoord.y) * magnitude
-                    local forceZ = (playerCoords.z - entityCoord.z) * magnitude
+                     forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
+                     forceY = (playerCoords.y - entityCoord.y) * magnitude
+                     forceZ = (playerCoords.z - entityCoord.z) * magnitude
                     RequestControl(entity)
                     ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
@@ -6954,26 +6871,26 @@ end
 script.register_looped("blackHoleLoopScript", function(script)
     script:yield()
     if blackHoleLoopCheckbox:is_enabled() == true then
-        local player = PLAYER.PLAYER_ID()
-        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
-        local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+         player = PLAYER.PLAYER_ID()
+         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
+         playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Pass magnitude
     end
 end)
 
 function V3_DISTANCE_SQUARED(v1, v2)
-    local dx = v1.x - v2.x
-    local dy = v1.y - v2.y
-    local dz = v1.z - v2.z
+     dx = v1.x - v2.x
+     dy = v1.y - v2.y
+     dz = v1.z - v2.z
     return dx * dx + dy * dy + dz * dz
 end
 
 xmen:add_text("Forcefield surrounds your player in a barrier")
 xmen:add_text("Works with magnet to create a vehicle/ped barrier")
-local forceFieldLoopCheckbox = xmen:add_checkbox("Forcefield")
-local forceFieldRadius = 5.0
-local forceFieldMagnitude = 10.0
-local forceFieldMarkerVisible = false
+ forceFieldLoopCheckbox = xmen:add_checkbox("Forcefield")
+ forceFieldRadius = 5.0
+ forceFieldMagnitude = 10.0
+ forceFieldMarkerVisible = false
 
 xmen:add_imgui(function()
     forceFieldRadius, used = ImGui.SliderFloat("Force Field Radius", forceFieldRadius, 0.0, 100.0)
@@ -6992,27 +6909,27 @@ xmen:add_imgui(function()
     
     -- Draw force field marker
     if forceFieldMarkerVisible then
-        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
-        local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+         playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         GRAPHICS.DRAW_MARKER_SPHERE(playerCoords.x, playerCoords.y, playerCoords.z, forceFieldRadius, 0, 255, 0, 0.3)
     end
 end)
 
-local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
-    local vehicles = entities.get_all_vehicles_as_handles()
-    local peds = entities.get_all_peds_as_handles()
-    local forceFieldRadiusSquared = forceFieldRadius * forceFieldRadius
+ function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
+     vehicles = entities.get_all_vehicles_as_handles()
+     peds = entities.get_all_peds_as_handles()
+     forceFieldRadiusSquared = forceFieldRadius * forceFieldRadius
 
     -- Apply forces to vehicles
     for _, entity in ipairs(vehicles) do
         if PED.IS_PED_A_PLAYER(entity) == false then
             if entities.take_control_of(entity) then
-                local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
-                local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                 entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                 distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
                 if distanceSquared <= forceFieldRadiusSquared then
-                    local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
-                    local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
-                    local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
+                     forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
+                     forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
+                     forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
                     RequestControl(entity)
                     ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
@@ -7024,12 +6941,12 @@ local function applyForceField(playerCoords, forceFieldRadius, forceMagnitude)
     for _, entity in ipairs(peds) do
         if PED.IS_PED_A_PLAYER(entity) == false then
             if entities.take_control_of(entity) then
-                local entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
-                local distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                 entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                 distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
                 if distanceSquared <= forceFieldRadiusSquared then
-                    local forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
-                    local forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
-                    local forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
+                     forceX = (entityCoord.x - playerCoords.x) * forceMagnitude -- Invert the direction of force
+                     forceY = (entityCoord.y - playerCoords.y) * forceMagnitude -- Invert the direction of force
+                     forceZ = (entityCoord.z - playerCoords.z) * forceMagnitude -- Invert the direction of force
                     RequestControl(entity)
                     ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
@@ -7041,16 +6958,16 @@ end
 script.register_looped("forceFieldLoopScript", function(script)
     script:yield()
     if forceFieldLoopCheckbox:is_enabled() == true then
-        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
-        local playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+         playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         applyForceField(playerCoords, forceFieldRadius, forceFieldMagnitude)
     end
 end)
 
 function V3_DISTANCE_SQUARED(v1, v2)
-    local dx = v1.x - v2.x
-    local dy = v1.y - v2.y
-    local dz = v1.z - v2.z
+     dx = v1.x - v2.x
+     dy = v1.y - v2.y
+     dz = v1.z - v2.z
     return dx * dx + dy * dy + dz * dz
 end
 
@@ -7094,10 +7011,10 @@ raceTab:add_imgui(function()
 end)
 
 --Chat Options
-local chatOpt = KAOS:add_tab("Chat Options")
+ chatOpt = KAOS:add_tab("Chat Options")
 
 chatOpt:add_text("Send Unfiltered Messages")
-local chatBox = ""
+ chatBox = ""
 chatOpt:add_imgui(function()
     if is_typing then
         PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -7110,7 +7027,7 @@ chatOpt:add_imgui(function()
     end
 end)
 chatOpt:add_sameline()
-local isTeam = chatOpt:add_checkbox("Team Only")
+ isTeam = chatOpt:add_checkbox("Team Only")
 chatOpt:add_button("Send Message", function()
 	if isCooldown then
         gui.show_message('Chat', "There is a delay before sending another chat message.")
@@ -7137,7 +7054,7 @@ end)
 chatOpt:add_separator()
 -- Discord Name Sender, easily send your discord name
 chatOpt:add_text("Discord Advertiser")
-local discordBox = ""
+ discordBox = ""
 chatOpt:add_imgui(function()
     if is_typing then
         PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -7177,7 +7094,7 @@ chatOpt:add_button("Addon Info", function()
     isCooldown = true
 
     script.run_in_fiber(function(addonMsg)
-        local ainfo = "Extras Addon for YimMenu v"..addonVersion..", find it on Github for FREE @ https://github.com/Deadlineem/Extras-Addon-for-YimMenu!"
+         ainfo = "Extras Addon for YimMenu v"..addonVersion..", find it on Github for FREE @ https://github.com/Deadlineem/Extras-Addon-for-YimMenu!"
         network.send_chat_message("[Lua Script]: "..ainfo, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
@@ -7193,7 +7110,7 @@ chatOpt:add_button("Menu Info", function()
     isCooldown = true
 
     script.run_in_fiber(function(spawnClone)
-        local binfo = "YimMenu version 1.68, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
+         binfo = "YimMenu version 1.68, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
         network.send_chat_message("[Menu]: "..binfo, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
@@ -7208,14 +7125,14 @@ extraGrief = griefPlayerTab:add_checkbox("Grief")
 extraGrief:set_enabled(true)
 griefPlayerTab:add_imgui(function()
     if extraGrief:is_enabled() then
-    local parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
-        local parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
-        local parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-        local childWidth, childHeight = 200, 150 -- Size of your child window
-        local offset = 10 -- Offset between parent and child windows
+     parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+         parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
+         parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
+         childWidth, childHeight = 200, 150 -- Size of your child window
+         offset = 10 -- Offset between parent and child windows
 
-        local x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
-        local y = parentY -- Align the child window vertically with the parent window
+         x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
+         y = parentY -- Align the child window vertically with the parent window
 
         ImGui.SetNextWindowPos(x, y)
             if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
@@ -7225,7 +7142,7 @@ griefPlayerTab:add_imgui(function()
     end
 end)
 
-local balls = {
+ balls = {
 "p_ld_soc_ball_01",
 "p_ld_am_ball_01",
 "prop_bowling_ball",
@@ -7251,17 +7168,17 @@ vehicleSpin = griefPlayerTab:add_checkbox("Spin Vehicle")
 toolTip(griefPlayerTab, "Spins the players vehicle uncontrollably.")
 
 griefPlayerTab:add_sameline()
-local trollLoop = false
+ trollLoop = false
 trollLoop = griefPlayerTab:add_checkbox("Teleport Troll")
 
 script.register_looped("trollLoop", function(script)
     script:yield()
     if trollLoop:is_enabled() == true then
-        local localPlayer = PLAYER.PLAYER_ID()
-        local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
+         Player = PLAYER.PLAYER_ID()
+         player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         gui.show_message("Teleport Troll", "Teleporting randomly around "..PLAYER.GET_PLAYER_NAME(network.get_selected_player()))
-        PLAYER.START_PLAYER_TELEPORT(localPlayer, coords.x + math.random(-5, 5), coords.y + math.random(-5, 5), coords.z, 0, true, true, true)
+        PLAYER.START_PLAYER_TELEPORT(Player, coords.x + math.random(-5, 5), coords.y + math.random(-5, 5), coords.z, 0, true, true, true)
         sleep(0.1)
     end
 end)
@@ -7269,11 +7186,11 @@ toolTip(griefPlayerTab, "Teleports you randomly around the selected player, will
 
 griefPlayerTab:add_button("Spawn Clone", function()
     script.run_in_fiber(function(spawnClone)
-        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-        local coords = ENTITY.GET_ENTITY_COORDS(player, true)
+         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         
         -- Create a pedestrian clone
-        local ped = PED.CREATE_PED(26, ENTITY.GET_ENTITY_MODEL(player), coords.x, coords.y + 1, coords.z, ENTITY.GET_ENTITY_HEADING(player), true, false, false)
+         ped = PED.CREATE_PED(26, ENTITY.GET_ENTITY_MODEL(player), coords.x, coords.y + 1, coords.z, ENTITY.GET_ENTITY_HEADING(player), true, false, false)
         if ped ~= 0 then
             -- Clone the pedestrian's behavior to target the player
             PED.CLONE_PED_TO_TARGET(player, ped)
@@ -7310,14 +7227,14 @@ toolTip(griefPlayerTab, "Spawns a clone of the player with a homing launcher to 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Clown Attack", function()
     script.run_in_fiber(function (clownAttack)
-        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-        local coords = ENTITY.GET_ENTITY_COORDS(player, true)
-        local heading = ENTITY.GET_ENTITY_HEADING(player)
-        local spawnDistance = 50.0 * math.sin(math.rad(heading))
-        local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
-        local clown = joaat("s_m_y_clown_01")
-        local van = joaat("speedo2")
-        local weapon = -1121678507
+         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+         coords = ENTITY.GET_ENTITY_COORDS(player, true)
+         heading = ENTITY.GET_ENTITY_HEADING(player)
+         spawnDistance = 50.0 * math.sin(math.rad(heading))
+         isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+         clown = joaat("s_m_y_clown_01")
+         van = joaat("speedo2")
+         weapon = -1121678507
         STREAMING.REQUEST_MODEL(clown)
         STREAMING.REQUEST_MODEL(van)
         STREAMING.REQUEST_MODEL(weapon)
@@ -7330,9 +7247,9 @@ griefPlayerTab:add_button("Clown Attack", function()
         if vehicle ~= 0 then
             for seat = -1, 2 do
                 --vehiclePed = PED.CREATE_PED_INSIDE_VEHICLE(vehicle, 0, clown, seat, true, false)
-                local ped = PED.CREATE_PED(0, clown, roadCoords.x, roadCoords.y + 2, roadCoords.z, ENTITY.GET_ENTITY_HEADING(player), true, true)
+                 ped = PED.CREATE_PED(0, clown, roadCoords.x, roadCoords.y + 2, roadCoords.z, ENTITY.GET_ENTITY_HEADING(player), true, true)
                 if ped ~= 0 then
-                    local group = joaat("HATES_PLAYER")
+                     group = joaat("HATES_PLAYER")
                     PED.ADD_RELATIONSHIP_GROUP("clowns", group)
                     PED.SET_PED_RELATIONSHIP_GROUP_HASH(ped, group)
                     ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
@@ -7380,16 +7297,16 @@ toolTip(griefPlayerTab, "Spawns a Clown van full of clowns to chase/gun the play
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Clown Jet Attack", function()
     script.run_in_fiber(function (clownJetsTwo)
-        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-        local playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
-        local coords = ENTITY.GET_ENTITY_COORDS(player, true)
-        local heading = ENTITY.GET_ENTITY_HEADING(player)
-        local spawnDistance = 250.0 * math.sin(math.rad(heading))
-        local spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
-        local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
-        local clown = joaat("s_m_y_clown_01")
-        local jet = joaat("Lazer")
-        local weapon = -1121678507
+         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+         playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
+         coords = ENTITY.GET_ENTITY_COORDS(player, true)
+         heading = ENTITY.GET_ENTITY_HEADING(player)
+         spawnDistance = 250.0 * math.sin(math.rad(heading))
+         spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
+         isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+         clown = joaat("s_m_y_clown_01")
+         jet = joaat("Lazer")
+         weapon = -1121678507
 
         STREAMING.REQUEST_MODEL(clown)
         STREAMING.REQUEST_MODEL(jet)
@@ -7402,25 +7319,25 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
         end
 
         -- Calculate the spawn position for the jet in the air
-        local jetSpawnX = coords.x + math.random(-1000, 1000)
-        local jetSpawnY = coords.y + math.random(-1000, 1000)
-        local jetSpawnZ = coords.z + math.random(100, 1200)
+         jetSpawnX = coords.x + math.random(-1000, 1000)
+         jetSpawnY = coords.y + math.random(-1000, 1000)
+         jetSpawnZ = coords.z + math.random(100, 1200)
         
-        local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
-        local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
+         colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
+         jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
         
         if jetVehicle ~= 0 then
-            local primaryColor = colors[math.random(#colors)]
-            local secondaryColor = colors[math.random(#colors)]
+             primaryColor = colors[math.random(#colors)]
+             secondaryColor = colors[math.random(#colors)]
 
             -- Set vehicle colors
             VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
             -- Spawn clowns inside the jet
             for seat = -1, -1 do
-                local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
+                 ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
                 
                 if ped ~= 0 then
-                    local group = joaat("HATES_PLAYER")
+                     group = joaat("HATES_PLAYER")
                     PED.ADD_RELATIONSHIP_GROUP("clowns", group)
                     ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
                     PED.SET_PED_CAN_BE_TARGETTED(ped, false)
@@ -7476,7 +7393,7 @@ end
 ---@param maxDistance number
 ---@return v3
 function get_random_offset_from_entity(entity, minDistance, maxDistance)
-    local pos = ENTITY.GET_ENTITY_COORDS(entity, false)
+     pos = ENTITY.GET_ENTITY_COORDS(entity, false)
     return get_random_offset_in_range(pos, minDistance, maxDistance)
 end
 
@@ -7486,15 +7403,15 @@ end
 ---@param maxDistance number
 ---@return v3
 function get_random_offset_in_range(coords, minDistance, maxDistance)
-    local radius = random_float(minDistance, maxDistance)
-    local angle = random_float(0, 2 * math.pi)
-    local delta = vec3.new(math.cos(angle), math.sin(angle), 0.0)
-    local offsetX = delta.x * radius
-    local offsetY = delta.y * radius
-    local offsetZ = delta.z * radius
-    local newX = coords.x + offsetX
-    local newY = coords.y + offsetY
-    local newZ = coords.z + offsetZ
+     radius = random_float(minDistance, maxDistance)
+     angle = random_float(0, 2 * math.pi)
+     delta = vec3.new(math.cos(angle), math.sin(angle), 0.0)
+     offsetX = delta.x * radius
+     offsetY = delta.y * radius
+     offsetZ = delta.z * radius
+     newX = coords.x + offsetX
+     newY = coords.y + offsetY
+     newZ = coords.z + offsetZ
     return vec3.new(newX, newY, newZ)
 end
 
@@ -7518,7 +7435,7 @@ function request_control_once(entity)
     if not NETWORK.NETWORK_IS_IN_SESSION() then
         return true
     end
-    local netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
+     netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
     NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
     return NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
 end
@@ -7528,13 +7445,13 @@ function atan2(y, x)
 end
 
 function set_entity_face_entity(entity, target, usePitch)
-    local pos1 = ENTITY.GET_ENTITY_COORDS(entity, false)
-    local pos2 = ENTITY.GET_ENTITY_COORDS(target, false)
-    local relX = pos2.x - pos1.x
-    local relY = pos2.y - pos1.y
-    local relZ = pos2.z - pos1.z
+     pos1 = ENTITY.GET_ENTITY_COORDS(entity, false)
+     pos2 = ENTITY.GET_ENTITY_COORDS(target, false)
+     relX = pos2.x - pos1.x
+     relY = pos2.y - pos1.y
+     relZ = pos2.z - pos1.z
 
-    local heading = atan2(relY, relX) * 180.0 / math.pi
+     heading = atan2(relY, relX) * 180.0 / math.pi
     if heading < 0 then
         heading = heading + 360.0
     end
@@ -7542,8 +7459,8 @@ function set_entity_face_entity(entity, target, usePitch)
     ENTITY.SET_ENTITY_HEADING(entity, heading)
 
     if usePitch then
-        local distXY = math.sqrt(relX * relX + relY * relY)
-        local pitch = math.atan2(-relZ, distXY) * 180.0 / math.pi
+         distXY = math.sqrt(relX * relX + relY * relY)
+         pitch = math.atan2(-relZ, distXY) * 180.0 / math.pi
         ENTITY.SET_ENTITY_ROTATION(entity, pitch, 0, heading, 2, false)
     end
 end
@@ -7551,16 +7468,16 @@ end
 
 griefPlayerTab:add_button("Clown Bombers", function()
     script.run_in_fiber(function(script)
-        local hash = joaat("s_m_y_clown_01")
-        local asset = "scr_rcbarry2"
-        local explosion = "scr_exp_clown"
-        local appears = "scr_clown_appears"
+         hash = joaat("s_m_y_clown_01")
+         asset = "scr_rcbarry2"
+         explosion = "scr_exp_clown"
+         appears = "scr_clown_appears"
         request_model(hash)
-        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-        local playerpos = ENTITY.GET_ENTITY_COORDS(player, false)
-        local coord = get_random_offset_from_entity(player, 5.0, 8.0)
+         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+         playerpos = ENTITY.GET_ENTITY_COORDS(player, false)
+         coord = get_random_offset_from_entity(player, 5.0, 8.0)
         coord.z = coord.z - 1.0
-        local ped = PED.CREATE_PED(0, hash, coord.x, coord.y, coord.z, 0.0, true, false)
+         ped = PED.CREATE_PED(0, hash, coord.x, coord.y, coord.z, 0.0, true, false)
         if ped == 0 then gui.show_error("Clown Bomber", "Failed to Create Ped\nMost Likely The Model Isnt Loaded\nTry Again.") else gui.show_message("Clown Bomber", "Spawned as ".. tostring(ped)) end
 
         request_fx_asset(asset)
@@ -7575,12 +7492,12 @@ griefPlayerTab:add_button("Clown Bombers", function()
         set_entity_face_entity(ped, player, false)
         PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
         TASK.TASK_GO_TO_COORD_ANY_MEANS(ped, playerpos.x, playerpos.y, playerpos.z, 5.0, 0, false, 0, 0.0)
-        local dest = playerpos
+         dest = playerpos
         PED.SET_PED_KEEP_TASK(ped, true)
         AUDIO.STOP_PED_SPEAKING(ped, true)
         while not PED.IS_PED_FATALLY_INJURED(ped) and ENTITY.DOES_ENTITY_EXIST(ped) do
-            local pos = ENTITY.GET_ENTITY_COORDS(ped, true)
-            local targetPos = ENTITY.GET_ENTITY_COORDS(player, true)
+             pos = ENTITY.GET_ENTITY_COORDS(ped, true)
+             targetPos = ENTITY.GET_ENTITY_COORDS(player, true)
             if not ENTITY.DOES_ENTITY_EXIST(ped) or PED.IS_PED_FATALLY_INJURED(ped) then
                 return false
             elseif calcDistanceFromTwoCoords(pos, targetPos) > 150 and request_control(ped) then
@@ -7633,11 +7550,11 @@ toolTip(griefPlayerTab, "Causes a no damage explosion to shake the players scree
 
 script.register_looped("extrasAddonLooped", function(script)
     if npcDrive:is_enabled() then
-        local vehtable = entities.get_all_vehicles_as_handles()
+         vehtable = entities.get_all_vehicles_as_handles()
         for _, vehs in pairs(vehtable) do
-            local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), true)
-            local ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehs, -1, false)
-            local player = false
+             selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), true)
+             ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehs, -1, false)
+             player = false
             for playerId = 0, 31 do
                 if PLAYER.GET_PLAYER_PED(playerId) == ped then 
                     player = true
@@ -7654,8 +7571,8 @@ script.register_looped("extrasAddonLooped", function(script)
         end
     end
     if dildos:is_enabled() then
-        local selectedItem = "prop_cs_dildo_01"
-        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+         selectedItem = "prop_cs_dildo_01"
+         coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         while not STREAMING.HAS_MODEL_LOADED(joaat(selectedItem)) do
             STREAMING.REQUEST_MODEL(joaat(selectedItem))
             script:yield()
@@ -7664,9 +7581,9 @@ script.register_looped("extrasAddonLooped", function(script)
     end
 
     if dropBalls:is_enabled() then
-        local randomIndex = math.random(1, #balls)
-        local selectedItem = balls[randomIndex]
-        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+         randomIndex = math.random(1, #balls)
+         selectedItem = balls[randomIndex]
+         coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         while not STREAMING.HAS_MODEL_LOADED(joaat(selectedItem)) do
             STREAMING.REQUEST_MODEL(joaat(selectedItem))
             script:yield()
@@ -7678,8 +7595,8 @@ script.register_looped("extrasAddonLooped", function(script)
             gui.show_error("Spin Vehicle","Player is not in a vehicle")
         else
             veh = PED.GET_VEHICLE_PED_IS_IN(PLAYER.GET_PLAYER_PED(network.get_selected_player()), true)
-            local time = os.time()
-            local request = false
+             time = os.time()
+             request = false
             while not request do
                 if os.time() - time >= 5 then
                     gui.show_error("Spin Vehicle","Couldnt Control Vehicle")
@@ -7725,16 +7642,16 @@ end)
 
 -- Grief Burn Player
 griefPlayerTab:add_sameline()
-local burnLoop = false
+ burnLoop = false
 burnLoop = griefPlayerTab:add_checkbox("Burn")
 
 script.register_looped("burnLoop", function()
     if burnLoop:is_enabled() == true then
-        local player_id = network.get_selected_player()
-        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-        local fxType = 3
-        local ptfxAsset = "scr_bike_adversary"
-        local particle = "scr_adversary_foot_flames"
+         player_id = network.get_selected_player()
+         coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+         fxType = 3
+         ptfxAsset = "scr_bike_adversary"
+         particle = "scr_adversary_foot_flames"
         
         FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, fxType, 100000.0, false, false, 0, false)
         GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
@@ -7750,25 +7667,25 @@ end)
 toolTip(griefPlayerTab, "Repeatedly burns the selected player using molotovs")
 -- Griefing Options
 
-local ramLoopz = griefPlayerTab:add_checkbox("Vehicle Sandwich (On/Off)")
+ ramLoopz = griefPlayerTab:add_checkbox("Vehicle Sandwich (On/Off)")
 
 script.register_looped("ramLoopz", function()
     if ramLoopz:is_enabled() then
-        local player_id = network.get_selected_player()
+         player_id = network.get_selected_player()
         if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
-                        local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                         coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
 
                         -- Get a random vehicle model from the list (make sure 'vehicleModels' is defined)
-                        local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+                         randomModel = vehicleModels[math.random(1, #vehicleModels)]
 
                         -- Convert the string vehicle model to its hash value
-                        local modelHash = MISC.GET_HASH_KEY(randomModel)
+                         modelHash = MISC.GET_HASH_KEY(randomModel)
 
                         -- Create the vehicle without the last boolean argument (keepTrying)
-                        local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
+                         vehicle = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z + 20, 0.0, true, true, false)
                         -- Set vehicle orientation
                         ENTITY.SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 2, true)
-                        local networkId = NETWORK.VEH_TO_NET(vehicle)
+                         networkId = NETWORK.VEH_TO_NET(vehicle)
                         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle) then
                             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
                         end
@@ -7780,10 +7697,10 @@ script.register_looped("ramLoopz", function()
                             VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
                         end
                         
-                        local vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
+                         vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
                         -- Set vehicle orientation
                         ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
-                        local networkId = NETWORK.VEH_TO_NET(vehicle2)
+                         networkId = NETWORK.VEH_TO_NET(vehicle2)
                         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(vehicle2) then
                             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
                         end
@@ -7812,16 +7729,16 @@ toolTip(griefPlayerTab, "Sandwiches the selected player between 2 vehicles at hi
 
 -- griefPlayerTabing Explode Player 2
 griefPlayerTab:add_sameline()
-local explodeLoop = false
+ explodeLoop = false
 explodeLoop = griefPlayerTab:add_checkbox("Explosion")
 
 script.register_looped("explodeLoop", function()
     if explodeLoop:is_enabled() == true then
-        local explosionType = 1  -- Adjust this according to the explosion type you want (1 = GRENADE, 2 = MOLOTOV, etc.)
-        local explosionFx = "explosion_barrel"
+         explosionType = 1  -- Adjust this according to the explosion type you want (1 = GRENADE, 2 = MOLOTOV, etc.)
+         explosionFx = "explosion_barrel"
 
-                local player_id = network.get_selected_player()
-                local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+                 player_id = network.get_selected_player()
+                 coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                 
                 FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
@@ -7838,23 +7755,23 @@ toolTip(griefPlayerTab, "Repeatedly explodes the selected player using a barrel 
 -- Crash Options
 griefPlayerTab:add_separator()
 griefPlayerTab:add_text("Crash Options")
-local prCrash = false
+ prCrash = false
 prCrash = griefPlayerTab:add_checkbox("PR Crash (On/Off)")
 
 script.register_looped("prCrash", function()
     if prCrash:is_enabled() == true then
 
-        local model = joaat("vw_prop_vw_colle_prbubble")
-        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = network.get_selected_player()
-        local money_value = 1000000
+         model = joaat("vw_prop_vw_colle_prbubble")
+         pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+         player_id = network.get_selected_player()
+         money_value = 1000000
 
         STREAMING.REQUEST_MODEL(model)
 
         if STREAMING.HAS_MODEL_LOADED(model) then
         gui.show_message("PR Crash", "Crashing player")
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+             objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
                 coords.y,
@@ -7866,7 +7783,7 @@ script.register_looped("prCrash", function()
                 false
             )
 
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
         end
         sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
@@ -7883,21 +7800,21 @@ griefPlayerTab:add_button("Fragment crash", function()
         end
         fraghash = joaat("prop_fragtest_cnst_04")
         STREAMING.REQUEST_MODEL(fraghash)
-        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
-        local crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+         TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+         crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff1, 1, false)
-        local crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+         crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff2, 1, false)
-        local crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+         crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
-        local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+         crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
         for i = 0, 100 do 
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                 return
             end    
-            local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+             TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff3, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
@@ -7910,7 +7827,7 @@ griefPlayerTab:add_button("Fragment crash", function()
         end
     end)
     script.run_in_fiber(function (fragcrash2)
-        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+         TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         fraghash = joaat("prop_fragtest_cnst_04")
         STREAMING.REQUEST_MODEL(fraghash)
         for i=1,10 do
@@ -7918,34 +7835,34 @@ griefPlayerTab:add_button("Fragment crash", function()
                 gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                 return
             end    
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             fragcrash2:sleep(100)
             delete_entity(object)
@@ -7956,7 +7873,7 @@ toolTip(griefPlayerTab, "Spawns a bunch of objects on the selected player and br
 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Break HUD", function()
-    local pid = network.get_selected_player()
+     pid = network.get_selected_player()
     network.trigger_script_event(1 << pid, {1450115979, pid, 1})
     gui.show_message("HUD Breaker", "You have broken "..PLAYER.GET_PLAYER_NAME(pid).."'s HUD and Interiors.")
     gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
@@ -7966,14 +7883,14 @@ toolTip(griefPlayerTab, "Removes and breaks the HUD of the selected player, this
 -- Grief Sound Spam Targetable
 griefPlayerTab:add_separator()
 griefPlayerTab:add_text("Sound Spams")
-local soundIndex = 0
-local isPlaying = false
+ soundIndex = 0
+ isPlaying = false
 
-local searchQuery = ""
-local filteredSoundNames = {}
-local selectedFilteredSoundIndex = 0
+ searchQuery = ""
+ filteredSoundNames = {}
+ selectedFilteredSoundIndex = 0
 
-local function updateFilteredSoundNames()
+ function updateFilteredSoundNames()
     filteredSoundNames = {}
     for _, sound in ipairs(sounds) do
         if string.find(string.lower(sound.SoundName), string.lower(searchQuery)) then
@@ -7982,7 +7899,7 @@ local function updateFilteredSoundNames()
     end
 end
 
-local function displaySoundNamesList()
+ function displaySoundNamesList()
     updateFilteredSoundNames()
     if selectedFilteredSoundIndex > #filteredSoundNames then
         selectedFilteredSoundIndex = 0
@@ -8001,7 +7918,7 @@ griefPlayerTab:add_imgui(function()
         is_typing = false
     end
 
-    local soundNames = {}
+     soundNames = {}
     for _, sound in ipairs(sounds) do
         table.insert(soundNames, sound.SoundName)
     end
@@ -8009,8 +7926,8 @@ griefPlayerTab:add_imgui(function()
     displaySoundNamesList()
 
     if ImGui.Button("Play") then
-        local selectedSoundName = filteredSoundNames[selectedFilteredSoundIndex + 1]
-        local targetPlayer = network.get_selected_player()
+         selectedSoundName = filteredSoundNames[selectedFilteredSoundIndex + 1]
+         targetPlayer = network.get_selected_player()
             script.run_in_fiber(function()
                 -- Play the selected sound
                 local selectedSound
@@ -8030,8 +7947,8 @@ end)
 toolTip(griefPlayerTab, "Plays the selected sound from the dropdown.")
 
 griefPlayerTab:add_sameline()
-local stopSounds = false
-stopSounds = griefPlayerTab:add_checkbox("Stop Local Sounds")
+ stopSounds = false
+stopSounds = griefPlayerTab:add_checkbox("Stop  Sounds")
     script.register_looped("stopSounds", function(script)
         if stopSounds:is_enabled() == true then     
             --soundId = AUDIO.GET_SOUND_ID()
@@ -8059,14 +7976,14 @@ Drops = dropsPlayerTab:add_checkbox("Drops")
 Drops:set_enabled(true)
 dropsPlayerTab:add_imgui(function()
     if Drops:is_enabled() then
-    local parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
-        local parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
-        local parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-        local childWidth, childHeight = 200, 150 -- Size of your child window
-        local offset = 10 -- Offset between parent and child windows
+     parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+         parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
+         parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
+         childWidth, childHeight = 200, 150 -- Size of your child window
+         offset = 10 -- Offset between parent and child windows
 
-        local x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
-        local y = parentY + 30-- Align the child window vertically with the parent window
+         x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
+         y = parentY + 30-- Align the child window vertically with the parent window
 
         ImGui.SetNextWindowPos(x, y)
             if ImGui.Begin("Extras Addon (Drop Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
@@ -8074,16 +7991,16 @@ dropsPlayerTab:add_imgui(function()
     end
 end)
 
-local princessBubblegumLoop = false
+ princessBubblegumLoop = false
 dropsPlayerTab:add_text("Action Figures")
 dropsPlayerTab:add_button("Princess Robot Bubblegum (On/Off)", function()
     princessBubblegumLoop = not princessBubblegumLoop
 
     script.register_looped("princessbubblegumLoop", function(script)
-        local model = joaat("vw_prop_vw_colle_prbubble")
-        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = network.get_selected_player()
-        local money_value = 0
+         model = joaat("vw_prop_vw_colle_prbubble")
+         pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+         player_id = network.get_selected_player()
+         money_value = 0
 
         STREAMING.REQUEST_MODEL(model)
         while STREAMING.HAS_MODEL_LOADED(model) == false do
@@ -8092,8 +8009,8 @@ dropsPlayerTab:add_button("Princess Robot Bubblegum (On/Off)", function()
 
         if STREAMING.HAS_MODEL_LOADED(model) then
         gui.show_message("RP/Cash Drop Started", "Dropping Princess Robot figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+             objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
                 coords.y,
@@ -8105,7 +8022,7 @@ dropsPlayerTab:add_button("Princess Robot Bubblegum (On/Off)", function()
                 false
             )
 
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
@@ -8123,10 +8040,10 @@ dropsPlayerTab:add_button("Alien (On/Off)", function()
    alienfigurineLoop = not alienfigurineLoop
 
     script.register_looped("alienfigurineLoop", function(script)
-        local model = joaat("vw_prop_vw_colle_alien")
-        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = network.get_selected_player()
-        local money_value = 0
+         model = joaat("vw_prop_vw_colle_alien")
+         pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+         player_id = network.get_selected_player()
+         money_value = 0
 
         STREAMING.REQUEST_MODEL(model)
         while STREAMING.HAS_MODEL_LOADED(model) == false do
@@ -8135,8 +8052,8 @@ dropsPlayerTab:add_button("Alien (On/Off)", function()
 
         if STREAMING.HAS_MODEL_LOADED(model) then
         gui.show_message("RP/Cash Drop Started", "Dropping Alien figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+             objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
                 coords.y,
@@ -8148,7 +8065,7 @@ dropsPlayerTab:add_button("Alien (On/Off)", function()
                 false
             )
 
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
@@ -8166,10 +8083,10 @@ dropsPlayerTab:add_button("Casino Cards (On/Off)", function()
    casinocardsLoop = not casinocardsLoop
 
     script.register_looped("casinocardsLoop", function(script)
-        local model = joaat("vw_prop_vw_lux_card_01a")
-        local pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-        local player_id = network.get_selected_player()
-        local money_value = 0
+         model = joaat("vw_prop_vw_lux_card_01a")
+         pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+         player_id = network.get_selected_player()
+         money_value = 0
 
         STREAMING.REQUEST_MODEL(model)
         while STREAMING.HAS_MODEL_LOADED(model) == false do
@@ -8178,8 +8095,8 @@ dropsPlayerTab:add_button("Casino Cards (On/Off)", function()
 
         if STREAMING.HAS_MODEL_LOADED(model) then
         gui.show_message("RP/Cash Drop Started", "Dropping Casino Cards on "..PLAYER.GET_PLAYER_NAME(player_id))
-            local coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-            local objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+             objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 pickup,
                 coords.x,
                 coords.y,
@@ -8191,7 +8108,7 @@ dropsPlayerTab:add_button("Casino Cards (On/Off)", function()
                 false
             )
         
-            local net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
             
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
@@ -8227,7 +8144,7 @@ dropsPlayerTab:add_button("Give 25k & Random RP", function()
 end)
 toolTip(dropsPlayerTab, "Gives the selected player some Money and RP")
 dropsPlayerTab:add_sameline()
-local tseTest = dropsPlayerTab:add_checkbox("Super Fast RP")
+ tseTest = dropsPlayerTab:add_checkbox("Super Fast RP")
 script.register_looped("tseTest", function()
     if tseTest:is_enabled() == true then
         pid = network.get_selected_player()
@@ -8238,10 +8155,10 @@ script.register_looped("tseTest", function()
 end)
 toolTip(dropsPlayerTab, "Remotely floods the selected player with RP (about 1 level/sec)")
 dropsPlayerTab:add_sameline()
-local ezMoney = dropsPlayerTab:add_checkbox("Money ($225k)")
+ ezMoney = dropsPlayerTab:add_checkbox("Money ($225k)")
     script.register_looped("ezMoney", function()
         if ezMoney:is_enabled() == true then
-            local pid = network.get_selected_player()
+             pid = network.get_selected_player()
             for n = 0, 10 do
                 for l = -10, 10 do
                     network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
@@ -8252,6 +8169,261 @@ local ezMoney = dropsPlayerTab:add_checkbox("Money ($225k)")
 toolTip(dropsPlayerTab, "Sometimes works, sometimes doesn't.  Up to 225k")
 
 dropsPlayerTab:add_imgui(function()
+    -- Ends the ImGui wrapper, new additions should be added above this.
+    ImGui.End()
+end)
+
+giftPlayerTab:add_sameline()
+Gifts = giftPlayerTab:add_checkbox("Vehicle")
+Gifts:set_enabled(true)
+giftPlayerTab:add_imgui(function()
+    if Gifts:is_enabled() then
+     parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+         parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
+         parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
+         childWidth, childHeight = 500, 650 -- Size of your child window
+         offset = 10 -- Offset between parent and child windows
+
+         x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
+         y = parentY + 60-- Align the child window vertically with the parent window
+
+        ImGui.SetNextWindowPos(x, y)
+            if ImGui.Begin("Extras Addon (Vehicle Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
+        end
+    end
+end)
+
+-- Orientation sliders and Spawn X Y Z sliders
+ orientationPitch = 0
+ orientationYaw = 0
+ orientationRoll = 0
+ spawnDistance = { x = 0, y = 0, z = -1 }
+ defaultOrientationPitch = 0
+ defaultOrientationYaw = 0
+ defaultOrientationRoll = 0
+ defaultSpawnDistance = { x = 0, y = 0, z = -1 }
+
+
+-- Function to reset sliders to default values
+ function resetVehicleSliders()
+    orientationPitch = defaultOrientationPitch
+    orientationYaw = defaultOrientationYaw
+    orientationRoll = defaultOrientationRoll
+    spawnDistance.x = defaultSpawnDistance.x
+    spawnDistance.y = defaultSpawnDistance.y
+    spawnDistance.z = defaultSpawnDistance.z
+end
+
+giftPlayerTab:add_imgui(function()
+    orientationPitch, _ = ImGui.SliderInt("Pitch", orientationPitch, 0, 360)
+    toolTip("", "Change the Pitch of the vehicle (Side to Side Axis)")
+    orientationYaw, _ = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
+    toolTip("", "Change the Yaw of the object (Vertical Axis)")
+    orientationRoll, _ = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
+    toolTip("", "Change the Roll of the object (Front to Back Axis)")
+end)
+
+giftPlayerTab:add_imgui(function()
+    spawnDistance.x, _ = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -25, 25)
+    toolTip("", "Change the X coordinates of where the object spawns (Left/Right depending on direction you are facing)")
+    spawnDistance.y, _ = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -25, 25)
+    toolTip("", "Change the Y coordinates of where the object spawns (Forward/Backwards depending on direction you are facing)")
+    spawnDistance.z, _ = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -25, 25)
+    toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
+end)
+
+-- Save default values
+defaultOrientationPitch = orientationPitch
+defaultOrientationYaw = orientationYaw
+defaultOrientationRoll = orientationRoll
+defaultSpawnDistance.x = spawnDistance.x
+defaultSpawnDistance.y = spawnDistance.y
+defaultSpawnDistance.z = spawnDistance.z
+
+-- Reset Sliders button
+giftPlayerTab:add_button("Reset Sliders", function()
+    resetVehicleSliders()
+end)
+toolTip(giftPlayerTab, "Reset the sliders to their default values")
+giftPlayerTab:add_separator()
+
+-- Function to spawn the vehicle with specified orientation and spawn position
+function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
+    script.run_in_fiber(function (script)
+         load_counter = 0
+        while STREAMING.HAS_MODEL_LOADED(vehicle_joaat) == false do
+            STREAMING.REQUEST_MODEL(vehicle_joaat)
+            script:yield()
+            if load_counter > 100 then
+                return
+            else
+                load_counter = load_counter + 1
+            end
+        end
+         veh = VEHICLE.CREATE_VEHICLE(vehicle_joaat, pos.x, pos.y, pos.z, yaw, true, true, false)
+        -- Set vehicle orientation
+        ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 2, true)
+         networkId = NETWORK.VEH_TO_NET(veh)
+        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+        end
+        if endPollution:is_enabled() then
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
+        end
+    end)
+end
+
+-- Function to display the list of vehicle models with search functionality
+ searchQuery = ""
+ filteredVehicleModels = {}
+
+ function updateFilteredVehicleModels()
+    filteredVehicleModels = {}
+    for _, model in ipairs(vehicleModels) do
+        if string.find(string.lower(model), string.lower(searchQuery)) then
+            table.insert(filteredVehicleModels, model)
+        end
+    end
+end
+
+ function displayVehicleModelsList()
+    updateFilteredVehicleModels()
+     vehicleModelNames = {}
+    for _, item in ipairs(filteredVehicleModels) do
+        table.insert(vehicleModelNames, vehicles.get_vehicle_display_name(item))
+    end
+    selectedObjectIndex, _ = ImGui.ListBox("Vehicle Models", selectedObjectIndex, vehicleModelNames, #vehicleModelNames)
+end
+
+-- Add search input field
+giftPlayerTab:add_imgui(function()
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
+    searchQuery, _ = ImGui.InputText("Search Vehicles", searchQuery, 128)
+    if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
+end)
+toolTip(giftPlayerTab, "Search for a vehicle (Example: Adder, Baller, Zentorno)")
+giftPlayerTab:add_imgui(displayVehicleModelsList)
+
+-- Add separator
+giftPlayerTab:add_separator()
+
+-- Spawn Selected button with orientation and spawn position
+
+giftPlayerTab:add_button("Spawn Selected", function()
+     selectedModelIndex = selectedObjectIndex + 1
+    if selectedModelIndex > 0 then
+         selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
+        if selectedVehicleModel then
+             vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
+             selPlayer = network.get_selected_player()
+             targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+             playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
+             playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
+            playerPos.x = playerPos.x + spawnDistance.x
+            playerPos.y = playerPos.y + spawnDistance.y
+            playerPos.z = playerPos.z + spawnDistance.z
+            spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
+            gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
+        end
+    else
+        gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
+    end
+--end
+end)
+toolTip(giftPlayerTab, "Spawns the vehicle on the selected player, if no player is selected, defaults to you")
+
+giftPlayerTab:add_sameline()
+ endPollution = giftPlayerTab:add_checkbox("No Pollution")
+endPollution:set_enabled(true)
+toolTip(giftPlayerTab, "Sets the entity as no longer needed to prevent session pollution of invisible vehicles, turn this off ONLY for gifting cars to others")
+toolTip(giftPlayerTab, "If you disable this, make sure you use the delete gun 'Self > Weapons > Custom gun (enabled) > Delete Gun' and delete the gifted car after its been driven into the garage")
+
+-- Vehicle Gift Options
+giftedsucc = false
+ 
+function giftVehToPlayer(vehicle, playerId, playerName)
+    if request_control(vehicle) then
+         netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
+ 
+        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 8)
+        DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
+        DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
+        DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
+        DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
+       
+        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName) 
+        giftedsucc = true
+    else
+        gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
+        giftedsucc = false
+    end
+end
+ 
+-- Assuming gui provides a 'show_message' method
+
+giftPlayerTab:add_button("Gift Vehicle", function()
+ 
+    script.run_in_fiber(function(script)
+ 
+         selectedPlayer = network.get_selected_player()
+            
+        -- Check if a player is selected
+         targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+         playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+        
+        if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
+             targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+ 
+            repeat
+                giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
+                script:sleep(200) 
+            until(giftedsucc == true)
+ 
+            giftedsucc = false -- set false to make sure next gifted car doesnt instantly stop repeating when it should still be repeating
+        end 
+    end)
+end)
+toolTip(giftPlayerTab, "Spam the gift button after following the Gifting Process until it reads Success to gift the vehicle.")
+giftPlayerTab:add_sameline()
+giftPlayerTab:add_button("Get Vehicle Stats", function()
+     selectedPlayer = network.get_selected_player()
+     targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
+ 
+    if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
+        last_veh = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+    end 
+ 
+ 
+    if last_veh  then 
+         playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
+        gui.show_message("Info", 
+            "user :"..PLAYER.GET_PLAYER_NAME(selectedPlayer).."->"..NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(selectedPlayer).."->".. joaat(playerName).."\n".. --NETWORK.GET_HASH_KEY(playerName).."\n"..
+            " Previous_Owner:"..DECORATOR.DECOR_GET_INT(last_veh , "Previous_Owner").."\n"..
+            " Vehicle Model:"..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(last_veh)).."\n"..
+            " Player_Vehicle:"..DECORATOR.DECOR_GET_INT(last_veh , "Player_Vehicle").."\n"..
+            " MPBitset:"..DECORATOR.DECOR_GET_INT(last_veh , "MPBitset").."\n"..
+            " Veh_Modded_By_Player:"..DECORATOR.DECOR_GET_INT(last_veh , "Veh_Modded_By_Player").."\n"..
+            " Not_Allow_As_Saved_Veh:"..DECORATOR.DECOR_GET_INT(last_veh , "Not_Allow_As_Saved_Veh"))
+    end  
+end)
+toolTip(giftPlayerTab, "Checks to make sure the vehicle stats are what they need to be (Dev testing button)")
+giftPlayerTab:add_separator()
+giftPlayerTab:add_button("How To Gift Vehicles (Hover for tooltip!)", function()
+
+end)
+toolTip(giftPlayerTab, "To gift vehicles, Make sure all the players vehicles are repaired/returned and that they have a full garage")
+toolTip(giftPlayerTab, "Have them go into their full garage, drive a vehicle out and back into their garage, then come out on foot")
+toolTip(giftPlayerTab, "Spawn the vehicle using Extras Addon's Vehicle Spawner (UNCHECK THE NO POLLUTION BOX!), optionally you can get inside and customize it using Yim's LS customs tab (DONT PRESS 'Start LS customs!)")
+toolTip(giftPlayerTab, "Once you are done, get out and have them get in, then spam the Gift Vehicle button until it reads 'Success' at the top right")
+toolTip(giftPlayerTab, "NOTE: Gifted vehicles SHOULD come fully insured, MAKE SURE THEY CHECK IT IN LS CUSTOMS!")
+
+giftPlayerTab:add_imgui(function()
     -- Ends the ImGui wrapper, new additions should be added above this.
     ImGui.End()
 end)
@@ -8270,13 +8442,13 @@ function setEntry(tableEntry, value)
     end
 end
 
-local persisted_config = io.open("Extras-Addon.json", "r")
+ persisted_config = io.open("Extras-Addon.json", "r")
 if persisted_config == nil then
     configTable = {}
     --Add entries here
     presistEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)  
     --End Entires
-    local new_file = io.open("Extras-Addon.json", "w+")
+     new_file = io.open("Extras-Addon.json", "w+")
     new_file:write(json.encode(configTable))
     new_file:flush()
     new_file:close()
@@ -8296,7 +8468,7 @@ script.register_looped("Extras Addon Config", function(script)
         --End Entries
         if saveConfig then
             gui.show_message("Config", "Saving")
-            local json_file = io.open("Extras-Addon.json", "w")
+             json_file = io.open("Extras-Addon.json", "w")
             json_file:write(json.encode(configTable))
             json_file:flush()
             json_file:close()
