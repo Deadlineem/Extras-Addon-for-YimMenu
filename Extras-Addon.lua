@@ -2741,9 +2741,9 @@ force_roulette_wheel = casino_gui:add_checkbox("Activate Roulette Rig")
 
  player_id = PLAYER.PLAYER_ID()
 
-        casVal = -1
+        casVal = 1
         casino_gui:add_imgui(function()
-            casVal, used2 = ImGui.SliderInt("Betting Number", casVal, -1, 36)
+            casVal, used2 = ImGui.SliderInt("Betting Number", casVal, 1, 36)
             if used2 then
                 valz = casVal
             end
@@ -2805,8 +2805,8 @@ script.register_looped("Casino Pacino Thread", function (script)
                 script:sleep(500)
             end
             for tabler_iter = 0, 6, 1 do
-                locals.set_int("casinoroulette", (roulette_master_table) + (roulette_outcomes_table) + (roulette_ball_table) + (tabler_iter), valz)
-                gui.show_message("CasinoPacino Activated!", "Winning Number: "..valz)
+                locals.set_int("casinoroulette", (roulette_master_table) + (roulette_outcomes_table) + (roulette_ball_table) + (tabler_iter), casVal)
+                gui.show_message("CasinoPacino Activated!", "Winning Number: "..casVal)
             end
         end
     end
