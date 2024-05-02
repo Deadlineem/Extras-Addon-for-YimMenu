@@ -2725,7 +2725,7 @@ casino_gui:add_button("Set Dealer's Hand To Bust", function()
             gui.show_message("CasinoPacino", "Taking control of the blackjack script.") --If you see this spammed, someone if fighting you for control.
             script:yield()
         end
-         blackjack_table = s.get_int("blackjack", blackjack_table_players + 1 + (player_id * 8) + 4) --The Player's current table he is sitting at.
+         blackjack_table = locals.get_int("blackjack", blackjack_table_players + 1 + (player_id * 8) + 4) --The Player's current table he is sitting at.
         if blackjack_table ~= -1 then
             locals.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 1, 11)
             locals.set_int("blackjack", blackjack_cards + blackjack_decks + 1 + (blackjack_table * 13) + 2, 12)
@@ -2761,15 +2761,15 @@ script.register_looped("Casino Pacino Thread", function (script)
                 gui.show_message("CasinoPacino", "Taking control of the three_card_poker script.") --If you see this spammed, someone if fighting you for control.
                 script:sleep(500)
             end
-             players_current_table = s.get_int("three_card_poker", three_card_poker_table + 1 + (player_id * 9) + 2) --The Player's current table he is sitting at.
+             players_current_table = locals.get_int("three_card_poker", three_card_poker_table + 1 + (player_id * 9) + 2) --The Player's current table he is sitting at.
             if (players_current_table ~= -1) then -- If the player is sitting at a poker table
-                 player_0_card_1 = s.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (1) + (0 * 3))
-                 player_0_card_2 = s.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (2) + (0 * 3))
-                 player_0_card_3 = s.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (3) + (0 * 3))
+                 player_0_card_1 = locals.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (1) + (0 * 3))
+                 player_0_card_2 = locals.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (2) + (0 * 3))
+                 player_0_card_3 = locals.get_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (3) + (0 * 3))
                 if player_0_card_1 ~= 50 or player_0_card_2 ~= 51 or player_0_card_3 ~= 52 then --Check if we need to overwrite the deck.
                      total_players = 0
                     for player_iter = 0, 31, 1 do
-                         player_table = s.get_int("three_card_poker", three_card_poker_table + 1 + (player_iter * 9) + 2)
+                         player_table = locals.get_int("three_card_poker", three_card_poker_table + 1 + (player_iter * 9) + 2)
                         if player_iter ~= player_id and player_table == players_current_table then --An additional player is sitting at the user's table.
                             total_players = total_players + 1
                         end
@@ -2816,7 +2816,7 @@ script.register_looped("Casino Pacino Thread", function (script)
         if rig_slot_machine:is_enabled() then
             for slots_iter = 3, 195, 1 do
                 if slots_iter ~= 67 and slots_iter ~= 132 then
-                    if s.get_int("casino_slots", (slots_random_results_table) + (slots_iter)) ~= 6 then
+                    if locals.get_int("casino_slots", (slots_random_results_table) + (slots_iter)) ~= 6 then
                         needs_run = true
                     end
                 end
@@ -5445,7 +5445,7 @@ script.register_looped("yimceoloop", function(script)
 
         if yCEO:is_enabled() == true then
         gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
-            if s.get_int("appsecuroserv", 2) == 1 then
+            if locals.get_int("appsecuroserv", 2) == 1 then
                 script:sleep(500)
                 locals.set_int("appsecuroserv", 740, 1)
                 script:sleep(200)
@@ -5454,7 +5454,7 @@ script.register_looped("yimceoloop", function(script)
                 locals.set_int("appsecuroserv", 558, 3012)
                 script:sleep(1000)
             end 
-            if s.get_int("gb_contraband_sell", 2) == 1 then
+            if locals.get_int("gb_contraband_sell", 2) == 1 then
                 locals.set_int("gb_contraband_sell", 543 + 595, 1)
                 locals.set_int("gb_contraband_sell", 543 + 55, 0)
                 locals.set_int("gb_contraband_sell", 543 + 584, 0)
@@ -5462,7 +5462,7 @@ script.register_looped("yimceoloop", function(script)
                 script:sleep(500)
                 locals.set_int("gb_contraband_sell", 543 + 1, 99999)
             end
-            if s.get_int("gb_contraband_buy", 2) == 1 then
+            if locals.get_int("gb_contraband_buy", 2) == 1 then
                 locals.set_int("gb_contraband_buy", 601 + 5, 1)
                 locals.set_int("gb_contraband_buy", 601 + 191, 6)
                 locals.set_int("gb_contraband_buy", 601 + 192, 4)
@@ -5645,13 +5645,13 @@ toolTip(heistTab, "Teleport yourself to the current objective")
 heistTab:add_button("Life Count +5", function()
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then 
         network.force_script_host("fm_mission_controller_2020")
-        c_tlives_v = s.get_int("fm_mission_controller_2020", 55004 + 873 + 1)
+        c_tlives_v = locals.get_int("fm_mission_controller_2020", 55004 + 873 + 1)
         locals.set_int("fm_mission_controller_2020", 55004 + 873 + 1, c_tlives_v + 5)
     end
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then 
         network.force_script_host("fm_mission_controller")
         globals.set_int(4718592 + 3318 + 1 + 38, 1)
-        c_tlives_v = s.get_int("fm_mission_controller", 26154 + 1325 + 1)
+        c_tlives_v = locals.get_int("fm_mission_controller", 26154 + 1325 + 1)
         locals.set_int("fm_mission_controller", 26154 + 1325 + 1, c_tlives_v + 5)
     end
 end)
@@ -5680,7 +5680,7 @@ heistTab:add_imgui(function()
         end
         toolTip("", "Instantly finish hacking")
         if ImGui.Button("Bypass Drill") then
-            s.set_float("fm_mission_controller", 10067 + 11, 100)
+            locals.get_float("fm_mission_controller", 10067 + 11, 100)
         end
         toolTip("", "Instantly finish drilling")
     end
@@ -6454,7 +6454,7 @@ end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Skip Glass Cut", function()
-    s.set_float(FMC2020, 30357 + 3, 100.0)
+    locals.get_float(FMC2020, 30357 + 3, 100.0)
     gui.show_message("Cayo Heist", "Bypassed Plasma Cutter")
 end)
 
