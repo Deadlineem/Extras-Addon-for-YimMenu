@@ -4,7 +4,7 @@
 
 ## NOTE TO ALL USERS:
 
-### `Update.bat` now updates itself when its opened, so be sure you have the latest version!
+### `Update.bat` now updates itself when its opened as of version 1.0.3
 
 DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT OFF AND USE THEM AS THE CODES MAY CONFLICT AND CAUSE ISSUES.
 
@@ -24,13 +24,13 @@ DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT O
 (More options may be added in future releases)
 ## How to Update the update.bat
 
-If you have the latest version (v1.0.3) of the update.bat, simply open it and it will update itself (You'll see it show "Checking Extras Repository for updates to update.bat..." at the top)
+If you have v1.0.3 or later of the update.bat, simply open it and it will update itself (You'll see it show "Checking Extras Repository for updates to update.bat..." at the top)
 
 If you do not have the latest version, you can get it Here -> [Update.bat](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat)
 
 ### NOTE:
 
-IF YOU ARE A RETURNING USER, YOUR `UPDATE.BAT` FILE SHOULD READ 1.0.3 ON THE PROMPT WHEN OPENED, IF IT DOES NOT, GET THE LATEST VERSION!
+IF YOU ARE A RETURNING USER, YOUR `UPDATE.BAT` FILE SHOULD READ 1.0.3 OR LATER ON THE PROMPT WHEN OPENED, IF IT DOES NOT, GET THE LATEST VERSION!
 
 ## TIPS:
 
