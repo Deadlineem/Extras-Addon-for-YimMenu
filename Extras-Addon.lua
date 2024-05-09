@@ -7128,7 +7128,7 @@ griefPlayerTab:add_imgui(function()
      parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
          parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
          parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-         childWidth, childHeight = 200, 150 -- Size of your child window
+         childWidth, childHeight = 200, 200 -- Size of your child window
          offset = 10 -- Offset between parent and child windows
 
          x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
@@ -8181,11 +8181,11 @@ giftPlayerTab:add_imgui(function()
      parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
          parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
          parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-         childWidth, childHeight = 500, 650 -- Size of your child window
+         childWidth, childHeight = 200, 450 -- Size of your child window
          offset = 10 -- Offset between parent and child windows
 
          x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
-         y = parentY + 60-- Align the child window vertically with the parent window
+         y = parentY + 60 -- Align the child window vertically with the parent window
 
         ImGui.SetNextWindowPos(x, y)
             if ImGui.Begin("Extras Addon (Vehicle Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
@@ -8314,7 +8314,6 @@ giftPlayerTab:add_imgui(displayVehicleModelsList)
 giftPlayerTab:add_separator()
 
 -- Spawn Selected button with orientation and spawn position
-
 giftPlayerTab:add_button("Spawn Selected", function()
      selectedModelIndex = selectedObjectIndex + 1
     if selectedModelIndex > 0 then
@@ -8324,10 +8323,14 @@ giftPlayerTab:add_button("Spawn Selected", function()
              selPlayer = network.get_selected_player()
              targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
              playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
-             playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
-            playerPos.x = playerPos.x + spawnDistance.x
-            playerPos.y = playerPos.y + spawnDistance.y
-            playerPos.z = playerPos.z + spawnDistance.z
+             -- Get the player's forward vector
+			playerForward = ENTITY.GET_ENTITY_FORWARD_VECTOR(targetPlayerPed)
+
+			playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
+			playerPos.x = playerPos.x + playerForward.x * spawnDistance.x
+			playerPos.y = playerPos.y + playerForward.y * spawnDistance.x
+			playerPos.z = playerPos.z + playerForward.z * spawnDistance.x
+
             spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
             gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
         end
