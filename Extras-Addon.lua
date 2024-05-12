@@ -7878,56 +7878,497 @@ script.register_looped("prCrash", function()
 end)
 toolTip(griefPlayerTab, "Spawns Princes Robot figurines worth $1,000,000, causing the player to crash (not very effective on modders)")
 -- SCH-Lua
-
-griefPlayerTab:add_sameline()
-griefPlayerTab:add_button("TSE C", function()
-
-    if pid == PLAYER.PLAYER_ID() then
-        gui.show_message("prompt","不可对自己使用")
-        return
-     end
-     local int_min = -2147483647
-     local int_max = 2147483647
-     network.trigger_script_event(1 << pid, {879177392, pid, 7264839016258354765, 10597, 73295, 3274114858851387039, 4862623901289893625, 54483})
-     network.trigger_script_event(1 << pid, {879177392, pid, 7264839016258354765, 10597, 73295, 3274114858851387039, 4862623901289893625, 54483})
-     network.trigger_script_event(1 << pid, {879177392, pid, 7264839016258354765, 10597, 73295, 3274114858851387039, 4862623901289893625, 54483})
-     network.trigger_script_event(1 << pid, {879177392, pid, 7264839016258354765, 10597, 73295, 3274114858851387039, 4862623901289893625, 54483})
-     network.trigger_script_event(1 << pid, {548471420, pid, 804923209, 1128590390, 136699892, -168325547, -814593329, 1630974017, 1101362956, 1510529262, 2, 1875285955, 633832161, -1097780228})
-     network.trigger_script_event(1 << pid, {2765370640, pid, 3747643341, math.random(int_min, int_max), math.random(int_min, int_max), 
-     math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-     math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-     network.trigger_script_event(1 << pid, { -555356783, pid ,85952,99999,52682274855,526822745 })
-     network.trigger_script_event(1 << pid, { 526822748, pid ,78552,99999 ,7949161,789454312})
-     network.trigger_script_event(1 << pid, { -66669983, pid ,526822748,555555, math.random(80521,2959749521) })
-     network.trigger_script_event(1 << pid, { -1733737974, pid ,789522 ,59486,48512151,-9545440,5845131,848153,math.random(1,2959749),189958})
-     network.trigger_script_event(1 << pid, { -1529596656, pid ,795221,59486,48512151,-9545440 , math.random(1,2959749) })
-     network.trigger_script_event(1 << pid, { -8965204809, pid ,795221,59486,48512151,-9545440 })
-     gui.show_message("正在发送脚本事件崩溃",pid)
-     network.trigger_script_event(1 << pid, {495813132, pid, 0, 0, -12988, -99097, 0})
-     network.trigger_script_event(1 << pid, {495813132, pid, -4640169, 0, 0, 0, -36565476, -53105203})
-     network.trigger_script_event(1 << pid, {495813132, pid,  0, 1, 23135423, 3, 3, 4, 827870001, 5, 2022580431, 6, -918761645, 7, 1754244778, 8, 827870001, 9, 17})
- 
- 
-     for i = 1, 50 do
-        --network.trigger_script_event(1 << pid,{-642704387, pid, 782258655, math.random(int_min, int_max), math.random(int_min, int_max),math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max) })
-     end
-
-
-    for i = 1, 15 do
-        network.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206})
-        network.trigger_script_event(1 << pid, {1348481963, pid, math.random(int_min, int_max)})
-        network.trigger_script_event(1 << pid,{-642704387, pid, 782258655, math.random(int_min, int_max), math.random(int_min, int_max),math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max) })
-
-        network.trigger_script_event(1 << pid, {-992162568, 0, 40778, 85683, 32561, 49696, 24000,  78834,  1860,  37655, math.random(int_min, int_max), math.random(int_min, int_max), -- Crash Event S1
-        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
-        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
-        network.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206})
+-- SCH-Lua Functions
+function globals_set_int(intglobal, intval) --当游戏版本不受支持时拒绝修改globals避免损坏线上存档
+    if verchkok == 1 then
+        globals.set_int(intglobal, intval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
     end
-    network.trigger_script_event(1 << pid, {495813132, pid, 0, 0, -12988, -99097, 0})
-    network.trigger_script_event(1 << pid, {495813132, pid, -4640169, 0, 0, 0, -36565476, -53105203})
-    network.trigger_script_event(1 << pid, {495813132, pid,  0, 1, 23135423, 3, 3, 4, 827870001, 5, 2022580431, 6, -918761645, 7, 1754244778, 8, 827870001, 9, 17})
+end
 
-end)
+function globals_set_float(floatglobal, floatval) --当游戏版本不受支持时拒绝修改globals避免损坏线上存档
+    if verchkok == 1 then
+        globals.set_float(floatglobal, floatval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
+    end
+end
+
+function locals_set_int(scriptname, intlocal, intlocalval) --当游戏版本不受支持时拒绝修改locals避免损坏线上存档
+    if verchkok == 1 then
+        locals.set_int(scriptname, intlocal, intlocalval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
+    end
+end
+
+function locals_set_float(scriptname, flocal, flocalval) --当游戏版本不受支持时拒绝修改locals避免损坏线上存档
+    if verchkok == 1 then
+        locals.set_float(scriptname, flocal, flocalval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
+    end
+end
+
+function packed_stat_set_bool(boolindex, boolval) --当游戏版本不受支持时拒绝修改globals避免损坏线上存档
+    if verchkok == 1 then
+        stats.set_packed_stat_bool(boolindex, boolval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
+    end
+end
+
+function calcDistance(pos, tarpos) -- 计算两个三维坐标之间的距离
+    local dx = pos.x - tarpos.x
+    local dy = pos.y - tarpos.y
+    local dz = pos.z - tarpos.z
+    local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
+    return distance
+end
+
+function get_closest_veh(entity) -- 获取最近的载具
+    local coords = ENTITY.GET_ENTITY_COORDS(entity, true)
+    local vehicles = entities.get_all_vehicles_as_handles()
+    local closestdist = 1000000
+    local closestveh = 0
+    for k, veh in pairs(vehicles) do
+        if veh ~= PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false) and ENTITY.GET_ENTITY_HEALTH(veh) ~= 0 then
+            local vehcoord = ENTITY.GET_ENTITY_COORDS(veh, true)
+            local dist = MISC.GET_DISTANCE_BETWEEN_COORDS(coords['x'], coords['y'], coords['z'], vehcoord['x'], vehcoord['y'], vehcoord['z'], true)
+            if dist < closestdist then
+                closestdist = dist
+                closestveh = veh
+            end
+        end
+    end
+    return closestveh
+end
+
+function upgrade_vehicle(vehicle)
+    for i = 0, 49 do
+        local num = VEHICLE.GET_NUM_VEHICLE_MODS(vehicle, i)
+        VEHICLE.SET_VEHICLE_MOD(vehicle, i, num - 1, true)
+    end
+end
+
+function run_script(scriptName, stackSize) --启动脚本线程
+    script.run_in_fiber(function (runscript)
+        if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(MISC.GET_HASH_KEY(scriptName)) >= 1 then
+        gui.show_error("Warning","Do not start script threads repeatedly!")
+        else
+        SCRIPT.REQUEST_SCRIPT(scriptName)
+        repeat runscript:yield() until SCRIPT.HAS_SCRIPT_LOADED(scriptName)
+        SYSTEM.START_NEW_SCRIPT(scriptName, stackSize)
+        SCRIPT.SET_SCRIPT_AS_NO_LONGER_NEEDED(scriptName)
+        end
+    end)
+end
+
+function screen_draw_text(text, x, y, p0 , size) --在屏幕上绘制文字
+	HUD.BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING") --The following were found in the decompiled script files: STRING, TWOSTRINGS, NUMBER, PERCENTAGE, FO_TWO_NUM, ESMINDOLLA, ESDOLLA, MTPHPER_XPNO, AHD_DIST, CMOD_STAT_0, CMOD_STAT_1, CMOD_STAT_2, CMOD_STAT_3, DFLT_MNU_OPT, F3A_TRAFDEST, ES_HELP_SOC3
+	HUD.SET_TEXT_FONT(0)
+	HUD.SET_TEXT_SCALE(p0, size) --Size range : 0F to 1.0F --p0 is unknown and doesn't seem to have an effect, yet in the game scripts it changes to 1.0F sometimes.
+	HUD.SET_TEXT_DROP_SHADOW()
+	HUD.SET_TEXT_WRAP(0.0, 1.0) --限定行宽，超出自动换行 start - left boundry on screen position (0.0 - 1.0)  end - right boundry on screen position (0.0 - 1.0)
+	HUD.SET_TEXT_DROPSHADOW(1, 0, 0, 0, 0) --distance - shadow distance in pixels, both horizontal and vertical    -- r, g, b, a - color
+	HUD.SET_TEXT_OUTLINE()
+	HUD.SET_TEXT_EDGE(1, 0, 0, 0, 0)
+	HUD.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text)
+	HUD.END_TEXT_COMMAND_DISPLAY_TEXT(x, y, 0) --占坐标轴的比例
+end
+
+function CreatePed(index, Hash, Pos, Heading)
+    script.run_in_fiber(function (ctped)
+    STREAMING.REQUEST_MODEL(Hash)
+    while not STREAMING.HAS_MODEL_LOADED(Hash) do ctped:yield() end
+    local Spawnedp = PED.CREATE_PED(index, Hash, Pos.x, Pos.y, Pos.z, Heading, true, true)
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(Hash)
+    return Spawnedp
+    end)
+end
+
+function create_object(hash, pos)
+    script.run_in_fiber(function (ctobjS)
+        STREAMING.REQUEST_MODEL(hash)
+        while not STREAMING.HAS_MODEL_LOADED(hash) do ctobjS:yield() end
+        local obj = OBJECT.CREATE_OBJECT(hash, pos.x, pos.y, pos.z, true, false, false)
+        return obj
+    end)
+end
+
+function request_model(hash)
+    script.run_in_fiber(function (rqmd)
+        STREAMING.REQUEST_MODEL(hash)
+        while not STREAMING.HAS_MODEL_LOADED(hash) do
+            rqmd:yield()
+        end
+        return STREAMING.HAS_MODEL_LOADED(hash)
+    end)
+end
+
+function CreateVehicle(Hash, Pos, Heading, Invincible)
+    script.run_in_fiber(function (ctveh)
+        STREAMING.REQUEST_MODEL(Hash)
+        while not STREAMING.HAS_MODEL_LOADED(Hash) do ctveh:yield() end
+        CreateVehicle_rlt = VEHICLE.CREATE_VEHICLE(Hash, Pos.x,Pos.y,Pos.z, Heading , true, true, true)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(Hash)
+        if Invincible then
+            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedVehicle, true)
+        end
+        return CreateVehicle_rlt
+    end)
+end
+
+function MCprintspl()
+    log.info("可卡因 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY0").."%")
+    log.info("大麻 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY1").."%")
+    log.info("冰毒 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY2").."%")
+    log.info("假钞 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY3").."%")
+    log.info("假证 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY4").."%")
+    log.info("地堡 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY5").."%")
+    log.info("致幻剂 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY6").."%")
+end
+
+function delete_entity(ent)  --discord@rostal315
+    if ENTITY.DOES_ENTITY_EXIST(ent) then
+        ENTITY.DETACH_ENTITY(ent, true, true)
+        ENTITY.SET_ENTITY_VISIBLE(ent, false, false)
+        NETWORK.NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ent, 0.0, 0.0, -1000.0, false, false, false)
+        ENTITY.SET_ENTITY_COLLISION(ent, false, false)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ent)
+        ENTITY.DELETE_ENTITY(ent)
+    end
+end
+
+function request_control(entity) --请求控制实体
+	if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) then
+		local netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
+		NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
+		NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
+	end
+	return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
+end
+
+allbodyguardtable = {} --保镖NPC表
+
+function npc2bodyguard(peds_func) --将NPC设置为自己的保镖
+    if math.random(0, 100) > 50 then 
+        WEAPON.GIVE_WEAPON_TO_PED(peds_func, joaat("WEAPON_MICROSMG"), 9999, false, true)
+    else
+    --WEAPON.GIVE_WEAPON_TO_PED(peds_func, joaat("WEAPON_CARBINERIFLE_MK2"), 9999, false, true)
+    WEAPON.GIVE_WEAPON_TO_PED(peds_func, joaat("WEAPON_RAILGUNXM3"), 1, false, true)
+    end
+    WEAPON.SET_PED_INFINITE_AMMO(peds_func, true, joaat("WEAPON_RAILGUNXM3"))
+    PED.SET_PED_AS_GROUP_MEMBER(peds_func, PED.GET_PED_GROUP_INDEX(PLAYER.PLAYER_PED_ID()))
+    PED.SET_PED_RELATIONSHIP_GROUP_HASH(peds_func, PED.GET_PED_RELATIONSHIP_GROUP_HASH(PLAYER.PLAYER_PED_ID()))
+    PED.SET_PED_NEVER_LEAVES_GROUP(peds_func, true)
+    PED.SET_CAN_ATTACK_FRIENDLY(peds_func, false, true)
+    PED.SET_PED_COMBAT_ABILITY(peds_func, 2)
+    PED.SET_PED_CAN_TELEPORT_TO_GROUP_LEADER(peds_func, PED.GET_PED_GROUP_INDEX(PLAYER.PLAYER_PED_ID()), true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 512, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 1024, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 2048, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 16384, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 131072, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 262144, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 5, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 12, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 13, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 21, false)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 27, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 58, true)
+    PED.SET_PED_CONFIG_FLAG(peds_func, 394, true)
+    PED.SET_PED_CONFIG_FLAG(peds_func, 400, true)
+    PED.SET_PED_CONFIG_FLAG(peds_func, 134, true)
+    PED.SET_PED_CAN_RAGDOLL(peds_func, false)
+    PED.SET_PED_SHOOT_RATE(peds_func, 1000)
+    PED.SET_PED_ACCURACY(peds_func,100)
+    TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(peds_func, 100, 67108864)
+    ENTITY.SET_ENTITY_HEALTH(peds_func,1000,0,0)
+    HUD.SET_PED_HAS_AI_BLIP_WITH_COLOUR(peds_func, true, 3)
+    HUD.SET_PED_AI_BLIP_SPRITE(peds_func, 270)
+    table.insert(allbodyguardtable,peds_func)            
+end
+
+function writebodyguardtable()
+    NPCguardTableTab:clear()
+    NPCguardTableTab:add_button("Refresh Bodyguard NPC List", function()
+        writebodyguardtable()
+    end)
+    NPCguardTableTab:add_sameline()
+    NPCguardTableTab:add_button("Empty the bodyguard NPC list", function()
+        allbodyguardtable = {}
+    end)
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+
+    local npcguard_list_index = 1
+    for _, guard_ped_id in pairs(allbodyguardtable) do
+        NPCguardTableTab:add_text(guard_ped_id)
+        NPCguardTableTab:add_sameline()
+        local ped_pos = ENTITY.GET_ENTITY_COORDS(guard_ped_id, true)
+        local npcdist = calcDistance(selfpos,ped_pos)
+        formattednpcDistance = string.format("%.1f", npcdist)
+        local npc_t_health = ENTITY.GET_ENTITY_HEALTH(guard_ped_id)
+        NPCguardTableTab:add_text(guard_ped_id.." distance: "..formattednpcDistance.." HP: "..npc_t_health)
+        NPCguardTableTab:add_sameline()
+        NPCguardTableTab:add_button("Teleport to "..npcguard_list_index, function()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), ENTITY.GET_ENTITY_COORDS(guard_ped_id, true).x, ENTITY.GET_ENTITY_COORDS(guard_ped_id, true).y, ENTITY.GET_ENTITY_COORDS(guard_ped_id, true).z)
+        end)
+        NPCguardTableTab:add_sameline()
+        NPCguardTableTab:add_button("Delete "..npcguard_list_index, function()
+            request_control(guard_ped_id)
+            delete_entity(guard_ped_id)        
+        end)
+        NPCguardTableTab:add_sameline()
+        NPCguardTableTab:add_button("Heal "..npcguard_list_index, function()
+            request_control(guard_ped_id)
+            ENTITY.SET_ENTITY_HEALTH(guard_ped_id,1000,0,0)
+        end)
+        NPCguardTableTab:add_sameline()
+        NPCguardTableTab:add_button("Clone "..npcguard_list_index, function()
+            request_control(guard_ped_id)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(guard_ped_id, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).x, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).y, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).z, false, false, false)
+        end)
+        npcguard_list_index = npcguard_list_index + 1
+    end
+end
+
+function writebodyguardhelitable()
+    HeliTableTab:clear()
+    HeliTableTab:add_button("Refresh Bodyguard Helicopter list", function()
+        writebodyguardhelitable()
+    end)
+    HeliTableTab:add_sameline()
+    HeliTableTab:add_button("Empty Bodyguard Helicopter list", function()
+        heli_sp_table = {}
+    end)
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+    local npcguardheli_list_index = 1
+    for _, guard_veh_hd in pairs(heli_sp_table) do
+        HeliTableTab:add_text(guard_veh_hd)
+        HeliTableTab:add_sameline()
+        local heli_pos = ENTITY.GET_ENTITY_COORDS(guard_veh_hd, true)
+        local npcdist = calcDistance(selfpos,heli_pos)
+        formattednpcDistance = string.format("%.1f", npcdist)
+        HeliTableTab:add_text(guard_veh_hd.." distance: "..formattednpcDistance)
+        HeliTableTab:add_sameline()
+        HeliTableTab:add_button("Teleport to "..npcguardheli_list_index, function()
+            if not VEHICLE.IS_VEHICLE_SEAT_FREE(guarddrvped, -1, 0) then
+                guarddrvped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(guard_veh_hd, -1, false)
+                TASK.CLEAR_PED_TASKS_IMMEDIATELY(guarddrvped)    
+            end
+            PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), guard_veh_hd, -1)
+        end)
+        HeliTableTab:add_sameline()
+        HeliTableTab:add_button("Delete "..npcguardheli_list_index, function()
+            request_control(guard_veh_hd)
+            delete_entity(guard_veh_hd)        
+        end)
+        HeliTableTab:add_sameline()
+        HeliTableTab:add_button("Clone "..npcguardheli_list_index, function()
+            request_control(guard_veh_hd)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(guard_veh_hd, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).x, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).y, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).z + 20, false, false, false)
+        end)
+        npcguardheli_list_index = npcguardheli_list_index + 1
+    end
+end
+
+function createplayertable()  --获取当前玩家表，由于yimmenu没有像stand那样的API，只能自己模仿一个，这是玩家瞄准自动反击的基础
+    player_Index_table = {}
+    for i = 0, 32 do
+        if PLAYER.GET_PLAYER_PED(i) ~= 0 then
+            table.insert(player_Index_table,i)            
+        end
+    end
+end
+
+function writeplayertable() 
+    PlayerTableTab:clear()
+    PlayerTableTab:add_button("Refresh Player list", function()
+        writeplayertable()
+    end)
+    PlayerTableTab:add_text("The player list is for the players reaction")
+
+    createplayertable()
+    for _, sg_player_id in pairs(player_Index_table) do
+        PlayerTableTab:add_text(sg_player_id.." "..PLAYER.GET_PLAYER_NAME(sg_player_id))
+        PlayerTableTab:add_sameline()
+        PlayerTableTab:add_button("Place holder"..sg_player_id, function()
+        end)
+    end
+end
+
+function createobjtable()
+    obj_handle_table = {}
+    local objtable = entities.get_all_objects_as_handles()
+    for _, objs in pairs(objtable) do
+        local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+        local obj_pos = ENTITY.GET_ENTITY_COORDS(objs, true)
+        if calcDistance(selfpos, obj_pos) <= 200 then 
+            table.insert(obj_handle_table,objs)            
+        end
+    end
+end
+
+function writeobjtable()
+    ObjTableTab:clear()
+    ObjTableTab:add_button("Refresh object list", function()
+        writeobjtable()
+    end)
+    createobjtable()
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+    local obj_list_index = 1
+    for _, obj_id in pairs(obj_handle_table) do
+        local obj_pos = ENTITY.GET_ENTITY_COORDS(obj_id, true)
+        local objdist = calcDistance(selfpos,obj_pos)
+        formattedobjdistance = string.format("%.1f", objdist)
+        local objmod = ENTITY.GET_ENTITY_MODEL(obj_id)
+        if objmod == 2202227855 or objmod == 3105373629 then
+            ObjTableTab:add_text(obj_id.." Model: "..objmod.." Distance: "..formattedobjdistance.." Potential task entities")
+        else
+            ObjTableTab:add_text(obj_id.." Model: "..objmod.." Distance: "..formattedobjdistance)
+        end
+        ObjTableTab:add_sameline()
+        ObjTableTab:add_button("Send"..obj_list_index, function()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), ENTITY.GET_ENTITY_COORDS(obj_id, true).x, ENTITY.GET_ENTITY_COORDS(obj_id, true).y, ENTITY.GET_ENTITY_COORDS(obj_id, true).z)
+        end)
+        ObjTableTab:add_sameline()
+        ObjTableTab:add_button("Delete"..obj_list_index, function()
+            request_control(obj_id)
+            delete_entity(obj_id)        
+        end)
+        obj_list_index = obj_list_index + 1
+    end
+end
+
+function createpedtable()
+    ped_handle_table = {}
+    local pedtable = entities.get_all_peds_as_handles()
+    for _, peds in pairs(pedtable) do
+        local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+        local ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
+        if calcDistance(selfpos, ped_pos) <= 200 and peds ~= PLAYER.PLAYER_PED_ID() and PED.IS_PED_A_PLAYER(peds) == false and ENTITY.GET_ENTITY_HEALTH(peds) > 0 then 
+            table.insert(ped_handle_table,peds)            
+        end
+    end
+end
+
+function writepedtable()
+    NPCTableTab:clear()
+    NPCTableTab:add_button("Refresh NPC List", function()
+        writepedtable()
+    end)
+    createpedtable()
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+    local ped_list_index = 1
+    for _, ped_id in pairs(ped_handle_table) do
+        local ped_pos = ENTITY.GET_ENTITY_COORDS(ped_id, true)
+        local npcdist = calcDistance(selfpos,ped_pos)
+        formattednpcDistance = string.format("%.1f", npcdist)
+        local npcblipsprite = HUD.GET_BLIP_SPRITE(HUD.GET_BLIP_FROM_ENTITY(ped_id))
+        local npcblipcolor = HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(ped_id))
+        local npc_t_health = ENTITY.GET_ENTITY_HEALTH(ped_id)
+        NPCTableTab:add_text(ped_id.." Distance: "..formattednpcDistance.." Blip: "..npcblipsprite.." Color: "..npcblipcolor.." HP: "..npc_t_health)
+        NPCTableTab:add_sameline()
+        NPCTableTab:add_button("Teleport to "..ped_list_index, function()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), ENTITY.GET_ENTITY_COORDS(ped_id, true).x, ENTITY.GET_ENTITY_COORDS(ped_id, true).y, ENTITY.GET_ENTITY_COORDS(ped_id, true).z)
+        end)
+        NPCTableTab:add_sameline()
+        NPCTableTab:add_button("Delete "..ped_list_index, function()
+            request_control(ped_id)
+            delete_entity(ped_id)        
+        end)
+        NPCTableTab:add_sameline()
+        NPCTableTab:add_button("Heal "..ped_list_index, function()
+            request_control(ped_id)
+            ENTITY.SET_ENTITY_HEALTH(ped_id,1000,0,0)
+        end)
+        ped_list_index = ped_list_index + 1
+    end
+end
+
+function createvehtable()
+    veh_handle_table = {}
+    local vehtable = entities.get_all_vehicles_as_handles()
+    for _, vehs in pairs(vehtable) do
+        local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+        local veh_pos = ENTITY.GET_ENTITY_COORDS(vehs, true)
+        if calcDistance(selfpos, veh_pos) <= npcctrlr:get_value() then 
+            table.insert(veh_handle_table,vehs)            
+        end
+    end
+end
+
+function writevehtable()
+    VehicleTableTab:clear()
+    VehicleTableTab:add_button("Refresh vehicle List", function()
+        writevehtable()
+    end)
+    createvehtable()
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+    local Veh_list_index = 1
+    for _, t_veh_hd in pairs(veh_handle_table) do
+        local veh_pos = ENTITY.GET_ENTITY_COORDS(t_veh_hd, true)
+        local vehdist = calcDistance(selfpos,veh_pos)
+        formattedvehDistance = string.format("%.1f", vehdist)
+        local vehblipsprite = HUD.GET_BLIP_SPRITE(HUD.GET_BLIP_FROM_ENTITY(t_veh_hd))
+        local vehblipcolor = HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(t_veh_hd))
+        local veh_t_health = ENTITY.GET_ENTITY_HEALTH(t_veh_hd)
+        local veh_mod_name = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(t_veh_hd))
+        local veh_disp_name = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(veh_mod_name)
+        VehicleTableTab:add_text("Handle:"..t_veh_hd.." model:"..veh_mod_name.." name:"..veh_disp_name.." distance:"..formattedvehDistance.." Blip:"..vehblipsprite.." Color:"..vehblipcolor.." HP:"..veh_t_health)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Delete "..Veh_list_index, function()
+            request_control(t_veh_hd)
+            delete_entity(t_veh_hd)        
+        end)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Teleport into "..Veh_list_index, function()
+            request_control(t_veh_hd)
+            PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), t_veh_hd, -1)
+        end)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Teleport to"..Veh_list_index, function()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), ENTITY.GET_ENTITY_COORDS(t_veh_hd, true).x, ENTITY.GET_ENTITY_COORDS(t_veh_hd, true).y, ENTITY.GET_ENTITY_COORDS(t_veh_hd, true).z)
+        end)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Destroy the engine"..Veh_list_index, function()
+            request_control(t_veh_hd)
+            VEHICLE.SET_VEHICLE_ENGINE_HEALTH(t_veh_hd, -4000)
+        end)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Throw "..Veh_list_index, function()
+            request_control(t_veh_hd)
+            ENTITY.APPLY_FORCE_TO_ENTITY(t_veh_hd, 1, math.random(0, 3), math.random(0, 3), math.random(-10, 10), 0.0, 0.0, 0.0, 0, true, false, true, false, true)
+        end)
+        Veh_list_index = Veh_list_index + 1
+    end
+end
+
+plyaimkarma = {}
+
+function Is_Player_Aimming_Me()
+    for _, playerPid in pairs(player_Index_table) do
+        if PLAYER.IS_PLAYER_TARGETTING_ENTITY(playerPid, PLAYER.PLAYER_PED_ID()) or PLAYER.IS_PLAYER_FREE_AIMING_AT_ENTITY(playerPid, PLAYER.PLAYER_PED_ID()) then
+            plyaimkarma = {karmaped = PLAYER.GET_PLAYER_PED(playerPid), karmaplyindex = playerPid}
+            return true
+        end
+    end
+    plyaimkarma = nil
+    return false
+end
+
+function Is_NPC_H(peds)
+   if (PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 3 or PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 4 or PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 5 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 1 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 49 or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Swat_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Sheriff_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Sheriff_01")) then
+        return true
+    else
+        return false
+    end
+end
+--End SCH-Lua functions
 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Fragment crash", function()
@@ -8009,27 +8450,6 @@ griefPlayerTab:add_button("Fragment crash", function()
 end)
 toolTip(griefPlayerTab, "Spawns a bunch of objects on the selected player and breaks them into fragments, causing them to crash")
 
-griefPlayerTab:add_button("Parachute Crash 2", function()
-    script.run_in_fiber(function (t2crash)
-        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-            gui.show_message("The attack has stopped", "The target has been detected to have left or the target is himself")
-            return
-        end
-        PLAYER.SET_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(PLAYER.PLAYER_ID(),0xE5022D03)
-        TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()))
-        t2crash:sleep(20)
-        local p_pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player()), true)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()),p_pos.x,p_pos.y,p_pos.z,false,true,true)
-        WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()), 0xFBAB5776, 1000, false)
-        TASK.TASK_PARACHUTE_TO_TARGET(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()),-1087,-3012,13.94)
-        t2crash:sleep(500)
-        TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()))
-        t2crash:sleep(1000)
-        PLAYER.CLEAR_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(PLAYER.PLAYER_ID())
-        TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()))
-    end)
-end)
-
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Model crash", function()
     script.run_in_fiber(function (vtcrash)
@@ -8049,7 +8469,7 @@ griefPlayerTab:add_button("Model crash", function()
                 end        
                 local pos2010 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
                 local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
-                if calcDistance(selfpos, pos2010) <= 300 then 
+                if calcDistance(selfpos, pos2010) <= 100 then 
                     gui.show_message("The attack has stopped","Please stay away from the target first")
                     return
                 end
@@ -8080,7 +8500,7 @@ griefPlayerTab:add_button("Model crash", function()
                     return
                 end        
                 local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
-                if calcDistance(selfpos, pos114) <= 300 then 
+                if calcDistance(selfpos, pos114) <= 100 then 
                     gui.show_message("The attack has stopped","Please stay away from the target first")
                     return
                 end
@@ -8147,6 +8567,7 @@ griefPlayerTab:add_button("Model crash", function()
         end
     end)
 end)
+toolTip(griefPlayerTab, "Crashes the player using 3 invalid model methods")
 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Break HUD", function()
@@ -8160,7 +8581,7 @@ toolTip(griefPlayerTab, "Removes and breaks the HUD of the selected player, this
 griefPlayerTab:add_separator()
 griefPlayerTab:add_text("Cage Options")
 
-griefPlayerTab:add_button("small cage", function()
+griefPlayerTab:add_button("Small Cage", function()
     script.run_in_fiber(function (smallcage)
         local objHash = joaat("prop_gold_cont_01")
         STREAMING.REQUEST_MODEL(objHash)
@@ -8173,6 +8594,7 @@ griefPlayerTab:add_button("small cage", function()
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objHash)
     end)
 end)
+toolTip(griefPlayerTab, "Cages the player with a small cage")
 
 griefPlayerTab:add_sameline()
 
@@ -8209,10 +8631,10 @@ griefPlayerTab:add_button("fence cage", function()
     for i = 1, 4 do ENTITY.FREEZE_ENTITY_POSITION(object[i], true) end
     STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objHash)
 end)
-
+toolTip(griefPlayerTab, "Cages the player using fences")
 griefPlayerTab:add_sameline()
 
-griefPlayerTab:add_button("competitive tube cage", function()
+griefPlayerTab:add_button("Tube Cage", function()
     script.run_in_fiber(function (dubcage)
         local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         STREAMING.REQUEST_MODEL(2081936690)
@@ -8229,7 +8651,7 @@ griefPlayerTab:add_button("competitive tube cage", function()
         ENTITY.SET_ENTITY_ROTATION(cage_object2, rot.x,rot.y,rot.z,2,true)
     end)
 end)
-
+toolTip(griefPlayerTab, "Cages the player with a stunt tube")
 griefPlayerTab:add_sameline()
 
 griefPlayerTab:add_button("safe cage", function()
@@ -8255,6 +8677,7 @@ griefPlayerTab:add_button("safe cage", function()
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
     end)
 end)
+toolTip(griefPlayerTab, "Cages the player inside of a combination safe")
 -- end sch-lua
 
 -- Grief Sound Spam Targetable
