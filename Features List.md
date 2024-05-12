@@ -19,9 +19,9 @@
 - **Loops:**
   - Options for activating various money-making loops, including different monetary loop amounts.
 
-### Grief Options Tab
-- **Grief Options:**
-  - Checkboxes and sliders for griefing actions, including vehicle sandwich, explosions, fire, water, trolling actions, sound spamming options and spawning attackers.
+### Selected Player Options
+ - **Grief, Drops and Vehicle Spawning/Gifting**
+  - Allows you to spawn vehicles for other players, give them RP drops or figurines, gift vehicles or apply targetted grief options.
 
 ### Global Tab
 - **Global Actions:**
@@ -69,9 +69,10 @@
   - Object search and list for spawning objects.
 
 ### Vehicle Options Tab
-- **Vehicle Spawning:**
-  - Sliders for adjusting the orientation and spawn distance of vehicles.
-  - Vehicle model search and list for spawning vehicles.
+- **Flatbed Script**
+  - Allows you to tow other players/NPC's with a flatbed truck.
+- **Tokyo Drift**
+  - Gives you options to turn any car into a drift car with customizable settings
 
 ### X-Men Tab
 - **Magnet/Forcefield Effects:**
