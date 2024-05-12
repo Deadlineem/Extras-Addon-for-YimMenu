@@ -723,19 +723,8 @@ end)
 toolTip(Stats, "Resets your skills to minimum values.")
 Stats:add_separator()
 Stats:add_text("Unlocker")
+
 function unlock_packed_bools(from, to)
-    for i = from, to do
-        stats.set_packed_stat_bool(i, true)
-    end
-end
-
- current_objectives_global = 2359296
- weekly_words_global = 2737646
- objectives_state_global = 1574743
-
-Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
-    script.run_in_fiber(function (script)
-        function unlock_packed_bools(from, to)
     for i = from, to do
         stats.set_packed_stat_bool(i, true)
     end
@@ -746,9 +735,7 @@ local current_objectives_global = 2359296
 local weekly_words_global = 2737646
 local objectives_state_global = 1574743
 
-wasabi_words = gui.get_tab("GUI_TAB_NETWORK"):add_tab("Unlock All") --WasabiWords™️
-
-wasabi_words:add_button("ShinyWasabi", function() --Original script by ShinyWasabi
+Stats:add_button("Unlock all", function() --Original script by ShinyWasabi
     script.run_in_fiber(function (script)
         local is_player_male = (ENTITY.GET_ENTITY_MODEL(PLAYER.PLAYER_PED_ID()) == joaat('mp_m_freemode_01'))
         unlock_packed_bools(110, 113) --Red Check Pajamas, Green Check Pajamas, Black Check Pajamas, I Heart LC T-shirt
