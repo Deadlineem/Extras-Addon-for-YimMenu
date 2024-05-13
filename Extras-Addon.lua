@@ -3534,8 +3534,8 @@ Objets:add_imgui(function()
 end)
 
 Objets:add_button("Spawn Selected", function()
-    script.run_in_fiber(function()
-         selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
+    script.run_in_fiber(function(spawnObj)
+        selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
         if selectedObjectInfo then
             -- Get the player's ped handle
              playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
@@ -3561,18 +3561,19 @@ Objets:add_button("Spawn Selected", function()
                 STREAMING.REQUEST_MODEL(objectHash)
                 coroutine.yield()
             end
-             spawnedObject = OBJECT.CREATE_OBJECT(objectHash, spawnX + spawnDistance.x, spawnY + spawnDistance.y, spawnZ + spawnDistance.z, true, true, false)
+            spawnedObject = OBJECT.CREATE_OBJECT(objectHash, spawnX + spawnDistance.x, spawnY + spawnDistance.y, spawnZ + spawnDistance.z, true, true, false)
             ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationRoll, orientationYaw, playerHeading + orientationPitch, 2, true)  -- Adjust rotation if needed
-            --gui.show_message("Preview", "Moved ".. selectedObjectInfo.nom.. " to ".. tostring(spawnX).. ", ".. tostring(spawnY))
-             net_id = NETWORK.OBJ_TO_NET(spawnedObject)
+            
+            net_id = NETWORK.OBJ_TO_NET(spawnedObject)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
             gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(spawnedObject)
+            STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(spawnedObject)
             table.insert(spawnedObjects, spawnedObject)
             table.insert(names, selectedObjectInfo.nom)
         else
             gui.show_message("Object Spawner", "Selected object not found.")
         end
+		sleep(5)
     end)
 end)
 toolTip(Objets, "Spawn the selected item on the selected players position, if no player is targeted, it spawns on you")
@@ -8673,10 +8674,8 @@ griefPlayerTab:add_button("Tube Cage", function()
         local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
         rot.y = 90
         ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
-        local cage_object2 = OBJECT.CREATE_OBJECT(objHash, pos.x-5, pos.y+5, pos.z-5, true, true, false)
-        local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object2)
         rot.x = 90 
-        ENTITY.SET_ENTITY_ROTATION(cage_object2, rot.x,rot.y,rot.z,2,true)
+
 		net_id = NETWORK.OBJ_TO_NET(objHash)
 		NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objHash)
@@ -9039,7 +9038,7 @@ end)
 
 
 -- Function to reset sliders to default values
- function resetVehicleSliders()
+function resetVehicleSliders()
     orientationPitch = defaultOrientationPitch
     orientationYaw = defaultOrientationYaw
     orientationRoll = defaultOrientationRoll
@@ -9172,6 +9171,7 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
 		else
 			gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
 		end
+		sleep(5)
 	end)
 end)
 toolTip(giftPlayerTab, "Spawns the vehicle on the selected player, if no player is selected, defaults to you")
