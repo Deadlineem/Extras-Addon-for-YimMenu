@@ -1635,12 +1635,6 @@ toolTip(Stats, "Unlocks everything in the game, untouched script by ShinyWasabi"
 
 -- Autorun Drops
  Money = KAOS:add_tab("Money Options")
--- Drops = Money:add_tab("Drops")
-
-
---Drops:add_separator()
---Drops:add_text("You CAN run multiple at once (like Robot bubblegum/Alien)")
---Drops:add_text("Select a Player from the list and toggle");
 
 -- Teleports tab - Credits to USBMenus https://github.com/Deadlineem/Extras-Addon-for-YimMenu/issues/9#issuecomment-1955881222
 
@@ -4119,7 +4113,7 @@ end)
          gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
          STREAMING.REQUEST_MODEL(model)
          while STREAMING.HAS_MODEL_LOADED(model) == false do
-             sleep(1)
+             coroutine.yield()
          end
      
          if STREAMING.HAS_MODEL_LOADED(model) then
@@ -4144,8 +4138,8 @@ end)
                          false
                      )
                      ENTITY.SET_ENTITY_VISIBLE(objectIdSpawned, true, false)
-                      net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-                     NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+                     net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+                     NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
                      
                      ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
                  end
@@ -8823,136 +8817,126 @@ dropsPlayerTab:add_imgui(function()
     end
 end)
 
- princessBubblegumLoop = false
 dropsPlayerTab:add_text("Action Figures")
-dropsPlayerTab:add_button("Princess Robot Bubblegum (On/Off)", function()
-    princessBubblegumLoop = not princessBubblegumLoop
-
+prLoop = dropsPlayerTab:add_checkbox("Princess Robot Bubblegum (On/Off)")
     script.register_looped("princessbubblegumLoop", function(script)
-         model = joaat("vw_prop_vw_colle_prbubble")
-         pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-         player_id = network.get_selected_player()
-         money_value = 0
+		if prLoop:is_enabled() then
+			 model = joaat("vw_prop_vw_colle_prbubble")
+			 pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+			 player_id = network.get_selected_player()
+			 money_value = 0
 
-        STREAMING.REQUEST_MODEL(model)
-        while STREAMING.HAS_MODEL_LOADED(model) == false do
-            script:yield()
-        end
+			STREAMING.REQUEST_MODEL(model)
+			while STREAMING.HAS_MODEL_LOADED(model) == false do
+				script:yield()
+			end
 
-        if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("RP/Cash Drop Started", "Dropping Princess Robot figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
-             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-             objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                false,
-                false
-            )
+			if STREAMING.HAS_MODEL_LOADED(model) then
+			gui.show_message("RP/Cash Drop Started", "Dropping Princess Robot figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
+				 coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+				 objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+					pickup,
+					coords.x,
+					coords.y,
+					coords.z + 1,
+					3,
+					money_value,
+					model,
+					false,
+					false
+				)
 
-             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-            
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
-        end
-        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-        if not princessBubblegumLoop then
-            script.unregister_script("princessbubblegumLoop")
-        end
+				net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+				NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
+				
+				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+			end
+			ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+			sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+		end
     end)
-end)
 toolTip(dropsPlayerTab, "Drops Princess Robot Figurines on a selected player.")
-dropsPlayerTab:add_sameline()
-dropsPlayerTab:add_button("Alien (On/Off)", function()
-   alienfigurineLoop = not alienfigurineLoop
 
+dropsPlayerTab:add_sameline()
+alienLoop = dropsPlayerTab:add_checkbox("Alien (On/Off)")
     script.register_looped("alienfigurineLoop", function(script)
-         model = joaat("vw_prop_vw_colle_alien")
-         pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-         player_id = network.get_selected_player()
-         money_value = 0
+		if alienLoop:is_enabled() then
+			 model = joaat("vw_prop_vw_colle_alien")
+			 pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+			 player_id = network.get_selected_player()
+			 money_value = 0
 
-        STREAMING.REQUEST_MODEL(model)
-        while STREAMING.HAS_MODEL_LOADED(model) == false do
-            script:yield()
-        end
+			STREAMING.REQUEST_MODEL(model)
+			while STREAMING.HAS_MODEL_LOADED(model) == false do
+				script:yield()
+			end
 
-        if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("RP/Cash Drop Started", "Dropping Alien figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
-             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-             objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                false,
-                false
-            )
+			if STREAMING.HAS_MODEL_LOADED(model) then
+			gui.show_message("RP/Cash Drop Started", "Dropping Alien figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
+				 coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+				 objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+					pickup,
+					coords.x,
+					coords.y,
+					coords.z + 1,
+					3,
+					money_value,
+					model,
+					false,
+					false
+				)
 
-             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-            
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
-        end
-        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-        if not alienfigurineLoop then
-            script.unregister_script("alienfigurineLoop")
-        end
+				 net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+				NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+				
+				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+			end
+			ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+			sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+		end
     end)
-end)
 toolTip(dropsPlayerTab, "Drops Alien Figurines on a selected player.")
+
 dropsPlayerTab:add_sameline()
-dropsPlayerTab:add_button("Casino Cards (On/Off)", function()
-   casinocardsLoop = not casinocardsLoop
-
+cardsLoop = dropsPlayerTab:add_checkbox("Casino Cards (On/Off)")
     script.register_looped("casinocardsLoop", function(script)
-         model = joaat("vw_prop_vw_lux_card_01a")
-         pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-         player_id = network.get_selected_player()
-         money_value = 0
+		if cardsLoop:is_enabled() then
+			 model = joaat("vw_prop_vw_lux_card_01a")
+			 pickup = joaat("PICKUP_CUSTOM_SCRIPT")
+			 player_id = network.get_selected_player()
+			 money_value = 0
 
-        STREAMING.REQUEST_MODEL(model)
-        while STREAMING.HAS_MODEL_LOADED(model) == false do
-            script:yield()
-        end
+			STREAMING.REQUEST_MODEL(model)
+			while STREAMING.HAS_MODEL_LOADED(model) == false do
+				script:yield()
+			end
 
-        if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("RP/Cash Drop Started", "Dropping Casino Cards on "..PLAYER.GET_PLAYER_NAME(player_id))
-             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-             objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 1,
-                3,
-                money_value,
-                model,
-                false,
-                false
-            )
-        
-             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-            
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
-        end
-        ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-        if not casinocardsLoop then
-            script.unregister_script("casinocardsLoop")
-        end
+			if STREAMING.HAS_MODEL_LOADED(model) then
+			gui.show_message("RP/Cash Drop Started", "Dropping Casino Cards on "..PLAYER.GET_PLAYER_NAME(player_id))
+				 coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
+				 objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
+					pickup,
+					coords.x,
+					coords.y,
+					coords.z + 1,
+					3,
+					money_value,
+					model,
+					false,
+					false
+				)
+			
+				 net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+				NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+				
+				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
+			end
+			ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
+			sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
+		end
     end)
-end)
 toolTip(dropsPlayerTab, "Drops Casino Cards on a selected player.")
+
 dropsPlayerTab:add_separator()
 dropsPlayerTab:add_button("Give 25k & Random RP", function()
     script.run_in_fiber(function(tse)
