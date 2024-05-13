@@ -3205,7 +3205,7 @@ end
 
  millLoop = Money:add_tab("Loops")
 millLoop:add_text("Money Loops (SEVERELY RISKY!)")
- oneMillLoop = millLoop:add_checkbox("1M Loop")
+oneMillLoop = millLoop:add_checkbox("1M Loop")
 script.register_looped("onemLoop", function(script)
     script:yield()
     if oneMillLoop:is_enabled() == true then
@@ -3218,62 +3218,42 @@ script.register_looped("onemLoop", function(script)
     end
 end)
 toolTip(millLoop, "Runs a $1,000,000 loop, will run until its deactivated, does not add to earned or overall income.")
+
 millLoop:add_sameline()
- twofiveMillLoop = millLoop:add_checkbox("2.5M Loop")
-script.register_looped("twofmLoop", function(script)
-    script:yield()
-    if twofiveMillLoop:is_enabled() == true then
-        twofmLoop = not twofmLoop
-        if twofmLoop then
-            TransactionManager:TriggerTransaction(0xDBF39508)
-                script:yield();
-            gui.show_message("Money Loop", "2.5 Mill loop running, enjoy the easy money!")
-        end
-    end
+millLoop:add_button("2.5M (1 time)", function()
+	script.run_in_fiber(function(script)
+		TransactionManager:TriggerTransaction(0xDBF39508)
+		gui.show_message("Money Loop", "Gained 2.5 million (1 time)")
+	end)
 end)
-toolTip(millLoop, "Runs a $2,500,000 loop, (does not seem to loop)")
+toolTip(millLoop, "Gives you 2.5 Million")
+
 millLoop:add_sameline()
- threeSixMillLoop = millLoop:add_checkbox("3.6M Loop")
-script.register_looped("threesmLoop", function(script)
-    script:yield()
-    if threeSixMillLoop:is_enabled() == true then
-        threesmLoop = not threesmLoop
-        if threesmLoop then
-            TransactionManager:TriggerTransaction(0xB703ED29)
-                script:yield();
-            gui.show_message("Money Loop", "3.6 Mill loop running, enjoy the easy money!")
-        end
-    end
+millLoop:add_button("3.6M (1 time)", function()
+	script.run_in_fiber(function(script)
+		TransactionManager:TriggerTransaction(0xB703ED29)
+		gui.show_message("Money Loop", "Gained 3.6 million (1 time)")
+	end)
 end)
-toolTip(millLoop, "Runs a $3,600,000 loop, (does not seem to loop)")
+toolTip(millLoop, "Gives you 3.6 Million (1 time)")
+
 millLoop:add_sameline()
- sevenMillLoop = millLoop:add_checkbox("7M Loop")
-script.register_looped("sevenmLoop", function(script)
-    script:yield()
-    if sevenMillLoop:is_enabled() == true then
-        sevenmLoop = not sevenmLoop
-        if sevenmLoop then
-            TransactionManager:TriggerTransaction(0xED97AFC1)
-                script:yield();
-            gui.show_message("Money Loop", "7 Mill loop running, enjoy the easy money!")
-        end
-    end
+millLoop:add_button("7M (1 time)", function()
+	script.run_in_fiber(function(script)
+		TransactionManager:TriggerTransaction(0xED97AFC1)
+		gui.show_message("Money Loop", "Gained 7 Million (1 time)")
+	end)
 end)
-toolTip(millLoop, "Runs a $7,000,000 loop, (does not seem to loop)")
+toolTip(millLoop, "Gives you 7 million (1 time)")
+
 millLoop:add_sameline()
- fifteenMillLoop = millLoop:add_checkbox("15M Loop")
-script.register_looped("fifteenMLoop", function(script)
-    script:yield()
-    if fifteenMillLoop:is_enabled() == true then
-        fifteenMLoop = not fifteenMLoop
-        if fifteenMLoop then
-            TransactionManager:TriggerTransaction(0x176D9D54)
-                script:yield();
-            gui.show_message("Money Loop", "15 Mill loop running, enjoy the easy money!")
-        end
-    end
+millLoop:add_button("15M (1 time)", function()
+	script.run_in_fiber(function(script)
+		TransactionManager:TriggerTransaction(0x176D9D54)
+		gui.show_message("Money Loop", "Gained 15 million (1 time)")
+	end)
 end)
-toolTip(millLoop, "Runs a $15,000,000 loop, (seems to loop sometimes, or in certain sessions?)")
+toolTip(millLoop, "Gives you 15 Million (1 time)")
 
 moneyRemover = Money:add_tab("Money Remover")
 
