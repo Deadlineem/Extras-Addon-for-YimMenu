@@ -37,7 +37,7 @@ giftPlayerTab = gui.get_tab("")
 end
 
 function sleep(seconds)
-     start = os.clock()
+    local start = os.clock()
     while os.clock() - start < seconds do
         -- Yield the CPU to avoid high CPU usage during the delay
         coroutine.yield()
@@ -581,7 +581,6 @@ Stats:add_button("Lvl 420", function()
          rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 420, changing session and applying RP")
-        sleep(1)
         SessionChanger(0)
     end)
 end)
@@ -4599,8 +4598,9 @@ Global:add_button("HUD Breaker", function()
 end)
 toolTip(Global, "Breaks the HUD for every player in the session, causes their missions to break in freemode, removes their HUD, prevents pausing and prevents entering properties as it removes the entrace markers")
 Global:add_sameline()
-clownJetAttack = Global:add_button("Clown Jet Attack", function()
-    script.run_in_fiber(function(clownJetsOne)
+clownJetAttack = Global:add_checkbox("Clown Jet Attack")
+    script.register_looped("clownJetAttack", function(clownJetsOne)
+        if clownJetAttack:is_enabled() == true then
             for i = 0, 31 do
                 if i ~= PLAYER.PLAYER_ID() then
                      player = i
@@ -4674,12 +4674,16 @@ clownJetAttack = Global:add_button("Clown Jet Attack", function()
                     if jetVehicle == 0 then 
                         gui.show_error("Failed", "Failed to Create Jet")
                     else
-                        gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets.")
+                        gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets every 15 seconds.")
                     end
                 end
             end
+            -- Release the resources associated with the spawned entities
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
+            sleep(15)
+        end
     end)
-end)
 toolTip(Global, "Spawns Rainbow colored jets with clowns as pilots on the entire session, loops and runs every 15 seconds.")
  explosionLoop = false
 explosionLoop = Global:add_checkbox("Explosion (On/Off)")
@@ -4992,7 +4996,7 @@ Weapons:add_button("Drop Random Weapon", function()
          modelHash = joaat(model)
         STREAMING.REQUEST_MODEL(modelHash)
         while STREAMING.HAS_MODEL_LOADED(modelHash) == false do
-            script:yield()
+            randomWeapon:yield()
         end
         if STREAMING.HAS_MODEL_LOADED(modelHash) then
             gui.show_message("Weapon Drop Started", "Dropping " .. weaponName .. " on "..PLAYER.GET_PLAYER_NAME(player_id))
@@ -5009,9 +5013,10 @@ Weapons:add_button("Drop Random Weapon", function()
                 false
             )
 
-             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
+            net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
         end
+		sleep(0.5)
 	end)
 end)
 toolTip(Weapons, "Drops random weapons on the selected player as pickup items")
@@ -5272,42 +5277,46 @@ end)
 toolTip(mcBus, "Resupply your Counterfeit Cash supplies")
 mcBus:add_separator()
 mcBus:add_button("Resupply All", function()
-globals.set_int(1662873 + 1 + 6, 1)
-globals.set_int(1662873 + 1 + 6, 1)
-globals.set_int(1662873 + 1 + 6, 1) -- Acid Lab Supplies
-gui.show_message("Acid Lab", "Resupplying your Acid Lab")
-globals.set_int(1662873 + 1 + 5, 1)
-globals.set_int(1662873 + 1 + 5, 1)
-globals.set_int(1662873 + 1 + 5, 1) -- Bunker Supplies
-gui.show_message("Bunker", "Resupplying your Bunker")
-globals.set_int(1662873 + 1 + 1, 1)
-globals.set_int(1662873 + 1 + 1, 1)
-globals.set_int(1662873 + 1 + 1, 1) -- Document Forge Supplies
-gui.show_message("Document Forge", "Resupplying your Document Forge")
-globals.set_int(1662873 + 1 + 2, 1)
-globals.set_int(1662873 + 1 + 2, 1)
-globals.set_int(1662873 + 1 + 2, 1) -- Weed Farm Supplies
-gui.show_message("Weed Farm", "Resupplying your Weed Farm")
-globals.set_int(1662873 + 1 + 3, 1)
-globals.set_int(1662873 + 1 + 3, 1)
-globals.set_int(1662873 + 1 + 3, 1) -- Meth Lab Suplies
-gui.show_message("Meth Lab", "Resupplying your Meth Lab")
-globals.set_int(1662873 + 1 + 4, 1)
-globals.set_int(1662873 + 1 + 4, 1)
-globals.set_int(1662873 + 1 + 4, 1) -- Cocaine Lockup Supplies
-gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
+	script.run_in_fiber(function(mcResupply)
+		globals.set_int(1662873 + 1 + 6, 1)
+		globals.set_int(1662873 + 1 + 6, 1)
+		globals.set_int(1662873 + 1 + 6, 1) -- Acid Lab Supplies
+		gui.show_message("Acid Lab", "Resupplying your Acid Lab")
+		globals.set_int(1662873 + 1 + 5, 1)
+		globals.set_int(1662873 + 1 + 5, 1)
+		globals.set_int(1662873 + 1 + 5, 1) -- Bunker Supplies
+		gui.show_message("Bunker", "Resupplying your Bunker")
+		globals.set_int(1662873 + 1 + 1, 1)
+		globals.set_int(1662873 + 1 + 1, 1)
+		globals.set_int(1662873 + 1 + 1, 1) -- Document Forge Supplies
+		gui.show_message("Document Forge", "Resupplying your Document Forge")
+		globals.set_int(1662873 + 1 + 2, 1)
+		globals.set_int(1662873 + 1 + 2, 1)
+		globals.set_int(1662873 + 1 + 2, 1) -- Weed Farm Supplies
+		gui.show_message("Weed Farm", "Resupplying your Weed Farm")
+		globals.set_int(1662873 + 1 + 3, 1)
+		globals.set_int(1662873 + 1 + 3, 1)
+		globals.set_int(1662873 + 1 + 3, 1) -- Meth Lab Suplies
+		gui.show_message("Meth Lab", "Resupplying your Meth Lab")
+		globals.set_int(1662873 + 1 + 4, 1)
+		globals.set_int(1662873 + 1 + 4, 1)
+		globals.set_int(1662873 + 1 + 4, 1) -- Cocaine Lockup Supplies
+		gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
+	end)
 end)
 toolTip(mcBus, "Resupplies all your supplies for all businesses")
 mcBus:add_sameline()
 mcBus:add_button("Fast Production", function()
-    globals.set_int(262145 + 17599, 25500) -- prod time for weed
-    globals.set_int(262145 + 17600, 25500) -- prod time for meth
-    globals.set_int(262145 + 17601, 25500) -- prod time for cocaine
-    globals.set_int(262145 + 17602, 25500) -- prod time for document forge
-    globals.set_int(262145 + 17603, 25500) -- prod time for cash
-    --globals.set_int(262145 + 17632, 10000)
-    gui.show_message("Production Speed", "Production speed has been sped up for all businesses")
-    gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar")
+	script.run_in_fiber(function(fastProd)
+		globals.set_int(262145 + 17599, 25500) -- prod time for weed
+		globals.set_int(262145 + 17600, 25500) -- prod time for meth
+		globals.set_int(262145 + 17601, 25500) -- prod time for cocaine
+		globals.set_int(262145 + 17602, 25500) -- prod time for document forge
+		globals.set_int(262145 + 17603, 25500) -- prod time for cash
+		--globals.set_int(262145 + 17632, 10000)
+		gui.show_message("Production Speed", "Production speed has been sped up for all businesses")
+		gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar")
+	end)
 end)
 toolTip(mcBus, "Activates fast production for all MC businesses (read top right for info after pressing the button)")
 mcBus:add_sameline()
@@ -7123,10 +7132,10 @@ raceTab:add_imgui(function()
 end)
 
 --Chat Options
- chatOpt = KAOS:add_tab("Chat Options")
+local chatOpt = KAOS:add_tab("Chat Options")
 
 chatOpt:add_text("Send Unfiltered Messages")
- chatBox = ""
+local chatBox = ""
 chatOpt:add_imgui(function()
     if is_typing then
         PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -7139,7 +7148,7 @@ chatOpt:add_imgui(function()
     end
 end)
 chatOpt:add_sameline()
- isTeam = chatOpt:add_checkbox("Team Only")
+local isTeam = chatOpt:add_checkbox("Team Only")
 chatOpt:add_button("Send Message", function()
 	if isCooldown then
         gui.show_message('Chat', "There is a delay before sending another chat message.")
@@ -7166,7 +7175,7 @@ end)
 chatOpt:add_separator()
 -- Discord Name Sender, easily send your discord name
 chatOpt:add_text("Discord Advertiser")
- discordBox = ""
+local discordBox = ""
 chatOpt:add_imgui(function()
     if is_typing then
         PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -7206,7 +7215,7 @@ chatOpt:add_button("Addon Info", function()
     isCooldown = true
 
     script.run_in_fiber(function(addonMsg)
-         ainfo = "Extras Addon for YimMenu v"..addonVersion..", find it on Github for FREE @ https://github.com/Deadlineem/Extras-Addon-for-YimMenu!"
+        local ainfo = "Extras Addon for YimMenu v"..addonVersion..", find it on Github for FREE @ https://github.com/Deadlineem/Extras-Addon-for-YimMenu!"
         network.send_chat_message("[Lua Script]: "..ainfo, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
@@ -7221,8 +7230,8 @@ chatOpt:add_button("Menu Info", function()
 
     isCooldown = true
 
-    script.run_in_fiber(function(spawnClone)
-         binfo = "YimMenu version 1.68, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
+    script.run_in_fiber(function(menuMsg)
+        local binfo = "YimMenu version 1.68, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
         network.send_chat_message("[Menu]: "..binfo, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
@@ -7683,13 +7692,13 @@ script.register_looped("extrasAddonLooped", function(script)
         end
     end
     if dildos:is_enabled() then
-         selectedItem = "prop_cs_dildo_01"
+         selectedItem = joaat("v_res_d_dildo_f")
          coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
-        while not STREAMING.HAS_MODEL_LOADED(joaat(selectedItem)) do
-            STREAMING.REQUEST_MODEL(joaat(selectedItem))
+        while not STREAMING.HAS_MODEL_LOADED(selectedItem) do
+            STREAMING.REQUEST_MODEL(selectedItem)
             script:yield()
         end   
-        OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 1.5, 0, 1, joaat(selectedItem), false, true)
+        OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 1.5, 0, 1, selectedItem, false, true)
     end
 
     if dropBalls:is_enabled() then
@@ -7707,18 +7716,11 @@ script.register_looped("extrasAddonLooped", function(script)
             gui.show_error("Spin Vehicle","Player is not in a vehicle")
         else
             veh = PED.GET_VEHICLE_PED_IS_IN(PLAYER.GET_PLAYER_PED(network.get_selected_player()), true)
-             time = os.time()
-             request = false
-            while not request do
-                if os.time() - time >= 5 then
-                    gui.show_error("Spin Vehicle","Couldnt Control Vehicle")
-                    break
-                end
-                request = request_control(veh)
-                script:yield()
-            end
-            gui.show_message("Spin Vehicle","Spinning Vehicle")
-            ENTITY.APPLY_FORCE_TO_ENTITY(veh, 5, 0, 0, 150.0, 0, 0, 0, 0, true, false, true, false, true)
+			request_control(veh)
+            
+			ENTITY.APPLY_FORCE_TO_ENTITY(veh, 5, 0, 0, 150.0, 0, 0, 0, 0, true, false, true, false, true)
+			gui.show_message("Spin Vehicle","Spinning Vehicle")
+
         end
     end
     if extinguisherCB:is_enabled() then
