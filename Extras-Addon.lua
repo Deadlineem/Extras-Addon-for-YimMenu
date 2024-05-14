@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 1.0.5
+        Addon Version: 1.0.6
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
- addonVersion = "1.0.5"
+ addonVersion = "1.0.6"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -3288,20 +3288,20 @@ end
  Obje = KAOS:add_tab("Object Options")
  Objets = Obje:add_tab("Spawner")
 
- orientationPitch = 0
- orientationYaw = 0
- orientationRoll = 0
- spawnDistance = { x = 0, y = 0, z = 0 }
- defaultOrientationPitch = 0
- defaultOrientationYaw = 0
- defaultOrientationRoll = 0
- defaultSpawnDistance = { x = 0, y = 0, z = 0 }
+ local orientationPitch = 0
+ local orientationYaw = 0
+ local orientationRoll = 0
+ local spawnDistance = { x = 0, y = 0, z = 0 }
+ local defaultOrientationPitch = 0
+ local defaultOrientationYaw = 0
+ local defaultOrientationRoll = 0
+ local defaultSpawnDistance = { x = 0, y = 0, z = 0 }
 
- defaultObjSpawnDistance = 3.0  -- Adjust this distance as needed
- objSpawnDistance = 3.0  -- Adjust this distance as needed
+ local defaultObjSpawnDistance = 3.0  -- Adjust this distance as needed
+ local objSpawnDistance = 3.0  -- Adjust this distance as needed
 
- previewAlpha = 175
- defaultPreviewAlpha = 175
+ local previewAlpha = 175
+ local defaultPreviewAlpha = 175
 
 -- Function to reset sliders to default values
  function resetSliders()
@@ -8991,51 +8991,56 @@ giftPlayerTab:add_imgui(function()
 end)
 
 -- Orientation sliders and Spawn X Y Z sliders
- orientationPitch = 0
- orientationYaw = 0
- orientationRoll = 0
- spawnDistance = { x = 0, y = 0, z = -1 }
- defaultOrientationPitch = 0
- defaultOrientationYaw = 0
- defaultOrientationRoll = 0
- defaultSpawnDistance = { x = 0, y = 0, z = -1 }
-
+vehicleOrientationPitch = 0
+vehicleOrientationYaw = 0
+vehicleOrientationRoll = 0
+vehicleSpawnDistance = { x = 0, y = 0, z = 0 }
+vehicleAlpha = 175
+vehicleDefaultOrientationPitch = 0
+vehicleDefaultOrientationYaw = 0
+vehicleDefaultOrientationRoll = 0
+vehicleDefaultSpawnDistance = { x = 0, y = 0, z = -1 }
+vehicleDefaultAlpha = 175
 
 -- Function to reset sliders to default values
 function resetVehicleSliders()
-    orientationPitch = defaultOrientationPitch
-    orientationYaw = defaultOrientationYaw
-    orientationRoll = defaultOrientationRoll
-    spawnDistance.x = defaultSpawnDistance.x
-    spawnDistance.y = defaultSpawnDistance.y
-    spawnDistance.z = defaultSpawnDistance.z
+    vehicleOrientationPitch = vehicleDefaultOrientationPitch
+    vehicleOrientationYaw = vehicleDefaultOrientationYaw
+    vehicleOrientationRoll = vehicleDefaultOrientationRoll
+    vehicleSpawnDistance.x = vehicleDefaultSpawnDistance.x
+    vehicleSpawnDistance.y = vehicleDefaultSpawnDistance.y
+    vehicleSpawnDistance.z = vehicleDefaultSpawnDistance.z
+	vehicleAlpha = vehicleDefaultAlpha
 end
 
 giftPlayerTab:add_imgui(function()
-    orientationPitch, _ = ImGui.SliderInt("Pitch", orientationPitch, 0, 360)
+    vehicleOrientationPitch, _ = ImGui.SliderInt("Pitch", vehicleOrientationPitch, 0, 360)
     toolTip("", "Change the Pitch of the vehicle (Side to Side Axis)")
-    orientationYaw, _ = ImGui.SliderInt("Yaw", orientationYaw, 0, 360)
+    vehicleOrientationYaw, _ = ImGui.SliderInt("Yaw", vehicleOrientationYaw, 0, 360)
     toolTip("", "Change the Yaw of the object (Vertical Axis)")
-    orientationRoll, _ = ImGui.SliderInt("Roll", orientationRoll, 0, 360)
+    vehicleOrientationRoll, _ = ImGui.SliderInt("Roll", vehicleOrientationRoll, 0, 360)
     toolTip("", "Change the Roll of the object (Front to Back Axis)")
 end)
 
 giftPlayerTab:add_imgui(function()
-    spawnDistance.x, _ = ImGui.SliderFloat("Spawn Distance X", spawnDistance.x, -25, 25)
+    vehicleSpawnDistance.x, _ = ImGui.SliderFloat("Spawn Distance X", vehicleSpawnDistance.x, -25, 25)
     toolTip("", "Change the X coordinates of where the object spawns (Left/Right depending on direction you are facing)")
-    spawnDistance.y, _ = ImGui.SliderFloat("Spawn Distance Y", spawnDistance.y, -25, 25)
+    vehicleSpawnDistance.y, _ = ImGui.SliderFloat("Spawn Distance Y", vehicleSpawnDistance.y, -25, 25)
     toolTip("", "Change the Y coordinates of where the object spawns (Forward/Backwards depending on direction you are facing)")
-    spawnDistance.z, _ = ImGui.SliderFloat("Spawn Distance Z", spawnDistance.z, -25, 25)
+    vehicleSpawnDistance.z, _ = ImGui.SliderFloat("Spawn Distance Z", vehicleSpawnDistance.z, -25, 25)
     toolTip("", "Change the Z coordinates of where the object spawns (Up/Down)")
+	vehicleAlpha, _ = ImGui.SliderFloat("Transparency", vehicleAlpha, 0, 255)
+    toolTip("", "Set the preview transparency")
 end)
 
 -- Save default values
-defaultOrientationPitch = orientationPitch
-defaultOrientationYaw = orientationYaw
-defaultOrientationRoll = orientationRoll
-defaultSpawnDistance.x = spawnDistance.x
-defaultSpawnDistance.y = spawnDistance.y
-defaultSpawnDistance.z = spawnDistance.z
+vehicleDefaultOrientationPitch = vehicleOrientationPitch
+vehicleDefaultOrientationYaw = vehicleOrientationYaw
+vehicleDefaultOrientationRoll = vehicleOrientationRoll
+vehicleDefaultSpawnDistance.x = vehicleSpawnDistance.x
+vehicleDefaultSpawnDistance.y = vehicleSpawnDistance.y
+vehicleDefaultSpawnDistance.z = vehicleSpawnDistance.z
+vehicleDefaultAlpha = vehicleAlpha
 
 -- Reset Sliders button
 giftPlayerTab:add_button("Reset Sliders", function()
@@ -9045,7 +9050,7 @@ toolTip(giftPlayerTab, "Reset the sliders to their default values")
 giftPlayerTab:add_separator()
 
 -- Function to spawn the vehicle with specified orientation and spawn position
-function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
+function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
     script.run_in_fiber(function (script)
          load_counter = 0
         while STREAMING.HAS_MODEL_LOADED(vehicle_joaat) == false do
@@ -9059,7 +9064,7 @@ function spawn_vehicle_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
         end
          veh = VEHICLE.CREATE_VEHICLE(vehicle_joaat, pos.x, pos.y, pos.z, yaw, true, true, false)
         -- Set vehicle orientation
-        ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 2, true)
+        ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 1, true)
          networkId = NETWORK.VEH_TO_NET(veh)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
@@ -9112,33 +9117,107 @@ giftPlayerTab:add_separator()
 
 -- Spawn Selected vehicle button with orientation and spawn position
 giftPlayerTab:add_button("Spawn Vehicle", function()
-	script.run_in_fiber(function(spawnVeh)
-		selectedModelIndex = selectedObjectIndex + 1
-		if selectedModelIndex > 0 then
-			 selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
-			if selectedVehicleModel then
-				 vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
-				 selPlayer = network.get_selected_player()
-				 targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
-				 playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
-				 -- Get the player's forward vector
-				playerForward = ENTITY.GET_ENTITY_FORWARD_VECTOR(targetPlayerPed)
+    -- Disable the preview checkbox
+    previewVehicles:set_enabled(false)
 
-				playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
-				playerPos.x = playerPos.x + playerForward.x * spawnDistance.x
-				playerPos.y = playerPos.y + playerForward.y * spawnDistance.x
-				playerPos.z = playerPos.z + playerForward.z * spawnDistance.x
+    script.run_in_fiber(function(spawnVeh)
+        selectedModelIndex = selectedObjectIndex + 1
+        if selectedModelIndex > 0 then
+            selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
+            if selectedVehicleModel then
+                vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
+                selPlayer = network.get_selected_player()
+                targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+                playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
+                -- Get the player's forward vector
+                playerForward = ENTITY.GET_ENTITY_FORWARD_VECTOR(targetPlayerPed)
 
-				spawn_vehicle_with_orientation(vehicleHash, playerPos, orientationPitch, orientationYaw, orientationRoll)
-				gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
-			end
-		else
-			gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
-		end
-		sleep(5)
-	end)
+                playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
+                playerPos.x = playerPos.x + playerForward.x + vehicleSpawnDistance.x
+                playerPos.y = playerPos.y + playerForward.y + vehicleSpawnDistance.y
+                playerPos.z = playerPos.z + vehicleSpawnDistance.z
+
+                spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll)
+                gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
+            end
+        else
+            gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
+        end
+        sleep(5)
+
+        -- Re-enable the preview checkbox after some time (if desired)
+        --previewVehicles:set_enabled(true)
+    end)
 end)
-toolTip(giftPlayerTab, "Spawns the vehicle on the selected player, if no player is selected, defaults to you")
+
+-- Add a checkbox for enabling/disabling the vehicle preview
+giftPlayerTab:add_sameline()
+previewVehicles = giftPlayerTab:add_checkbox("Preview")
+
+-- Initialize variables for preview
+previewSpawned = false
+previewVehicle = nil
+previousPreview = nil
+
+-- Register a looped function to handle the vehicle preview
+script.register_looped("vehiclesPreview", function()
+    if previewVehicles:is_enabled() then
+        -- Get the selected vehicle model information
+        local selectedModelIndex = selectedObjectIndex + 1
+        local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
+
+        if selectedVehicleModel then
+            -- Convert vehicle model name to hash
+            local vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
+
+            -- Check if the vehicle model is loaded, if not, load it
+                STREAMING.REQUEST_MODEL(vehicleHash)
+                -- Get the player's ped handle
+                local selPlayer = network.get_selected_player()
+                local playerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+
+                -- Get the player's current position and orientation
+                local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+                local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
+
+                -- Calculate the spawn position for the vehicle preview based on sliders
+                local spawnX = playerPos.x + vehicleSpawnDistance.x
+                local spawnY = playerPos.y + vehicleSpawnDistance.y
+                local spawnZ = playerPos.z + vehicleSpawnDistance.z
+
+                -- Spawn the vehicle preview
+                if previewVehicle ~= vehicleHash and previewVehicle ~= nil then
+                    delete_entity(previewVehicle)
+                    previewSpawned = false
+                end
+                if not previewSpawned then
+                    previewVehicle = VEHICLE.CREATE_VEHICLE(vehicleHash, spawnX, spawnY, spawnZ, playerHeading, true, true, false)
+                    VEHICLE.SET_VEHICLE_COLOURS(previewVehicle, 0, 30)
+                    VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, 0, 30)
+                    --VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
+                    ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(previewVehicle)
+                    ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, false)
+                    ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
+                    previewSpawned = true
+                end
+
+                -- Adjust the preview vehicle's orientation based on sliders
+                ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, 2, true)
+        else
+            gui.show_message("Vehicle Spawner", "Selected vehicle not found.")
+        end
+    else
+        -- Delete the preview vehicle if preview checkbox is disabled
+        if previewVehicle ~= nil then
+            delete_entity(previewVehicle)
+            previewSpawned = false
+            previewVehicle = nil
+            previousPreview = nil
+        end
+    end
+end)
+toolTip(giftPlayerTab, "Previews the selected vehicle")
+
 
 giftPlayerTab:add_sameline()
 endPollution = giftPlayerTab:add_checkbox("No Pollution")
