@@ -3612,7 +3612,135 @@ Objets:add_imgui(function()
 end)
 
 -- Vehicle Options Tab
- Veh = KAOS:add_tab("Vehicle Options")
+Veh = KAOS:add_tab("Vehicle Options")
+
+tokyodrift = Veh:add_tab("Tokyo Drift")
+script.register_looped("vars", function(vars)
+    if NETWORK.NETWORK_IS_SESSION_ACTIVE() then
+        is_online = true
+    else
+        is_online = false
+    end
+    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID()) then
+        current_vehicle = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
+        is_car = VEHICLE.IS_THIS_MODEL_A_CAR(ENTITY.GET_ENTITY_MODEL(current_vehicle))
+    end
+    vars:yield()
+end)
+ ShiftDrift = false
+ DriftIntensity = 0
+ DriftTires = false
+ function resettokyodrift()
+    DriftTires = false
+    ShiftDrift = false
+    DriftIntensity = 0
+    shiftDriftToggled = false
+end
+tokyodrift:add_imgui(function(drift)
+manufacturer = VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(current_vehicle))
+mfr_name = (manufacturer:lower():gsub("^%l", string.upper))
+vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current_vehicle))
+    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) and is_car then
+        ImGui.Text("Vehicle: "..mfr_name.." "..vehicle_name)
+        ImGui.Spacing()
+        ShiftDrift, shiftDriftToggled = ImGui.Checkbox("Activate Tokyo Drift", ShiftDrift, true)
+        ImGui.SameLine()
+        ImGui.TextDisabled("(?)")
+        if ImGui.IsItemHovered() then
+            ImGui.BeginTooltip()
+            ImGui.Text("Hold [Left Shift] to drift")
+            ImGui.EndTooltip()
+        end
+        if shiftDriftToggled then
+            if not ShiftDrift then
+                DriftTires = false
+            end
+        end
+        DriftTires, driftTyresToggled = ImGui.Checkbox("Use Low Grip Tires", DriftTires, true)
+        ImGui.SameLine()
+        ImGui.TextDisabled("(?)")
+        if ImGui.IsItemHovered() then
+            ImGui.BeginTooltip()
+            ImGui.Text("This will use GTA 5's low grip tires instead.")
+            ImGui.EndTooltip()
+        end
+        if not DriftTires then
+            ImGui.Spacing()
+            ImGui.Text("Intensity:")
+            ImGui.PushItemWidth(250)
+            DriftIntensity, DriftIntensityUsed = ImGui.SliderInt("##Intensity", DriftIntensity, 0, 3)
+            if ImGui.IsItemHovered() then
+                ImGui.BeginTooltip()
+                ImGui.Text("0: No Grip (very stiff).\n1: Balanced (Recommended).\n2: Weak Drift.\n3: Weakest Drift.")
+                ImGui.EndTooltip()
+            end
+            ImGui.PopItemWidth()
+        end
+    elseif PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) and not is_car then
+        ImGui.Text("Tokyo Drift only works on cars and trucks.")
+    else
+        ImGui.Text("Get in a vehicle before using the script!")
+    end
+    ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing()
+    ImGui.Separator()
+    if ImGui.Button("-- Credits --") then
+        ImGui.OpenPopup("Credits")
+    end
+    ImGui.SetNextWindowPos(600, 400, ImGuiCond.Appearing)
+    ImGui.SetNextWindowBgAlpha(0.6)
+    if ImGui.BeginPopupModal("Credits", true, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoMove) then
+        ImGui.Text("Original script [Shift-Drift], made by Harmless05\nand tweaked by SAMURAI (xesdoog).")
+        ImGui.Text("Visit Harmless's profile on Github:")
+        ImGui.Indent()
+        ImGui.TextColored(0.25, 0.65, 0.96, 0.8, "https://github.com/Harmless05")
+        ImGui.Unindent()
+        if ImGui.IsItemHovered() then
+            ImGui.BeginTooltip()
+            ImGui.Text("Click to copy link")
+            ImGui.EndTooltip()
+        end
+        if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
+            ImGui.SetClipboardText("https://github.com/Harmless05")
+            gui.show_message("Tokyo Drift", "Copied \"https://github.com/Harmless05\" to clipboard!")
+            log.info("Copied \"https://github.com/Harmless05\" to clipboard!")
+        end
+        -- ImGui.Text("Checkout Harmless-Scripts:")
+        -- ImGui.BulletText("https://github.com/YimMenu-Lua/Harmless-Scripts")
+        -- if ImGui.IsItemHovered() then
+        --     ImGui.BeginTooltip()
+        --     ImGui.Text("Click to copy link")
+        --     ImGui.EndTooltip()
+        -- end
+        -- if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
+        --     ImGui.SetClipboardText("https://github.com/YimMenu-Lua/Harmless-Scripts")    <-- Crashes my game for some reason! The profile link is fine but clicking the YimMenu-Lua repo link crashes my game???🤨
+        --     gui.show_message("TokyoDrift Credits", "Copied \"https://github.com/YimMenu-Lua/Harmless-Scripts\" to clipboard!")
+        -- end
+        ImGui.EndPopup()
+    end
+end)
+event.register_handler(menu_event.MenuUnloaded, function()
+    resettokyodrift()
+end)
+event.register_handler(menu_event.ScriptsReloaded, function()
+    resettokyodrift()
+end)
+script.register_looped("Drift Loop", function(script)
+    script:yield()
+    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) then
+        if is_car and DriftTires and PAD.IS_CONTROL_PRESSED(0, 21) then
+            VEHICLE.SET_DRIFT_TYRES(current_vehicle, true)
+        else
+            VEHICLE.SET_DRIFT_TYRES(current_vehicle, false)
+        end
+        script:yield()
+        if is_car and ShiftDrift and PAD.IS_CONTROL_PRESSED(0, 21) and not DriftTires then
+            VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, true)
+            VEHICLE.SET_VEHICLE_REDUCE_GRIP_LEVEL(current_vehicle, DriftIntensity)
+        else
+            VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, false)
+        end
+    end
+end)
 
 flatbedScript = Veh:add_tab("FlatbedScript")
 attached_vehicle = {}
@@ -3937,7 +4065,7 @@ script.register_looped("flatbed script", function(script)
         end
     end
 end)
-script.register_looped("TowPos Marker", function()
+script.register_looped("TowPos Marker", function(tow)
     if towPos then
         if is_in_flatbed and attached_vehicle[1] == nil then
              playerPosition = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), false)
@@ -3945,134 +4073,6 @@ script.register_looped("TowPos Marker", function()
              playerForwardY = ENTITY.GET_ENTITY_FORWARD_Y(PLAYER.PLAYER_PED_ID())
              detectPos = vec3:new(playerPosition.x - (playerForwardX * 10), playerPosition.y - (playerForwardY * 10), playerPosition.z)
             GRAPHICS.DRAW_MARKER_SPHERE(detectPos.x, detectPos.y, detectPos.z, 2.5, 180, 128, 0, 0.115)
-        end
-    end
-end)
-
- tokyodrift = Veh:add_tab("Tokyo Drift")
-script.register_looped("vars", function(vars)
-    if NETWORK.NETWORK_IS_SESSION_ACTIVE() then
-        is_online = true
-    else
-        is_online = false
-    end
-    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID()) then
-        current_vehicle = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
-        is_car = VEHICLE.IS_THIS_MODEL_A_CAR(ENTITY.GET_ENTITY_MODEL(current_vehicle))
-    end
-    vars:yield()
-end)
- ShiftDrift = false
- DriftIntensity = 0
- DriftTires = false
- function resettokyodrift()
-    DriftTires = false
-    ShiftDrift = false
-    DriftIntensity = 0
-    shiftDriftToggled = false
-end
-tokyodrift:add_imgui(function()
-manufacturer = VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(current_vehicle))
-mfr_name = (manufacturer:lower():gsub("^%l", string.upper))
-vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current_vehicle))
-    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) and is_car then
-        ImGui.Text("Vehicle: "..mfr_name.." "..vehicle_name)
-        ImGui.Spacing()
-        ShiftDrift, shiftDriftToggled = ImGui.Checkbox("Activate Tokyo Drift", ShiftDrift, true)
-        ImGui.SameLine()
-        ImGui.TextDisabled("(?)")
-        if ImGui.IsItemHovered() then
-            ImGui.BeginTooltip()
-            ImGui.Text("Hold [Left Shift] to drift")
-            ImGui.EndTooltip()
-        end
-        if shiftDriftToggled then
-            if not ShiftDrift then
-                DriftTires = false
-            end
-        end
-        DriftTires, driftTyresToggled = ImGui.Checkbox("Use Low Grip Tires", DriftTires, true)
-        ImGui.SameLine()
-        ImGui.TextDisabled("(?)")
-        if ImGui.IsItemHovered() then
-            ImGui.BeginTooltip()
-            ImGui.Text("This will use GTA 5's low grip tires instead.")
-            ImGui.EndTooltip()
-        end
-        if not DriftTires then
-            ImGui.Spacing()
-            ImGui.Text("Intensity:")
-            ImGui.PushItemWidth(250)
-            DriftIntensity, DriftIntensityUsed = ImGui.SliderInt("##Intensity", DriftIntensity, 0, 3)
-            if ImGui.IsItemHovered() then
-                ImGui.BeginTooltip()
-                ImGui.Text("0: No Grip (very stiff).\n1: Balanced (Recommended).\n2: Weak Drift.\n3: Weakest Drift.")
-                ImGui.EndTooltip()
-            end
-            ImGui.PopItemWidth()
-        end
-    elseif PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) and not is_car then
-        ImGui.Text("Tokyo Drift only works on cars and trucks.")
-    else
-        ImGui.Text("Get in a vehicle before using the script!")
-    end
-    ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing() ImGui.Spacing()
-    ImGui.Separator()
-    if ImGui.Button("-- Credits --") then
-        ImGui.OpenPopup("Credits")
-    end
-    ImGui.SetNextWindowPos(600, 400, ImGuiCond.Appearing)
-    ImGui.SetNextWindowBgAlpha(0.6)
-    if ImGui.BeginPopupModal("Credits", true, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoMove) then
-        ImGui.Text("Original script [Shift-Drift], made by Harmless05\nand tweaked by SAMURAI (xesdoog).")
-        ImGui.Text("Visit Harmless's profile on Github:")
-        ImGui.Indent()
-        ImGui.TextColored(0.25, 0.65, 0.96, 0.8, "https://github.com/Harmless05")
-        ImGui.Unindent()
-        if ImGui.IsItemHovered() then
-            ImGui.BeginTooltip()
-            ImGui.Text("Click to copy link")
-            ImGui.EndTooltip()
-        end
-        if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
-            ImGui.SetClipboardText("https://github.com/Harmless05")
-            gui.show_message("Tokyo Drift", "Copied \"https://github.com/Harmless05\" to clipboard!")
-            log.info("Copied \"https://github.com/Harmless05\" to clipboard!")
-        end
-        -- ImGui.Text("Checkout Harmless-Scripts:")
-        -- ImGui.BulletText("https://github.com/YimMenu-Lua/Harmless-Scripts")
-        -- if ImGui.IsItemHovered() then
-        --     ImGui.BeginTooltip()
-        --     ImGui.Text("Click to copy link")
-        --     ImGui.EndTooltip()
-        -- end
-        -- if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
-        --     ImGui.SetClipboardText("https://github.com/YimMenu-Lua/Harmless-Scripts")    <-- Crashes my game for some reason! The profile link is fine but clicking the YimMenu-Lua repo link crashes my game???🤨
-        --     gui.show_message("TokyoDrift Credits", "Copied \"https://github.com/YimMenu-Lua/Harmless-Scripts\" to clipboard!")
-        -- end
-        ImGui.EndPopup()
-    end
-end)
-event.register_handler(menu_event.MenuUnloaded, function()
-    resettokyodrift()
-end)
-event.register_handler(menu_event.ScriptsReloaded, function()
-    resettokyodrift()
-end)
-script.register_looped("Drift Loop", function(script)
-    script:yield()
-    if PED.IS_PED_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID(), true) then
-        if is_car and DriftTires and PAD.IS_CONTROL_PRESSED(0, 21) then
-            VEHICLE.SET_DRIFT_TYRES(current_vehicle, true)
-        else
-            VEHICLE.SET_DRIFT_TYRES(current_vehicle, false)
-        end
-        script:yield()
-        if is_car and ShiftDrift and PAD.IS_CONTROL_PRESSED(0, 21) and not DriftTires then
-            VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, true)
-            VEHICLE.SET_VEHICLE_REDUCE_GRIP_LEVEL(current_vehicle, DriftIntensity)
-        else
-            VEHICLE.SET_VEHICLE_REDUCE_GRIP(current_vehicle, false)
         end
     end
 end)
@@ -9050,7 +9050,7 @@ toolTip(giftPlayerTab, "Reset the sliders to their default values")
 giftPlayerTab:add_separator()
 
 -- Function to spawn the vehicle with specified orientation and spawn position
-function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
+function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2, p3, s1, s2, s3, pearl, wheels)
     script.run_in_fiber(function (script)
          load_counter = 0
         while STREAMING.HAS_MODEL_LOADED(vehicle_joaat) == false do
@@ -9065,6 +9065,9 @@ function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll)
          veh = VEHICLE.CREATE_VEHICLE(vehicle_joaat, pos.x, pos.y, pos.z, yaw, true, true, false)
         -- Set vehicle orientation
         ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 1, true)
+		VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, p1, p2, p3)
+		VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, s1, s2, s3)
+		VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, 0)
          networkId = NETWORK.VEH_TO_NET(veh)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
@@ -9111,7 +9114,19 @@ giftPlayerTab:add_imgui(function()
 end)
 toolTip(giftPlayerTab, "Search for a vehicle (Example: Adder, Baller, Zentorno)")
 giftPlayerTab:add_imgui(displayVehicleModelsList)
-
+giftPlayerTab:add_separator()
+giftPlayerTab:add_text("Primary Color")
+R_P = giftPlayerTab:add_input_int("Red (Primary)")
+G_P = giftPlayerTab:add_input_int("Green (Primary)")
+B_P = giftPlayerTab:add_input_int("Blue (Primary)")
+giftPlayerTab:add_separator()
+giftPlayerTab:add_text("Secondary Color")
+R_S = giftPlayerTab:add_input_int("Red (Secondary)")
+G_S = giftPlayerTab:add_input_int("Green (Secondary)")
+B_S = giftPlayerTab:add_input_int("Blue (Secondary)")
+giftPlayerTab:add_separator()
+giftPlayerTab:add_text("Pearlescent")
+Pearl = giftPlayerTab:add_input_int("Pearlescent")
 -- Add separator
 giftPlayerTab:add_separator()
 
@@ -9136,8 +9151,16 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
                 playerPos.x = playerPos.x + playerForward.x + vehicleSpawnDistance.x
                 playerPos.y = playerPos.y + playerForward.y + vehicleSpawnDistance.y
                 playerPos.z = playerPos.z + vehicleSpawnDistance.z
-
-                spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll)
+				primaryR = R_P:get_value()
+				primaryG = G_P:get_value()
+				primaryB = B_P:get_value()
+				
+				secondaryR = R_S:get_value()
+				secondaryG = G_S:get_value()
+				secondaryB = B_S:get_value()
+				
+				pearlescent = Pearl:get_value()
+                spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, primaryR, primaryG, primaryB, secondaryR, secondaryG, secondaryB, pearlescent)
                 gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
             end
         else
@@ -9192,12 +9215,27 @@ script.register_looped("vehiclesPreview", function()
                 end
                 if not previewSpawned then
                     previewVehicle = VEHICLE.CREATE_VEHICLE(vehicleHash, spawnX, spawnY, spawnZ, playerHeading, true, true, false)
-                    VEHICLE.SET_VEHICLE_COLOURS(previewVehicle, 0, 30)
-                    VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, 0, 30)
+					primaryR = R_P:get_value()
+					primaryG = G_P:get_value()
+					primaryB = B_P:get_value()
+					
+					secondaryR = R_S:get_value()
+					secondaryG = G_S:get_value()
+					secondaryB = B_S:get_value()
+					
+					pearlescent = Pearl:get_value()
+					
+                    VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, primaryR, primaryG, primaryB)
+					VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, secondaryR, secondaryG, secondaryB)
+                    VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, 0)
                     --VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
                     ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(previewVehicle)
                     ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, false)
                     ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
+					networkId = NETWORK.VEH_TO_NET(previewVehicle)
+					if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(previewVehicle) then
+						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+					end
                     previewSpawned = true
                 end
 
@@ -9252,14 +9290,14 @@ giftPlayerTab:add_button("Gift Vehicle", function()
  
     script.run_in_fiber(function(giftVeh)
  
-         selectedPlayer = network.get_selected_player()
+        local selectedPlayer = network.get_selected_player()
             
         -- Check if a player is selected
          targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
          playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
         
         if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
-             targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
+            local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
  
             repeat
                 giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
