@@ -5776,7 +5776,7 @@ heistTab:add_imgui(function()
         end
         toolTip("", "Instantly finish hacking")
         if ImGui.Button("Bypass Drill") then
-            locals.get_float("fm_mission_controller", 10067 + 11, 100)
+            locals.set_float("fm_mission_controller", 10067 + 11, 100)
         end
         toolTip("", "Instantly finish drilling")
     end
