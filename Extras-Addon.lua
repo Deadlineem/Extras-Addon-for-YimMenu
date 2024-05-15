@@ -9048,6 +9048,52 @@ giftPlayerTab:add_button("Reset Sliders", function()
 end)
 toolTip(giftPlayerTab, "Reset the sliders to their default values")
 giftPlayerTab:add_separator()
+function max_vehicle(veh)
+script.run_in_fiber(function(maxM)
+    VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+    VEHICLE.TOGGLE_VEHICLE_MOD(veh, 18, true) -- MOD_TURBO
+    VEHICLE.TOGGLE_VEHICLE_MOD(veh, 23, true) -- MOD_TYRE_SMOKE
+    VEHICLE.TOGGLE_VEHICLE_MOD(veh, 22, true) -- MOD_XENON_LIGHTS
+    VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
+    VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
+
+    for slot = 0, 20 do
+        if slot ~= 48 then -- MOD_LIVERY
+            local count = VEHICLE.GET_NUM_VEHICLE_MODS(veh, slot)
+            if count > 0 then
+                local selected_mod = -1
+                for mod = count - 1, -1, -1 do
+                    if not VEHICLE.IS_VEHICLE_MOD_GEN9_EXCLUSIVE(veh, slot, mod) then
+                        selected_mod = mod
+                        break
+                    end
+                end
+
+                if selected_mod ~= -1 then
+                    VEHICLE.SET_VEHICLE_MOD(veh, slot, selected_mod, true)
+                end
+            end
+        end
+    end
+end)
+end
+
+function max_vehicle_performance(veh)
+script.run_in_fiber(function(maxP)
+    if request_control(veh) then
+        local performance_mods = {11, 12, 13, 15, 16, 18, 20} -- MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO
+        VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+
+        for _, mod_slot in ipairs(performance_mods) do
+            if mod_slot ~= 18 and mod_slot ~= 20 then -- Exclude MOD_NITROUS and MOD_TURBO
+                VEHICLE.SET_VEHICLE_MOD(veh, mod_slot, VEHICLE.GET_NUM_VEHICLE_MODS(veh, mod_slot) - 1, true)
+            else
+                VEHICLE.TOGGLE_VEHICLE_MOD(veh, mod_slot, true)
+            end
+        end
+    end
+end)
+end
 
 -- Function to spawn the vehicle with specified orientation and spawn position
 function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2, p3, s1, s2, s3, pearl, wheels)
@@ -9068,7 +9114,10 @@ function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2
 		VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, p1, p2, p3)
 		VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, s1, s2, s3)
 		VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, 0)
-		command.call("upgradeveh", {vehicle_joaat})
+		if spawnMaxed:is_enabled() then
+			max_vehicle(veh)
+			max_vehicle_performance(veh)
+		end
          networkId = NETWORK.VEH_TO_NET(veh)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
@@ -9233,6 +9282,7 @@ script.register_looped("vehiclesPreview", function()
                     ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, false)
                     ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
 					networkId = NETWORK.VEH_TO_NET(previewVehicle)
+
 					if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(previewVehicle) then
 						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
 					end
@@ -9263,6 +9313,10 @@ endPollution:set_enabled(true)
 toolTip(giftPlayerTab, "Sets the entity as no longer needed to prevent session pollution of invisible vehicles, turn this off ONLY for gifting cars to others")
 toolTip(giftPlayerTab, "If you disable this, make sure you use the delete gun 'Self > Weapons > Custom gun (enabled) > Delete Gun' and delete the gifted car after its been driven into the garage")
 
+giftPlayerTab:add_sameline()
+spawnMaxed = giftPlayerTab:add_checkbox("Max Mods/Performance")
+spawnMaxed:set_enabled(true)
+toolTip(giftPlayerTab, "Spawns the vehicle with max performance and max modifications.")
 -- Vehicle Gift Options
 giftedsucc = false
  
