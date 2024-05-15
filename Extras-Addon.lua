@@ -6550,7 +6550,7 @@ end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Skip Glass Cut", function()
-    locals.get_float(FMC2020, 30357 + 3, 100.0)
+    locals.set_float(FMC2020, 30357 + 3, 100.0)
     gui.show_message("Cayo Heist", "Bypassed Plasma Cutter")
 end)
 
@@ -9068,6 +9068,7 @@ function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2
 		VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, p1, p2, p3)
 		VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, s1, s2, s3)
 		VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, 0)
+		command.call("upgradeveh", {vehicle_joaat})
          networkId = NETWORK.VEH_TO_NET(veh)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
@@ -9129,7 +9130,6 @@ giftPlayerTab:add_text("Pearlescent")
 Pearl = giftPlayerTab:add_input_int("Pearlescent")
 -- Add separator
 giftPlayerTab:add_separator()
-
 -- Spawn Selected vehicle button with orientation and spawn position
 giftPlayerTab:add_button("Spawn Vehicle", function()
     -- Disable the preview checkbox
