@@ -4583,7 +4583,7 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                      playerName = PLAYER.GET_PLAYER_NAME(players)
                      coords = ENTITY.GET_ENTITY_COORDS(players, true)
                      heading = ENTITY.GET_ENTITY_HEADING(players)
-                     spawnDistance = 250.0 * math.sin(math.rad(heading))
+                     spawnDistance = 150.0 * math.sin(math.rad(heading))
                      spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
                      isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
                      clown = joaat("s_m_y_clown_01")
@@ -4654,9 +4654,10 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                 end
             end
             -- Release the resources associated with the spawned entities
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
-            sleep(15)
+            STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(jetVehicle)
+			STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped)
+			STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(weapon)
+            sleep(10)
         end
     end)
 toolTip(Global, "Spawns Rainbow colored jets with clowns as pilots on the entire session, loops and runs every 15 seconds.")
@@ -6921,7 +6922,7 @@ xmen:add_imgui(function()
     
     -- Draw black hole marker
     if blackHoleMarkerVisible then
-         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
          playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         GRAPHICS.DRAW_MARKER_SPHERE(playerCoords.x, playerCoords.y, playerCoords.z, blackHoleRadius, 255, 0, 0, 0.3)
     end
@@ -6932,8 +6933,8 @@ end)
      peds = entities.get_all_peds_as_handles()
      blackHoleRadiusSquared = blackHoleRadius * blackHoleRadius
     for _, entity in ipairs(vehicles) do
-        if PED.IS_PED_A_PLAYER(entity) == false then
-            if entities.take_control_of(entity) then
+        --if PED.IS_PED_A_PLAYER(entity) == false then
+            --if entities.take_control_of(entity) then
                  entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
                  distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
                 if distanceSquared <= blackHoleRadiusSquared then
@@ -6943,13 +6944,13 @@ end)
                     RequestControl(entity)
                     ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
-            end
-        end
+            --end
+        --end
     end
     
     for _, entity in ipairs(peds) do
-        if PED.IS_PED_A_PLAYER(entity) == false then
-            if entities.take_control_of(entity) then
+        --if PED.IS_PED_A_PLAYER(entity) == false then
+            --if entities.take_control_of(entity) then
                  entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
                  distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
                 if distanceSquared <= blackHoleRadiusSquared then
@@ -6959,15 +6960,15 @@ end)
                     RequestControl(entity)
                     ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
-            end
-        end
+            --end
+        --end
     end
 end
 
 script.register_looped("blackHoleLoopScript", function(script)
     script:yield()
     if blackHoleLoopCheckbox:is_enabled() == true then
-         player = PLAYER.PLAYER_ID()
+         player = network.get_selected_player()
          playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
          playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Pass magnitude
@@ -7005,7 +7006,7 @@ xmen:add_imgui(function()
     
     -- Draw force field marker
     if forceFieldMarkerVisible then
-         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
          playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         GRAPHICS.DRAW_MARKER_SPHERE(playerCoords.x, playerCoords.y, playerCoords.z, forceFieldRadius, 0, 255, 0, 0.3)
     end
@@ -7018,8 +7019,8 @@ end)
 
     -- Apply forces to vehicles
     for _, entity in ipairs(vehicles) do
-        if PED.IS_PED_A_PLAYER(entity) == false then
-            if entities.take_control_of(entity) then
+        --if PED.IS_PED_A_PLAYER(entity) == false then
+            --if entities.take_control_of(entity) then
                  entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
                  distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
                 if distanceSquared <= forceFieldRadiusSquared then
@@ -7029,14 +7030,14 @@ end)
                     RequestControl(entity)
                     ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
-            end
-        end
+            --end
+        --end
     end
 
     -- Comment below to unapply to peds
     for _, entity in ipairs(peds) do
-        if PED.IS_PED_A_PLAYER(entity) == false then
-            if entities.take_control_of(entity) then
+        --if PED.IS_PED_A_PLAYER(entity) == false then
+            --if entities.take_control_of(entity) then
                  entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
                  distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
                 if distanceSquared <= forceFieldRadiusSquared then
@@ -7046,15 +7047,15 @@ end)
                     RequestControl(entity)
                     ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
                 end
-            end
-        end
+            --end
+        --end
     end
 end
 
 script.register_looped("forceFieldLoopScript", function(script)
     script:yield()
     if forceFieldLoopCheckbox:is_enabled() == true then
-         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
+         playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
          playerCoords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         applyForceField(playerCoords, forceFieldRadius, forceFieldMagnitude)
     end
@@ -9165,18 +9166,95 @@ end)
 toolTip(giftPlayerTab, "Search for a vehicle (Example: Adder, Baller, Zentorno)")
 giftPlayerTab:add_imgui(displayVehicleModelsList)
 giftPlayerTab:add_separator()
-giftPlayerTab:add_text("Primary Color")
-R_P = giftPlayerTab:add_input_int("Red (Primary)")
-G_P = giftPlayerTab:add_input_int("Green (Primary)")
-B_P = giftPlayerTab:add_input_int("Blue (Primary)")
-giftPlayerTab:add_separator()
-giftPlayerTab:add_text("Secondary Color")
-R_S = giftPlayerTab:add_input_int("Red (Secondary)")
-G_S = giftPlayerTab:add_input_int("Green (Secondary)")
-B_S = giftPlayerTab:add_input_int("Blue (Secondary)")
-giftPlayerTab:add_separator()
-giftPlayerTab:add_text("Pearlescent")
-Pearl = giftPlayerTab:add_input_int("Pearlescent")
+giftPlayerTab:add_text("Vehicle Colors")
+
+pColor = giftPlayerTab:add_checkbox("Primary Color", function() end)
+giftPlayerTab:add_sameline()
+sColor = giftPlayerTab:add_checkbox("Secondary Color", function() end)
+giftPlayerTab:add_sameline()
+pearlColor = giftPlayerTab:add_checkbox("Pearlescent", function() end)
+giftPlayerTab:add_sameline()
+wheelColor = giftPlayerTab:add_checkbox("Wheels", function() end)
+primary = {}
+giftPlayerTab:add_imgui(function()
+    if pColor:is_enabled() then -- Only display the color picker if showColorPicker is true
+        primary, used1 = ImGui.ColorPicker3("Primary Color", primary)
+        if used1 then
+            pR = math.floor(primary[1] * 255 + 0.5)
+            pG = math.floor(primary[2] * 255 + 0.5)
+            pB = math.floor(primary[3] * 255 + 0.5)
+
+            gui.show_message("Primary Color", ""..pR.. ', '.. pG.. ', '.. pB)
+        end
+    end
+end)
+
+secondary = {}
+giftPlayerTab:add_imgui(function()
+    if sColor:is_enabled() then -- Only display the color picker if showColorPicker is true
+        secondary, used2 = ImGui.ColorPicker3("Secondary Color", secondary)
+        if used2 then
+            sR = math.floor(secondary[1] * 255 + 0.5)
+            sG = math.floor(secondary[2] * 255 + 0.5)
+            sB = math.floor(secondary[3] * 255 + 0.5)
+
+            gui.show_message("Secondary Color", "".. sR.. ', '.. sG.. ', '.. sB)
+        end
+    end
+end)
+
+-- Function to display Pearlescent color selection
+local selected_color_index = 0 -- Initialize to 0 since Lua indexing starts from 1
+local function displayColorSelection()
+    ImGui.Text("Select a pearlescent color:")
+    local color_names = {}
+    for name, _ in pairs(allColors) do
+        table.insert(color_names, name)
+    end
+    selected_color_index, changed = ImGui.ListBox("Pearlescent Color", selected_color_index, color_names, #color_names + 1) -- Add 1 to the length to account for Lua indexing
+    if changed then
+        local selected_color_name = color_names[selected_color_index + 1] -- Adjust the index by adding 1
+        local selected_color_value = allColors[selected_color_name]
+        if selected_color_value then
+            pearlescent = selected_color_value
+            gui.show_message("Pearlescent", selected_color_name)
+        end
+    end
+end
+
+
+-- Add ImGui function
+giftPlayerTab:add_imgui(function()
+    if pearlColor:is_enabled() then
+        displayColorSelection()
+    end
+end)
+
+local selected_wheel_color_index = 0 -- Initialize to 0 since Lua indexing starts from 1
+local function displayWheelColorSelection()
+    ImGui.Text("Select a wheel color:")
+    local wheel_color_names = {}
+    for name, _ in pairs(allColors) do
+        table.insert(wheel_color_names, name)
+    end
+    selected_wheel_color_index, changed = ImGui.ListBox("Wheel Color", selected_wheel_color_index, wheel_color_names, #wheel_color_names + 1) -- Add 1 to the length to account for Lua indexing
+    if changed then
+        local selected_color_name = wheel_color_names[selected_wheel_color_index + 1] -- Adjust the index by adding 1
+        local selected_color_value = allWheelColors[selected_color_name]
+        if selected_color_value then
+            wheelColor = selected_color_value
+            --gui.show_message(selected_color_name)
+			gui.show_message("Wheel Color", "Only works on upgraded wheels, still a work in progress.")
+        end
+    end
+end
+
+giftPlayerTab:add_imgui(function()
+    if wheelColor:is_enabled() then
+        displayWheelColorSelection()
+    end
+end)
+
 -- Add separator
 giftPlayerTab:add_separator()
 -- Spawn Selected vehicle button with orientation and spawn position
@@ -9200,16 +9278,8 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
                 playerPos.x = playerPos.x + playerForward.x + vehicleSpawnDistance.x
                 playerPos.y = playerPos.y + playerForward.y + vehicleSpawnDistance.y
                 playerPos.z = playerPos.z + vehicleSpawnDistance.z
-				primaryR = R_P:get_value()
-				primaryG = G_P:get_value()
-				primaryB = B_P:get_value()
-				
-				secondaryR = R_S:get_value()
-				secondaryG = G_S:get_value()
-				secondaryB = B_S:get_value()
-				
-				pearlescent = Pearl:get_value()
-                spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, primaryR, primaryG, primaryB, secondaryR, secondaryG, secondaryB, pearlescent)
+
+                spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, pR, pG, pB, sR, sG, sB, pearlescent, wheels)
                 gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
             end
         else
@@ -9264,18 +9334,9 @@ script.register_looped("vehiclesPreview", function()
                 end
                 if not previewSpawned then
                     previewVehicle = VEHICLE.CREATE_VEHICLE(vehicleHash, spawnX, spawnY, spawnZ, playerHeading, true, true, false)
-					primaryR = R_P:get_value()
-					primaryG = G_P:get_value()
-					primaryB = B_P:get_value()
 					
-					secondaryR = R_S:get_value()
-					secondaryG = G_S:get_value()
-					secondaryB = B_S:get_value()
-					
-					pearlescent = Pearl:get_value()
-					
-                    VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, primaryR, primaryG, primaryB)
-					VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, secondaryR, secondaryG, secondaryB)
+                    VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, pR, pG, pB)
+					VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, sR, sG, sB)
                     VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, 0)
                     --VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
                     ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(previewVehicle)
