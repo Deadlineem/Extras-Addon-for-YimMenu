@@ -226,7 +226,6 @@ if errorlevel 1 goto download_file_1
 :download_file_1
 echo Opening MagicModz89's MEGA drive in a browser window...
 start "XML Maps" "https://mega.nz/folder/BnM2jQoT#Lb6MG4m24nGv0GkNGsD3sQ"
-cscript //nologo BringToFront.vbs
 echo To use these, download the file as zip and extract the corresponding contents to %APPDATA%\YimMenu\xml_maps and xml_vehicles
 echo Returning to Optional Downloads Menu
 timeout /t 5 /nobreak >nul
