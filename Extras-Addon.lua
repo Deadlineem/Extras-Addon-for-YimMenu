@@ -8995,12 +8995,12 @@ end)
 vehicleOrientationPitch = 0
 vehicleOrientationYaw = 0
 vehicleOrientationRoll = 0
-vehicleSpawnDistance = { x = 3, y = 3, z = 0 }
+vehicleSpawnDistance = { x = 6, y = 6, z = 0 }
 vehicleAlpha = 175
 vehicleDefaultOrientationPitch = 0
 vehicleDefaultOrientationYaw = 0
 vehicleDefaultOrientationRoll = 0
-vehicleDefaultSpawnDistance = { x = 3, y = 3, z = -1 }
+vehicleDefaultSpawnDistance = { x = 6, y = 6, z = 0 }
 vehicleDefaultAlpha = 175
 
 -- Function to reset sliders to default values
@@ -9327,7 +9327,8 @@ script.register_looped("vehiclesPreview", function()
 				local spawnX = playerPos.x + forward.x * vehicleSpawnDistance.x
 				local spawnY = playerPos.y + forward.y * vehicleSpawnDistance.y
 				local spawnZ = playerPos.z
-
+				
+				
                 -- Calculate the spawn position for the vehicle preview based on sliders
                 --local spawnX = playerPos.x + forward.x --
                 --local spawnY = playerPos.y + forward.y + 2 --
@@ -9349,6 +9350,7 @@ script.register_looped("vehiclesPreview", function()
                     ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, false)
                     ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
 					networkId = NETWORK.VEH_TO_NET(previewVehicle)
+					
 					ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, 2, true)
 					if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(previewVehicle) then
 						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
