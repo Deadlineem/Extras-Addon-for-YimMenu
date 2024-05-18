@@ -8995,12 +8995,12 @@ end)
 vehicleOrientationPitch = 0
 vehicleOrientationYaw = 0
 vehicleOrientationRoll = 0
-vehicleSpawnDistance = { x = 0, y = 0, z = 0 }
+vehicleSpawnDistance = { x = 3, y = 3, z = 0 }
 vehicleAlpha = 175
 vehicleDefaultOrientationPitch = 0
 vehicleDefaultOrientationYaw = 0
 vehicleDefaultOrientationRoll = 0
-vehicleDefaultSpawnDistance = { x = 0, y = 0, z = -1 }
+vehicleDefaultSpawnDistance = { x = 3, y = 3, z = -1 }
 vehicleDefaultAlpha = 175
 
 -- Function to reset sliders to default values
@@ -9316,16 +9316,22 @@ script.register_looped("vehiclesPreview", function()
                 STREAMING.REQUEST_MODEL(vehicleHash)
                 -- Get the player's ped handle
                 local selPlayer = network.get_selected_player()
-                local playerPed = PLAYER.GET_PLAYER_PED(selPlayer)
+                local playerPed = PLAYER.GET_PLAYER_PED(playerPed)
 
                 -- Get the player's current position and orientation
                 local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
                 local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
+				local forward = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
+				
+				-- Calculate the spawn position for the vehicle preview based on the player's forward vector and distance
+				local spawnX = playerPos.x + forward.x * vehicleSpawnDistance.x
+				local spawnY = playerPos.y + forward.y * vehicleSpawnDistance.y
+				local spawnZ = playerPos.z
 
                 -- Calculate the spawn position for the vehicle preview based on sliders
-                local spawnX = playerPos.x + vehicleSpawnDistance.x
-                local spawnY = playerPos.y + vehicleSpawnDistance.y
-                local spawnZ = playerPos.z + vehicleSpawnDistance.z
+                --local spawnX = playerPos.x + forward.x --
+                --local spawnY = playerPos.y + forward.y + 2 --
+                --local spawnZ = playerPos.z + vehicleSpawnDistance.z
 
                 -- Spawn the vehicle preview
                 if previewVehicle ~= vehicleHash and previewVehicle ~= nil then
@@ -9343,15 +9349,12 @@ script.register_looped("vehiclesPreview", function()
                     ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, false)
                     ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
 					networkId = NETWORK.VEH_TO_NET(previewVehicle)
-
+					ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, 2, true)
 					if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(previewVehicle) then
 						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
 					end
                     previewSpawned = true
-                end
-
-                -- Adjust the preview vehicle's orientation based on sliders
-                ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, 2, true)
+                end                
         else
             gui.show_message("Vehicle Spawner", "Selected vehicle not found.")
         end
@@ -9416,7 +9419,7 @@ giftPlayerTab:add_button("Gift Vehicle", function()
  
             repeat
                 giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
-                sleep(2)
+                sleep(1)
             until(giftedsucc == true)
  
             giftedsucc = false -- set false to make sure next gifted car doesnt instantly stop repeating when it should still be repeating
