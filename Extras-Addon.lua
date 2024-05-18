@@ -9275,8 +9275,8 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
                 playerForward = ENTITY.GET_ENTITY_FORWARD_VECTOR(targetPlayerPed)
 
                 playerPos = ENTITY.GET_ENTITY_COORDS(targetPlayerPed, false)
-                playerPos.x = playerPos.x + playerForward.x + vehicleSpawnDistance.x
-                playerPos.y = playerPos.y + playerForward.y + vehicleSpawnDistance.y
+                playerPos.x = playerPos.x + playerForward.x * vehicleSpawnDistance.x
+                playerPos.y = playerPos.y + playerForward.y * vehicleSpawnDistance.y
                 playerPos.z = playerPos.z + vehicleSpawnDistance.z
 
                 spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, pR, pG, pB, sR, sG, sB, pearlescent, wheels)
