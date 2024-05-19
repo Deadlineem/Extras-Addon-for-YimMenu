@@ -7647,23 +7647,15 @@ toolTip(griefPlayerTab, "Causes a no damage explosion to shake the players scree
 
 script.register_looped("extrasAddonLooped", function(script)
     if npcDrive:is_enabled() then
-         vehtable = entities.get_all_vehicles_as_handles()
-        for _, vehs in pairs(vehtable) do
-             selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), true)
-             ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehs, -1, false)
-             player = false
-            for playerId = 0, 31 do
-                if PLAYER.GET_PLAYER_PED(playerId) == ped then 
-                    player = true
+        for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
+            ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
+            if ped ~= 0 and not PED.IS_PED_A_PLAYER(ped) then
+                if request_control(veh) then
+                    --TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
+                    target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+                    pos = ENTITY.GET_ENTITY_COORDS(target, true)
+                    TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
                 end
-            end
-            if ped ~= 0 and player == false then
-                request_control(vehs)
-                request_control(ped)
-                TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, vehs, selfpos.x, selfpos.y, selfpos.z, 70.0, 1, vehs, 16777216, 0.0, 1)
-                --gui.show_message("Success", "Peds Driving To Player")
-            else
-                --gui.show_message("Failed", "Ped Seat is: ".. ped)
             end
         end
     end
