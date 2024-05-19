@@ -9049,35 +9049,36 @@ giftPlayerTab:add_button("Reset Sliders", function()
 end)
 toolTip(giftPlayerTab, "Reset the sliders to their default values")
 giftPlayerTab:add_separator()
-function max_vehicle(veh)
-script.run_in_fiber(function(maxM)
-    VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
-    VEHICLE.TOGGLE_VEHICLE_MOD(veh, 18, true) -- MOD_TURBO
-    VEHICLE.TOGGLE_VEHICLE_MOD(veh, 23, true) -- MOD_TYRE_SMOKE
-    VEHICLE.TOGGLE_VEHICLE_MOD(veh, 22, true) -- MOD_XENON_LIGHTS
-    VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
-    VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
+function max_vehicle(veh, wheel)
+    script.run_in_fiber(function(maxM)
+        VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+        VEHICLE.TOGGLE_VEHICLE_MOD(veh, 18, true) -- MOD_TURBO
+        VEHICLE.TOGGLE_VEHICLE_MOD(veh, 23, true) -- MOD_TYRE_SMOKE
+        VEHICLE.TOGGLE_VEHICLE_MOD(veh, 22, true) -- MOD_XENON_LIGHTS
+        VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
+        VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
 
-    for slot = 0, 20 do
-        if slot ~= 48 then -- MOD_LIVERY
-            local count = VEHICLE.GET_NUM_VEHICLE_MODS(veh, slot)
-            if count > 0 then
-                local selected_mod = -1
-                for mod = count - 1, -1, -1 do
-                    if not VEHICLE.IS_VEHICLE_MOD_GEN9_EXCLUSIVE(veh, slot, mod) then
-                        selected_mod = mod
-                        break
+        for slot = 0, 20 do
+            if slot ~= 48 and slot ~= customWheelsSlot then -- Exclude custom wheels slot
+                local count = VEHICLE.GET_NUM_VEHICLE_MODS(veh, slot)
+                if count > 0 then
+                    local selected_mod = -1
+                    for mod = count - 1, -1, -1 do
+                        if not VEHICLE.IS_VEHICLE_MOD_GEN9_EXCLUSIVE(veh, slot, mod) then
+                            selected_mod = mod
+                            break
+                        end
                     end
-                end
 
-                if selected_mod ~= -1 then
-                    VEHICLE.SET_VEHICLE_MOD(veh, slot, selected_mod, true)
+                    if selected_mod ~= -1 then
+                        VEHICLE.SET_VEHICLE_MOD(veh, slot, selected_mod, true)
+                    end
                 end
             end
         end
-    end
-end)
+    end)
 end
+
 
 function max_vehicle_performance(veh)
 script.run_in_fiber(function(maxP)
@@ -9096,37 +9097,19 @@ script.run_in_fiber(function(maxP)
 end)
 end
 
--- Function to spawn the vehicle with specified orientation and spawn position
-function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2, p3, s1, s2, s3, pearl, wheels)
-    script.run_in_fiber(function (script)
-         load_counter = 0
-        while STREAMING.HAS_MODEL_LOADED(vehicle_joaat) == false do
-            STREAMING.REQUEST_MODEL(vehicle_joaat)
-            script:yield()
-            if load_counter > 100 then
-                return
-            else
-                load_counter = load_counter + 1
-            end
-        end
-         veh = VEHICLE.CREATE_VEHICLE(vehicle_joaat, pos.x, pos.y, pos.z, yaw, true, true, false)
-        -- Set vehicle orientation
-        ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 1, true)
-		VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, p1, p2, p3)
-		VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, s1, s2, s3)
-		VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, 0)
-		if spawnMaxed:is_enabled() then
-			max_vehicle(veh)
-			max_vehicle_performance(veh)
-		end
-         networkId = NETWORK.VEH_TO_NET(veh)
-        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-        end
-        if endPollution:is_enabled() then
-            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
-        end
-    end)
+function open_wheel(veh)
+script.run_in_fiber(function(openWheel)
+	if open_Wheels:is_enabled() then
+		VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+		local customWheelsSlot = 23 -- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
+		local customWheelsMod = 3 -- This is the rim style for the wheels
+		local customWheelType = 10 -- Range: -1 (Stock), 0 (Sport), 1 (Muscle), 2 (Lowrider), 3 (SUV), 4 (Off-Road), 5 (Tuner), 6 (Motorcycle Wheels), 7 (High End), 8 (Bennys Originals), 9 (Bennys Bespoke), 10 (F1 Wheels), 11 (Racing), 12 (Street), 13 (Track)
+		
+		VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
+		VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, 10)
+		VEHICLE.SET_VEHICLE_MOD(veh, customWheelsSlot, customWheelsMod, true)
+	end
+end)
 end
 
 -- Function to display the list of vehicle models with search functionality
@@ -9239,10 +9222,10 @@ local function displayWheelColorSelection()
     end
     selected_wheel_color_index, changed = ImGui.ListBox("Wheel Color", selected_wheel_color_index, wheel_color_names, #wheel_color_names + 1) -- Add 1 to the length to account for Lua indexing
     if changed then
-        local selected_color_name = wheel_color_names[selected_wheel_color_index + 1] -- Adjust the index by adding 1
-        local selected_color_value = allWheelColors[selected_color_name]
-        if selected_color_value then
-            wheelColor = selected_color_value
+        local selected_wheel_color_name = wheel_color_names[selected_wheel_color_index + 1] -- Adjust the index by adding 1
+        local selected_wheel_color_value = allColors[selected_color_name]
+        if selected_wheel_color_value then
+            wheelColor = selected_wheel_color_value
             --gui.show_message(selected_color_name)
 			gui.show_message("Wheel Color", "Only works on upgraded wheels, still a work in progress.")
         end
@@ -9254,6 +9237,42 @@ giftPlayerTab:add_imgui(function()
         displayWheelColorSelection()
     end
 end)
+
+-- Function to spawn the vehicle with specified orientation and spawn position
+function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2, p3, s1, s2, s3, pearl, wheels)
+    script.run_in_fiber(function (script)
+         load_counter = 0
+        while STREAMING.HAS_MODEL_LOADED(vehicle_joaat) == false do
+            STREAMING.REQUEST_MODEL(vehicle_joaat)
+            script:yield()
+            if load_counter > 100 then
+                return
+            else
+                load_counter = load_counter + 1
+            end
+        end
+         veh = VEHICLE.CREATE_VEHICLE(vehicle_joaat, pos.x, pos.y, pos.z, yaw, true, true, false)
+        -- Set vehicle orientation
+        ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 1, true)
+		VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, p1, p2, p3)
+		VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, s1, s2, s3)
+		VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, wheelColor)
+		if open_Wheels:is_enabled() then
+			open_wheel(veh)
+		end
+		if spawnMaxed:is_enabled() then
+			max_vehicle(veh)
+			max_vehicle_performance(veh)
+		end
+         networkId = NETWORK.VEH_TO_NET(veh)
+        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+        end
+        if endPollution:is_enabled() then
+            ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
+        end
+    end)
+end
 
 -- Add separator
 giftPlayerTab:add_separator()
@@ -9344,7 +9363,10 @@ script.register_looped("vehiclesPreview", function()
 					
                     VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, pR, pG, pB)
 					VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, sR, sG, sB)
-                    VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, 0)
+					if open_Wheels:is_enabled() then
+						open_wheel(veh)
+					end
+                    VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, wheelColor)
                     --VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
                     ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(previewVehicle)
                     ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, false)
@@ -9383,6 +9405,11 @@ giftPlayerTab:add_sameline()
 spawnMaxed = giftPlayerTab:add_checkbox("Max Mods/Performance")
 spawnMaxed:set_enabled(true)
 toolTip(giftPlayerTab, "Spawns the vehicle with max performance and max modifications.")
+
+giftPlayerTab:add_separator()
+giftPlayerTab:add_text("Quick Mods")
+open_Wheels = giftPlayerTab:add_checkbox("F1 Wheels")
+toolTip(giftPlayerTab, "Spawns the vehicle with F1 Wheels on it (Does not show up on preview)")
 -- Vehicle Gift Options
 giftedsucc = false
  
@@ -9454,7 +9481,7 @@ giftPlayerTab:add_button("Get Vehicle Stats", function()
 	end)
 end)
 toolTip(giftPlayerTab, "Checks to make sure the vehicle stats are what they need to be (Dev testing button)")
-giftPlayerTab:add_separator()
+giftPlayerTab:add_sameline()
 giftPlayerTab:add_button("How To Gift Vehicles (Hover for tooltip!)", function()
 
 end)
