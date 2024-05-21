@@ -3119,6 +3119,7 @@ casino_gui:add_button("Broadcast Msg", function()
 		else
 			gui.show_message("Error", "You need to be in the casino near the tables to use this")
 		end
+		sleep(2)
 	end)
 end)
 casino_gui:add_sameline()
@@ -3138,6 +3139,7 @@ casino_gui:add_button("How To Bet", function()
 		else
 			gui.show_message("Error", "You need to be in the casino near the tables to use this")
 		end
+		sleep(2)
 	end)
 end)
 casino_gui:add_sameline()
@@ -3152,6 +3154,7 @@ casino_gui:add_button("Alt Betting Info", function()
 		else
 			gui.show_message("Error", "You need to be in the casino near the tables to use this")
 		end
+		sleep(2)
 	end)
 end)
 
@@ -3614,6 +3617,20 @@ end)
 -- Vehicle Options Tab
 Veh = KAOS:add_tab("Vehicle Options")
 
+aircraftOpt = Veh:add_tab("Aircraft Options")
+
+aircraftOpt:add_button("No Turbulance", function()
+script.run_in_fiber(function(planeTurb)
+	player = PLAYER.PLAYER_ID()
+	veh = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), true)
+	if veh ~= 0 then
+		VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(veh, 0.0)
+		gui.show_message("Turbulance", "Turbulance removed")
+	else
+		gui.show_message("Error", "You must be in a plane!")
+	end
+end)
+end)
 tokyodrift = Veh:add_tab("Tokyo Drift")
 script.register_looped("vars", function(vars)
     if NETWORK.NETWORK_IS_SESSION_ACTIVE() then
@@ -4597,13 +4614,14 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                     while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
                         STREAMING.REQUEST_MODEL(clown)
                         STREAMING.REQUEST_MODEL(jet)
+						STREAMING.REQUEST_MODEL(weapon)
                         clownJetsOne:yield()
                     end
 
                     -- Calculate the spawn position for the jet in the air
                      jetSpawnX = coords.x + math.random(-1000, 1000)
                      jetSpawnY = coords.y + math.random(-1000, 1000)
-                     jetSpawnZ = coords.z + math.random(100, 1200)
+                     jetSpawnZ = coords.z + math.random(50, 400)
                     
                      colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
                      jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
@@ -4622,8 +4640,18 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                                 PED.ADD_RELATIONSHIP_GROUP("clowns", group)
                                 ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
                                 PED.SET_PED_CAN_BE_TARGETTED(ped, false)
+								
+							    --PED.SET_PED_CONFIG_FLAG(ped, 132, true)
+							    --PED.SET_PED_CONFIG_FLAG(ped, 42, true)
+							    --PED.SET_PED_HIGHLY_PERCEPTIVE(ped, 1)
+							    PED.SET_PED_TARGET_LOSS_RESPONSE(ped, 3)
+								ENTITY.SET_ENTITY_IS_TARGET_PRIORITY(players, true, true)
+							    --PED.SET_PED_COMBAT_RANGE(ped, 10);
+							    --PED.SET_PED_SEEING_RANGE(ped, 10);
+							    --PED.SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(ped, 0)
+							    PED.SET_DRIVER_AGGRESSIVENESS(ped, 1)
                                 WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
-                                PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
+                                --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
                                 PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
                                 PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
                                 PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
@@ -4631,13 +4659,12 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                                 PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
                                 PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
                                 PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
-                                TASK.TASK_COMBAT_PED(ped, players, 0, 16)
-                                ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
-                                ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
-                                ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
-                                ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
-                                PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
-                                WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
+								TASK.TASK_PLANE_MISSION(ped, jetVehicle, 0, players, 0, 0, 0, 6, 100, 0, 90, 0, -200)
+								--TASK.TASK_VEHICLE_MISSION_PED_TARGET(ped, jetVehicle, players, 6, 300, 1, 100, 200, true)
+								PED.SET_PED_KEEP_TASK(ped, true)
+									--TASK.TASK_COMBAT_PED(ped, players, 0, 16)
+									PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
+									WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
                             else
                                 gui.show_error("Failed", "Failed to create ped")
                             end
@@ -4657,7 +4684,7 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(jetVehicle)
 			STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped)
 			STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(weapon)
-            sleep(10)
+            sleep(2)
         end
     end)
 toolTip(Global, "Spawns Rainbow colored jets with clowns as pilots on the entire session, loops and runs every 15 seconds.")
@@ -7271,6 +7298,10 @@ trollLoop = griefPlayerTab:add_checkbox("Teleport Troll")
 script.register_looped("trollLoop", function(script)
     script:yield()
     if trollLoop:is_enabled() == true then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Teleport Troll","Stopped, player has left the session.")
+				return
+			end
          Player = PLAYER.PLAYER_ID()
          player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
@@ -7318,6 +7349,7 @@ griefPlayerTab:add_button("Spawn Clone", function()
             gui.show_error("Failed", "Failed to create ped")
         end
     end)
+	sleep(2)
 end)
 toolTip(griefPlayerTab, "Spawns a clone of the player with a homing launcher to kill them.")
 
@@ -7388,6 +7420,7 @@ griefPlayerTab:add_button("Clown Attack", function()
             gui.show_message("Success", "Successfully spawned the attack clowns")
         end
     end)
+	sleep(2)
 end)
 toolTip(griefPlayerTab, "Spawns a Clown van full of clowns to chase/gun the player down.")
 
@@ -7434,12 +7467,22 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
                  ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
                 
                 if ped ~= 0 then
-                     group = joaat("HATES_PLAYER")
+                    group = joaat("HATES_PLAYER")
                     PED.ADD_RELATIONSHIP_GROUP("clowns", group)
                     ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
                     PED.SET_PED_CAN_BE_TARGETTED(ped, false)
+								
+							    --PED.SET_PED_CONFIG_FLAG(ped, 132, true)
+							    --PED.SET_PED_CONFIG_FLAG(ped, 42, true)
+							    --PED.SET_PED_HIGHLY_PERCEPTIVE(ped, 1)
+					PED.SET_PED_TARGET_LOSS_RESPONSE(ped, 3)
+					ENTITY.SET_ENTITY_IS_TARGET_PRIORITY(player, true, true)
+							    --PED.SET_PED_COMBAT_RANGE(ped, 10);
+							    --PED.SET_PED_SEEING_RANGE(ped, 10);
+							    --PED.SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(ped, 0)
+					PED.SET_DRIVER_AGGRESSIVENESS(ped, 1)
                     WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
+                                --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
@@ -7447,16 +7490,15 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
                     PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
-                    TASK.TASK_COMBAT_PED(ped, player, 0, 16)
-                    ENTITY.SET_ENTITY_MAX_HEALTH(ped, 1000)
-                    ENTITY.SET_ENTITY_HEALTH(ped, 1000, 0)
-                    ENTITY.SET_ENTITY_MAX_HEALTH(jetVehicle, 1000)
-                    ENTITY.SET_ENTITY_HEALTH(jetVehicle, 1000, 0)
-                    PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
-                    WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
-                else
-                    gui.show_error("Failed", "Failed to create ped")
-                end
+					TASK.TASK_PLANE_MISSION(ped, jetVehicle, 0, player, 0, 0, 0, 6, 100, 0, 90, 0, -200)
+								--TASK.TASK_VEHICLE_MISSION_PED_TARGET(ped, jetVehicle, player, 6, 300, 1, 100, 200, true)
+					PED.SET_PED_KEEP_TASK(ped, true)
+					--TASK.TASK_COMBAT_PED(ped, players, 0, 16)
+					PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
+					WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
+                    else
+                        gui.show_error("Failed", "Failed to create ped")
+                    end
             end
         else
             gui.show_error("Failed", "Failed to create jet")
@@ -7465,13 +7507,14 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
         if jetVehicle == 0 then 
             gui.show_error("Failed", "Failed to Create Jet")
         else
-            gui.show_message("griefPlayerTabing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..playerName)
+            gui.show_message("Jet Attack", "Clown Lazers spawned!  Lock-on Acquired! Target: "..playerName)
         end
 
         -- Release the resources associated with the spawned entities
         ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
         ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
-
+		ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(weapon)
+		sleep(2)
     end)
 end)
 toolTip(griefPlayerTab, "Spawns Randomly colored jets with Clowns as pilots to attack the selected player.")
@@ -7647,19 +7690,27 @@ toolTip(griefPlayerTab, "Causes a no damage explosion to shake the players scree
 
 script.register_looped("extrasAddonLooped", function(script)
     if npcDrive:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("NPC Drive","Stopped, player has left the session.")
+				return
+			end
         for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
             ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
             if ped ~= 0 and not PED.IS_PED_A_PLAYER(ped) then
-                if request_control(veh) then
+                request_control(veh)
+                request_control(ped)
                     --TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
                     target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
                     pos = ENTITY.GET_ENTITY_COORDS(target, true)
                     TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
-                end
             end
         end
     end
     if dildos:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Dildo Spam","Stopped, player has left the session.")
+				return
+			end
          selectedItem = joaat("v_res_d_dildo_f")
          coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         while not STREAMING.HAS_MODEL_LOADED(selectedItem) do
@@ -7670,6 +7721,10 @@ script.register_looped("extrasAddonLooped", function(script)
     end
 
     if dropBalls:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Balls Spam","Stopped, player has left the session.")
+				return
+			end
          randomIndex = math.random(1, #balls)
          selectedItem = balls[randomIndex]
          coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
@@ -7680,15 +7735,18 @@ script.register_looped("extrasAddonLooped", function(script)
         OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 2, 0, 1, joaat(selectedItem), false, true)
     end
     if vehicleSpin:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Spin Vehicle","Stopped, player has left the session.")
+				return
+			end
         if not PED.IS_PED_IN_ANY_VEHICLE(PLAYER.GET_PLAYER_PED(network.get_selected_player()),true) then
             gui.show_error("Spin Vehicle","Player is not in a vehicle")
         else
-            veh = PED.GET_VEHICLE_PED_IS_IN(PLAYER.GET_PLAYER_PED(network.get_selected_player()), true)
-			request_control(veh)
-            
-			ENTITY.APPLY_FORCE_TO_ENTITY(veh, 5, 0, 0, 150.0, 0, 0, 0, 0, true, false, true, false, true)
+            veh = PED.GET_VEHICLE_PED_IS_USING(PLAYER.GET_PLAYER_PED(network.get_selected_player()))
+            request_control(veh)
+			ENTITY.APPLY_FORCE_TO_ENTITY(veh, 5, 0, 0, 20.0, 0, 0, 0, 0, true, false, true, false, true)
+			--ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 5, 0, 150.0, 0, 0, true, false, true)
 			gui.show_message("Spin Vehicle","Spinning Vehicle")
-
         end
     end
     if extinguisherCB:is_enabled() then
@@ -8433,6 +8491,7 @@ griefPlayerTab:add_button("Fragment crash", function()
             delete_entity(object)
         end
     end)
+	sleep(2)
 end)
 toolTip(griefPlayerTab, "Spawns a bunch of objects on the selected player and breaks them into fragments, causing them to crash")
 
@@ -8468,7 +8527,7 @@ griefPlayerTab:add_button("Model crash", function()
             end 
         end
     end)
-
+	sleep(0.5)
     script.run_in_fiber(function (vtcrash3)
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
             gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
@@ -8509,6 +8568,7 @@ griefPlayerTab:add_button("Model crash", function()
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
     end)
+	sleep(0.5)
     script.run_in_fiber(function (vtcrash2)
         for i = 1, 10, 1 do 
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
@@ -8552,8 +8612,9 @@ griefPlayerTab:add_button("Model crash", function()
         vtcrash2:sleep(750)
         end
     end)
+	sleep(2)
 end)
-toolTip(griefPlayerTab, "Crashes the player using 3 invalid model methods")
+toolTip(griefPlayerTab, "Crashes the player using 3 invalid model methods (Will cause severe lag, stand as far away from them as possible!)")
 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Break HUD", function()
@@ -8794,6 +8855,10 @@ dropsPlayerTab:add_text("Action Figures")
 prLoop = dropsPlayerTab:add_checkbox("Princess Robot Bubblegum (On/Off)")
     script.register_looped("princessbubblegumLoop", function(script)
 		if prLoop:is_enabled() then
+		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Princess Robot Figurines","Stopped, player has left the session.")
+				return
+			end
 			 model = joaat("vw_prop_vw_colle_prbubble")
 			 pickup = joaat("PICKUP_CUSTOM_SCRIPT")
 			 player_id = network.get_selected_player()
@@ -8834,6 +8899,10 @@ dropsPlayerTab:add_sameline()
 alienLoop = dropsPlayerTab:add_checkbox("Alien (On/Off)")
     script.register_looped("alienfigurineLoop", function(script)
 		if alienLoop:is_enabled() then
+		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Alien Figurines","Stopped, player has left the session.")
+				return
+			end
 			 model = joaat("vw_prop_vw_colle_alien")
 			 pickup = joaat("PICKUP_CUSTOM_SCRIPT")
 			 player_id = network.get_selected_player()
@@ -8874,6 +8943,10 @@ dropsPlayerTab:add_sameline()
 cardsLoop = dropsPlayerTab:add_checkbox("Casino Cards (On/Off)")
     script.register_looped("casinocardsLoop", function(script)
 		if cardsLoop:is_enabled() then
+		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Casino Cards","Stopped, player has left the session.")
+				return
+			end
 			 model = joaat("vw_prop_vw_lux_card_01a")
 			 pickup = joaat("PICKUP_CUSTOM_SCRIPT")
 			 player_id = network.get_selected_player()
@@ -8937,6 +9010,10 @@ dropsPlayerTab:add_sameline()
 script.register_looped("tseTest", function()
     if tseTest:is_enabled() == true then
         pid = network.get_selected_player()
+		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then 
+            gui.show_message("Super Fast RP", "RP Stopped, player has left the session.")
+            return
+        end
         for i = 0, 24 do 
             network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
         end
@@ -8949,6 +9026,10 @@ dropsPlayerTab:add_sameline()
     script.register_looped("ezMoney", function()
         if ezMoney:is_enabled() == true then
              pid = network.get_selected_player()
+			if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Money ($225k)","Money Stopped, player has left the session.")
+				return
+			end
             for n = 0, 10 do
                 for l = -10, 10 do
                     network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
@@ -8971,7 +9052,7 @@ giftPlayerTab:add_imgui(function()
      parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
          parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
          parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-         childWidth, childHeight = 200, 450 -- Size of your child window
+         childWidth, childHeight = 300, 450 -- Size of your child window
          offset = 10 -- Offset between parent and child windows
 
          x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
