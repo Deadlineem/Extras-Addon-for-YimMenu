@@ -7265,7 +7265,7 @@ griefPlayerTab:add_imgui(function()
         end
     end
 end)
-
+		
  balls = {
 "p_ld_soc_ball_01",
 "p_ld_am_ball_01",
@@ -7277,6 +7277,76 @@ end)
 }
 
 griefPlayerTab:add_text("Trolling")
+
+vehRam = false
+vehRam = griefPlayerTab:add_checkbox("Vehicle Ram (On/Off)")
+
+script.register_looped("vehRam", function()
+    if vehRam:is_enabled() and vehicleVelocity ~= 0 then
+        local player_id = network.get_selected_player()
+        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
+
+        local coords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+        local randomModel = vehicleModels[math.random(1, #vehicleModels)]
+        local modelHash = MISC.GET_HASH_KEY(randomModel)
+		if playerPed == PLAYER.PLAYER_PED_ID() then
+			gui.show_message("Vehicle Ram", "Stopped, target has quit the session")
+			sleep(1000)
+			return
+		end
+        if VEHICLE.IS_THIS_MODEL_A_CAR(modelHash) then
+            local spawnRadius = 20.0
+            local spawnX = coords.x + math.random(-spawnRadius, spawnRadius)
+            local spawnY = coords.y + math.random(-spawnRadius, spawnRadius)
+
+            local vehicle = VEHICLE.CREATE_VEHICLE(modelHash, spawnX, spawnY, coords.z, 0.0, true, false)
+            if vehicle ~= 0 then
+                local vehCoords = ENTITY.GET_ENTITY_COORDS(vehicle, true)
+				local directionX = coords.x - vehCoords.x
+				local directionY = coords.y - vehCoords.y
+				local directionZ = coords.z - vehCoords.z
+                directionX = directionX * vehicleVelocity
+				directionY = directionY * vehicleVelocity				-- Adjust the speed as needed
+				max_vehicle(vehicle)
+				max_vehicle_performance(vehicle)
+				VEHICLE.SET_VEHICLE_MOD_KIT(vehicle, 0)
+				local customWheelsSlot = 23 -- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
+				local customWheelsMod = 3 -- This is the rim style for the wheels
+				local customWheelType = 10 -- Range: -1 (Stock), 0 (Sport), 1 (Muscle), 2 (Lowrider), 3 (SUV), 4 (Off-Road), 5 (Tuner), 6 (Motorcycle Wheels), 7 (High End), 8 (Bennys Originals), 9 (Bennys Bespoke), 10 (F1 Wheels), 11 (Racing), 12 (Street), 13 (Track)
+				
+				VEHICLE.TOGGLE_VEHICLE_MOD(vehicle, customWheelsSlot, true)
+				VEHICLE.SET_VEHICLE_WHEEL_TYPE(vehicle, 10)
+				VEHICLE.SET_VEHICLE_MOD(vehicle, customWheelsSlot, customWheelsMod, true)
+				ped = PED.CREATE_PED_INSIDE_VEHICLE(vehicle, 0, ENTITY.GET_ENTITY_MODEL(playerPed), -1, true, false)
+				PED.CLONE_PED_TO_TARGET(playerPed, ped)
+                ENTITY.SET_ENTITY_VELOCITY(vehicle, directionX, directionY, directionZ)
+				VEHICLE.SET_DISABLE_MAP_COLLISION(vehicle)
+				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
+				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
+                gui.show_message("Vehicle Ram", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with upgraded vehicles with a "..waitTime.." second delay")
+				sleep(waitTime)
+            end
+        end
+    end
+end)
+toolTip(griefPlayerTab, "Rams the player with fully upgraded vehicles at a user defined velocity, toggle on and use the sliders according to your taste.")
+-- Define a default velocity value
+vehicleVelocity = 0
+waitTime = 0
+griefPlayerTab:add_imgui(function()
+if vehRam:is_enabled() then
+	vehicleVelocity, _ = ImGui.SliderInt("Vehicle Velocity", vehicleVelocity, 0, 10)
+end
+end)
+toolTip(griefPlayerTab, "Vehicle Velocity: Sets the velocity level for how fast the vehicles should move when ramming the target.")
+
+griefPlayerTab:add_imgui(function()
+if vehRam:is_enabled() then
+	waitTime, _ = ImGui.SliderInt("Spawn Delay", waitTime, 0, 10)
+end
+end)
+toolTip(griefPlayerTab, "Spawn Delay: Sets the delay in seconds for how long the script should wait before running again.")
+
 npcDrive = griefPlayerTab:add_checkbox("NPCs Drive To This Player")
 toolTip(griefPlayerTab, "Make all NPC's drive to this player")
 
