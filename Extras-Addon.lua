@@ -7284,14 +7284,14 @@ vehRam = griefPlayerTab:add_checkbox("Vehicle Ram (On/Off)")
 script.register_looped("vehRam", function()
     if vehRam:is_enabled() and vehicleVelocity ~= 0 then
         local player_id = network.get_selected_player()
-        local playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id)
+        local playerPed = PLAYER.GET_PLAYER_PED(player_id)
 
         local coords = ENTITY.GET_ENTITY_COORDS(playerPed, true)
         local randomModel = vehicleModels[math.random(1, #vehicleModels)]
         local modelHash = MISC.GET_HASH_KEY(randomModel)
 		if playerPed == PLAYER.PLAYER_PED_ID() then
 			gui.show_message("Vehicle Ram", "Stopped, target has quit the session")
-			sleep(1000)
+			vehRam:set_enabled(false)
 			return
 		end
         if VEHICLE.IS_THIS_MODEL_A_CAR(modelHash) then
@@ -7370,6 +7370,7 @@ script.register_looped("trollLoop", function(script)
     if trollLoop:is_enabled() == true then
 	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("Teleport Troll","Stopped, player has left the session.")
+				trollLoop:set_enabled(false)
 				return
 			end
          Player = PLAYER.PLAYER_ID()
@@ -7762,6 +7763,7 @@ script.register_looped("extrasAddonLooped", function(script)
     if npcDrive:is_enabled() then
 	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("NPC Drive","Stopped, player has left the session.")
+				npcDrive:set_enabled(false)
 				return
 			end
         for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
@@ -7779,6 +7781,7 @@ script.register_looped("extrasAddonLooped", function(script)
     if dildos:is_enabled() then
 	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("Dildo Spam","Stopped, player has left the session.")
+				dildos:set_enabled(false)
 				return
 			end
          selectedItem = joaat("v_res_d_dildo_f")
@@ -7793,6 +7796,7 @@ script.register_looped("extrasAddonLooped", function(script)
     if dropBalls:is_enabled() then
 	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("Balls Spam","Stopped, player has left the session.")
+				dropBalls:set_enabled(false)
 				return
 			end
          randomIndex = math.random(1, #balls)
@@ -7807,6 +7811,7 @@ script.register_looped("extrasAddonLooped", function(script)
     if vehicleSpin:is_enabled() then
 	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("Spin Vehicle","Stopped, player has left the session.")
+				vehicleSpin:set_enabled(false)
 				return
 			end
         if not PED.IS_PED_IN_ANY_VEHICLE(PLAYER.GET_PLAYER_PED(network.get_selected_player()),true) then
@@ -7820,30 +7825,55 @@ script.register_looped("extrasAddonLooped", function(script)
         end
     end
     if extinguisherCB:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Extinguisher","Stopped, player has left the session.")
+				extinguisherCB:set_enabled(false)
+				return
+			end
         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 24, 1, true, false, 0)
     end
 
     if steamCB:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Steam","Stopped, player has left the session.")
+				steamCB:set_enabled(false)
+				return
+			end
         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 11, 1, true, false, 0)
     end
 
     if hydrantCB:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Hydrant","Stopped, player has left the session.")
+				hydrantCB:set_enabled(false)
+				return
+			end
         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 13, 1, true, false, 0)
     end
     
     if explodeCB:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Explode","Stopped, player has left the session.")
+				explodeCB:set_enabled(false)
+				return
+			end
         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 1, 100, true, false, 2147483647)
     end
 
     if noDamageExplode:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Screen Shake","Stopped, player has left the session.")
+				noDamageExplode:set_enabled(false)
+				return
+			end
         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 1, 0, true, false, 2147483647)
@@ -7857,6 +7887,11 @@ burnLoop = griefPlayerTab:add_checkbox("Burn")
 
 script.register_looped("burnLoop", function()
     if burnLoop:is_enabled() == true then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Burn","Stopped, player has left the session.")
+				burnLoop:set_enabled(false)
+				return
+			end
          player_id = network.get_selected_player()
          coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
          fxType = 3
@@ -7881,6 +7916,11 @@ toolTip(griefPlayerTab, "Repeatedly burns the selected player using molotovs")
 
 script.register_looped("ramLoopz", function()
     if ramLoopz:is_enabled() then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Vehicle Sandwich","Stopped, player has left the session.")
+				ramLoopz:set_enabled(false)
+				return
+			end
          player_id = network.get_selected_player()
         if NETWORK.NETWORK_IS_PLAYER_ACTIVE(player_id) then
                          coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
@@ -7944,6 +7984,11 @@ explodeLoop = griefPlayerTab:add_checkbox("Explosion")
 
 script.register_looped("explodeLoop", function()
     if explodeLoop:is_enabled() == true then
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("Explosion","Stopped, player has left the session.")
+				explodeLoop:set_enabled(false)
+				return
+			end
          explosionType = 1  -- Adjust this according to the explosion type you want (1 = GRENADE, 2 = MOLOTOV, etc.)
          explosionFx = "explosion_barrel"
 
@@ -7970,7 +8015,11 @@ prCrash = griefPlayerTab:add_checkbox("PR Crash (On/Off)")
 
 script.register_looped("prCrash", function()
     if prCrash:is_enabled() == true then
-
+	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+				gui.show_message("PR Crash", "Stopped, player has left the session.")
+				prCrash:set_enabled(false)
+				return
+			end
          model = joaat("vw_prop_vw_colle_prbubble")
          pickup = joaat("PICKUP_CUSTOM_SCRIPT")
          player_id = network.get_selected_player()
@@ -8927,6 +8976,7 @@ prLoop = dropsPlayerTab:add_checkbox("Princess Robot Bubblegum (On/Off)")
 		if prLoop:is_enabled() then
 		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("Princess Robot Figurines","Stopped, player has left the session.")
+				prLoop:set_enabled(false)
 				return
 			end
 			 model = joaat("vw_prop_vw_colle_prbubble")
@@ -8971,6 +9021,7 @@ alienLoop = dropsPlayerTab:add_checkbox("Alien (On/Off)")
 		if alienLoop:is_enabled() then
 		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("Alien Figurines","Stopped, player has left the session.")
+				alienLoop:set_enabled(false)
 				return
 			end
 			 model = joaat("vw_prop_vw_colle_alien")
@@ -9015,6 +9066,7 @@ cardsLoop = dropsPlayerTab:add_checkbox("Casino Cards (On/Off)")
 		if cardsLoop:is_enabled() then
 		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("Casino Cards","Stopped, player has left the session.")
+				cardsLoop:set_enabled(false)
 				return
 			end
 			 model = joaat("vw_prop_vw_lux_card_01a")
@@ -9082,6 +9134,7 @@ script.register_looped("tseTest", function()
         pid = network.get_selected_player()
 		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then 
             gui.show_message("Super Fast RP", "RP Stopped, player has left the session.")
+			tseTest:set_enabled(false)
             return
         end
         for i = 0, 24 do 
@@ -9098,6 +9151,7 @@ dropsPlayerTab:add_sameline()
              pid = network.get_selected_player()
 			if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("Money ($225k)","Money Stopped, player has left the session.")
+				ezMoney:set_enabled(false)
 				return
 			end
             for n = 0, 10 do
