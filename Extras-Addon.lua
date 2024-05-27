@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 1.0.6
+        Addon Version: 1.0.7
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
- addonVersion = "1.0.6"
+ addonVersion = "1.0.7"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -3617,20 +3617,6 @@ end)
 -- Vehicle Options Tab
 Veh = KAOS:add_tab("Vehicle Options")
 
-aircraftOpt = Veh:add_tab("Aircraft Options")
-
-aircraftOpt:add_button("No Turbulance", function()
-script.run_in_fiber(function(planeTurb)
-	player = PLAYER.PLAYER_ID()
-	veh = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), true)
-	if veh ~= 0 then
-		VEHICLE.SET_PLANE_TURBULENCE_MULTIPLIER(veh, 0.0)
-		gui.show_message("Turbulance", "Turbulance removed")
-	else
-		gui.show_message("Error", "You must be in a plane!")
-	end
-end)
-end)
 tokyodrift = Veh:add_tab("Tokyo Drift")
 script.register_looped("vars", function(vars)
     if NETWORK.NETWORK_IS_SESSION_ACTIVE() then
@@ -4854,8 +4840,10 @@ Global:add_button("Remove All Weapons from Players", function()
 			 ent = PLAYER.GET_PLAYER_PED(playerID)
 			if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
 				for _, name in ipairs(weaponNamesString) do
+					if name ~= weapon_unarmed then
 					weaponHash = MISC.GET_HASH_KEY(name)
 					WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
+					end
 				end
 			end
 		end
@@ -4961,10 +4949,11 @@ Weapons:add_button("Remove All Weapons", function()
         out = "Successfully removed all weapons from "..PLAYER.GET_PLAYER_NAME(playerID)
         if ENTITY.DOES_ENTITY_EXIST(ent) and not ENTITY.IS_ENTITY_DEAD(ent, false) then
             for _, name in ipairs(weaponNamesString) do
-                 weaponHash = MISC.GET_HASH_KEY(name)
-                WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
-                gui.show_message('Weapons', out)
-                
+				if name ~= weapon_unarmed then
+					weaponHash = MISC.GET_HASH_KEY(name)
+					WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
+					gui.show_message('Weapons', out)
+                end
             end
         end
 	end)
@@ -7278,6 +7267,14 @@ end)
 
 griefPlayerTab:add_text("Trolling")
 
+griefPlayerTab:add_button("Ringtone", function()
+	script.run_in_fiber(function(ringtone)
+		ped = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+		AUDIO.PLAY_PED_RINGTONE("Remote_Ring", ped, 1);
+		ringtone:yield()
+	end)
+end)
+
 vehRam = false
 vehRam = griefPlayerTab:add_checkbox("Vehicle Ram (On/Off)")
 
@@ -7419,8 +7416,8 @@ griefPlayerTab:add_button("Spawn Clone", function()
         else
             gui.show_error("Failed", "Failed to create ped")
         end
+		sleep(2)
     end)
-	sleep(2)
 end)
 toolTip(griefPlayerTab, "Spawns a clone of the player with a homing launcher to kill them.")
 
@@ -8643,6 +8640,7 @@ griefPlayerTab:add_button("Model crash", function()
                     ENTITY.FREEZE_ENTITY_POSITION(c[crash])
                     ENTITY.SET_ENTITY_VISIBLE(c[crash], false, false)    
                 end
+				delete_entity(c[crash])
             end 
         end
     end)
@@ -8681,7 +8679,7 @@ griefPlayerTab:add_button("Model crash", function()
                     TASK.TASK_VEHICLE_HELI_PROTECT(jesus, veh, ped, 10.0, 0, 10, 0, 0)
                     vtcrash3:sleep(1000)
                     delete_entity(jesus)
-                    delete_entity(veh)    
+                    delete_entity(veh)
                 end
             end  
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
@@ -8831,7 +8829,7 @@ end)
 toolTip(griefPlayerTab, "Cages the player with a stunt tube")
 griefPlayerTab:add_sameline()
 
-griefPlayerTab:add_button("safe cage", function()
+griefPlayerTab:add_button("Safe cage", function()
     script.run_in_fiber(function(safecage)
         local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         local objHash = joaat("p_v_43_safe_s")
@@ -8856,8 +8854,47 @@ griefPlayerTab:add_button("safe cage", function()
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objHash)
     end)
 end)
-toolTip(griefPlayerTab, "Cages the player inside of a combination safe")
+toolTip(griefPlayerTab, "Cages the player inside of a box of combination safes")
+griefPlayerTab:add_sameline()
 -- end sch-lua
+
+griefPlayerTab:add_button("420 Cage", function()
+    script.run_in_fiber(function(weedcage)
+        local playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+		local pos = ENTITY.GET_ENTITY_COORDS(playerPed, false)
+		
+        local objHash = joaat("bkr_prop_weed_lrg_01a")
+        STREAMING.REQUEST_MODEL(objHash)
+        while not STREAMING.HAS_MODEL_LOADED(objHash) do        
+            STREAMING.REQUEST_MODEL(objHash)
+            weedcage:yield()
+        end
+        local objectsfcage = {}
+		request_control(playerPed)
+		ENTITY.FREEZE_ENTITY_POSITION(playerPed, true)
+        objectsfcage[1] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.75, pos.y, pos.z - 3.5, true, true, false) 
+        objectsfcage[2] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.75, pos.y, pos.z - 3.5, true, true, false) 
+        objectsfcage[3] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.75, pos.z - 3.5, true, true, false) 
+        objectsfcage[4] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.75, pos.z - 3.5, true, true, false) 
+       --objectsfcage[5] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.4, pos.y, pos.z + 0.4 , true, true, false) 
+       --objectsfcage[6] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.4, pos.y, pos.z + 0.4, true, true, false) 
+       --objectsfcage[7] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.4, pos.z + 0.4, true, true, false) 
+       --objectsfcage[8] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.4, pos.z + 0.4, true, true, false) 
+        objectsfcage[9] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y, pos.z - 1.5, true, true, false) 
+        for i = 1, 9 do 
+            ENTITY.FREEZE_ENTITY_POSITION(objectsfcage[i], true) 
+            weedcage:sleep(.2)
+            net_id = NETWORK.OBJ_TO_NET(objectsfcage[i])
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
+            STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objectsfcage[i])
+        
+            --weedcage:sleep(.2)
+        end
+        --weedcage:sleep(200)
+        
+    end)
+end)
+toolTip(griefPlayerTab, "Cages the player inside of a wall of giant weed plants")
 
 -- Grief Sound Spam Targetable
 griefPlayerTab:add_separator()
@@ -9354,7 +9391,7 @@ sColor = giftPlayerTab:add_checkbox("Secondary Color", function() end)
 giftPlayerTab:add_sameline()
 pearlColor = giftPlayerTab:add_checkbox("Pearlescent", function() end)
 giftPlayerTab:add_sameline()
-wheelColor = giftPlayerTab:add_checkbox("Wheels", function() end)
+wheel_color = giftPlayerTab:add_checkbox("Wheels", function() end)
 primary = {}
 giftPlayerTab:add_imgui(function()
     if pColor:is_enabled() then -- Only display the color picker if showColorPicker is true
@@ -9420,17 +9457,17 @@ local function displayWheelColorSelection()
     selected_wheel_color_index, changed = ImGui.ListBox("Wheel Color", selected_wheel_color_index, wheel_color_names, #wheel_color_names + 1) -- Add 1 to the length to account for Lua indexing
     if changed then
         local selected_wheel_color_name = wheel_color_names[selected_wheel_color_index + 1] -- Adjust the index by adding 1
-        local selected_wheel_color_value = allColors[selected_color_name]
+        local selected_wheel_color_value = allColors[selected_wheel_color_name]
         if selected_wheel_color_value then
             wheelColor = selected_wheel_color_value
-            --gui.show_message(selected_color_name)
+            gui.show_message(selected_wheel_color_value)
 			gui.show_message("Wheel Color", "Only works on upgraded wheels, still a work in progress.")
         end
-    end
+    end 
 end
 
 giftPlayerTab:add_imgui(function()
-    if wheelColor:is_enabled() then
+    if wheel_color:is_enabled() then
         displayWheelColorSelection()
     end
 end)
@@ -9453,7 +9490,7 @@ function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2
         ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 1, true)
 		VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, p1, p2, p3)
 		VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, s1, s2, s3)
-		VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, wheelColor)
+		VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, wheels)
 		if open_Wheels:is_enabled() then
 			open_wheel(veh)
 		end
@@ -9501,24 +9538,24 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
         else
             gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
         end
-        sleep(5)
-
         -- Re-enable the preview checkbox after some time (if desired)
         --previewVehicles:set_enabled(true)
+		spawnVeh:yield()
     end)
 end)
 
 -- Add a checkbox for enabling/disabling the vehicle preview
 giftPlayerTab:add_sameline()
+-- Define the checkbox for vehicle preview
 previewVehicles = giftPlayerTab:add_checkbox("Preview")
 
 -- Initialize variables for preview
-previewSpawned = false
-previewVehicle = nil
-previousPreview = nil
+local previewSpawned = false
+local previewVehicle = nil
+local previousPreview = nil
 
 -- Register a looped function to handle the vehicle preview
-script.register_looped("vehiclesPreview", function()
+script.register_looped("vehiclesPreview", function(vehPreview)
     if previewVehicles:is_enabled() then
         -- Get the selected vehicle model information
         local selectedModelIndex = selectedObjectIndex + 1
@@ -9528,54 +9565,50 @@ script.register_looped("vehiclesPreview", function()
             -- Convert vehicle model name to hash
             local vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
 
-            -- Check if the vehicle model is loaded, if not, load it
-                STREAMING.REQUEST_MODEL(vehicleHash)
-                -- Get the player's ped handle
-                local selPlayer = network.get_selected_player()
-                local playerPed = PLAYER.GET_PLAYER_PED(playerPed)
+            -- Get the player's ped handle
+            local playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
 
-                -- Get the player's current position and orientation
-                local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
-                local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
-				local forward = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
-				
-				-- Calculate the spawn position for the vehicle preview based on the player's forward vector and distance
-				local spawnX = playerPos.x + forward.x * vehicleSpawnDistance.x
-				local spawnY = playerPos.y + forward.y * vehicleSpawnDistance.y
-				local spawnZ = playerPos.z
-				
-				
-                -- Calculate the spawn position for the vehicle preview based on sliders
-                --local spawnX = playerPos.x + forward.x --
-                --local spawnY = playerPos.y + forward.y + 2 --
-                --local spawnZ = playerPos.z + vehicleSpawnDistance.z
+            -- Get the player's current position and orientation
+            local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+            local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
+            local forwards = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
+            
+            -- Calculate the spawn position for the vehicle preview based on the player's forward vector and distance
+            local spawnX = playerPos.x + forwards.x * vehicleSpawnDistance.x
+            local spawnY = playerPos.y + forwards.y * vehicleSpawnDistance.y
+            local spawnZ = playerPos.z
 
-                -- Spawn the vehicle preview
-                if previewVehicle ~= vehicleHash and previewVehicle ~= nil then
-                    delete_entity(previewVehicle)
-                    previewSpawned = false
-                end
-                if not previewSpawned then
+            -- Spawn the vehicle preview
+            if previewVehicle ~= vehicleHash and previewVehicle ~= nil then
+                delete_entity(previewVehicle)
+                previewSpawned = false
+            end
+            if not previewSpawned then
+                if STREAMING.HAS_MODEL_LOADED(vehicleHash) then
                     previewVehicle = VEHICLE.CREATE_VEHICLE(vehicleHash, spawnX, spawnY, spawnZ, playerHeading, true, true, false)
-					
                     VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, pR, pG, pB)
-					VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, sR, sG, sB)
-					if open_Wheels:is_enabled() then
-						open_wheel(veh)
+                    VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, sR, sG, sB)
+					VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, wheelColor)
+                    if open_Wheels:is_enabled() then
+                        open_wheel(previewVehicle)
+                    end
+					if spawnMaxed:is_enabled() then
+						max_vehicle(veh)
+						max_vehicle_performance(veh)
 					end
-                    VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, wheelColor)
-                    --VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
-                    ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(previewVehicle)
-                    ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, false)
+                    VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
                     ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
-					networkId = NETWORK.VEH_TO_NET(previewVehicle)
-					
-					ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, 2, true)
-					if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(previewVehicle) then
-						NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-					end
-                    previewSpawned = true
-                end                
+                    local networkId = NETWORK.VEH_TO_NET(previewVehicle)
+                    ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, 2, true)
+                    if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(previewVehicle) then
+                        NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+                    end
+                    ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(previewVehicle)
+                    previewSpawned = false
+                else
+                    STREAMING.REQUEST_MODEL(vehicleHash)
+                end
+            end                
         else
             gui.show_message("Vehicle Spawner", "Selected vehicle not found.")
         end
@@ -9588,7 +9621,10 @@ script.register_looped("vehiclesPreview", function()
             previousPreview = nil
         end
     end
+
+    vehPreview:yield() -- Yield the loop to avoid consuming too much CPU
 end)
+
 toolTip(giftPlayerTab, "Previews the selected vehicle")
 
 
@@ -9645,7 +9681,7 @@ giftPlayerTab:add_button("Gift Vehicle", function()
  
             repeat
                 giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
-                sleep(1)
+                sleep(0.2)
             until(giftedsucc == true)
  
             giftedsucc = false -- set false to make sure next gifted car doesnt instantly stop repeating when it should still be repeating
@@ -9740,4 +9776,46 @@ script.register_looped("Extras Addon Config", function(script)
         end
     end
     script:yield()
+end)
+
+players = {}
+player = false
+
+event.register_handler(menu_event.ChatMessageReceived, function (pid, message)
+    playerName = PLAYER.GET_PLAYER_NAME(pid)
+    --gui.show_message(playerName, message)
+    if message == '.rp' then
+        gui.show_message(playerName.. ' has requested RP')
+        for i, p in pairs(players) do
+            if p == playerName then
+                player = true
+            end
+        end
+        if not player then
+            table.insert(players, playerName)
+            gui.show_message('RP Started', playerName.." is receiving RP.")
+            network.send_chat_message_to_player(pid, playerName.." You are now receiving RP!  Type '.rp stop' to stop gaining RP.")
+        end
+        player = false
+    end
+	if message == '.rp stop' then
+			table.remove(players, i)
+			gui.show_message('RP Stopped', playerName.." is no longer receiving RP.")
+			network.send_chat_message_to_player(pid, playerName.." You are no longer receiving RP.")
+	end
+end)
+
+script.register_looped('rpChatters', function(script)
+    for pid = 0, 31 do
+        ped = PLAYER.GET_PLAYER_PED(pid)
+        if ENTITY.DOES_ENTITY_EXIST(ped) then
+            for p, player in pairs(players) do
+                if PLAYER.GET_PLAYER_NAME(pid) == player then
+                    for i = 21, 24 do 
+                        network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
+                    end
+                end
+            end
+        end
+    end
 end)
