@@ -9283,7 +9283,7 @@ giftPlayerTab:add_button("Reset Sliders", function()
 end)
 toolTip(giftPlayerTab, "Reset the sliders to their default values")
 giftPlayerTab:add_separator()
-function max_vehicle(veh, wheel)
+function max_vehicle(veh)
     script.run_in_fiber(function(maxM)
         VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
         VEHICLE.TOGGLE_VEHICLE_MOD(veh, 18, true) -- MOD_TURBO
@@ -9331,26 +9331,67 @@ script.run_in_fiber(function(maxP)
 end)
 end
 
-function open_wheel(veh)
-script.run_in_fiber(function(openWheel)
-	if open_Wheels:is_enabled() then
+function open_wheel(veh, wheelType, wheelStyle)
+script.run_in_fiber(function(openW)
+	if request_control(veh) then
 		VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
-		local customWheelsSlot = 23 -- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
-		local customWheelsMod = 3 -- This is the rim style for the wheels
-		local customWheelType = 10 -- Range: -1 (Stock), 0 (Sport), 1 (Muscle), 2 (Lowrider), 3 (SUV), 4 (Off-Road), 5 (Tuner), 6 (Motorcycle Wheels), 7 (High End), 8 (Bennys Originals), 9 (Bennys Bespoke), 10 (F1 Wheels), 11 (Racing), 12 (Street), 13 (Track)
-		
-		VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
-		VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, 10)
-		VEHICLE.SET_VEHICLE_MOD(veh, customWheelsSlot, customWheelsMod, true)
+		local customWheelsSlot = 23 
+-- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
+			VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
+			VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, wheelType)
+			VEHICLE.SET_VEHICLE_MOD(veh, customWheelsSlot, wheelStyle, true)
+			VEHICLE.TOGGLE_VEHICLE_MOD(veh, 24, true)
+			VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, 6)
+			VEHICLE.SET_VEHICLE_MOD(veh, 24, wheelStyle, true)
 	end
 end)
+end
+
+selected_wheel_index = 0
+selected_style_index = 0
+wheelType = ""
+wheelStyle = ""
+function displayWheelSelection()
+    ImGui.Text("Select a Wheel Type:")
+    local wheel_types = {}
+    for name, _ in pairs(wheelTypes) do
+        table.insert(wheel_types, name)
+    end
+    selected_wheel_index, changed = ImGui.ListBox("Wheel Type", selected_wheel_index, wheel_types, #wheel_types + 1)
+    if changed then
+		local selected_wheel_name = wheel_types[selected_wheel_index + 1]
+		local selected_wheel_value = wheelTypes[selected_wheel_name]
+		if selected_wheel_value then
+			wheelType = selected_wheel_value -- Update wheelType variable
+			wheelName = selected_wheel_name
+			gui.show_message("Wheel Type", "You've selected "..wheelName.." now scroll down and select the style of wheel you want")
+		end
+	end
+	
+    
+    -- Check if a wheel type is selected
+    if wheelName ~= nil then
+        -- Display the second listbox for wheel styles
+        local wheel_styles = {} -- Assuming wheelStyles is a table containing styles for each wheel type
+        for style, _ in pairs(wheelStyles[wheelName]) do
+            table.insert(wheel_styles, style)
+        end
+        selected_style_index, changed = ImGui.ListBox("Wheel Style", selected_style_index, wheel_styles, #wheel_styles + 1)
+        if changed then
+			local selected_style_name = wheel_styles[selected_style_index + 1]
+			local selected_style_value = wheelStyles[wheelName][selected_style_name]
+			wheelStyle = selected_style_value
+			styleName = selected_style_name
+			gui.show_message("Wheel Style", "Your custom wheels - \nType: "..wheelName.. "\nStyle: "..styleName.."\nhave been applied!")
+		end
+    end
 end
 
 -- Function to display the list of vehicle models with search functionality
  searchQuery = ""
  filteredVehicleModels = {}
 
- function updateFilteredVehicleModels()
+function updateFilteredVehicleModels()
     filteredVehicleModels = {}
     for _, model in ipairs(vehicleModels) do
         if string.find(string.lower(model), string.lower(searchQuery)) then
@@ -9359,7 +9400,7 @@ end
     end
 end
 
- function displayVehicleModelsList()
+function displayVehicleModelsList()
     updateFilteredVehicleModels()
      vehicleModelNames = {}
     for _, item in ipairs(filteredVehicleModels) do
@@ -9421,8 +9462,8 @@ giftPlayerTab:add_imgui(function()
 end)
 
 -- Function to display Pearlescent color selection
-local selected_color_index = 0 -- Initialize to 0 since Lua indexing starts from 1
-local function displayColorSelection()
+selected_color_index = 0 -- Initialize to 0 since Lua indexing starts from 1
+function displayColorSelection()
     ImGui.Text("Select a pearlescent color:")
     local color_names = {}
     for name, _ in pairs(allColors) do
@@ -9447,20 +9488,20 @@ giftPlayerTab:add_imgui(function()
     end
 end)
 
-local selected_wheel_color_index = 0 -- Initialize to 0 since Lua indexing starts from 1
-local function displayWheelColorSelection()
+selected_wheel_color_index = 0 -- Initialize to 0 since Lua indexing starts from 1
+function displayWheelColorSelection()
     ImGui.Text("Select a wheel color:")
     local wheel_color_names = {}
-    for name, _ in pairs(allColors) do
+    for name, _ in pairs(allWheelColors) do
         table.insert(wheel_color_names, name)
     end
     selected_wheel_color_index, changed = ImGui.ListBox("Wheel Color", selected_wheel_color_index, wheel_color_names, #wheel_color_names + 1) -- Add 1 to the length to account for Lua indexing
     if changed then
         local selected_wheel_color_name = wheel_color_names[selected_wheel_color_index + 1] -- Adjust the index by adding 1
-        local selected_wheel_color_value = allColors[selected_wheel_color_name]
+        local selected_wheel_color_value = allWheelColors[selected_wheel_color_name]
         if selected_wheel_color_value then
             wheelColor = selected_wheel_color_value
-            gui.show_message(selected_wheel_color_value)
+            gui.show_message("Wheel color", selected_wheel_color_name)
 			gui.show_message("Wheel Color", "Only works on upgraded wheels, still a work in progress.")
         end
     end 
@@ -9490,14 +9531,14 @@ function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2
         ENTITY.SET_ENTITY_ROTATION(veh, pitch, yaw, roll, 1, true)
 		VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, p1, p2, p3)
 		VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, s1, s2, s3)
-		VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, wheels)
-		if open_Wheels:is_enabled() then
-			open_wheel(veh)
+		if customWheels:is_enabled() then
+			open_wheel(veh, wheelType, wheelStyle)
 		end
 		if spawnMaxed:is_enabled() then
 			max_vehicle(veh)
 			max_vehicle_performance(veh)
 		end
+		VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, wheels)
          networkId = NETWORK.VEH_TO_NET(veh)
         if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
@@ -9532,7 +9573,7 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
                 playerPos.y = playerPos.y + playerForward.y * vehicleSpawnDistance.y
                 playerPos.z = playerPos.z + vehicleSpawnDistance.z
 
-                spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, pR, pG, pB, sR, sG, sB, pearlescent, wheels)
+                spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, pR, pG, pB, sR, sG, sB, pearlescent, wheelColor)
                 gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
             end
         else
@@ -9586,15 +9627,16 @@ script.register_looped("vehiclesPreview", function(vehPreview)
             if not previewSpawned then
                 if STREAMING.HAS_MODEL_LOADED(vehicleHash) then
                     previewVehicle = VEHICLE.CREATE_VEHICLE(vehicleHash, spawnX, spawnY, spawnZ, playerHeading, true, true, false)
+					VEHICLE.SET_VEHICLE_MOD_KIT(previewVehicle, 0)
                     VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, pR, pG, pB)
                     VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, sR, sG, sB)
 					VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, wheelColor)
-                    if open_Wheels:is_enabled() then
-                        open_wheel(previewVehicle)
-                    end
+                    if customWheels:is_enabled() then
+						open_wheel(previewVehicle, wheelType, wheelStyle)
+					end
 					if spawnMaxed:is_enabled() then
-						max_vehicle(veh)
-						max_vehicle_performance(veh)
+						max_vehicle(previewVehicle)
+						max_vehicle_performance(previewVehicle)
 					end
                     VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
                     ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
@@ -9606,7 +9648,7 @@ script.register_looped("vehiclesPreview", function(vehPreview)
                     ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(previewVehicle)
                     previewSpawned = false
                 else
-                    STREAMING.REQUEST_MODEL(vehicleHash)
+                   STREAMING.REQUEST_MODEL(vehicleHash)
                 end
             end                
         else
@@ -9641,8 +9683,17 @@ toolTip(giftPlayerTab, "Spawns the vehicle with max performance and max modifica
 
 giftPlayerTab:add_separator()
 giftPlayerTab:add_text("Quick Mods")
-open_Wheels = giftPlayerTab:add_checkbox("F1 Wheels")
-toolTip(giftPlayerTab, "Spawns the vehicle with F1 Wheels on it (Does not show up on preview)")
+
+customWheels = giftPlayerTab:add_checkbox("Custom Wheels")
+toolTip(giftPlayerTab, "Wheel type/style selection")
+
+-- Add ImGui function
+giftPlayerTab:add_imgui(function()
+    if customWheels:is_enabled() then
+        displayWheelSelection()
+    end
+end)
+
 -- Vehicle Gift Options
 giftedsucc = false
  
@@ -9703,7 +9754,7 @@ giftPlayerTab:add_button("Get Vehicle Stats", function()
 		if last_veh  then 
 			 playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
 			gui.show_message("Info", 
-				"user :"..PLAYER.GET_PLAYER_NAME(selectedPlayer).."->"..NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(selectedPlayer).."->".. joaat(playerName).."\n".. --NETWORK.GET_HASH_KEY(playerName).."\n"..
+				" Player:"..PLAYER.GET_PLAYER_NAME(selectedPlayer).."->"..NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(selectedPlayer).."->".. joaat(playerName).."\n".. --NETWORK.GET_HASH_KEY(playerName).."\n"..
 				" Previous_Owner:"..DECORATOR.DECOR_GET_INT(last_veh , "Previous_Owner").."\n"..
 				" Vehicle Model:"..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(last_veh)).."\n"..
 				" Player_Vehicle:"..DECORATOR.DECOR_GET_INT(last_veh , "Player_Vehicle").."\n"..
