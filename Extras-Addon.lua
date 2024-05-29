@@ -9310,6 +9310,7 @@ function max_vehicle(veh)
                 end
             end
         end
+		maxM:yield()
     end)
 end
 
@@ -9328,6 +9329,7 @@ script.run_in_fiber(function(maxP)
             end
         end
     end
+	maxP:yield()
 end)
 end
 
@@ -9336,7 +9338,7 @@ script.run_in_fiber(function(openW)
 	if request_control(veh) then
 		VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
 		local customWheelsSlot = 23 
--- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
+		-- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
 			VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
 			VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, wheelType)
 			VEHICLE.SET_VEHICLE_MOD(veh, customWheelsSlot, wheelStyle, true)
@@ -9344,6 +9346,7 @@ script.run_in_fiber(function(openW)
 			VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, 6)
 			VEHICLE.SET_VEHICLE_MOD(veh, 24, wheelStyle, true)
 	end
+	openW:yield()
 end)
 end
 
@@ -9546,6 +9549,7 @@ function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2
         if endPollution:is_enabled() then
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
         end
+		script:yield()
     end)
 end
 
