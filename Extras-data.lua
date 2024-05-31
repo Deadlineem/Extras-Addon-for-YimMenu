@@ -2823,7 +2823,7 @@ wheelTypes = {
 	["Benny's Bespoke"] = 9,
 	["Formula 1"] = 10,
 	["Street"] = 11,
-	["Track"] = 12,
+	["Track"] = 12
 }
 
 wheelStyles = {
@@ -3141,7 +3141,7 @@ wheelStyles = {
 		["Concave Racer"] = 26,
 		["Deep Flake Reverse"] = 27,
 		["Wild Wagon"] = 28,
-		["Concave Mega Mesh"] = 29,
+		["Concave Mega Mesh"] = 29
     },
 	["Track"] = {
         ["Rally Throwback"] = 0,
@@ -3173,8 +3173,8 @@ wheelStyles = {
 		["Forged Star"] = 26,
 		["Showflake"] = 27,
 		["Giga Mesh"] = 28,
-		["Mesh Meister"] = 39,
-    },
+		["Mesh Meister"] = 29
+    }
 }
 
 function Button(text, color, hovercolor, activecolor)
