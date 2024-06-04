@@ -3126,7 +3126,7 @@ script.register_looped("Casino Pacino Thread", function (script)
     end
     if fm_mission_controller_cart_autograb then
         if locals.get_int("fm_mission_controller", fm_mission_controller_cart_grab) == 3 then
-            locallocals.set_int("fm_mission_controller", fm_mission_controller_cart_grab, 4)
+            locals.set_int("fm_mission_controller", fm_mission_controller_cart_grab, 4)
         elseif locals.get_int("fm_mission_controller", fm_mission_controller_cart_grab) == 4 then
             locals.set_float("fm_mission_controller", fm_mission_controller_cart_grab + fm_mission_controller_cart_grab_speed, 2)
         end
