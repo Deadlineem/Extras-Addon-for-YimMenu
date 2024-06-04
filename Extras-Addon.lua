@@ -511,6 +511,32 @@ Fun:add_button("Remove Impairments", function()
 end)
 toolTip(Fun, "Removes all impairments.")
 
+expMelee = Fun:add_checkbox("Explosive Melee")
+explodedTargets = {}  -- Table to store exploded targets
+
+script.register_looped("explosivePunch", function(expPunch)
+    if expMelee:is_enabled() then
+        local playerPed = PLAYER.PLAYER_PED_ID()
+
+        if PED.IS_PED_PERFORMING_MELEE_ACTION(playerPed) then
+            local target = PED.GET_MELEE_TARGET_FOR_PED(playerPed)
+            
+                local targetType = ENTITY.GET_ENTITY_TYPE(target)
+                local targetHash = MISC.GET_HASH_KEY(target)
+                if not explodedTargets[targetHash] then
+                    local coords = ENTITY.GET_ENTITY_COORDS(target, true)
+                    FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 100000.0, true, false, 1.0, false)
+                    explodedTargets[targetHash] = true
+                end
+            
+        else
+            explodedTargets = {}
+        end
+    end
+    expPunch:yield()
+end)
+
+
     
 -- Stat Editor - Alestarov_Menu // Reset Stats Option
  Stats = Pla:add_tab("Stats")
@@ -3100,7 +3126,7 @@ script.register_looped("Casino Pacino Thread", function (script)
     end
     if fm_mission_controller_cart_autograb then
         if locals.get_int("fm_mission_controller", fm_mission_controller_cart_grab) == 3 then
-            locals.set_int("fm_mission_controller", fm_mission_controller_cart_grab, 4)
+            locallocals.set_int("fm_mission_controller", fm_mission_controller_cart_grab, 4)
         elseif locals.get_int("fm_mission_controller", fm_mission_controller_cart_grab) == 4 then
             locals.set_float("fm_mission_controller", fm_mission_controller_cart_grab + fm_mission_controller_cart_grab_speed, 2)
         end
@@ -9385,7 +9411,7 @@ function displayWheelSelection()
 			local selected_style_value = wheelStyles[wheelName][selected_style_name]
 			wheelStyle = selected_style_value
 			styleName = selected_style_name
-			gui.show_message("Wheel Style", "Your custom wheels - \nType: "..wheelName.. "\nStyle: "..styleName.."\nhave been applied!")
+			gui.show_message("Wheel Style", "Your custom wheels - \nType: "..wheelName.. "\nStyle: "..styleName.."\nhave been applied!"..wheelStyle)
 		end
     end
 end
@@ -9740,7 +9766,8 @@ giftPlayerTab:add_button("Gift Vehicle", function()
             until(giftedsucc == true)
  
             giftedsucc = false -- set false to make sure next gifted car doesnt instantly stop repeating when it should still be repeating
-        end 
+        end
+		giftVeh:yield()
     end)
 end)
 toolTip(giftPlayerTab, "Press the gift button after following the Gifting Process and when it reads Success, the gifting has been completed.")
@@ -9766,6 +9793,7 @@ giftPlayerTab:add_button("Get Vehicle Stats", function()
 				" Veh_Modded_By_Player:"..DECORATOR.DECOR_GET_INT(last_veh , "Veh_Modded_By_Player").."\n"..
 				" Not_Allow_As_Saved_Veh:"..DECORATOR.DECOR_GET_INT(last_veh , "Not_Allow_As_Saved_Veh"))
 		end
+		vehStats:yield()
 	end)
 end)
 toolTip(giftPlayerTab, "Checks to make sure the vehicle stats are what they need to be (Dev testing button)")
