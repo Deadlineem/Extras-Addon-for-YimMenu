@@ -3190,11 +3190,9 @@ casino_gui:add_button("How To Bet", function()
 		if dealers_card_gui_element:get_value() ~= "Not in Casino." then
 			if force_roulette_wheel:is_enabled() then
 				if casVal == -1 then
-					 casVal = "00"
-					network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
-				else
-					network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
+					casVal = "00"
 				end
+                network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the "..casVal.." number")
 			else
 				gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
 			end
@@ -3209,7 +3207,7 @@ casino_gui:add_button("Alt Betting Info", function()
 	script.run_in_fiber(function(casMsg2)
 		if dealers_card_gui_element:get_value() ~= "Not in Casino." then
 			if force_roulette_wheel:is_enabled() then
-				network.send_chat_message("[Casino Rig]: You can optionally stack as many chips as you can on the corresponding '1st 12, 2nd 12 or 3rd 12' in the same row as the winning number instead of '2 to 1'")
+				network.send_chat_message("[Casino Rig]: You can optionally stack as many chips as you can on the corresponding '1st 12, 2nd 12 or 3rd 12' in the same row as the "..casVal.." number instead of '2 to 1'")
 			else
 				gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
 			end
