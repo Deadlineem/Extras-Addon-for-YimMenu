@@ -33,8 +33,8 @@ weaponNamesString = {
         "weapon_flare", "weapon_molotov", "weapon_stickybomb", "weapon_proxmine",
         "weapon_snowball", "weapon_pipebomb", "weapon_ball", "weapon_petrolcan",
         "weapon_fireextinguisher", "weapon_hazardcan", "weapon_militaryrifle",
-        "weapon_combatshotgun", "weapon_gadgetpistol", "WEAPON_SNOWLAUNCHER", "WEAPON_BATTLERIFLE", 
-        "WEAPON_TECPISTOL", "WEAPON_CANDYCANE", "WEAPON_PISTOLXM3", "WEAPON_RAILGUNXM3", "WEAPON_PRECISIONRIFLE", 
+        "weapon_combatshotgun", "weapon_gadgetpistol", "WEAPON_SNOWLAUNCHER", "WEAPON_BATTLERIFLE",
+        "WEAPON_TECPISTOL", "WEAPON_CANDYCANE", "WEAPON_PISTOLXM3", "WEAPON_RAILGUNXM3", "WEAPON_PRECISIONRIFLE",
         "WEAPON_TACTICALRIFLE", "WEAPON_EMPLAUNCHER", "WEAPON_HEAVYRIFLE"
 }
 

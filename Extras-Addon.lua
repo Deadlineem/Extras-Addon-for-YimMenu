@@ -3,24 +3,24 @@
 --[[
 
 
-___________         __                        
+___________         __
 \_   _____/__  ____/  |_____________    ______
  |    __)_\  \/  /\   __\_  __ \__  \  /  ___/
- |        \>    <  |  |  |  | \// __ \_\___ \ 
+ |        \>    <  |  |  |  | \// __ \_\___ \
 /_______  /__/\_ \ |__|  |__|  (____  /____  >
-        \/      \/                  \/     \/ 
-     _____       .___  .___                   
-    /  _  \    __| _/__| _/____   ____        
-   /  /_\  \  / __ |/ __ |/  _ \ /    \       
-  /    |    \/ /_/ / /_/ (  <_> )   |  \      
-  \____|__  /\____ \____ |\____/|___|  /      
-          \/      \/    \/           \/       
+        \/      \/                  \/     \/
+     _____       .___  .___
+    /  _  \    __| _/__| _/____   ____
+   /  /_\  \  / __ |/ __ |/  _ \ /    \
+  /    |    \/ /_/ / /_/ (  <_> )   |  \
+  \____|__  /\____ \____ |\____/|___|  /
+          \/      \/    \/           \/
 
     Extras Addon for YimMenu v1.68
         Addon Version: 1.0.8
-        
-        Credits:  Yimura, L7Neg, 
-    Loled69, Alestarov, gir489returns, 
+
+        Credits:  Yimura, L7Neg,
+    Loled69, Alestarov, gir489returns,
       TheKuter, RazorGamerX, USBMenus & More!
 
 ]]--
@@ -178,7 +178,7 @@ Fun:add_text("PTFX")
 
 function load_fireworks()
     STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_indep_firework")
-    
+
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("proj_indep_firework") then
         return false
     end
@@ -213,7 +213,7 @@ Fun:add_sameline()
 function load_smoke()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_sum2_hal")
-    
+
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_sum2_hal") then
         return false
     end
@@ -247,7 +247,7 @@ Fun:add_sameline()
 function load_flame()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_bike_adversary")
-    
+
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_bike_adversary") then
         return false
     end
@@ -330,7 +330,7 @@ script.register_looped("particles3", function(wheelOne)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneIdOne, 2, false, false, false)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("scr_adversary_foot_flames", vehicle, 0.0, 0.0, 0.0, 0, 0, 0, boneIdTwo, 2, false, false, false)
-            end 
+            end
         end
     end
 end)
@@ -381,7 +381,7 @@ Fun:add_imgui(function()
     selectedOpt, selected = ImGui.Combo("Effects", selectedOpt, effectNames, #effectNames)
 end)
 
-script.register_looped("tireptfx", function(tire) 
+script.register_looped("tireptfx", function(tire)
      effect = effects[selectedOpt + 1]
      vehicle = PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false)
     if tirePTFX:is_enabled() then
@@ -391,7 +391,7 @@ script.register_looped("tireptfx", function(tire)
             request_fx_asset(effect[1])
             for _, boneName in pairs({"wheel_lf", "wheel_lr", "wheel_rf", "wheel_rr"}) do
                  bone = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, boneName)
-                
+
                 GRAPHICS.USE_PARTICLE_FX_ASSET(effect[1])
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE(
                     effect[2],
@@ -520,7 +520,7 @@ script.register_looped("explosivePunch", function(expPunch)
 
         if PED.IS_PED_PERFORMING_MELEE_ACTION(playerPed) then
             local target = PED.GET_MELEE_TARGET_FOR_PED(playerPed)
-            
+
                 local targetType = ENTITY.GET_ENTITY_TYPE(target)
                 local targetHash = MISC.GET_HASH_KEY(target)
                 if not explodedTargets[targetHash] then
@@ -528,7 +528,7 @@ script.register_looped("explosivePunch", function(expPunch)
                     FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 100000.0, true, false, 1.0, false)
                     explodedTargets[targetHash] = true
                 end
-            
+
         else
             explodedTargets = {}
         end
@@ -537,7 +537,7 @@ script.register_looped("explosivePunch", function(expPunch)
 end)
 
 
-    
+
 -- Stat Editor - Alestarov_Menu // Reset Stats Option
  Stats = Pla:add_tab("Stats")
 Stats:add_text("Change Levels")
@@ -1939,7 +1939,7 @@ end
             STREAMING.REQUEST_CLIP_SET("anim_group_move_ballistic")
             coroutine.yield()
         end
-        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "anim_group_move_ballistic", 1)           
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "anim_group_move_ballistic", 1)
     end)
 end
 function resetCheckBoxes()
@@ -2006,7 +2006,7 @@ script.register_looped("follow ped", function(follow)
         end
         follow:yield()
     end
-    
+
     if VEHICLE.IS_THIS_MODEL_A_BIKE(ENTITY.GET_ENTITY_MODEL(veh)) then
         PED.SET_PED_CONFIG_FLAG(PLAYER.PLAYER_PED_ID(), 424, true)
     end
@@ -2454,7 +2454,7 @@ Yim_Actions:add_imgui(function()
                 end)
             end
         end
-        ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() 
+        ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine()
         ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine() ImGui.Spacing() ImGui.SameLine()
         if ImGui.Button("   Stop   ") then
             if is_playing_scenario then
@@ -2894,7 +2894,7 @@ casino_gui:add_button("Give Podium Vehicle", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
             locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 18)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11)
         end
     end)
 end)
@@ -2903,7 +2903,7 @@ casino_gui:add_button("Give Mystery Prize", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
             locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 11)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11)
         end
     end)
 end)
@@ -2912,7 +2912,7 @@ casino_gui:add_button("Give $50,000", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
             locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 19)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11)
         end
     end)
 end)
@@ -2921,7 +2921,7 @@ casino_gui:add_button("Give 25,000 Chips", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
             locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 15)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11)
         end
     end)
 end)
@@ -2929,7 +2929,7 @@ casino_gui:add_button("Give 15,000RP", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
             locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 17)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11)
         end
     end)
 end)
@@ -2938,7 +2938,7 @@ casino_gui:add_button("Give Discount", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
             locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 4)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11)
         end
     end)
 end)
@@ -2947,7 +2947,7 @@ casino_gui:add_button("Give Clothing", function ()
     script.run_in_fiber(function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
             locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize), 8)
-            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11) 
+            locals.set_int("casino_lucky_wheel", (prize_wheel_win_state) + (prize_wheel_prize_state), 11)
         end
     end)
 end)
@@ -2959,13 +2959,13 @@ casino_gui:add_sameline()
 rig_slot_machine = casino_gui:add_checkbox("Rig Slot Machines")
 casino_gui:add_text("THIS IS DETECTED AND BANNABLE USE IT WITH EXTREME CAUTION!")
 casino_gui:add_separator()
- 
+
 casino_gui:add_text("Poker") --If his name is Al Pacino and he said, "It's not Al anymore, it's Dunk!", then his name should now be Dunk Pacino.
 force_poker_cards = casino_gui:add_checkbox("Force all Players Hands to Royal Flush")
 casino_gui:add_sameline()
 set_dealers_poker_cards = casino_gui:add_checkbox("Force Dealer's Hand to Bad Beat")
 set_dealers_poker_cards:set_enabled(true)
- 
+
 function set_poker_cards(player_id, players_current_table, card_one, card_two, card_three)
     locals.set_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (1) + (player_id * 3), card_one)
     locals.set_int("three_card_poker", (three_card_poker_anti_cheat) + (three_card_poker_anti_cheat_deck) + (1) + (1 + (players_current_table * three_card_poker_deck_size)) + (1) + (player_id * 3), card_one)
@@ -2974,16 +2974,16 @@ function set_poker_cards(player_id, players_current_table, card_one, card_two, c
     locals.set_int("three_card_poker", (three_card_poker_cards) + (three_card_poker_current_deck) + (1 + (players_current_table * three_card_poker_deck_size)) + (2) + (3) + (player_id * 3), card_three)
     locals.set_int("three_card_poker", (three_card_poker_anti_cheat) + (three_card_poker_anti_cheat_deck) + (1) + (1 + (players_current_table * three_card_poker_deck_size)) + (3) + (player_id * 3), card_three)
 end
- 
+
 function get_cardname_from_index(card_index)
     if card_index == 0 then
         return "Rolling"
     end
- 
+
      card_number = math.fmod(card_index, 13)
      cardName = ""
      cardSuit = ""
- 
+
     if card_number == 1 then
         cardName = "Ace"
     elseif card_number == 11 then
@@ -2995,7 +2995,7 @@ function get_cardname_from_index(card_index)
     else
         cardName = tostring(card_number)
     end
- 
+
     if card_index >= 1 and card_index <= 13 then
         cardSuit = "Clubs"
     elseif card_index >= 14 and card_index <= 26 then
@@ -3005,20 +3005,20 @@ function get_cardname_from_index(card_index)
     elseif card_index >= 40 and card_index <= 52 then
         cardSuit = "Spades"
     end
- 
+
     return cardName .. " of " .. cardSuit
 end
- 
+
 casino_gui:add_separator()
 casino_gui:add_text("Blackjack")
 casino_gui:add_text("Dealer's face down card: ")
 casino_gui:add_sameline()
 dealers_card_gui_element = casino_gui:add_input_string("##dealers_card_gui_element")
- 
+
 casino_gui:add_button("Set Dealer's Hand To Bust", function()
     script.run_in_fiber(function (script)
          player_id = PLAYER.PLAYER_ID()
-        while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 3, 0) ~= player_id do 
+        while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 3, 0) ~= player_id do
             network.force_script_host("blackjack")
             gui.show_message("CasinoPacino", "Taking control of the blackjack script.") --If you see this spammed, someone if fighting you for control.
             script:yield()
@@ -3032,7 +3032,7 @@ casino_gui:add_button("Set Dealer's Hand To Bust", function()
         end
     end)
 end)
- 
+
 casino_gui:add_separator()
 casino_gui:add_text("Roulette")
 force_roulette_wheel = casino_gui:add_checkbox("Activate Roulette Rig")
@@ -3046,15 +3046,15 @@ force_roulette_wheel = casino_gui:add_checkbox("Activate Roulette Rig")
                 valz = casVal
             end
         end)
-        
+
 casino_gui:add_separator()
 casino_gui:add_text("Using these options are risky, especially if you use the cooldown bypass")
- 
+
 script.register_looped("Casino Pacino Thread", function (script)
     if force_poker_cards:is_enabled() then
          player_id = PLAYER.PLAYER_ID()
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("three_card_poker")) ~= 0 then
-            while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 3, 0) ~= player_id do 
+            while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 3, 0) ~= player_id do
                 network.force_script_host("three_card_poker")
                 gui.show_message("CasinoPacino", "Taking control of the three_card_poker script.") --If you see this spammed, someone if fighting you for control.
                 script:sleep(500)
@@ -3097,7 +3097,7 @@ script.register_looped("Casino Pacino Thread", function (script)
     if force_roulette_wheel:is_enabled() then
           player_id = PLAYER.PLAYER_ID()
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casinoroulette")) ~= 0 then
-            while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 3, 0) ~= player_id do 
+            while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 3, 0) ~= player_id do
                 network.force_script_host("casinoroulette")
                 gui.show_message("CasinoPacino", "Taking control of the casinoroulette script.") --If you see this spammed, someone if fighting you for control.
                 script:sleep(500)
@@ -3189,7 +3189,7 @@ casino_gui:add_button("How To Bet", function()
 	script.run_in_fiber(function(casMsg2)
 		if dealers_card_gui_element:get_value() ~= "Not in Casino." then
 			if force_roulette_wheel:is_enabled() then
-				if casVal == -1 then 
+				if casVal == -1 then
 					 casVal = "00"
 					network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the winning number")
 				else
@@ -3602,7 +3602,7 @@ Objets:add_button("Spawn Selected", function()
             end
             spawnedObject = OBJECT.CREATE_OBJECT(objectHash, spawnX + spawnDistance.x, spawnY + spawnDistance.y, spawnZ + spawnDistance.z, true, true, false)
             ENTITY.SET_ENTITY_ROTATION(spawnedObject, orientationRoll, orientationYaw, playerHeading + orientationPitch, 2, true)  -- Adjust rotation if needed
-            
+
             net_id = NETWORK.OBJ_TO_NET(spawnedObject)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
             gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
@@ -4142,14 +4142,14 @@ script.register_looped("TowPos Marker", function(tow)
     end
 end)
  -- Global Player Options
- 
+
   Global = KAOS:add_tab("Global")
- 
+
  -- Global RP Loop Options
   PRGBGLoop = false
  Global:add_text("Global Friendly Options")
  rpLoop = Global:add_checkbox("Drop RP (On/Off)")
- 
+
      script.register_looped("PRGBGLoop", function()
      if rpLoop:is_enabled() == true then
           model = joaat("vw_prop_vw_colle_prbubble")
@@ -4160,16 +4160,16 @@ end)
          while STREAMING.HAS_MODEL_LOADED(model) == false do
              coroutine.yield()
          end
-     
+
          if STREAMING.HAS_MODEL_LOADED(model) then
               PlayerId = PLAYER.PLAYER_ID()
               player_count = PLAYER.GET_NUMBER_OF_PLAYERS() - 1 -- Minus 1 player (yourself) from the drop count.
              gui.show_message("Global", "Dropping figurines to ".. player_count.." Players in the session.")
- 
+
              for i = 0, 31 do
                  if i ~= PlayerId then
                       player_id = i
-                     
+
                       coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                       objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                          pickup,
@@ -4185,7 +4185,7 @@ end)
                      ENTITY.SET_ENTITY_VISIBLE(objectIdSpawned, true, false)
                      net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
                      NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
-                     
+
                      ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
                  end
              end
@@ -4194,13 +4194,13 @@ end)
      end
      end)
 toolTip(Global, "Drops Princess Robot Figurines for the entire session (Slightly glitchy)")
-Global:add_sameline()       
+Global:add_sameline()
  goodRP = Global:add_checkbox("Fast RP")
 script.register_looped("goodRP", function()
     if goodRP:is_enabled() == true then
         for p = 0, 31 do
             if p ~= PLAYER.PLAYER_ID() then
-                for i = 20, 24 do 
+                for i = 20, 24 do
                     network.trigger_script_event(1 << p, {968269233 , p, 1, 4, i, 1, 1, 1, 1})
                      player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
                     gui.show_message("Fast RP", "Giving massive amounts of RP to "..player_count.." players in the session")
@@ -4311,13 +4311,13 @@ Global:add_text("PTFX")
 function load_fireworks()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_indep_firework")
-    
+
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("proj_indep_firework") then
         return false
     end
-    
+
     STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_indep_fireworks")
-    
+
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_indep_fireworks") then
         return false
     end
@@ -4351,7 +4351,7 @@ script.register_looped("FireworkLoop", function()
                     GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework")
                     GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
                     GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_indep_firework_grd_burst", player_coords.x, player_coords.y, setExp1, 0, 0, 0, math.random(1, 5), false, false, false, false)
-                    
+
                     GRAPHICS.USE_PARTICLE_FX_ASSET("proj_indep_firework_v2")
                     GRAPHICS.SET_PARTICLE_FX_NON_LOOPED_COLOUR(colorR, colorG, colorB)
                     GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_xmas_firework_burst_fizzle", player_coords.x, player_coords.y, setExp2, 0, 0, 0, math.random(1, 5), false, false, false, false)
@@ -4366,7 +4366,7 @@ Global:add_sameline()
 function load_flame()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_bike_adversary")
-    
+
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_bike_adversary") then
         return false
     end
@@ -4405,7 +4405,7 @@ Global:add_sameline()
 function load_lightning()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("des_tv_smash")
-    
+
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("des_tv_smash") then
         return false
     end
@@ -4444,7 +4444,7 @@ Global:add_sameline()
 function load_snow()
 
     STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_xmas_snowball")
-    
+
     if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("proj_xmas_snowball") then
         return false
     end
@@ -4520,7 +4520,7 @@ Global:add_button("Boat Skin Crash", function()
             end
             pedpacrash:sleep(1000)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(spped, ppos.x, ppos.y, ppos.z, false, true, true)
-    
+
              object_hash2 = joaat("prop_byard_rowboat4")
             STREAMING.REQUEST_MODEL(object_hash2)
             while not STREAMING.HAS_MODEL_LOADED(object_hash2) do
@@ -4559,7 +4559,7 @@ Global:add_button("Fragment crash", function()
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
                  crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
-                for v = 0, 100 do   
+                for v = 0, 100 do
                      TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
                     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
                     ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
@@ -4583,7 +4583,7 @@ Global:add_button("Fragment crash", function()
                 fraghash = joaat("prop_fragtest_cnst_04")
                 STREAMING.REQUEST_MODEL(fraghash)
                 for v=1,10 do
-                 
+
                      object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
                     OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
                     delete_entity(object)
@@ -4659,7 +4659,7 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                     STREAMING.REQUEST_MODEL(jet)
                     STREAMING.REQUEST_MODEL(weapon)
 
-                    while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
+                    while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do
                         STREAMING.REQUEST_MODEL(clown)
                         STREAMING.REQUEST_MODEL(jet)
 						STREAMING.REQUEST_MODEL(weapon)
@@ -4670,7 +4670,7 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                      jetSpawnX = coords.x + math.random(-1000, 1000)
                      jetSpawnY = coords.y + math.random(-1000, 1000)
                      jetSpawnZ = coords.z + math.random(50, 400)
-                    
+
                      colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
                      jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
                     if jetVehicle ~= 0 then
@@ -4682,13 +4682,13 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                         -- Spawn clowns inside the jet
                         for seat = -1, -1 do
                              ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
-                            
+
                             if ped ~= 0 then
                                  group = joaat("HATES_PLAYER")
                                 PED.ADD_RELATIONSHIP_GROUP("clowns", group)
                                 ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
                                 PED.SET_PED_CAN_BE_TARGETTED(ped, false)
-								
+
 							    --PED.SET_PED_CONFIG_FLAG(ped, 132, true)
 							    --PED.SET_PED_CONFIG_FLAG(ped, 42, true)
 							    --PED.SET_PED_HIGHLY_PERCEPTIVE(ped, 1)
@@ -4720,8 +4720,8 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                     else
                         gui.show_error("Failed", "Failed to create jet")
                     end
-                
-                    if jetVehicle == 0 then 
+
+                    if jetVehicle == 0 then
                         gui.show_error("Failed", "Failed to Create Jet")
                     else
                         gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets every 15 seconds.")
@@ -4750,7 +4750,7 @@ script.register_looped("explosionLoop", function()
                  player_id = i
                  coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                 gui.show_message("Global (Toxic)", "Exploding " .. PLAYER.GET_PLAYER_NAME(player_id) .. " repeatedly")
-                
+
                 FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
@@ -4796,7 +4796,7 @@ script.register_looped("ramGlobal", function()
                             -- Optionally, you can play a sound or customize the ramming effect here
                             VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
                         end
-                        
+
                          vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
                         -- Set vehicle orientation
                         ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
@@ -4814,9 +4814,9 @@ script.register_looped("ramGlobal", function()
 
                         gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
 
-                        -- Use these lines to delete the vehicle after spawning. 
+                        -- Use these lines to delete the vehicle after spawning.
                         -- Needs some type of delay between spawning and deleting to function properly
-                        
+
                         ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
                         ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
                     end
@@ -4861,7 +4861,7 @@ script.register_looped("crashGlobal", function()
 
                      net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
                     NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-                    
+
                     ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
                 end
                  sleep(0.1) -- Sets the timer in seconds for how long this should pause
@@ -4928,7 +4928,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
             gui.show_message('Story Mode Cash Updated!', out)
         end
     end)
-    
+
     fCash = 0
     StoryCharacters:add_imgui(function()
         fCash, used = ImGui.SliderInt("Franklin's Cash", fCash, 1, 2147483646)
@@ -4938,7 +4938,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
             gui.show_message('Story Mode Cash Updated!', out)
         end
     end)
-    
+
     tCash = 0
     StoryCharacters:add_imgui(function()
         tCash, used = ImGui.SliderInt("Trevor's Cash", tCash, 1, 2147483646)
@@ -4965,7 +4965,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
             gui.show_message('Story Mode Stats Updated!', out)
         end
     end)
-    
+
     fStats = 0
     StoryCharacters:add_imgui(function()
         fStats, used = ImGui.SliderInt("Franklin's Stats", fStats, 0, 100)
@@ -4982,7 +4982,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
             gui.show_message('Story Mode Stats Updated!', out)
         end
     end)
-    
+
     tStats = 0
     StoryCharacters:add_imgui(function()
         tStats, used = ImGui.SliderInt("Trevor's Stats", tStats, 0, 100)
@@ -4999,7 +4999,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
             gui.show_message('Story Mode Stats Updated!', out)
         end
     end)
-    
+
 -- Weapons Tab
 
  Weapons = KAOS:add_tab("Weapons")
@@ -5032,7 +5032,7 @@ Weapons:add_button("Give All Weapons", function()
                  weaponHash = MISC.GET_HASH_KEY(name)
                 WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
                 gui.show_message('Weapons', out)
-                
+
             end
         end
 	end)
@@ -5628,7 +5628,7 @@ script.register_looped("yimceoloop", function(script)
                 script:sleep(200)
                 locals.set_int("appsecuroserv", 558, 3012)
                 script:sleep(1000)
-            end 
+            end
             if locals.get_int("gb_contraband_sell", 2) == 1 then
                 locals.set_int("gb_contraband_sell", 543 + 595, 1)
                 locals.set_int("gb_contraband_sell", 543 + 55, 0)
@@ -5818,12 +5818,12 @@ end)
 toolTip(heistTab, "Teleport yourself to the current objective")
 
 heistTab:add_button("Life Count +5", function()
-    if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then 
+    if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then
         network.force_script_host("fm_mission_controller_2020")
         c_tlives_v = locals.get_int("fm_mission_controller_2020", 55004 + 873 + 1)
         locals.set_int("fm_mission_controller_2020", 55004 + 873 + 1, c_tlives_v + 5)
     end
-    if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then 
+    if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then
         network.force_script_host("fm_mission_controller")
         globals.set_int(4718592 + 3318 + 1 + 38, 1)
         c_tlives_v = locals.get_int("fm_mission_controller", 26154 + 1325 + 1)
@@ -5938,7 +5938,7 @@ script.register_looped("heistTabLoop", function(heistTabScript)
         for _, peds in pairs(pedtable) do
              selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
              ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
-            if (PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 4 or PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 5 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 1 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 49 or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Swat_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Sheriff_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Sheriff_01")) and peds ~= PLAYER.PLAYER_PED_ID() and not PED.IS_PED_DEAD_OR_DYING(peds,true)  and PED.IS_PED_A_PLAYER(peds) ~= 1 and calcDistance(PLAYER.PLAYER_PED_ID(), peds) <= 100 then 
+            if (PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 4 or PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 5 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 1 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 49 or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Swat_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Sheriff_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Sheriff_01")) and peds ~= PLAYER.PLAYER_PED_ID() and not PED.IS_PED_DEAD_OR_DYING(peds,true)  and PED.IS_PED_A_PLAYER(peds) ~= 1 and calcDistance(PLAYER.PLAYER_PED_ID(), peds) <= 100 then
                 if PED.IS_PED_IN_ANY_VEHICLE(peds, true) then
                     request_control(peds)
                     TASK.CLEAR_PED_TASKS_IMMEDIATELY(peds)
@@ -6011,7 +6011,7 @@ end)
 
 casinoHeist:add_separator()
 
-casinoHeist:add_button("Complete Preps", function() 
+casinoHeist:add_button("Complete Preps", function()
     STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_DISRUPTSHIP"), 3, true)
     STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_KEYLEVELS"), 2, true)
     STATS.STAT_SET_INT(joaat(MPX .. "H3OPT_VEHS"), 3, true)
@@ -6030,7 +6030,7 @@ end)
  deleteNPCs = casinoHeist:add_checkbox("Delete Mission NPC's")
     script.register_looped("deleteNPCsLoopScript", function(script)
         if deleteNPCs:is_enabled() then
-            for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
+            for index, ped in ipairs(entities.get_all_peds_as_handles()) do
                 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
                 PED.DELETE_PED(ped)
                 sleep(0.1)
@@ -6095,7 +6095,7 @@ cayoHeist:add_button("Panther/Gold (Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Panther Hard Mode has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6141,7 +6141,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Diamond Hard Mode has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6188,7 +6188,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Bonds Hard Mode has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6235,7 +6235,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Necklace Hard Mode has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6282,7 +6282,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Tequila Hard Mode has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6312,7 +6312,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-        
+
         -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
@@ -6320,7 +6320,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-        
+
         -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
@@ -6331,7 +6331,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        
+
         -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
         --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
@@ -6343,10 +6343,10 @@ end
         --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
         --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
         --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-        
+
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Panther Hard Mode (Legit) has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6376,7 +6376,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-        
+
         -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
@@ -6384,7 +6384,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-        
+
         -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
@@ -6395,7 +6395,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        
+
         -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
         --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
@@ -6407,10 +6407,10 @@ end
         --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
         --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
         --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-        
+
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Diamond Hard Mode (Legit) has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6440,7 +6440,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-        
+
         -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
@@ -6448,7 +6448,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-        
+
         -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
@@ -6459,7 +6459,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        
+
         -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
         --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
@@ -6471,10 +6471,10 @@ end
         globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
         --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
         --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-        
+
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Bonds Hard Mode (Legit) has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6504,7 +6504,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-        
+
         -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
@@ -6512,7 +6512,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-        
+
         -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
@@ -6523,7 +6523,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        
+
         -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
         --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
@@ -6535,10 +6535,10 @@ end
         --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
         globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
         --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-        
+
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Necklace Hard Mode (Legit) has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6568,7 +6568,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_I"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I"), 0, true)
-        
+
         -- Compound Loot // -1 shows all, 0 shows none
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_C"), 0, true)
@@ -6576,7 +6576,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-        
+
         -- These are what is set when you find loot throughout the island/compound
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_C_SCOPED"), 0, true)
@@ -6587,7 +6587,7 @@ end
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        
+
         -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), 45375, true)
         --STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_CASH_V"), 10406, true)
@@ -6599,10 +6599,10 @@ end
         --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
         --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
         globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-        
+
         STATS.STAT_SET_INT(joaat(MPX .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-    
+
     gui.show_message("Cayo Heist", "Tequila Hard Mode (Legit) has been set up!")
     gui.show_message("Cayo Heist", "Reset the board to see the changes")
 end)
@@ -6654,16 +6654,16 @@ CamList = {
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX for the help on this
-    for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
+    for index, ped in ipairs(entities.get_all_peds_as_handles()) do
          model = ENTITY.GET_ENTITY_MODEL(ped)
-        if model == 0x7ED5AD78 or model == 0x6C8C08E5 or model == 0x995B3F9F or model == 0xB881AEE then 
+        if model == 0x7ED5AD78 or model == 0x6C8C08E5 or model == 0x995B3F9F or model == 0xB881AEE then
                 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
                 PED.DELETE_PED(ped)
                 gui.show_message("Cayo Heist", "Deleted all mission NPC's.  This will cause the keycards to not drop, use Gold teleport to bypass when standing near a secondary loot room.")
         end
     end
 end)
-        
+
 cayoHeist:add_separator()
 cayoHeist:add_text("After Heist")
 cayoHeist:add_button("Skip Cooldown", function()
@@ -6682,7 +6682,7 @@ end
     STATS.STAT_SET_INT(joaat(MPX .. "H4_TARGET_POSIX"), 1659429119, true)
     STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN"), 0, true)
     STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN_HARD"), 0, true)
-    
+
     gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters")
 end)
 
@@ -6701,11 +6701,11 @@ end)
              ped = PLAYER.PLAYER_PED_ID()
              blip_info = HUD.GET_FIRST_BLIP_INFO_ID(property.id)
              coords = HUD.GET_BLIP_COORDS(blip_info)
-            
+
             if HUD.DOES_BLIP_EXIST(blip_info) then
                 if property.id == 740 then
                     PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x + 5, coords.y - 5, coords.z)
-                else 
+                else
                     PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x, coords.y, coords.z)
                 end
             end
@@ -6733,7 +6733,7 @@ bagSizeVal = 1800
 cayoSizeEditor:add_imgui(function()
 bagSizeVal, used = ImGui.SliderInt("Bag Size", bagSizeVal, 1800, 7200) -- 7200 = 4 players, this works if you want more money solo and it adjusts so you can always have full bags
     out = "Reset the board to see changes"
-    
+
     if used then
         globals.set_int(262145 + 30009, bagSizeVal)
         gui.show_message('Bag Size Modified!', out)
@@ -6746,7 +6746,7 @@ pantherSizeVal = 1900000
 cayoSizeEditor:add_imgui(function()
 pantherSizeVal, used = ImGui.SliderInt("Panther Value", pantherSizeVal, 1900000, 3800000) -- Double the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         globals.set_int(262145 + 30264, pantherSizeVal)
         gui.show_message('Panther Value Modified!', out)
@@ -6757,7 +6757,7 @@ diamondSizeVal = 1300000
 cayoSizeEditor:add_imgui(function()
 diamondSizeVal, used = ImGui.SliderInt("Diamond Value", diamondSizeVal, 1300000, 2600000) -- Double the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         globals.set_int(262145 + 30262, diamondSizeVal)
         gui.show_message('Diamond Value Modified!', out)
@@ -6768,7 +6768,7 @@ bondSizeVal = 770000
 cayoSizeEditor:add_imgui(function()
 bondSizeVal, used = ImGui.SliderInt("Bonds Value", bondSizeVal, 770000, 1540000) -- Double the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         globals.set_int(262145 + 30261, bondSizeVal)
         gui.show_message('Bonds Value Modified!', out)
@@ -6779,7 +6779,7 @@ necklaceSizeVal = 700000
 cayoSizeEditor:add_imgui(function()
 necklaceSizeVal, used = ImGui.SliderInt("Necklace Value", necklaceSizeVal, 700000, 1400000) -- Double the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         globals.set_int(262145 + 30260, necklaceSizeVal)
         gui.show_message('Necklace Value Modified!', out)
@@ -6790,7 +6790,7 @@ tequilaSizeVal = 693000
 cayoSizeEditor:add_imgui(function()
 tequilaSizeVal, used = ImGui.SliderInt("Tequila Value", tequilaSizeVal, 693000, 1400000) -- Double the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         globals.set_int(262145 + 30259, tequilaSizeVal)
         gui.show_message('Tequila Value Modified!', out)
@@ -6804,7 +6804,7 @@ goldSizeVal = 45375
 cayoSizeEditor:add_imgui(function()
 goldSizeVal, used = ImGui.SliderInt("Gold Value", goldSizeVal, 45375, 181500) -- Quadruple the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
@@ -6822,7 +6822,7 @@ cokeSizeVal = 25312
 cayoSizeEditor:add_imgui(function()
 cokeSizeVal, used = ImGui.SliderInt("Coke Value", cokeSizeVal, 25312, 101248) -- Quadruple the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
@@ -6840,7 +6840,7 @@ paintSizeVal = 22500
 cayoSizeEditor:add_imgui(function()
 paintSizeVal, used = ImGui.SliderInt("Paintings Value", paintSizeVal, 22500, 90000) -- Quadruple the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
@@ -6858,7 +6858,7 @@ weedSizeVal = 16875
 cayoSizeEditor:add_imgui(function()
 weedSizeVal, used = ImGui.SliderInt("Weed Value", weedSizeVal, 16875, 67500) -- Quadruple the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
@@ -6876,7 +6876,7 @@ cashSizeVal = 10406
 cayoSizeEditor:add_imgui(function()
 cashSizeVal, used = ImGui.SliderInt("Cash Value", cashSizeVal, 10406, 41624) -- Quadruple the original price
     out = "Reset the board to see changes"
-    
+
     if used then
         MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
@@ -6970,11 +6970,11 @@ h2_awd_lock = valEdit:add_checkbox("Apply Payouts")
             h2_awd_lock:set_enabled(false)
            return
        end
-       locals.set_int("GANGOPS_THE_IAA_JOB_CASH_REWARD", h2_d1_awd:get_value())   
-       locals.set_int("GANGOPS_THE_SUBMARINE_JOB_CASH_REWARD", h2_d2_awd:get_value())   
-       locals.set_int("GANGOPS_THE_MISSILE_SILO_JOB_CASH_REWARD", h2_d3_awd:get_value())   
+       locals.set_int("GANGOPS_THE_IAA_JOB_CASH_REWARD", h2_d1_awd:get_value())
+       locals.set_int("GANGOPS_THE_SUBMARINE_JOB_CASH_REWARD", h2_d2_awd:get_value())
+       locals.set_int("GANGOPS_THE_MISSILE_SILO_JOB_CASH_REWARD", h2_d3_awd:get_value())
     end
-    
+
 -- Magnet/Forcefield
  xmen = Fun:add_tab("Magnet/Forcefield")
 xmen:add_text("Magnetic field attracts all peds/vehicles")
@@ -6989,15 +6989,15 @@ xmen:add_imgui(function()
     if used then
         gui.show_message('Magnet Radius Modified!', out)
     end
-    
+
     magnitude, used = ImGui.SliderFloat("Magnitude", magnitude, 0.0, 50.0) -- Add the magnitude slider
     out = "Magnitude set to " .. tostring(magnitude)
     if used then
         gui.show_message('Magnitude Modified!', out)
     end
-    
+
     blackHoleMarkerVisible = blackHoleLoopCheckbox:is_enabled()
-    
+
     -- Draw black hole marker
     if blackHoleMarkerVisible then
          playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
@@ -7025,7 +7025,7 @@ end)
             --end
         --end
     end
-    
+
     for _, entity in ipairs(peds) do
         --if PED.IS_PED_A_PLAYER(entity) == false then
             --if entities.take_control_of(entity) then
@@ -7073,15 +7073,15 @@ xmen:add_imgui(function()
     if used then
         gui.show_message('Force Field Radius Modified!', out)
     end
-    
+
     forceFieldMagnitude, used = ImGui.SliderFloat("Force Field Magnitude", forceFieldMagnitude, 0.0, 100.0)
     out = "Magnitude set to " .. tostring(forceFieldMagnitude)
     if used then
         gui.show_message('Force Field Magnitude Modified!', out)
     end
-    
+
     forceFieldMarkerVisible = forceFieldLoopCheckbox:is_enabled()
-    
+
     -- Draw force field marker
     if forceFieldMarkerVisible then
          playerPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
@@ -7210,7 +7210,7 @@ chatOpt:add_button("Send Message", function()
     end
 
     isCooldown = true
-	
+
 	script.run_in_fiber(function(chatMsg)
         if isTeam:is_enabled() == false then
             if chatBox ~= "" then
@@ -7358,22 +7358,22 @@ griefPlayerTab:add_imgui(function()
         ImGui.SetNextWindowPos(x, y)
 
         ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 255.0, 0.0, 0.0, 0.6) -- Adjust the Title color as needed
-		
+
 		ImGui.PushStyleColor(ImGuiCol.WindowBg, 255.0, 0.0, 0.0, 0.6) -- Adjust the Window background color
-		
+
 		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
 		selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
 		if selPlayer == "**Invalid**" then
 			selPlayer = "Self"
 		end
-		if selPlayer == self then 
+		if selPlayer == self then
 			selPlayer = "Self"
 		end
-		
+
         ImGui.Begin("Extras Addon (Grief Options) - Target: ".. selPlayer, flags)
             -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
 end)
-		
+
  balls = {
 "p_ld_soc_ball_01",
 "p_ld_am_ball_01",
@@ -7429,7 +7429,7 @@ script.register_looped("vehRam", function()
 				local customWheelsSlot = 23 -- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
 				local customWheelsMod = 3 -- This is the rim style for the wheels
 				local customWheelType = 10 -- Range: -1 (Stock), 0 (Sport), 1 (Muscle), 2 (Lowrider), 3 (SUV), 4 (Off-Road), 5 (Tuner), 6 (Motorcycle Wheels), 7 (High End), 8 (Bennys Originals), 9 (Bennys Bespoke), 10 (F1 Wheels), 11 (Racing), 12 (Street), 13 (Track)
-				
+
 				VEHICLE.TOGGLE_VEHICLE_MOD(vehicle, customWheelsSlot, true)
 				VEHICLE.SET_VEHICLE_WHEEL_TYPE(vehicle, 10)
 				VEHICLE.SET_VEHICLE_MOD(vehicle, customWheelsSlot, customWheelsMod, true)
@@ -7503,23 +7503,23 @@ griefPlayerTab:add_button("Spawn Clone", function()
     script.run_in_fiber(function(spawnClone)
          player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
          coords = ENTITY.GET_ENTITY_COORDS(player, true)
-        
+
         -- Create a pedestrian clone
          ped = PED.CREATE_PED(26, ENTITY.GET_ENTITY_MODEL(player), coords.x, coords.y + 1, coords.z, ENTITY.GET_ENTITY_HEADING(player), true, false, false)
         if ped ~= 0 then
             -- Clone the pedestrian's behavior to target the player
             PED.CLONE_PED_TO_TARGET(player, ped)
-            
+
             -- Make the pedestrian aggressive
             TASK.TASK_COMBAT_PED(ped, player, 0, 16)
-            
+
             -- Equip the pedestrian with a knife
             WEAPON.GIVE_WEAPON_TO_PED(ped, 1672152130, 1, false, true) -- -1716189206 is the hash for the knife weapon
-            
+
             -- Set combat attributes
             PED.SET_PED_COMBAT_ABILITY(ped, 100)
-            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true) 
-            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true) -- Can do Driveby's     
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true) -- Can do Driveby's
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true) -- Always Fight
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true) -- Aggressive
             PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false) -- always flee /false
@@ -7554,7 +7554,7 @@ griefPlayerTab:add_button("Clown Attack", function()
         STREAMING.REQUEST_MODEL(clown)
         STREAMING.REQUEST_MODEL(van)
         STREAMING.REQUEST_MODEL(weapon)
-        while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(van) do    
+        while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(van) do
             STREAMING.REQUEST_MODEL(clown)
             STREAMING.REQUEST_MODEL(van)
             clownAttack:yield()
@@ -7575,8 +7575,8 @@ griefPlayerTab:add_button("Clown Attack", function()
                     WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
                     PED.SET_PED_INTO_VEHICLE(ped, vehicle, seat)
                     PED.SET_PED_COMBAT_ABILITY(ped, 100)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true) 
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true) -- Can do Driveby's     
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 2, true) -- Can do Driveby's
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true) -- Always Fight
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true) -- Aggressive
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false) -- always flee /false
@@ -7591,7 +7591,7 @@ griefPlayerTab:add_button("Clown Attack", function()
                     PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true) -- Can use vehicles
                     TASK.TASK_COMBAT_PED(ped, player, 0, 16)
                     TASK.TASK_DRIVE_BY(ped, player, vehicle, coords.x, coords.y, coords.z, 50, 100, false, joaat("FIRING_PATTERN_FULL_AUTO"))
-                    
+
                     ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
                 else
                     gui.show_error("Failed", "Failed to create ped")
@@ -7600,8 +7600,8 @@ griefPlayerTab:add_button("Clown Attack", function()
         else
             gui.show_error("Failed", "Failed to create vehicle")
         end
-        
-        if ped == 0 then 
+
+        if ped == 0 then
             gui.show_error("Failed", "Failed To Create Clowns")
         else
             gui.show_message("Success", "Successfully spawned the attack clowns")
@@ -7629,7 +7629,7 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
         STREAMING.REQUEST_MODEL(jet)
         STREAMING.REQUEST_MODEL(weapon)
 
-        while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do    
+        while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do
             STREAMING.REQUEST_MODEL(clown)
             STREAMING.REQUEST_MODEL(jet)
             clownJetsTwo:yield()
@@ -7639,10 +7639,10 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
          jetSpawnX = coords.x + math.random(-1000, 1000)
          jetSpawnY = coords.y + math.random(-1000, 1000)
          jetSpawnZ = coords.z + math.random(100, 1200)
-        
+
          colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
          jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
-        
+
         if jetVehicle ~= 0 then
              primaryColor = colors[math.random(#colors)]
              secondaryColor = colors[math.random(#colors)]
@@ -7652,13 +7652,13 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
             -- Spawn clowns inside the jet
             for seat = -1, -1 do
                  ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
-                
+
                 if ped ~= 0 then
                     group = joaat("HATES_PLAYER")
                     PED.ADD_RELATIONSHIP_GROUP("clowns", group)
                     ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
                     PED.SET_PED_CAN_BE_TARGETTED(ped, false)
-								
+
 							    --PED.SET_PED_CONFIG_FLAG(ped, 132, true)
 							    --PED.SET_PED_CONFIG_FLAG(ped, 42, true)
 							    --PED.SET_PED_HIGHLY_PERCEPTIVE(ped, 1)
@@ -7690,8 +7690,8 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
         else
             gui.show_error("Failed", "Failed to create jet")
         end
-        
-        if jetVehicle == 0 then 
+
+        if jetVehicle == 0 then
             gui.show_error("Failed", "Failed to Create Jet")
         else
             gui.show_message("Jet Attack", "Clown Lazers spawned!  Lock-on Acquired! Target: "..playerName)
@@ -7905,7 +7905,7 @@ script.register_looped("extrasAddonLooped", function(script)
         while not STREAMING.HAS_MODEL_LOADED(selectedItem) do
             STREAMING.REQUEST_MODEL(selectedItem)
             script:yield()
-        end   
+        end
         OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 1.5, 0, 1, selectedItem, false, true)
     end
 
@@ -7972,7 +7972,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 13, 1, true, false, 0)
     end
-    
+
     if explodeCB:is_enabled() then
 	if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 				gui.show_message("Explode","Stopped, player has left the session.")
@@ -8013,11 +8013,11 @@ script.register_looped("burnLoop", function()
          fxType = 3
          ptfxAsset = "scr_bike_adversary"
          particle = "scr_adversary_foot_flames"
-        
+
         FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, fxType, 100000.0, false, false, 0, false)
         GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
         GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
-        
+
         gui.show_message("griefPlayerTab", "Burning "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
 
         -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
@@ -8062,7 +8062,7 @@ script.register_looped("ramLoopz", function()
                             -- Optionally, you can play a sound or customize the ramming effect here
                             VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle, true)
                         end
-                        
+
                          vehicle2 = VEHICLE.CREATE_VEHICLE(modelHash, coords.x, coords.y, coords.z - 20, 0.0, true, true, false)
                         -- Set vehicle orientation
                         ENTITY.SET_ENTITY_ROTATION(vehicle2, 0, 0, 0, 2, true)
@@ -8080,9 +8080,9 @@ script.register_looped("ramLoopz", function()
 
                         gui.show_message("griefPlayerTab", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
 
-                        -- Use these lines to delete the vehicle after spawning. 
+                        -- Use these lines to delete the vehicle after spawning.
                         -- Needs some type of delay between spawning and deleting to function properly
-                        
+
                         ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
                         ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle2)
         end
@@ -8110,11 +8110,11 @@ script.register_looped("explodeLoop", function()
 
                  player_id = network.get_selected_player()
                  coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-                
+
                 FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
-                
+
                 gui.show_message("griefPlayerTab", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
                 -- Optionally, you can play an explosion sound here using AUDIO.PLAY_SOUND_FROM_COORD
 
@@ -8334,7 +8334,7 @@ end
 allbodyguardtable = {} --保镖NPC表
 
 function npc2bodyguard(peds_func) --将NPC设置为自己的保镖
-    if math.random(0, 100) > 50 then 
+    if math.random(0, 100) > 50 then
         WEAPON.GIVE_WEAPON_TO_PED(peds_func, joaat("WEAPON_MICROSMG"), 9999, false, true)
     else
     --WEAPON.GIVE_WEAPON_TO_PED(peds_func, joaat("WEAPON_CARBINERIFLE_MK2"), 9999, false, true)
@@ -8369,7 +8369,7 @@ function npc2bodyguard(peds_func) --将NPC设置为自己的保镖
     ENTITY.SET_ENTITY_HEALTH(peds_func,1000,0,0)
     HUD.SET_PED_HAS_AI_BLIP_WITH_COLOUR(peds_func, true, 3)
     HUD.SET_PED_AI_BLIP_SPRITE(peds_func, 270)
-    table.insert(allbodyguardtable,peds_func)            
+    table.insert(allbodyguardtable,peds_func)
 end
 
 function writebodyguardtable()
@@ -8399,7 +8399,7 @@ function writebodyguardtable()
         NPCguardTableTab:add_sameline()
         NPCguardTableTab:add_button("Delete "..npcguard_list_index, function()
             request_control(guard_ped_id)
-            delete_entity(guard_ped_id)        
+            delete_entity(guard_ped_id)
         end)
         NPCguardTableTab:add_sameline()
         NPCguardTableTab:add_button("Heal "..npcguard_list_index, function()
@@ -8437,14 +8437,14 @@ function writebodyguardhelitable()
         HeliTableTab:add_button("Teleport to "..npcguardheli_list_index, function()
             if not VEHICLE.IS_VEHICLE_SEAT_FREE(guarddrvped, -1, 0) then
                 guarddrvped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(guard_veh_hd, -1, false)
-                TASK.CLEAR_PED_TASKS_IMMEDIATELY(guarddrvped)    
+                TASK.CLEAR_PED_TASKS_IMMEDIATELY(guarddrvped)
             end
             PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), guard_veh_hd, -1)
         end)
         HeliTableTab:add_sameline()
         HeliTableTab:add_button("Delete "..npcguardheli_list_index, function()
             request_control(guard_veh_hd)
-            delete_entity(guard_veh_hd)        
+            delete_entity(guard_veh_hd)
         end)
         HeliTableTab:add_sameline()
         HeliTableTab:add_button("Clone "..npcguardheli_list_index, function()
@@ -8459,12 +8459,12 @@ function createplayertable()  --获取当前玩家表，由于yimmenu没有像st
     player_Index_table = {}
     for i = 0, 32 do
         if PLAYER.GET_PLAYER_PED(i) ~= 0 then
-            table.insert(player_Index_table,i)            
+            table.insert(player_Index_table,i)
         end
     end
 end
 
-function writeplayertable() 
+function writeplayertable()
     PlayerTableTab:clear()
     PlayerTableTab:add_button("Refresh Player list", function()
         writeplayertable()
@@ -8486,8 +8486,8 @@ function createobjtable()
     for _, objs in pairs(objtable) do
         local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
         local obj_pos = ENTITY.GET_ENTITY_COORDS(objs, true)
-        if calcDistance(selfpos, obj_pos) <= 200 then 
-            table.insert(obj_handle_table,objs)            
+        if calcDistance(selfpos, obj_pos) <= 200 then
+            table.insert(obj_handle_table,objs)
         end
     end
 end
@@ -8517,7 +8517,7 @@ function writeobjtable()
         ObjTableTab:add_sameline()
         ObjTableTab:add_button("Delete"..obj_list_index, function()
             request_control(obj_id)
-            delete_entity(obj_id)        
+            delete_entity(obj_id)
         end)
         obj_list_index = obj_list_index + 1
     end
@@ -8529,8 +8529,8 @@ function createpedtable()
     for _, peds in pairs(pedtable) do
         local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
         local ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
-        if calcDistance(selfpos, ped_pos) <= 200 and peds ~= PLAYER.PLAYER_PED_ID() and PED.IS_PED_A_PLAYER(peds) == false and ENTITY.GET_ENTITY_HEALTH(peds) > 0 then 
-            table.insert(ped_handle_table,peds)            
+        if calcDistance(selfpos, ped_pos) <= 200 and peds ~= PLAYER.PLAYER_PED_ID() and PED.IS_PED_A_PLAYER(peds) == false and ENTITY.GET_ENTITY_HEALTH(peds) > 0 then
+            table.insert(ped_handle_table,peds)
         end
     end
 end
@@ -8558,7 +8558,7 @@ function writepedtable()
         NPCTableTab:add_sameline()
         NPCTableTab:add_button("Delete "..ped_list_index, function()
             request_control(ped_id)
-            delete_entity(ped_id)        
+            delete_entity(ped_id)
         end)
         NPCTableTab:add_sameline()
         NPCTableTab:add_button("Heal "..ped_list_index, function()
@@ -8575,8 +8575,8 @@ function createvehtable()
     for _, vehs in pairs(vehtable) do
         local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
         local veh_pos = ENTITY.GET_ENTITY_COORDS(vehs, true)
-        if calcDistance(selfpos, veh_pos) <= npcctrlr:get_value() then 
-            table.insert(veh_handle_table,vehs)            
+        if calcDistance(selfpos, veh_pos) <= npcctrlr:get_value() then
+            table.insert(veh_handle_table,vehs)
         end
     end
 end
@@ -8602,7 +8602,7 @@ function writevehtable()
         VehicleTableTab:add_sameline()
         VehicleTableTab:add_button("Delete "..Veh_list_index, function()
             request_control(t_veh_hd)
-            delete_entity(t_veh_hd)        
+            delete_entity(t_veh_hd)
         end)
         VehicleTableTab:add_sameline()
         VehicleTableTab:add_button("Teleport into "..Veh_list_index, function()
@@ -8667,11 +8667,11 @@ griefPlayerTab:add_button("Fragment crash", function()
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff3, 1, false)
         local crashstaff4 = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
-        for i = 0, 100 do 
+        for i = 0, 100 do
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
                 gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                 return
-            end    
+            end
             local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff1, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(crashstaff2, TargetPlayerPos.x, TargetPlayerPos.y, TargetPlayerPos.z, false, true, true)
@@ -8692,7 +8692,7 @@ griefPlayerTab:add_button("Fragment crash", function()
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
                 gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                 return
-            end    
+            end
             local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(object, 1, false)
             delete_entity(object)
@@ -8740,27 +8740,27 @@ griefPlayerTab:add_button("Model crash", function()
         local ship = {-1043459709, -276744698, 1861786828, -2100640717,}
         local pos117 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         OBJECT.CREATE_OBJECT(0x9CF21E0F, pos117.x, pos117.y, pos117.z, true, true, false)
-        for crash, value in pairs (ship) do 
-            local c = {} 
-            for i = 1, 10, 1 do 
+        for crash, value in pairs (ship) do
+            local c = {}
+            for i = 1, 10, 1 do
                 if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
                     gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                     return
-                end        
+                end
                 local pos2010 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
                 local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
-                if calcDistance(selfpos, pos2010) <= 100 then 
+                if calcDistance(selfpos, pos2010) <= 100 then
                     gui.show_message("The attack has stopped","Please stay away from the target first")
                     return
                 end
                 c[crash] = CreateVehicle(value, pos2010, 0)
                 if c[crash] then
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(c[crash], true, false) 
+                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(c[crash], true, false)
                     ENTITY.FREEZE_ENTITY_POSITION(c[crash])
-                    ENTITY.SET_ENTITY_VISIBLE(c[crash], false, false)    
+                    ENTITY.SET_ENTITY_VISIBLE(c[crash], false, false)
                 end
 				delete_entity(c[crash])
-            end 
+            end
         end
     end)
 	sleep(0.5)
@@ -8779,15 +8779,15 @@ griefPlayerTab:add_button("Model crash", function()
                 if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
                     gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                     return
-                end        
+                end
                 local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
-                if calcDistance(selfpos, pos114) <= 100 then 
+                if calcDistance(selfpos, pos114) <= 100 then
                     gui.show_message("The attack has stopped","Please stay away from the target first")
                     return
                 end
                 local veh = CreateVehicle(veh_mdl, pos114, 0)
                 local jesus = CreatePed(2, mdl, pos114, 0)
-                if veh and jesus then 
+                if veh and jesus then
                     ENTITY.SET_ENTITY_VISIBLE(veh, false, false)
                     ENTITY.SET_ENTITY_VISIBLE(jesus, false, false)
                     PED.SET_PED_INTO_VEHICLE(jesus, veh, -1)
@@ -8800,17 +8800,17 @@ griefPlayerTab:add_button("Model crash", function()
                     delete_entity(jesus)
                     delete_entity(veh)
                 end
-            end  
+            end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
     end)
 	sleep(0.5)
     script.run_in_fiber(function (vtcrash2)
-        for i = 1, 10, 1 do 
+        for i = 1, 10, 1 do
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
                 gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                 return
-            end    
+            end
             local anim_dict = "anim@mp_player_intupperstinker"
             STREAMING.REQUEST_ANIM_DICT(anim_dict)
             while not STREAMING.HAS_ANIM_DICT_LOADED(anim_dict) do
@@ -8818,7 +8818,7 @@ griefPlayerTab:add_button("Model crash", function()
             end
         local pos115 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
-        if calcDistance(selfpos, pos115) <= 300 then 
+        if calcDistance(selfpos, pos115) <= 300 then
             gui.show_message("The attack has stopped","Please stay away from the target first")
             return
         end
@@ -8832,10 +8832,10 @@ griefPlayerTab:add_button("Model crash", function()
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
                 gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
                 return
-            end    
+            end
             local pos116 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
             local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
-            if calcDistance(selfpos, pos116) <= 300 then 
+            if calcDistance(selfpos, pos116) <= 300 then
                 gui.show_message("The attack has stopped","Please stay away from the target first")
                 return
             end
@@ -8868,15 +8868,15 @@ griefPlayerTab:add_button("Small Cage", function()
     script.run_in_fiber(function (smallcage)
         local objHash = joaat("prop_gold_cont_01")
         STREAMING.REQUEST_MODEL(objHash)
-        while not STREAMING.HAS_MODEL_LOADED(objHash) do		
+        while not STREAMING.HAS_MODEL_LOADED(objHash) do
             smallcage:yield()
         end
         local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         local obj = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y, pos.z-1, true, true, false)
-        
+
 		net_id = NETWORK.OBJ_TO_NET(objHash)
         NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
-		
+
 		ENTITY.FREEZE_ENTITY_POSITION(obj, true)
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objHash)
     end)
@@ -8907,18 +8907,18 @@ griefPlayerTab:add_button("Fence Cage", function()
 		local rot_4 = ENTITY.GET_ENTITY_ROTATION(object[4], 2)
 		rot_4.z = -90.0
 		ENTITY.SET_ENTITY_ROTATION(object[4], rot_4.x, rot_4.y, rot_4.z, 1, true)
-		ENTITY.IS_ENTITY_STATIC(object[1]) 
+		ENTITY.IS_ENTITY_STATIC(object[1])
 		ENTITY.IS_ENTITY_STATIC(object[2])
 		ENTITY.IS_ENTITY_STATIC(object[3])
 		ENTITY.IS_ENTITY_STATIC(object[4])
-		ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[1], false) 
-		ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[2], false) 
-		ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[3], false) 
+		ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[1], false)
+		ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[2], false)
+		ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[3], false)
 		ENTITY.SET_ENTITY_CAN_BE_DAMAGED(object[4], false)
-		
+
 		net_id = NETWORK.OBJ_TO_NET(objHash)
 		NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
-		
+
 		for i = 1, 4 do ENTITY.FREEZE_ENTITY_POSITION(object[i], true) end
 		STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objHash)
 	end)
@@ -8931,14 +8931,14 @@ griefPlayerTab:add_button("Tube Cage", function()
 		local objHash = joaat("stt_prop_stunt_tube_s")
         local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         STREAMING.REQUEST_MODEL(objHash)
-        while not STREAMING.HAS_MODEL_LOADED(objHash) do		
+        while not STREAMING.HAS_MODEL_LOADED(objHash) do
             dubcage:sleep(100)
         end
         local cage_object = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y, pos.z-5, true, true, false)
         local rot  = ENTITY.GET_ENTITY_ROTATION(cage_object)
         rot.y = 90
         ENTITY.SET_ENTITY_ROTATION(cage_object, rot.x,rot.y,rot.z,1,true)
-        rot.x = 90 
+        rot.x = 90
 
 		net_id = NETWORK.OBJ_TO_NET(objHash)
 		NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
@@ -8953,19 +8953,19 @@ griefPlayerTab:add_button("Safe cage", function()
         local pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         local objHash = joaat("p_v_43_safe_s")
         STREAMING.REQUEST_MODEL(objHash)
-        while not STREAMING.HAS_MODEL_LOADED(objHash) do		
+        while not STREAMING.HAS_MODEL_LOADED(objHash) do
             STREAMING.REQUEST_MODEL(objHash)
             safecage:yield()
         end
         local objectsfcage = {}
-        objectsfcage[1] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.9, pos.y, pos.z - 1, true, true, false) 
-        objectsfcage[2] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.9, pos.y, pos.z - 1, true, true, false) 
-        objectsfcage[3] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.9, pos.z - 1, true, true, false) 
-        objectsfcage[4] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.9, pos.z - 1, true, true, false) 
-        objectsfcage[5] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.9, pos.y, pos.z + 0.4 , true, true, false) 
-        objectsfcage[6] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.9, pos.y, pos.z + 0.4, true, true, false) 
-        objectsfcage[7] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.9, pos.z + 0.4, true, true, false) 
-        objectsfcage[8] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.9, pos.z + 0.4, true, true, false) 
+        objectsfcage[1] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.9, pos.y, pos.z - 1, true, true, false)
+        objectsfcage[2] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.9, pos.y, pos.z - 1, true, true, false)
+        objectsfcage[3] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.9, pos.z - 1, true, true, false)
+        objectsfcage[4] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.9, pos.z - 1, true, true, false)
+        objectsfcage[5] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.9, pos.y, pos.z + 0.4 , true, true, false)
+        objectsfcage[6] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.9, pos.y, pos.z + 0.4, true, true, false)
+        objectsfcage[7] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.9, pos.z + 0.4, true, true, false)
+        objectsfcage[8] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.9, pos.z + 0.4, true, true, false)
         for i = 1, 8 do ENTITY.FREEZE_ENTITY_POSITION(objectsfcage[i], true) end
         safecage:sleep(100)
         net_id = NETWORK.OBJ_TO_NET(objHash)
@@ -8981,36 +8981,36 @@ griefPlayerTab:add_button("420 Cage", function()
     script.run_in_fiber(function(weedcage)
         local playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
 		local pos = ENTITY.GET_ENTITY_COORDS(playerPed, false)
-		
+
         local objHash = joaat("bkr_prop_weed_lrg_01a")
         STREAMING.REQUEST_MODEL(objHash)
-        while not STREAMING.HAS_MODEL_LOADED(objHash) do        
+        while not STREAMING.HAS_MODEL_LOADED(objHash) do
             STREAMING.REQUEST_MODEL(objHash)
             weedcage:yield()
         end
         local objectsfcage = {}
 		request_control(playerPed)
 		ENTITY.FREEZE_ENTITY_POSITION(playerPed, true)
-        objectsfcage[1] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.75, pos.y, pos.z - 3.5, true, true, false) 
-        objectsfcage[2] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.75, pos.y, pos.z - 3.5, true, true, false) 
-        objectsfcage[3] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.75, pos.z - 3.5, true, true, false) 
-        objectsfcage[4] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.75, pos.z - 3.5, true, true, false) 
-       --objectsfcage[5] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.4, pos.y, pos.z + 0.4 , true, true, false) 
-       --objectsfcage[6] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.4, pos.y, pos.z + 0.4, true, true, false) 
-       --objectsfcage[7] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.4, pos.z + 0.4, true, true, false) 
-       --objectsfcage[8] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.4, pos.z + 0.4, true, true, false) 
-        objectsfcage[9] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y, pos.z - 1.5, true, true, false) 
-        for i = 1, 9 do 
-            ENTITY.FREEZE_ENTITY_POSITION(objectsfcage[i], true) 
+        objectsfcage[1] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.75, pos.y, pos.z - 3.5, true, true, false)
+        objectsfcage[2] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.75, pos.y, pos.z - 3.5, true, true, false)
+        objectsfcage[3] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.75, pos.z - 3.5, true, true, false)
+        objectsfcage[4] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.75, pos.z - 3.5, true, true, false)
+       --objectsfcage[5] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.4, pos.y, pos.z + 0.4 , true, true, false)
+       --objectsfcage[6] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.4, pos.y, pos.z + 0.4, true, true, false)
+       --objectsfcage[7] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y + 0.4, pos.z + 0.4, true, true, false)
+       --objectsfcage[8] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y - 0.4, pos.z + 0.4, true, true, false)
+        objectsfcage[9] = OBJECT.CREATE_OBJECT(objHash, pos.x, pos.y, pos.z - 1.5, true, true, false)
+        for i = 1, 9 do
+            ENTITY.FREEZE_ENTITY_POSITION(objectsfcage[i], true)
             weedcage:sleep(.2)
             net_id = NETWORK.OBJ_TO_NET(objectsfcage[i])
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(objectsfcage[i])
-        
+
             --weedcage:sleep(.2)
         end
         --weedcage:sleep(200)
-        
+
     end)
 end)
 toolTip(griefPlayerTab, "Cages the player inside of a wall of giant weed plants")
@@ -9076,7 +9076,7 @@ griefPlayerTab:add_imgui(function()
                 soundId = AUDIO.GET_SOUND_ID()
                 gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on "..PLAYER.GET_PLAYER_NAME(targetPlayer))
                 gui.show_message("Sound ID", soundId)
-            end)    
+            end)
     end
 end)
 toolTip(griefPlayerTab, "Plays the selected sound from the dropdown.")
@@ -9085,7 +9085,7 @@ griefPlayerTab:add_sameline()
  stopSounds = false
 stopSounds = griefPlayerTab:add_checkbox("Stop  Sounds")
     script.register_looped("stopSounds", function(script)
-        if stopSounds:is_enabled() == true then     
+        if stopSounds:is_enabled() == true then
             --soundId = AUDIO.GET_SOUND_ID()
             --gui.show_message("Sound ID", "Stopped "..soundId)
             --AUDIO.STOP_SOUND(soundId)
@@ -9097,7 +9097,7 @@ stopSounds = griefPlayerTab:add_checkbox("Stop  Sounds")
         end
     end)
 
-toolTip(griefPlayerTab, "Halts all sounds.") 
+toolTip(griefPlayerTab, "Halts all sounds.")
 
 griefPlayerTab:add_imgui(function()
     -- Ends the ImGui wrapper, new additions should be added above this.
@@ -9131,7 +9131,7 @@ dropsPlayerTab:add_imgui(function()
 		if selPlayer == "**Invalid**" then
 			selPlayer = "Self"
 		end
-		if selPlayer == self then 
+		if selPlayer == self then
 			selPlayer = "Self"
 		end
 
@@ -9175,7 +9175,7 @@ prLoop = dropsPlayerTab:add_checkbox("Princess Robot Bubblegum (On/Off)")
 
 				net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
 				NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
-				
+
 				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
 			end
 			ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
@@ -9220,7 +9220,7 @@ alienLoop = dropsPlayerTab:add_checkbox("Alien (On/Off)")
 
 				 net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
 				NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-				
+
 				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
 			end
 			ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
@@ -9262,10 +9262,10 @@ cardsLoop = dropsPlayerTab:add_checkbox("Casino Cards (On/Off)")
 					false,
 					false
 				)
-			
+
 				 net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
 				NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-				
+
 				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(objectIdSpawned)
 			end
 			ENTITY.SET_ENTITY_NO_COLLISION_ENTITY(objectIdSpawned, player_id, false)
@@ -9290,7 +9290,7 @@ dropsPlayerTab:add_button("Give 25k & Random RP", function()
             network.trigger_script_event(1 << pid, {968269233, pid, 10, i, 1, 1, 1})
             network.trigger_script_event(1 << pid, {968269233, pid, 0, i, 1, 1, 1})
             tse:yield()
-            
+
             gui.show_message("Bless RP", "Blessing "..PLAYER.GET_PLAYER_NAME(pid).." with 25k RP (1 time)")
         end
     end)
@@ -9301,12 +9301,12 @@ dropsPlayerTab:add_sameline()
 script.register_looped("tseTest", function()
     if tseTest:is_enabled() == true then
         pid = network.get_selected_player()
-		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then 
+		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
             gui.show_message("Super Fast RP", "RP Stopped, player has left the session.")
 			tseTest:set_enabled(false)
             return
         end
-        for i = 0, 24 do 
+        for i = 0, 24 do
             network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
         end
     end
@@ -9357,16 +9357,16 @@ giftPlayerTab:add_imgui(function()
         y = parentY + 60 -- Align the child window vertically with the parent window
 		flags = ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.AlwaysAutoResize
         ImGui.SetNextWindowPos(x, y)
-		
+
 		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 0.0, 255.0, 0.6) -- Adjust the color as needed
 		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 0.0, 255.0, 0.6) -- Adjust the Window background color
-		
+
 		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
 		selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
 		if selPlayer == "**Invalid**" then
 			selPlayer = "Self"
 		end
-		if selPlayer == self then 
+		if selPlayer == self then
 			selPlayer = "Self"
 		end
 
@@ -9487,7 +9487,7 @@ function open_wheel(veh, wheelType, wheelStyle)
 script.run_in_fiber(function(openW)
 	if request_control(veh) then
 		VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
-		local customWheelsSlot = 23 
+		local customWheelsSlot = 23
 		-- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
 			VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
 			VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, wheelType)
@@ -9520,8 +9520,8 @@ function displayWheelSelection()
 			gui.show_message("Wheel Type", "You've selected "..wheelName.." now scroll down and select the style of wheel you want")
 		end
 	end
-	
-    
+
+
     -- Check if a wheel type is selected
     if wheelName ~= nil then
         -- Display the second listbox for wheel styles
@@ -9657,7 +9657,7 @@ function displayWheelColorSelection()
             gui.show_message("Wheel color", selected_wheel_color_name)
 			gui.show_message("Wheel Color", "Only works on upgraded wheels")
         end
-    end 
+    end
 end
 
 giftPlayerTab:add_imgui(function()
@@ -9767,7 +9767,7 @@ script.register_looped("vehiclesPreview", function(vehPreview)
             local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
             local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
             local forwards = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
-            
+
             -- Calculate the spawn position for the vehicle preview based on the player's forward vector and distance
             local spawnX = playerPos.x + forwards.x * vehicleSpawnDistance.x
             local spawnY = playerPos.y + forwards.y * vehicleSpawnDistance.y
@@ -9804,7 +9804,7 @@ script.register_looped("vehiclesPreview", function(vehPreview)
                 else
                    STREAMING.REQUEST_MODEL(vehicleHash)
                 end
-            end                
+            end
         else
             gui.show_message("Vehicle Spawner", "Selected vehicle not found.")
         end
@@ -9850,45 +9850,45 @@ end)
 
 -- Vehicle Gift Options
 giftedsucc = false
- 
+
 function giftVehToPlayer(vehicle, playerId, playerName)
     if request_control(vehicle) then
          netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
- 
+
         DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 8)
         DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
         DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
-       
-        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName) 
+
+        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName)
         giftedsucc = true
     else
         gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
         giftedsucc = false
     end
 end
- 
+
 -- Assuming gui provides a 'show_message' method
 
 giftPlayerTab:add_button("Gift Vehicle", function()
- 
+
     script.run_in_fiber(function(giftVeh)
- 
+
         local selectedPlayer = network.get_selected_player()
-            
+
         -- Check if a player is selected
          targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
          playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
-        
+
         if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
             local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
- 
+
             repeat
                 giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
                 sleep(0.2)
             until(giftedsucc == true)
- 
+
             giftedsucc = false -- set false to make sure next gifted car doesnt instantly stop repeating when it should still be repeating
         end
 		giftVeh:yield()
@@ -9900,15 +9900,15 @@ giftPlayerTab:add_button("Get Vehicle Stats", function()
 	script.run_in_fiber(function(vehStats)
 		selectedPlayer = network.get_selected_player()
 		targetPlayerPed = PLAYER.GET_PLAYER_PED(selectedPlayer)
-	 
+
 		if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
 			last_veh = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
-		end 
-	 
-	 
-		if last_veh  then 
+		end
+
+
+		if last_veh  then
 			 playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
-			gui.show_message("Info", 
+			gui.show_message("Info",
 				" Player:"..PLAYER.GET_PLAYER_NAME(selectedPlayer).."->"..NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(selectedPlayer).."->".. joaat(playerName).."\n".. --NETWORK.GET_HASH_KEY(playerName).."\n"..
 				" Previous_Owner:"..DECORATOR.DECOR_GET_INT(last_veh , "Previous_Owner").."\n"..
 				" Vehicle Model:"..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(last_veh)).."\n"..
@@ -9954,7 +9954,7 @@ end
 if persisted_config == nil then
     configTable = {}
     --Add entries here
-    presistEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)  
+    presistEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)
     --End Entires
      new_file = io.open("Extras-Addon.json", "w+")
     new_file:write(json.encode(configTable))
@@ -10030,7 +10030,7 @@ script.register_looped('rpChatters', function(script)
         if ENTITY.DOES_ENTITY_EXIST(ped) then
             for p, player in pairs(players) do
                 if PLAYER.GET_PLAYER_NAME(pid) == player then
-                    for i = 21, 24 do 
+                    for i = 21, 24 do
                         network.trigger_script_event(1 << pid, {968269233 , pid, 1, 4, i, 1, 1, 1, 1})
                     end
                 end
