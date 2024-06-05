@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/       
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 1.0.7
+        Addon Version: 1.0.8
         
         Credits:  Yimura, L7Neg, 
     Loled69, Alestarov, gir489returns, 
@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
- addonVersion = "1.0.7"
+ addonVersion = "1.0.8"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -7255,30 +7255,52 @@ chatOpt:add_button("Menu Info", function()
         isCooldown = false  -- Reset the cooldown after the delay
     end)
 end)
-
-griefPlayerTab:add_text("Extras Addon v"..addonVersion.." - Player Options")
+griefPlayerTab:add_text("Extras Addon Submenu Options")
 griefPlayerTab:add_separator()
+griefPlayerTab:add_button("Collapse Submenus", function()
+	collapseGrief:set_enabled(true)
+	collapseDrops:set_enabled(true)
+	collapseGift:set_enabled(true)
+end)
+toolTip(griefPlayerTab, "Sets the Extras Addon Submenus to collapse, Uncollapse them by pressing the > at the left of each tab.")
 
-griefPlayerTab:add_text("Toggle separate windows?")
-extraGrief = griefPlayerTab:add_checkbox("Grief")
-extraGrief:set_enabled(true)
+settingsTab = gui.get_tab("GUI_TAB_SETTINGS")
+collapseGrief = settingsTab:add_checkbox("Collapse Grief Tab")
+
 griefPlayerTab:add_imgui(function()
-    if extraGrief:is_enabled() then
-     parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
-         parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
-         parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-         childWidth, childHeight = 200, 200 -- Size of your child window
-         offset = 10 -- Offset between parent and child windows
+	if collapseGrief:is_enabled() then
+		ImGui.SetNextWindowCollapsed(true)
+		collapseGrief:set_enabled(false)
+	end
+end)
 
-         x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
-         y = parentY -- Align the child window vertically with the parent window
+griefPlayerTab:add_imgui(function()
+        parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+        parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
+        parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
+        childWidth, childHeight = 200, 200 -- Size of your child window
+        offset = 10 -- Offset between parent and child windows
 
+        x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
+        y = parentY -- Align the child window vertically with the parent window
+		flags = ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.AlwaysAutoResize
         ImGui.SetNextWindowPos(x, y)
-            if ImGui.Begin("Extras Addon (Grief Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
+
+        ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 255.0, 0.0, 0.0, 0.6) -- Adjust the Title color as needed
+		
+		ImGui.PushStyleColor(ImGuiCol.WindowBg, 255.0, 0.0, 0.0, 0.6) -- Adjust the Window background color
+		
+		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
+		selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
+		if selPlayer == "**Invalid**" then
+			selPlayer = "Self"
+		end
+		if selPlayer == self then 
+			selPlayer = "Self"
+		end
+		
+        ImGui.Begin("Extras Addon (Grief Options) - Target: ".. selPlayer, flags)
             -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
-            
-        end
-    end
 end)
 		
  balls = {
@@ -9011,26 +9033,39 @@ griefPlayerTab:add_imgui(function()
     ImGui.End()
 end)
 
+collapseDrops = settingsTab:add_checkbox("Collapse Drops Tab")
 
+dropsPlayerTab:add_imgui(function(script)
+	if collapseDrops:is_enabled() then
+		ImGui.SetNextWindowCollapsed(true)
+		collapseDrops:set_enabled(false)
+	end
+end)
 
-dropsPlayerTab:add_sameline()
-Drops = dropsPlayerTab:add_checkbox("Drops")
-Drops:set_enabled(true)
 dropsPlayerTab:add_imgui(function()
-    if Drops:is_enabled() then
-     parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
-         parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
-         parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-         childWidth, childHeight = 200, 150 -- Size of your child window
-         offset = 10 -- Offset between parent and child windows
+        parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+        parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
+        parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
+        childWidth, childHeight = 200, 200 -- Size of your child window
+        offset = 10 -- Offset between parent and child windows
 
-         x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
-         y = parentY + 30-- Align the child window vertically with the parent window
-
+        x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
+        y = parentY + 30 -- Align the child window vertically with the parent window
+		flags = ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.AlwaysAutoResize
         ImGui.SetNextWindowPos(x, y)
-            if ImGui.Begin("Extras Addon (Drop Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
-        end
-    end
+		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 255.0, 0.0, 0.6) -- Adjust the color as needed
+		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 255.0, 0.0, 0.6) -- Adjust the Window background color
+		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
+		selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
+		if selPlayer == "**Invalid**" then
+			selPlayer = "Self"
+		end
+		if selPlayer == self then 
+			selPlayer = "Self"
+		end
+
+		ImGui.Begin("Extras Addon (Drop Options) - Target: ".. selPlayer, flags)
+            -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
 end)
 
 dropsPlayerTab:add_text("Action Figures")
@@ -9231,24 +9266,42 @@ dropsPlayerTab:add_imgui(function()
     ImGui.End()
 end)
 
-giftPlayerTab:add_sameline()
-Gifts = giftPlayerTab:add_checkbox("Vehicle")
-Gifts:set_enabled(true)
+collapseGift = settingsTab:add_checkbox("Collapse Gift Tab")
+
 giftPlayerTab:add_imgui(function()
-    if Gifts:is_enabled() then
-     parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
-         parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
-         parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-         childWidth, childHeight = 300, 450 -- Size of your child window
-         offset = 10 -- Offset between parent and child windows
+	if collapseGift:is_enabled() then
+		ImGui.SetNextWindowCollapsed(true)
+		collapseGift:set_enabled(false)
+	end
+end)
 
-         x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
-         y = parentY + 60 -- Align the child window vertically with the parent window
+giftPlayerTab:add_imgui(function()
+        parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
+        parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
+        parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
+        childWidth, childHeight = 200, 200 -- Size of your child window
+        offset = 10 -- Offset between parent and child windows
 
+        x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
+        y = parentY + 60 -- Align the child window vertically with the parent window
+		flags = ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.AlwaysAutoResize
         ImGui.SetNextWindowPos(x, y)
-            if ImGui.Begin("Extras Addon (Vehicle Options) - ".. PLAYER.GET_PLAYER_NAME(network.get_selected_player())) then
+		
+		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 0.0, 255.0, 0.6) -- Adjust the color as needed
+		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 0.0, 255.0, 0.6) -- Adjust the Window background color
+		
+		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
+		selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
+		if selPlayer == "**Invalid**" then
+			selPlayer = "Self"
+		end
+		if selPlayer == self then 
+			selPlayer = "Self"
+		end
+
+        if ImGui.Begin("Extras Addon (Vehicle Options) - Target: ".. selPlayer, flags) then
+            -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
         end
-    end
 end)
 
 -- Orientation sliders and Spawn X Y Z sliders
@@ -9531,7 +9584,7 @@ function displayWheelColorSelection()
         if selected_wheel_color_value then
             wheelColor = selected_wheel_color_value
             gui.show_message("Wheel color", selected_wheel_color_name)
-			gui.show_message("Wheel Color", "Only works on upgraded wheels, still a work in progress.")
+			gui.show_message("Wheel Color", "Only works on upgraded wheels")
         end
     end 
 end
@@ -9861,6 +9914,7 @@ script.register_looped("Extras Addon Config", function(script)
     script:yield()
 end)
 
+-- Chat Commands (allows others to type these in chat for various things) by USBMenus
 players = {}
 player = false
 
@@ -9876,15 +9930,26 @@ event.register_handler(menu_event.ChatMessageReceived, function (pid, message)
         end
         if not player then
             table.insert(players, playerName)
-            gui.show_message('RP Started', playerName.." is receiving RP.")
             network.send_chat_message_to_player(pid, playerName.." You are now receiving RP!  Type '.rp stop' to stop gaining RP.")
         end
         player = false
     end
 	if message == '.rp stop' then
 			table.remove(players, i)
-			gui.show_message('RP Stopped', playerName.." is no longer receiving RP.")
 			network.send_chat_message_to_player(pid, playerName.." You are no longer receiving RP.")
+	end
+	if message == ".$" then
+		network.send_chat_message_to_player(pid, playerName.." You are now receiving money!  Type .$ again to get more!")
+		script.run_in_fiber(function(script)
+			for n = 0, 10 do
+			    for l = -10, 10 do
+			        for v = 0, 1 do
+				        network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
+				        script:sleep(10)
+			        end
+			    end
+			end
+		end)
 	end
 end)
 
@@ -9900,5 +9965,54 @@ script.register_looped('rpChatters', function(script)
                 end
             end
         end
+    end
+end)
+
+timeCycleMods = KAOS:add_tab("TimeCycles")
+
+searchQuery = ""
+filteredTimecycleModifiers = {}
+
+function updateFilteredTimecycleModifiers()
+    filteredTimecycleModifiers = {}
+    for _, modifier in ipairs(timeCycles) do
+        if string.find(string.lower(modifier), string.lower(searchQuery)) then
+            table.insert(filteredTimecycleModifiers, modifier)
+        end
+    end
+end
+
+selectedModifierIndex = 0 -- initialize selected modifier index
+
+function displayTimecycleModifierSelection()
+    updateFilteredTimecycleModifiers()
+    timecycleNames = {}
+    for _, modifier in ipairs(filteredTimecycleModifiers) do
+        table.insert(timecycleNames, modifier)
+    end
+    selectedModifierIndex = ImGui.ListBox("Timecycle Modifier", selectedModifierIndex, timecycleNames, #timecycleNames)
+end
+
+-- Add search input field
+timeCycleMods:add_imgui(function()
+    if is_typing then
+        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
+    end
+    searchQuery, _ = ImGui.InputText("Search Timecycle Modifiers", searchQuery, 128)
+    if ImGui.IsItemActive() then
+        is_typing = true
+    else
+        is_typing = false
+    end
+	displayTimecycleModifierSelection()
+end)
+
+timeCycleMods:add_button("Apply", function()
+    local selectedTimecycle = timecycleNames[selectedModifierIndex + 1]
+    if selectedTimecycle then
+        GRAPHICS.SET_TIMECYCLE_MODIFIER(selectedTimecycle)
+        gui.show_message("Timecycle Modifier", "Applied: " .. selectedTimecycle)
+    else
+        gui.show_message("Timecycle Modifier", "No modifier selected")
     end
 end)
