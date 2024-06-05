@@ -647,6 +647,34 @@ Stats:add_button("Lvl 8000", function()
     end)
 end)
 toolTip(Stats, "Set your level to 8000")
+levelInput = Stats:add_input_int("Level")
+toolTip(Stats, "Set your level to a value between 1 and 8000")
+--PlayerId = PLAYER.PLAYER_ID()
+--PlayerRp = network.get_player_rp(PlayerId)-- Not working properly, returns -1 when the PlayerId is yours
+levelInput:set_value(1)-- TODO: Set PlayerRank as default value
+Stats:add_button("Change level", function()
+    script.run_in_fiber(function (script)
+        MPX = PI
+        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+        if PI == 0 then
+            MPX = "MP0_"
+        else
+            MPX = "MP1_"
+        end
+        chosenLevel = levelInput:get_value()
+        rpLevel = ranks[chosenLevel]-- get rp level from ranks
+
+        if rpLevel == nil then
+            gui.show_message("Stats", "The chosen level must be between 1 and 8000!")
+        else
+            STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+            gui.show_message("Stats", "Your level was set to ".. tostring(chosenLevel) ..", changing session and applying RP")
+            sleep(1)
+            SessionChanger(0)
+        end
+    end)
+end)
+toolTip(Stats, "Set your level to the value chosen above (1-8000)")
 Stats:add_separator()
 Stats:add_text("Income Statistics")
 Stats:add_button("Reset Income/Spent Stats", function()
