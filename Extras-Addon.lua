@@ -6906,7 +6906,7 @@ DP:add_imgui(function()
 end)
 
 DP:add_sameline()
-DP:add_button("Complete Preps", function() STATS.STAT_SET_INT(MPX() .. "GANGOPS_FM_MISSION_PROG", -1, true) end)
+DP:add_button("Complete Preps", function() STATS.STAT_SET_INT(MPX .. "GANGOPS_FM_MISSION_PROG", -1, true) end)
 DP:add_sameline()
 DP:add_button("Reset Preps", function() DoomsdayActSetter(240, 0) end)
 
@@ -6934,9 +6934,9 @@ h2_awd_lock = valEdit:add_checkbox("Apply Payouts")
             h2_awd_lock:set_enabled(false)
            return
        end
-       tunablelocals.set_int("GANGOPS_THE_IAA_JOB_CASH_REWARD", h2_d1_awd:get_value())   
-       tunablelocals.set_int("GANGOPS_THE_SUBMARINE_JOB_CASH_REWARD", h2_d2_awd:get_value())   
-       tunablelocals.set_int("GANGOPS_THE_MISSILE_SILO_JOB_CASH_REWARD", h2_d3_awd:get_value())   
+       locals.set_int("GANGOPS_THE_IAA_JOB_CASH_REWARD", h2_d1_awd:get_value())   
+       locals.set_int("GANGOPS_THE_SUBMARINE_JOB_CASH_REWARD", h2_d2_awd:get_value())   
+       locals.set_int("GANGOPS_THE_MISSILE_SILO_JOB_CASH_REWARD", h2_d3_awd:get_value())   
     end
     
 -- Magnet/Forcefield
@@ -7255,6 +7255,41 @@ chatOpt:add_button("Menu Info", function()
         isCooldown = false  -- Reset the cooldown after the delay
     end)
 end)
+chatOpt:add_separator()
+chatOpt:add_button("Announce .rp", function()
+	if isCooldown then
+        gui.show_message('Chat', "There is a delay before sending another menu info message.")
+        return
+    end
+
+    isCooldown = true
+
+    script.run_in_fiber(function(rpMsg)
+        local rpinfo = "Want to level up?  Simply type '.rp' into the chat to gain fast RP (Turn down your sound!)"
+		local rpinfo2 = "If at any time you want to stop gaining RP, simply type '.rp stop' into the chat."
+        network.send_chat_message("[RP]: "..rpinfo, false)
+		network.send_chat_message("[RP]: "..rpinfo2, false)
+        sleep(5)
+        isCooldown = false  -- Reset the cooldown after the delay
+    end)
+end)
+chatOpt:add_sameline()
+chatOpt:add_button("Announce .$", function()
+	if isCooldown then
+        gui.show_message('Chat', "There is a delay before sending another menu info message.")
+        return
+    end
+
+    isCooldown = true
+
+    script.run_in_fiber(function(rpMsg)
+        local moneyinfo = "Need some quick, easy money?  Simply type '.$' into the chat as many times as youd like."
+        network.send_chat_message("[$]: "..moneyinfo, false)
+        sleep(5)
+        isCooldown = false  -- Reset the cooldown after the delay
+    end)
+end)
+
 griefPlayerTab:add_text("Extras Addon Submenu Options")
 griefPlayerTab:add_separator()
 griefPlayerTab:add_button("Collapse Submenus", function()
@@ -9990,7 +10025,7 @@ function displayTimecycleModifierSelection()
     for _, modifier in ipairs(filteredTimecycleModifiers) do
         table.insert(timecycleNames, modifier)
     end
-    selectedModifierIndex = ImGui.ListBox("Timecycle Modifier", selectedModifierIndex, timecycleNames, #timecycleNames)
+    selectedModifierIndex = ImGui.ListBox("Timecycle List", selectedModifierIndex, timecycleNames, #timecycleNames)
 end
 
 -- Add search input field
@@ -9998,7 +10033,7 @@ timeCycleMods:add_imgui(function()
     if is_typing then
         PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
     end
-    searchQuery, _ = ImGui.InputText("Search Timecycle Modifiers", searchQuery, 128)
+    searchQuery, _ = ImGui.InputText("Search Timecycles", searchQuery, 128)
     if ImGui.IsItemActive() then
         is_typing = true
     else
