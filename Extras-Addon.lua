@@ -10040,14 +10040,21 @@ timeCycleMods:add_imgui(function()
         is_typing = false
     end
 	displayTimecycleModifierSelection()
-end)
 
-timeCycleMods:add_button("Apply", function()
-    local selectedTimecycle = timecycleNames[selectedModifierIndex + 1]
-    if selectedTimecycle then
-        GRAPHICS.SET_TIMECYCLE_MODIFIER(selectedTimecycle)
-        gui.show_message("Timecycle Modifier", "Applied: " .. selectedTimecycle)
-    else
-        gui.show_message("Timecycle Modifier", "No modifier selected")
+    if ImGui.Button("Apply") then
+        local selectedTimecycle = timecycleNames[selectedModifierIndex + 1]
+        if selectedTimecycle then
+            GRAPHICS.SET_TIMECYCLE_MODIFIER(selectedTimecycle)
+            gui.show_message("Timecycle Modifier", "Applied: " .. selectedTimecycle)
+        else
+            gui.show_message("Timecycle Modifier", "No modifier selected")
+        end
+    end
+    
+    ImGui.SameLine() -- Places the next button on the same line
+    
+    if ImGui.Button("Reset") then
+        GRAPHICS.CLEAR_TIMECYCLE_MODIFIER()
+        gui.show_message("Timecycle Modifier", "Timecycle modifier reset")
     end
 end)
