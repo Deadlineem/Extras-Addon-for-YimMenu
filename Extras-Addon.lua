@@ -94,21 +94,11 @@ function newText(tab, text, size)
 end
 
 function RequestControl(entity)
-    if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) then
-         netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
-        NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
-        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
-    end
-    return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
+    return entities.take_control_of(entity)
 end
 
 function request_control(entity)
-    if not NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity) then
-         netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
-        NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
-        NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
-    end
-    return NETWORK.NETWORK_HAS_CONTROL_OF_ENTITY(entity)
+    return entities.take_control_of(entity)
 end
 
 function SessionChanger(session)
@@ -3676,6 +3666,44 @@ end)
 
 -- Vehicle Options Tab
 Veh = KAOS:add_tab("Vehicle Options")
+
+vehTrix = Veh:add_tab("Tricks/Stunts")
+
+vehTrix:add_button('Ollie', function()
+    targ = network.get_selected_player()
+    ped = PLAYER.GET_PLAYER_PED(targ)
+    veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+    if request_control(veh) then
+        ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+    end
+end)
+vehTrix:add_sameline()
+vehTrix:add_button('Kickflip', function()
+    targ = network.get_selected_player()
+    ped = PLAYER.GET_PLAYER_PED(targ)
+    veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+    if request_control(veh) then
+        ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.71, 5.0, 0.0, 0.0, 1, false, true, true, true, true)
+    end
+end)
+vehTrix:add_sameline()
+vehTrix:add_button('Double Kickflip', function()
+    targ = network.get_selected_player()
+    ped = PLAYER.GET_PLAYER_PED(targ)
+    veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+    if request_control(veh) then
+        ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 21.43, 20.0, 0.0, 0.0, 1, false, true, true, true, true)
+    end
+end)
+vehTrix:add_sameline()
+vehTrix:add_button('Heelflip', function()
+    targ = network.get_selected_player()
+    ped = PLAYER.GET_PLAYER_PED(targ)
+    veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+    if request_control(veh) then
+        ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.71, -5.0, 0.0, 0.0, 1, false, true, true, true, true)
+    end
+end)
 
 tokyodrift = Veh:add_tab("Tokyo Drift")
 script.register_looped("vars", function(vars)
@@ -7290,7 +7318,10 @@ chatOpt:add_button("Menu Info", function()
     end)
 end)
 chatOpt:add_separator()
+chatOpt:add_text("Chat Commands")
+chatOpt:add_separator()
 chatOpt:add_button("Announce .rp", function()
+if chatCommands:is_enabled() then
 	if isCooldown then
         gui.show_message('Chat', "There is a delay before sending another menu info message.")
         return
@@ -7306,9 +7337,13 @@ chatOpt:add_button("Announce .rp", function()
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
     end)
+else
+	gui.show_message("Error", "Chat commands are disabled!  Enable them in Settings.")
+end
 end)
 chatOpt:add_sameline()
 chatOpt:add_button("Announce .$", function()
+if chatCommands:is_enabled() then
 	if isCooldown then
         gui.show_message('Chat', "There is a delay before sending another menu info message.")
         return
@@ -7322,6 +7357,9 @@ chatOpt:add_button("Announce .$", function()
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
     end)
+else
+	gui.show_message("Error", "Chat commands are disabled!  Enable them in Settings.")
+end
 end)
 
 griefPlayerTab:add_text("Extras Addon Submenu Options")
@@ -7334,8 +7372,13 @@ end)
 toolTip(griefPlayerTab, "Sets the Extras Addon Submenus to collapse, Uncollapse them by pressing the > at the left of each tab.")
 
 settingsTab = gui.get_tab("GUI_TAB_SETTINGS")
-collapseGrief = settingsTab:add_checkbox("Collapse Grief Tab")
+settingsTab:add_text("Extras Addon Settings")
+settingsTab:add_separator()
 
+chatCommands = settingsTab:add_checkbox("Enable Chat Commands")
+settingsTab:add_sameline()
+
+collapseGrief = settingsTab:add_checkbox("Collapse Grief Tab")
 griefPlayerTab:add_imgui(function()
 	if collapseGrief:is_enabled() then
 		ImGui.SetNextWindowCollapsed(true)
@@ -7371,16 +7414,6 @@ griefPlayerTab:add_imgui(function()
         ImGui.Begin("Extras Addon (Grief Options) - Target: ".. selPlayer, flags)
             -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
 end)
-
- balls = {
-"p_ld_soc_ball_01",
-"p_ld_am_ball_01",
-"prop_bowling_ball",
-"prop_beach_volball01",
-"prop_beach_volball02",
-"prop_beachball_02",
-"v_ilev_exball_blue"
-}
 
 griefPlayerTab:add_text("Trolling")
 
@@ -7757,12 +7790,7 @@ end
 ---@param entity Entity
 ---@return boolean
 function request_control_once(entity)
-    if not NETWORK.NETWORK_IS_IN_SESSION() then
-        return true
-    end
-     netId = NETWORK.NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity)
-    NETWORK.SET_NETWORK_ID_CAN_MIGRATE(netId, true)
-    return NETWORK.NETWORK_REQUEST_CONTROL_OF_ENTITY(entity)
+    return entities.take_control_of(entity)
 end
 
 function atan2(y, x)
@@ -8723,8 +8751,8 @@ griefPlayerTab:add_button("Fragment crash", function()
             fragcrash2:sleep(100)
             delete_entity(object)
         end
+		sleep(2)
     end)
-	sleep(2)
 end)
 toolTip(griefPlayerTab, "Spawns a bunch of objects on the selected player and breaks them into fragments, causing them to crash")
 
@@ -9103,7 +9131,7 @@ griefPlayerTab:add_imgui(function()
 end)
 
 collapseDrops = settingsTab:add_checkbox("Collapse Drops Tab")
-
+settingsTab:add_sameline()
 dropsPlayerTab:add_imgui(function(script)
 	if collapseDrops:is_enabled() then
 		ImGui.SetNextWindowCollapsed(true)
@@ -9743,80 +9771,108 @@ giftPlayerTab:add_sameline()
 previewVehicles = giftPlayerTab:add_checkbox("Preview")
 
 -- Initialize variables for preview
-local previewSpawned = false
-local previewVehicle = nil
-local previousPreview = nil
+previewSpawned = false
+previewVehicle = nil
+previousPreview = nil
 
 -- Register a looped function to handle the vehicle preview
 script.register_looped("vehiclesPreview", function(vehPreview)
+	if not giftPlayerTab:is_selected() then
+        previewVehicles:set_enabled(false)
+    end
     if previewVehicles:is_enabled() then
-        -- Get the selected vehicle model information
-        local selectedModelIndex = selectedObjectIndex + 1
-        local selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
+        selectedVehicleModel = filteredVehicleModels[selectedObjectIndex + 1]
 
         if selectedVehicleModel then
-            -- Convert vehicle model name to hash
-            local vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
+            vehicleHash = MISC.GET_HASH_KEY(selectedVehicleModel)
 
             -- Get the player's ped handle
-            local playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+            playerPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
 
             -- Get the player's current position and orientation
-            local playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
-            local playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
-            local forwards = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
+            playerPos = ENTITY.GET_ENTITY_COORDS(playerPed, true)
+            playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
+            forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(playerPed)
 
-            -- Calculate the spawn position for the vehicle preview based on the player's forward vector and distance
-            local spawnX = playerPos.x + forwards.x * vehicleSpawnDistance.x
-            local spawnY = playerPos.y + forwards.y * vehicleSpawnDistance.y
-            local spawnZ = playerPos.z
+            -- Calculate the spawn distance and offset
+             spawnOffsetX = vehicleSpawnDistance.x * forwardVector.x
+             spawnOffsetY = vehicleSpawnDistance.y * forwardVector.y
+			 spawnOffsetZ = vehicleSpawnDistance.z
+            -- Calculate the spawn position based on the offset
+             spawnX = playerPos.x + spawnOffsetX
+             spawnY = playerPos.y + spawnOffsetY
+             spawnZ = playerPos.z + spawnOffsetZ -- Adjust the height if needed
 
             -- Spawn the vehicle preview
-            if previewVehicle ~= vehicleHash and previewVehicle ~= nil then
-                delete_entity(previewVehicle)
+            while not STREAMING.HAS_MODEL_LOADED(vehicleHash) do
+                STREAMING.REQUEST_MODEL(vehicleHash)
+                coroutine.yield()
+            end
+			if viewVehicle ~= vehicleHash and viewVehicle ~= nil then
+                delete_entity(viewVehicle)
                 previewSpawned = false
             end
             if not previewSpawned then
-                if STREAMING.HAS_MODEL_LOADED(vehicleHash) then
-                    previewVehicle = VEHICLE.CREATE_VEHICLE(vehicleHash, spawnX, spawnY, spawnZ, playerHeading, true, true, false)
-					VEHICLE.SET_VEHICLE_MOD_KIT(previewVehicle, 0)
-                    VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, pR, pG, pB)
-                    VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, sR, sG, sB)
-					VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, wheelColor)
-                    if customWheels:is_enabled() then
+                viewVehicle = VEHICLE.CREATE_VEHICLE(vehicleHash, spawnX, spawnY, spawnZ, playerHeading, true, true, false)
+				request_control(viewVehicle)
+				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(viewVehicle)
+				ENTITY.SET_ENTITY_COORDS(vehicleHash, spawnX, spawnY, spawnZ, true, false, false, false)
+				ENTITY.SET_ENTITY_ROTATION(viewVehicle, 0, 0, playerHeading, 2, true)
+				ENTITY.SET_ENTITY_ALPHA(viewVehicle, vehicleAlpha, true)
+				VEHICLE.SET_VEHICLE_MOD_KIT(viewVehicle, 0)
+				VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(viewVehicle, pR, pG, pB)
+				VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(viewVehicle, sR, sG, sB)
+				VEHICLE.SET_VEHICLE_EXTRA_COLOURS(viewVehicle, pearlescent, wheelColor)
+				if customWheels:is_enabled() then
+					open_wheel(viewVehicle, wheelType, wheelStyle)
+				end
+				if spawnMaxed:is_enabled() then
+					max_vehicle(viewVehicle)
+					max_vehicle_performance(viewVehicle)
+				end
+				VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(viewVehicle, 5)
+                previewSpawned = true
+				previewVehicle = viewVehicle
+				sleep(0.05)
+            end
+			if previewSpawned then
+				request_control(previewVehicle)
+				
+				if customWheels:is_enabled() then
 						open_wheel(previewVehicle, wheelType, wheelStyle)
 					end
 					if spawnMaxed:is_enabled() then
 						max_vehicle(previewVehicle)
 						max_vehicle_performance(previewVehicle)
 					end
-                    VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
-                    ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
-                    local networkId = NETWORK.VEH_TO_NET(previewVehicle)
-                    ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, 2, true)
-                    if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(previewVehicle) then
-                        NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-                    end
-                    ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(previewVehicle)
-                    previewSpawned = false
-                else
-                   STREAMING.REQUEST_MODEL(vehicleHash)
-                end
-            end
+				VEHICLE.SET_VEHICLE_MOD_KIT(previewVehicle, 0)
+				VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, pR, pG, pB)
+				VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, sR, sG, sB)
+				VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, wheelColor)
+				ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, true)
+				ENTITY.SET_CAN_CLIMB_ON_ENTITY(previewVehicle, false)
+				ENTITY.SET_ENTITY_COORDS(previewVehicle, spawnX, spawnY, spawnZ, true, false, false, false)
+				ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationRoll, vehicleOrientationYaw, playerHeading + vehicleOrientationPitch, 2, true)
+				ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
+				--VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
+				previousPreview = previewVehicle
+			end
         else
             gui.show_message("Vehicle Spawner", "Selected vehicle not found.")
         end
     else
         -- Delete the preview vehicle if preview checkbox is disabled
         if previewVehicle ~= nil then
-            delete_entity(previewVehicle)
+			if ENTITY.DOES_ENTITY_EXIST(viewVehicle) then 
+				delete_entity(viewVehicle) 
+			end
+		end
             previewSpawned = false
             previewVehicle = nil
             previousPreview = nil
-        end
     end
 
-    vehPreview:yield() -- Yield the loop to avoid consuming too much CPU
+    --vehPreview:yield() -- Yield the loop to avoid consuming too much CPU
 end)
 
 toolTip(giftPlayerTab, "Previews the selected vehicle")
@@ -9989,7 +10045,7 @@ player = false
 
 event.register_handler(menu_event.ChatMessageReceived, function (pid, message)
     playerName = PLAYER.GET_PLAYER_NAME(pid)
-    --gui.show_message(playerName, message)
+if chatCommands:is_enabled() then
     if message == '.rp' then
         gui.show_message(playerName.. ' has requested RP')
         for i, p in pairs(players) do
@@ -10014,12 +10070,13 @@ event.register_handler(menu_event.ChatMessageReceived, function (pid, message)
 			    for l = -10, 10 do
 			        for v = 0, 1 do
 				        network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
-				        script:sleep(10)
+				        script:sleep(5)
 			        end
 			    end
 			end
 		end)
 	end
+end
 end)
 
 script.register_looped('rpChatters', function(script)
