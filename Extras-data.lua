@@ -12228,6 +12228,15 @@ ranks = {
     1787153300,
     1787576850
 }
+ balls = {
+"p_ld_soc_ball_01",
+"p_ld_am_ball_01",
+"prop_bowling_ball",
+"prop_beach_volball01",
+"prop_beach_volball02",
+"prop_beachball_02",
+"v_ilev_exball_blue"
+}
 
 function Button(text, color, hovercolor, activecolor)
     ImGui.PushStyleColor(ImGuiCol.Button, color[1]/255, color[2]/255, color[3]/255, color[4])
