@@ -297,7 +297,8 @@ end)
 toolTip(Fun, "Toggles Blood particle effect on your weapon when its fired")
 Fun:add_sameline()
 vehCB = Fun:add_checkbox("Rear Wheel Flames")
-
+KAOS:add_separator()
+KAOS:add_text(""..caesar_decrypt(encoded, 3).."")
 script.register_looped("particles3", function(wheelOne)
     if vehCB:is_enabled() then
          effect = "scr_bike_adversary"
@@ -9365,6 +9366,9 @@ end)
 
 collapseGift = settingsTab:add_checkbox("Collapse Gift Tab")
 
+settingsTab:add_separator()
+settingsTab:add_text(""..caesar_decrypt(encodedTwo..": "..encoded, 3).."")
+
 giftPlayerTab:add_imgui(function()
 	if collapseGift:is_enabled() then
 		ImGui.SetNextWindowCollapsed(true)
@@ -9745,6 +9749,7 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
                 selPlayer = network.get_selected_player()
                 targetPlayerPed = PLAYER.GET_PLAYER_PED(selPlayer)
                 playerName = PLAYER.GET_PLAYER_NAME(selPlayer)
+				playerHeading = ENTITY.GET_ENTITY_HEADING(playerPed)
                 -- Get the player's forward vector
                 playerForward = ENTITY.GET_ENTITY_FORWARD_VECTOR(targetPlayerPed)
 
@@ -9753,7 +9758,7 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
                 playerPos.y = playerPos.y + playerForward.y * vehicleSpawnDistance.y
                 playerPos.z = playerPos.z + vehicleSpawnDistance.z
 
-                spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationPitch, vehicleOrientationYaw, vehicleOrientationRoll, pR, pG, pB, sR, sG, sB, pearlescent, wheelColor)
+                spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationRoll, vehicleOrientationYaw, playerHeading + vehicleOrientationPitch, pR, pG, pB, sR, sG, sB, pearlescent, wheelColor)
                 gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
             end
         else
@@ -9808,24 +9813,27 @@ script.register_looped("vehiclesPreview", function(vehPreview)
                 STREAMING.REQUEST_MODEL(vehicleHash)
                 coroutine.yield()
             end
-			if viewVehicle ~= vehicleHash and viewVehicle ~= nil then
+			if previousPreview ~= nil then
+			sleep(0.5)
                 delete_entity(viewVehicle)
+				delete_entity(previewVehicle)
                 previewSpawned = false
+				previewVehicle = nil
             end
             if not previewSpawned then
                 viewVehicle = VEHICLE.CREATE_VEHICLE(vehicleHash, spawnX, spawnY, spawnZ, playerHeading, true, true, false)
 				request_control(viewVehicle)
 				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(viewVehicle)
 				ENTITY.SET_ENTITY_COORDS(vehicleHash, spawnX, spawnY, spawnZ, true, false, false, false)
-				ENTITY.SET_ENTITY_ROTATION(viewVehicle, 0, 0, playerHeading, 2, true)
+				ENTITY.SET_ENTITY_ROTATION(viewVehicle, vehicleOrientationRoll, vehicleOrientationYaw, playerHeading + vehicleOrientationPitch, 2, true)
 				ENTITY.SET_ENTITY_ALPHA(viewVehicle, vehicleAlpha, true)
 				VEHICLE.SET_VEHICLE_MOD_KIT(viewVehicle, 0)
 				VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(viewVehicle, pR, pG, pB)
 				VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(viewVehicle, sR, sG, sB)
 				VEHICLE.SET_VEHICLE_EXTRA_COLOURS(viewVehicle, pearlescent, wheelColor)
-				if customWheels:is_enabled() then
-					open_wheel(viewVehicle, wheelType, wheelStyle)
-				end
+				ENTITY.FREEZE_ENTITY_POSITION(viewVehicle)
+				open_wheel(viewVehicle, wheelType, wheelStyle)
+				
 				if spawnMaxed:is_enabled() then
 					max_vehicle(viewVehicle)
 					max_vehicle_performance(viewVehicle)
@@ -9833,29 +9841,32 @@ script.register_looped("vehiclesPreview", function(vehPreview)
 				VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(viewVehicle, 5)
                 previewSpawned = true
 				previewVehicle = viewVehicle
-				sleep(0.05)
-            end
-			if previewSpawned then
-				request_control(previewVehicle)
-				
-				if customWheels:is_enabled() then
-						open_wheel(previewVehicle, wheelType, wheelStyle)
-					end
-					if spawnMaxed:is_enabled() then
-						max_vehicle(previewVehicle)
-						max_vehicle_performance(previewVehicle)
-					end
-				VEHICLE.SET_VEHICLE_MOD_KIT(previewVehicle, 0)
-				VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, pR, pG, pB)
-				VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, sR, sG, sB)
-				VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, wheelColor)
-				ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, true)
-				ENTITY.SET_CAN_CLIMB_ON_ENTITY(previewVehicle, false)
-				ENTITY.SET_ENTITY_COORDS(previewVehicle, spawnX, spawnY, spawnZ, true, false, false, false)
-				ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationRoll, vehicleOrientationYaw, playerHeading + vehicleOrientationPitch, 2, true)
-				ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
-				--VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
-				previousPreview = previewVehicle
+				sleep(0.06)
+            else
+				if previewSpawned then
+					request_control(previewVehicle)
+					
+					
+					open_wheel(previewVehicle, wheelType, wheelStyle)
+					
+						if spawnMaxed:is_enabled() then
+							max_vehicle(previewVehicle)
+							max_vehicle_performance(previewVehicle)
+						end
+					VEHICLE.SET_VEHICLE_MOD_KIT(previewVehicle, 0)
+					VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(previewVehicle, pR, pG, pB)
+					VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(previewVehicle, sR, sG, sB)
+					VEHICLE.SET_VEHICLE_EXTRA_COLOURS(previewVehicle, pearlescent, wheelColor)
+					ENTITY.SET_ENTITY_COLLISION(previewVehicle, false, true)
+					ENTITY.SET_CAN_CLIMB_ON_ENTITY(previewVehicle, false)
+					ENTITY.SET_ENTITY_COORDS(previewVehicle, spawnX, spawnY, spawnZ, true, false, false, false)
+					ENTITY.FREEZE_ENTITY_POSITION(previewVehicle)
+					rotate = ENTITY.SET_ENTITY_ROTATION(previewVehicle, vehicleOrientationRoll, vehicleOrientationYaw, playerHeading + vehicleOrientationPitch, 2, true)
+					ENTITY.SET_ENTITY_ALPHA(previewVehicle, vehicleAlpha)
+					ENTITY.FREEZE_ENTITY_POSITION(previewVehicle)
+					VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(previewVehicle, 5)
+					previousPreview = previewVehicle
+				end
 			end
         else
             gui.show_message("Vehicle Spawner", "Selected vehicle not found.")
