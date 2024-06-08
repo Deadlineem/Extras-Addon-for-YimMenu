@@ -2245,6 +2245,8 @@ sounds = {
         {SoundName = "PROPERTY PURCHASE MEDIUM", AudioName = "PROPERTY_PURCHASE_MEDIUM", AudioRef = "HUD_PROPERTY_SOUNDSET"},
 }
 
+url = "https://github.com/Deadlineem/Extras-Addon-for-YimMenu/"
+
 weaponModels = {
         "prop_w_me_dagger", "prop_baseball_bat", "prop_ld_flow_bottle", "prop_tool_crowbar", "prop_ld_ammo_pack_01", "prop_ld_shovel", "prop_golf_iron_01", "prop_tool_hammer", "prop_ld_fireaxe", "prop_ld_handbag", "prop_knife", "prop_ld_w_me_machette", "prop_ld_w_me_switchblade",
         "prop_ld_bat_01", "prop_tool_wrench", "prop_tool_fireaxe", "prop_pool_cue", "prop_melee_rock", "w_pi_pistol", "w_pi_pistol_mk2", "w_pi_combatpistol", "w_pi_appistol", "w_pi_stungun", "w_pi_pistol50", "w_pi_sns_pistol", "w_pi_sns_pistol_mk2", "w_pi_heavy_pistol",
@@ -12325,6 +12327,28 @@ function entToNet(netID)
         end
     end)
 end
+
+function caesar_encrypt(input, shift)
+    local encrypted = ""
+    for i = 1, #input do
+        local char = input:sub(i, i)
+        if char >= 'A' and char <= 'Z' then
+            char = string.char((string.byte(char) - string.byte('A') + shift) % 26 + string.byte('A'))
+        elseif char >= 'a' and char <= 'z' then
+            char = string.char((string.byte(char) - string.byte('a') + shift) % 26 + string.byte('a'))
+        end
+        encrypted = encrypted .. char
+    end
+    return encrypted
+end
+
+-- Function to decrypt a string encrypted with a Caesar cipher with a given shift
+function caesar_decrypt(input, shift)
+    return caesar_encrypt(input, -shift)
+end
+
+encodedTwo = caesar_encrypt("Provided FREE from", 3)
+encoded = caesar_encrypt(url, 3)
 
 function playSelected(target, prop1, prop2, loopedFX, propPed, targetBone, targetCoords, targetHeading, targetForwardX, targetForwardY, targetBoneCoords, ent, propTable, ptfxTable)
     if info.type == 1 then
