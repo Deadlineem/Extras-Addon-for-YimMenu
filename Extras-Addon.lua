@@ -5715,6 +5715,10 @@ function tp(x, y, z, pitch, yaw, roll)
     ENTITY.SET_ENTITY_ROTATION(player, pitch, yaw, roll, 0, true)
 end
 
+function MPX()
+    return "MP" .. stats.get_int("MPPLY_LAST_MP_CHAR") .. "_"
+end
+
 function cuts(cut)
     script.run_in_fiber(function(cuts)
         control = 2
@@ -5944,9 +5948,9 @@ heistTab:add_imgui(function()
         ImGui.Text("if you are in the planning screen after the cutscene")
         ImGui.Text("you can click it then scroll up down left or right")
         ImGui.Text("and it should kick you out of the screen and complete the setups")
-	ImGui.Separator()
-	ImGui.Text("MAKE SURE YOU HAVE THE HEIST ON NORMAL MODE ONLY!")
-        ImGui.Separator()
+		ImGui.Separator()
+		ImGui.Text("MAKE SURE YOU HAVE THE HEIST ON NORMAL MODE ONLY!")
+		ImGui.Separator()
         ImGui.Text("For 15 million cuts")
         ImGui.Text("hover over your cut and click the button")
     end
@@ -7385,18 +7389,10 @@ griefPlayerTab:add_imgui(function()
 	end
 end)
 
+
+flags = ImGuiWindowFlags.None
 griefPlayerTab:add_imgui(function()
-        parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
-        parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
-        parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-        childWidth, childHeight = 200, 200 -- Size of your child window
-        offset = 10 -- Offset between parent and child windows
-
-        x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
-        y = parentY -- Align the child window vertically with the parent window
-		flags = ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.AlwaysAutoResize
-        ImGui.SetNextWindowPos(x, y)
-
+        
         ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 255.0, 0.0, 0.0, 0.6) -- Adjust the Title color as needed
 
 		ImGui.PushStyleColor(ImGuiCol.WindowBg, 255.0, 0.0, 0.0, 0.6) -- Adjust the Window background color
@@ -9111,13 +9107,10 @@ griefPlayerTab:add_sameline()
 stopSounds = griefPlayerTab:add_checkbox("Stop  Sounds")
     script.register_looped("stopSounds", function(script)
         if stopSounds:is_enabled() == true then
-            --soundId = AUDIO.GET_SOUND_ID()
-            --gui.show_message("Sound ID", "Stopped "..soundId)
-            --AUDIO.STOP_SOUND(soundId)
-            --AUDIO.RELEASE_SOUND_ID(soundId)
             for i = -1, 25 do
                 AUDIO.STOP_SOUND(i)
                 AUDIO.RELEASE_SOUND_ID(i)
+				AUDIO.PLAY_SOUND_FROM_ENTITY(i, "SELECT", PLAYER.PED_ID(), "HUD_FRONTEND_DEFAULT_SOUNDSET", true, 0)
             end
         end
     end)
@@ -9139,16 +9132,6 @@ dropsPlayerTab:add_imgui(function(script)
 end)
 
 dropsPlayerTab:add_imgui(function()
-        parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
-        parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
-        parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-        childWidth, childHeight = 200, 200 -- Size of your child window
-        offset = 10 -- Offset between parent and child windows
-
-        x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
-        y = parentY + 30 -- Align the child window vertically with the parent window
-		flags = ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.AlwaysAutoResize
-        ImGui.SetNextWindowPos(x, y)
 		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 255.0, 0.0, 0.6) -- Adjust the color as needed
 		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 255.0, 0.0, 0.6) -- Adjust the Window background color
 		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
@@ -9375,17 +9358,6 @@ giftPlayerTab:add_imgui(function()
 end)
 
 giftPlayerTab:add_imgui(function()
-        parentWindow = gui.get_tab("") -- Assuming this retrieves the parent window
-        parentX, parentY = ImGui.GetWindowPos() -- Get the position of the parent window
-        parentWidth, parentHeight = ImGui.GetWindowSize(parentWindow) -- Get the size of the parent window
-        childWidth, childHeight = 200, 200 -- Size of your child window
-        offset = 10 -- Offset between parent and child windows
-
-        x = parentX + parentWidth + offset -- Position the child window to the right of the parent window
-        y = parentY + 60 -- Align the child window vertically with the parent window
-		flags = ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.AlwaysAutoResize
-        ImGui.SetNextWindowPos(x, y)
-
 		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 0.0, 255.0, 0.6) -- Adjust the color as needed
 		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 0.0, 255.0, 0.6) -- Adjust the Window background color
 
