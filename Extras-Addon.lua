@@ -5715,10 +5715,6 @@ function tp(x, y, z, pitch, yaw, roll)
     ENTITY.SET_ENTITY_ROTATION(player, pitch, yaw, roll, 0, true)
 end
 
-function MPX()
-    return "MP" .. stats.get_int("MPPLY_LAST_MP_CHAR") .. "_"
-end
-
 function cuts(cut)
     script.run_in_fiber(function(cuts)
         control = 2
@@ -5799,7 +5795,7 @@ heistTab:add_imgui(function()
 end)
 
 heistTab:add_button("Complete All Setups", function()
-    stats.set_int(MPX() .. "HEIST_PLANNING_STAGE", -1)
+    stats.set_int(MPX .. "HEIST_PLANNING_STAGE", -1)
 end)
 toolTip(heistTab, "Complete setups for current heist")
 
