@@ -7393,9 +7393,9 @@ end)
 flags = ImGuiWindowFlags.None
 griefPlayerTab:add_imgui(function()
         
-        ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 255.0, 0.0, 0.0, 0.6) -- Adjust the Title color as needed
+        ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.5, 0.0, 0.0, 1) -- Adjust the Title color as needed
 
-		ImGui.PushStyleColor(ImGuiCol.WindowBg, 255.0, 0.0, 0.0, 0.6) -- Adjust the Window background color
+		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.5, 0.0, 0.0, 1) -- Adjust the Window background color
 
 		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
 		selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
@@ -9103,17 +9103,15 @@ end)
 toolTip(griefPlayerTab, "Plays the selected sound from the dropdown.")
 
 griefPlayerTab:add_sameline()
- stopSounds = false
-stopSounds = griefPlayerTab:add_checkbox("Stop  Sounds")
-    script.register_looped("stopSounds", function(script)
-        if stopSounds:is_enabled() == true then
-            for i = -1, 25 do
-                AUDIO.STOP_SOUND(i)
-                AUDIO.RELEASE_SOUND_ID(i)
-				AUDIO.PLAY_SOUND_FROM_ENTITY(i, "SELECT", PLAYER.PED_ID(), "HUD_FRONTEND_DEFAULT_SOUNDSET", true, 0)
-            end
+griefPlayerTab:add_button("Stop Sounds", function()
+	script.run_in_fiber(function(script)
+        for i = -1, 25 do
+            AUDIO.STOP_SOUND(i)
+            AUDIO.RELEASE_SOUND_ID(i)
+			AUDIO.PLAY_SOUND_FROM_ENTITY(i, "SELECT", PLAYER.PLAYER_PED_ID(), "HUD_FRONTEND_DEFAULT_SOUNDSET", true, 0)
         end
     end)
+end)
 
 toolTip(griefPlayerTab, "Halts all sounds.")
 
@@ -9132,8 +9130,8 @@ dropsPlayerTab:add_imgui(function(script)
 end)
 
 dropsPlayerTab:add_imgui(function()
-		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 255.0, 0.0, 0.6) -- Adjust the color as needed
-		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 255.0, 0.0, 0.6) -- Adjust the Window background color
+		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 0.5, 0.0, 1) -- Adjust the color as needed
+		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 0.5, 0.0, 1) -- Adjust the Window background color
 		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
 		selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
 		if selPlayer == "**Invalid**" then
@@ -9358,8 +9356,8 @@ giftPlayerTab:add_imgui(function()
 end)
 
 giftPlayerTab:add_imgui(function()
-		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 0.0, 255.0, 0.6) -- Adjust the color as needed
-		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 0.0, 255.0, 0.6) -- Adjust the Window background color
+		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 0.0, 0.5, 1) -- Adjust the color as needed
+		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 0.0, 0.5, 1) -- Adjust the Window background color
 
 		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
 		selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
