@@ -7390,7 +7390,7 @@ griefPlayerTab:add_imgui(function()
 end)
 
 
-flags = ImGuiWindowFlags.None
+flags = ImGuiWindowFlags.AlwaysAutoResize 
 griefPlayerTab:add_imgui(function()
         
         ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.5, 0.0, 0.0, 1) -- Adjust the Title color as needed
@@ -9885,6 +9885,7 @@ end)
 giftedsucc = false
 
 function giftVehToPlayer(vehicle, playerId, playerName)
+script.run_in_fiber(function(script)
     if request_control(vehicle) then
          netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
 
@@ -9900,6 +9901,8 @@ function giftVehToPlayer(vehicle, playerId, playerName)
         gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
         giftedsucc = false
     end
+	script:yield()
+end)
 end
 
 -- Assuming gui provides a 'show_message' method
