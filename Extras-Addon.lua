@@ -7235,8 +7235,6 @@ isTeam = chatOpt:add_checkbox("Team Only")
 showAddon = chatOpt:add_checkbox("Show Addon ")
 toolTip(chatOpt, "Shows [Extras Addon] before your message")
 
-isPrivate = chatOpt:add_checkbox("Send Privately")
-toolTip(chatOpt, "Shows [Extras Addon] before your message")
 chatOpt:add_button("Send Message", function()
 	if isCooldown then
         gui.show_message('Chat', "There is a delay before sending another chat message.")
