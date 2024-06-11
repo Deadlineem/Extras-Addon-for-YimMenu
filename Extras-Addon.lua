@@ -7232,7 +7232,7 @@ chatOpt:add_imgui(function()
 end)
 chatOpt:add_sameline()
 isTeam = chatOpt:add_checkbox("Team Only")
-showAddon = chatOpt:add_checkbox("Show Addon ")
+showAddon = chatOpt:add_checkbox("Show Addon")
 toolTip(chatOpt, "Shows [Extras Addon] before your message")
 
 chatOpt:add_button("Send Message", function()
@@ -7242,7 +7242,7 @@ chatOpt:add_button("Send Message", function()
     end
 
     isCooldown = true
-
+	
 	script.run_in_fiber(function(chatMsg)
         if isTeam:is_enabled() == false then
             if chatBox ~= "" then
@@ -7263,6 +7263,7 @@ chatOpt:add_button("Send Message", function()
         end
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
+		chatMsg:yield()
     end)
 end)
 
@@ -7295,6 +7296,7 @@ chatOpt:add_button("Send", function()
             network.send_chat_message("[Add My Discord]: "..discordBox, false)
             sleep(5)
             isCooldown = false  -- Reset the cooldown after the delay
+			discordMsg:yield()
         end)
     end
 end)
@@ -7313,6 +7315,7 @@ chatOpt:add_button("Addon Info", function()
         network.send_chat_message("[Lua Script]: "..ainfo, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
+		addonMsg:yield()
     end)
 end)
 chatOpt:add_sameline()
@@ -7329,6 +7332,7 @@ chatOpt:add_button("Menu Info", function()
         network.send_chat_message("[Menu]: "..binfo, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
+		menuMsg:yield()
     end)
 end)
 chatOpt:add_separator()
@@ -7350,6 +7354,7 @@ if chatCommands:is_enabled() then
 		network.send_chat_message("[RP]: "..rpinfo2, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
+		rpMsg:yield()
     end)
 else
 	gui.show_message("Error", "Chat commands are disabled!  Enable them in Settings.")
@@ -7365,41 +7370,23 @@ if chatCommands:is_enabled() then
 
     isCooldown = true
 
-    script.run_in_fiber(function(rpMsg)
+    script.run_in_fiber(function(moneyMsg)
         local moneyinfo = "Need some quick, easy money?  Simply type '.$' into the chat as many times as youd like."
         network.send_chat_message("[$]: "..moneyinfo, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
+		moneyMsg:yield()
     end)
 else
 	gui.show_message("Error", "Chat commands are disabled!  Enable them in Settings.")
 end
 end)
 
-griefPlayerTab:add_text("Extras Addon Submenu Options")
-griefPlayerTab:add_separator()
-griefPlayerTab:add_button("Collapse Submenus", function()
-	collapseGrief:set_enabled(true)
-	collapseDrops:set_enabled(true)
-	collapseGift:set_enabled(true)
-end)
-toolTip(griefPlayerTab, "Sets the Extras Addon Submenus to collapse, Uncollapse them by pressing the > at the left of each tab.")
-
 settingsTab = gui.get_tab("GUI_TAB_SETTINGS")
 settingsTab:add_text("Extras Addon Settings")
 settingsTab:add_separator()
 
 chatCommands = settingsTab:add_checkbox("Enable Chat Commands")
-settingsTab:add_sameline()
-
-collapseGrief = settingsTab:add_checkbox("Collapse Grief Tab")
-griefPlayerTab:add_imgui(function()
-	if collapseGrief:is_enabled() then
-		ImGui.SetNextWindowCollapsed(true)
-		collapseGrief:set_enabled(false)
-	end
-end)
-
 
 flags = ImGuiWindowFlags.None | ImGuiWindowFlags.NoSavedSettings
 griefPlayerTab:add_imgui(function()
@@ -7417,10 +7404,12 @@ griefPlayerTab:add_imgui(function()
     end
 	
 	ImGui.SetNextWindowPos(268, 12, ImGuiCond.FirstUseEver)
+    ImGui.SetNextWindowCollapsed(true, ImGuiCond.FirstUseEver) -- Collapse the window on first use
 	
     ImGui.Begin("Extras Addon (Grief Options) - Target: ".. selPlayer, flags)
         -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
 end)
+
 
 
 griefPlayerTab:add_text("Trolling")
@@ -9133,15 +9122,6 @@ griefPlayerTab:add_imgui(function()
     ImGui.End()
 end)
 
-collapseDrops = settingsTab:add_checkbox("Collapse Drops Tab")
-settingsTab:add_sameline()
-dropsPlayerTab:add_imgui(function(script)
-	if collapseDrops:is_enabled() then
-		ImGui.SetNextWindowCollapsed(true)
-		collapseDrops:set_enabled(false)
-	end
-end)
-
 dropsPlayerTab:add_imgui(function()
 		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 0.5, 0.0, 1) -- Adjust the color as needed
 		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 0.5, 0.0, 1) -- Adjust the Window background color
@@ -9155,6 +9135,7 @@ dropsPlayerTab:add_imgui(function()
 		end
 		
 		ImGui.SetNextWindowPos(736, 12, ImGuiCond.FirstUseEver)
+		ImGui.SetNextWindowCollapsed(true, ImGuiCond.FirstUseEver)
 		
 		ImGui.Begin("Extras Addon (Drop Options) - Target: ".. selPlayer, flags)
             -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
@@ -9250,7 +9231,6 @@ alienLoop = dropsPlayerTab:add_checkbox("Alien (On/Off)")
     end)
 toolTip(dropsPlayerTab, "Drops Alien Figurines on a selected player.")
 
-dropsPlayerTab:add_sameline()
 cardsLoop = dropsPlayerTab:add_checkbox("Casino Cards (On/Off)")
     script.register_looped("casinocardsLoop", function(script)
 		if cardsLoop:is_enabled() then
@@ -9358,17 +9338,8 @@ dropsPlayerTab:add_imgui(function()
     ImGui.End()
 end)
 
-collapseGift = settingsTab:add_checkbox("Collapse Gift Tab")
-
 settingsTab:add_separator()
-settingsTab:add_text(""..caesar_decrypt(encodedTwo..": "..encoded, 3).."")
-
-giftPlayerTab:add_imgui(function()
-	if collapseGift:is_enabled() then
-		ImGui.SetNextWindowCollapsed(true)
-		collapseGift:set_enabled(false)
-	end
-end)
+chatOpt:add_text(""..caesar_decrypt(encodedTwo..": "..encoded, 3).."")
 
 giftPlayerTab:add_imgui(function()
 		ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 0.0, 0.5, 1) -- Adjust the color as needed
@@ -9384,6 +9355,7 @@ giftPlayerTab:add_imgui(function()
 		end
 		
 		ImGui.SetNextWindowPos(268, 48, ImGuiCond.FirstUseEver)
+		ImGui.SetNextWindowCollapsed(true, ImGuiCond.FirstUseEver)
 		
         if ImGui.Begin("Extras Addon (Vehicle Options) - Target: ".. selPlayer, flags) then
             -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
@@ -9519,40 +9491,44 @@ selected_wheel_index = 0
 selected_style_index = 0
 wheelType = ""
 wheelStyle = ""
+
 function displayWheelSelection()
-    ImGui.Text("Select a Wheel Type:")
-    local wheel_types = {}
-    for name, _ in pairs(wheelTypes) do
-        table.insert(wheel_types, name)
-    end
-    selected_wheel_index, changed = ImGui.ListBox("Wheel Type", selected_wheel_index, wheel_types, #wheel_types + 1)
-    if changed then
-		local selected_wheel_name = wheel_types[selected_wheel_index + 1]
-		local selected_wheel_value = wheelTypes[selected_wheel_name]
-		if selected_wheel_value then
-			wheelType = selected_wheel_value -- Update wheelType variable
-			wheelName = selected_wheel_name
-			gui.show_message("Wheel Type", "You've selected "..wheelName.." now scroll down and select the style of wheel you want")
+	ImGui.BeginGroup()
+			ImGui.Text("Select a Wheel Type:")
+			local wheel_types = {}
+			for name, _ in pairs(wheelTypes) do
+				table.insert(wheel_types, name)
+			end
+			ImGui.SetNextItemWidth(250)
+			selected_wheel_index, changed = ImGui.ListBox(">", selected_wheel_index, wheel_types, #wheel_types + 1)
+			if changed then
+				local selected_wheel_name = wheel_types[selected_wheel_index + 1]
+				local selected_wheel_value = wheelTypes[selected_wheel_name]
+				if selected_wheel_value then
+					wheelType = selected_wheel_value -- Update wheelType variable
+					wheelName = selected_wheel_name
+					gui.show_message("Wheel Type", "You've selected "..wheelName.." now scroll down and select the style of wheel you want")
+				end
+			end
+	ImGui.SameLine()
+		-- Check if a wheel type is selected
+		if wheelName ~= nil then
+			-- Display the second listbox for wheel styles
+			local wheel_styles = {} -- Assuming wheelStyles is a table containing styles for each wheel type
+			for style, _ in pairs(wheelStyles[wheelName]) do
+				table.insert(wheel_styles, style)
+			end
+			ImGui.SetNextItemWidth(250)
+			selected_style_index, changed = ImGui.ListBox("Style", selected_style_index, wheel_styles, #wheel_styles + 1)
+			if changed then
+				local selected_style_name = wheel_styles[selected_style_index + 1]
+				local selected_style_value = wheelStyles[wheelName][selected_style_name]
+				wheelStyle = selected_style_value
+				styleName = selected_style_name
+				gui.show_message("Wheel Style", "Your custom wheels - \nType: "..wheelName.. "\nStyle: "..styleName.."\nhave been applied!"..wheelStyle)
+			end
 		end
-	end
-
-
-    -- Check if a wheel type is selected
-    if wheelName ~= nil then
-        -- Display the second listbox for wheel styles
-        local wheel_styles = {} -- Assuming wheelStyles is a table containing styles for each wheel type
-        for style, _ in pairs(wheelStyles[wheelName]) do
-            table.insert(wheel_styles, style)
-        end
-        selected_style_index, changed = ImGui.ListBox("Wheel Style", selected_style_index, wheel_styles, #wheel_styles + 1)
-        if changed then
-			local selected_style_name = wheel_styles[selected_style_index + 1]
-			local selected_style_value = wheelStyles[wheelName][selected_style_name]
-			wheelStyle = selected_style_value
-			styleName = selected_style_name
-			gui.show_message("Wheel Style", "Your custom wheels - \nType: "..wheelName.. "\nStyle: "..styleName.."\nhave been applied!"..wheelStyle)
-		end
-    end
+	ImGui.EndGroup()
 end
 
 -- Function to display the list of vehicle models with search functionality
@@ -9922,7 +9898,22 @@ script.run_in_fiber(function(script)
 end)
 end
 
--- Assuming gui provides a 'show_message' method
+-- Hexarobi -- Delete any invisible cars that are commonly left over from gifting. Credit to Holy for finding this check
+function clear_invisible_vehicles(pid, range)
+    if range == nil then range = 50 end
+    local player_pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), 1)
+    for _, vehicle_handle in entities.get_all_vehicles_as_handles() do
+        local entity_pos = ENTITY.GET_ENTITY_COORDS(vehicle_handle, 1)
+        local dist = SYSTEM.VDIST(player_pos.x, player_pos.y, player_pos.z, entity_pos.x, entity_pos.y, entity_pos.z)
+        if dist <= range then
+            if vehicle_handle ~= -1 and not ENTITY.IS_ENTITY_VISIBLE(vehicle_handle) then
+                local vehicle_name = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle_handle))
+                gui.show_message("Deleting invisible vehicle: "..vehicle_name)
+                entities.delete(vehicle_handle)
+            end
+        end
+    end
+end
 
 giftPlayerTab:add_button("Gift Vehicle", function()
 
@@ -9936,12 +9927,18 @@ giftPlayerTab:add_button("Gift Vehicle", function()
 
         if PED.IS_PED_IN_ANY_VEHICLE(targetPlayerPed, true) then
             local targetVehicle = PED.GET_VEHICLE_PED_IS_IN(targetPlayerPed, true)
-
+			vehName = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(targetVehicle))
             repeat
                 giftVehToPlayer(targetVehicle, selectedPlayer, playerName)
                 sleep(0.2)
             until(giftedsucc == true)
-
+			if giftedsucc == true then 
+				giftMsg = "Success!"
+				giftMsgTwo = "You can now drive into your garage and replace a vehicle!"
+				network.send_chat_message_to_player(selectedPlayer, giftMsg.." Gifted Vehicle: "..vehName.." to "..playerName..". "..giftMsgTwo)
+				sleep(5)
+				clear_invisible_vehicles(PLAYER.PLAYER_ID(), 50)
+			end
             giftedsucc = false -- set false to make sure next gifted car doesnt instantly stop repeating when it should still be repeating
         end
 		giftVeh:yield()
@@ -9978,10 +9975,10 @@ giftPlayerTab:add_sameline()
 giftPlayerTab:add_button("How To Gift Vehicles (Hover for tooltip!)", function()
 
 end)
-toolTip(giftPlayerTab, "To gift vehicles, Make sure all the players vehicles are repaired/returned and that they have a full garage")
-toolTip(giftPlayerTab, "Have them go into their full garage, drive a vehicle out and back into their garage, then come out on foot")
-toolTip(giftPlayerTab, "Spawn the vehicle using Extras Addon's Vehicle Spawner (UNCHECK THE NO POLLUTION BOX!), optionally you can get inside and customize it using Yim's LS customs tab (DONT PRESS 'Start LS customs!)")
-toolTip(giftPlayerTab, "Once you are done, get out and have them get in, then Press the Gift Vehicle button, once it returns the success message they can drive it into their garage")
+toolTip(giftPlayerTab, "To gift vehicles, Make sure all the players vehicles are repaired/returned and that they have a full garage!")
+toolTip(giftPlayerTab, "HAVE THEM GO INTO THEIR GARAGE, DRIVE A CAR OUT AND BACK INTO THEIR GARAGE AND THEN COME OUT ON FOOT!")
+toolTip(giftPlayerTab, "Spawn the vehicle using Extras Addon's Vehicle Spawner (UNCHECK THE NO POLLUTION BOX BEFORE PRESSING SPAWN!!)")
+toolTip(giftPlayerTab, "Once you are done, have them get in, then Press the Gift Vehicle button, once it returns the success message they can drive it into their garage")
 toolTip(giftPlayerTab, "NOTE: Gifted vehicles SHOULD come fully insured, MAKE SURE THEY CHECK IT IN LS CUSTOMS!")
 
 giftPlayerTab:add_imgui(function()
