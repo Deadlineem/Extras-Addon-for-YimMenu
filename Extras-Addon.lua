@@ -7231,7 +7231,12 @@ chatOpt:add_imgui(function()
     end
 end)
 chatOpt:add_sameline()
-local isTeam = chatOpt:add_checkbox("Team Only")
+isTeam = chatOpt:add_checkbox("Team Only")
+showAddon = chatOpt:add_checkbox("Show Addon ")
+toolTip(chatOpt, "Shows [Extras Addon] before your message")
+
+isPrivate = chatOpt:add_checkbox("Send Privately")
+toolTip(chatOpt, "Shows [Extras Addon] before your message")
 chatOpt:add_button("Send Message", function()
 	if isCooldown then
         gui.show_message('Chat', "There is a delay before sending another chat message.")
@@ -7243,11 +7248,19 @@ chatOpt:add_button("Send Message", function()
 	script.run_in_fiber(function(chatMsg)
         if isTeam:is_enabled() == false then
             if chatBox ~= "" then
-                network.send_chat_message("[Extras Addon]: "..chatBox, false)
+				if showAddon:is_enabled() then
+					network.send_chat_message("[Extras Addon]: "..chatBox, false)
+				else
+					network.send_chat_message(chatBox, false)
+				end
             end
         else
             if chatBox ~= "" then
-                network.send_chat_message("[Extras Addon]: "..chatBox, true)
+				if showAddon:is_enabled() then
+					network.send_chat_message("[Extras Addon]: "..chatBox, false)
+				else
+					network.send_chat_message(chatBox, false)
+				end
             end
         end
         sleep(5)
@@ -7390,25 +7403,27 @@ griefPlayerTab:add_imgui(function()
 end)
 
 
-flags = ImGuiWindowFlags.AlwaysAutoResize 
+flags = ImGuiWindowFlags.None | ImGuiWindowFlags.NoSavedSettings
 griefPlayerTab:add_imgui(function()
         
-        ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.5, 0.0, 0.0, 1) -- Adjust the Title color as needed
+    ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.5, 0.0, 0.0, 1) -- Adjust the Title color as needed
+    ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.5, 0.0, 0.0, 1) -- Adjust the Window background color
 
-		ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.5, 0.0, 0.0, 1) -- Adjust the Window background color
-
-		self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
-		selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
-		if selPlayer == "**Invalid**" then
-			selPlayer = "Self"
-		end
-		if selPlayer == self then
-			selPlayer = "Self"
-		end
-
-        ImGui.Begin("Extras Addon (Grief Options) - Target: ".. selPlayer, flags)
-            -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
+    self = PLAYER.GET_PLAYER_NAME(PLAYER.PLAYER_ID())
+    selPlayer = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
+    if selPlayer == "**Invalid**" then
+        selPlayer = "Self"
+    end
+    if selPlayer == self then
+        selPlayer = "Self"
+    end
+	
+	ImGui.SetNextWindowPos(268, 12, ImGuiCond.FirstUseEver)
+	
+    ImGui.Begin("Extras Addon (Grief Options) - Target: ".. selPlayer, flags)
+        -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
 end)
+
 
 griefPlayerTab:add_text("Trolling")
 
@@ -9140,7 +9155,9 @@ dropsPlayerTab:add_imgui(function()
 		if selPlayer == self then
 			selPlayer = "Self"
 		end
-
+		
+		ImGui.SetNextWindowPos(736, 12, ImGuiCond.FirstUseEver)
+		
 		ImGui.Begin("Extras Addon (Drop Options) - Target: ".. selPlayer, flags)
             -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
 end)
@@ -9367,7 +9384,9 @@ giftPlayerTab:add_imgui(function()
 		if selPlayer == self then
 			selPlayer = "Self"
 		end
-
+		
+		ImGui.SetNextWindowPos(268, 48, ImGuiCond.FirstUseEver)
+		
         if ImGui.Begin("Extras Addon (Vehicle Options) - Target: ".. selPlayer, flags) then
             -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
         end
@@ -9705,10 +9724,9 @@ end
 giftPlayerTab:add_separator()
 -- Spawn Selected vehicle button with orientation and spawn position
 giftPlayerTab:add_button("Spawn Vehicle", function()
-    -- Disable the preview checkbox
-    previewVehicles:set_enabled(false)
 
     script.run_in_fiber(function(spawnVeh)
+	previewVehicles:set_enabled(false)
         selectedModelIndex = selectedObjectIndex + 1
         if selectedModelIndex > 0 then
             selectedVehicleModel = filteredVehicleModels[selectedModelIndex]
@@ -9728,6 +9746,7 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
 
                 spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationRoll, vehicleOrientationYaw, playerHeading + vehicleOrientationPitch, pR, pG, pB, sR, sG, sB, pearlescent, wheelColor)
                 gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
+				sleep(2)
             end
         else
             gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
