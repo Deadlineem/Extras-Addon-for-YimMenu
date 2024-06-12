@@ -9902,7 +9902,7 @@ end
 function clear_invisible_vehicles(pid, range)
     if range == nil then range = 50 end
     local player_pos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pid), 1)
-    for _, vehicle_handle in entities.get_all_vehicles_as_handles() do
+    for _, vehicle_handle in ipairs (entities.get_all_vehicles_as_handles()) do
         local entity_pos = ENTITY.GET_ENTITY_COORDS(vehicle_handle, 1)
         local dist = SYSTEM.VDIST(player_pos.x, player_pos.y, player_pos.z, entity_pos.x, entity_pos.y, entity_pos.z)
         if dist <= range then
