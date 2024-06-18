@@ -12347,8 +12347,50 @@ function caesar_decrypt(input, shift)
     return caesar_encrypt(input, -shift)
 end
 
-encodedTwo = caesar_encrypt("Provided FREE from", 3)
+encodedTwo = caesar_encrypt("Provided FREE from: ", 3)
 encoded = caesar_encrypt(url, 3)
+
+function request_control(entity)
+    return entities.take_control_of(entity)
+end
+
+-- Function to get the entity in crosshair
+function getEntityInCrosshair()
+    local playerPed = PLAYER.PLAYER_PED_ID()
+    local camPos = CAM.GET_FINAL_RENDERED_CAM_COORD()
+    local aimPos = CAM.GET_FINAL_RENDERED_CAM_ROT(2)
+    local aimDir = {
+        x = -math.sin(math.rad(aimPos.z)) * math.cos(math.rad(aimPos.x)),
+        y = math.cos(math.rad(aimPos.z)) * math.cos(math.rad(aimPos.x)),
+        z = math.sin(math.rad(aimPos.x))
+    }
+
+    local endCoords = {
+        x = camPos.x + aimDir.x * 1000,
+        y = camPos.y + aimDir.y * 1000,
+        z = camPos.z + aimDir.z * 1000
+    }
+
+    local rayHandle = SHAPETEST.START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camPos.x, camPos.y, camPos.z, endCoords.x, endCoords.y, endCoords.z, -1, playerPed, 0)
+    local _, hit, hitCoords, surfaceNormal, entityHit = SHAPETEST.GET_SHAPE_TEST_RESULT(rayHandle)
+
+    if hit and ENTITY.DOES_ENTITY_EXIST(entityHit) then
+        return entityHit, hitCoords
+    end
+
+    return nil, nil
+end
+
+-- Function to calculate the distance between player and target
+function calcDistance(player, target)
+    local pos = ENTITY.GET_ENTITY_COORDS(player, true)
+    local tarpos = ENTITY.GET_ENTITY_COORDS(target, true)
+    local dx = pos.x - tarpos.x
+    local dy = pos.y - tarpos.y
+    local dz = pos.z - tarpos.z
+    local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
+    return distance
+end
 
 function playSelected(target, prop1, prop2, loopedFX, propPed, targetBone, targetCoords, targetHeading, targetForwardX, targetForwardY, targetBoneCoords, ent, propTable, ptfxTable)
     if info.type == 1 then
