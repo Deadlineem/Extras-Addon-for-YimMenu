@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/
 
     Extras Addon for YimMenu v1.68
-        Addon Version: 1.0.8
+        Addon Version: 1.0.9
 
         Credits:  Yimura, L7Neg,
     Loled69, Alestarov, gir489returns,
@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
- addonVersion = "1.0.8"
+ addonVersion = "1.0.9"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -526,8 +526,87 @@ script.register_looped("explosivePunch", function(expPunch)
     end
     expPunch:yield()
 end)
+toolTip(Fun, "Makes the Pedestrian you're punching explode.")
 
+Fun:add_sameline()
+lazerBeamz = Fun:add_checkbox("Lazer Beams")
+-- Lazer Beam loop
+script.register_looped('lazerBeam', function(script)
+    if lazerBeamz:is_enabled() then
+		HUD.SHOW_HUD_COMPONENT_THIS_FRAME(14)
+		PLAYER.DISABLE_PLAYER_FIRING(PLAYER.PLAYER_ID(), true)
+			if PAD.IS_CONTROL_PRESSED(0, 142) then
+				PAD.DISABLE_CONTROL_ACTION(0, 142, true)
+				local hit, hitCoords = getEntityInCrosshair()
+				if hit ~= nil then
+					local playerPed = PLAYER.PLAYER_PED_ID()
+					local leftEyePos = PED.GET_PED_BONE_COORDS(playerPed, 25260, 0.0, 0.0, 0.07)  -- Left eye bone index
+					local rightEyePos = PED.GET_PED_BONE_COORDS(playerPed, 27474, 0.0, 0.0, 0.07) -- Right eye bone index
+					local endPos = hitCoords
+					local entityType = ENTITY.GET_ENTITY_TYPE(hit)
 
+					-- Fire projectile from eye positions to hit position
+					local direction = {
+						x = endPos.x - leftEyePos.x,
+						y = endPos.y - leftEyePos.y,
+						z = endPos.z - leftEyePos.z
+					}
+					local directionMag = math.sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z)
+					direction.x = direction.x / directionMag
+					direction.y = direction.y / directionMag
+					direction.z = direction.z / directionMag
+
+					if PAD.IS_DISABLED_CONTROL_PRESSED(0, 142) then 
+						GRAPHICS.DRAW_LIGHT_WITH_RANGE(leftEyePos.x, leftEyePos.y, leftEyePos.z, 255, 0, 0, 4.0, 100.0)
+						-- Projectile effect
+						local projectileHash = joaat("WEAPON_RAYCARBINE") -- Unholy Hellbringer projectile
+						
+						WEAPON.REQUEST_WEAPON_ASSET(projectileHash)
+						script:yield()
+						
+						if WEAPON.HAS_WEAPON_ASSET_LOADED(projectileHash) then 
+						STREAMING.REQUEST_NAMED_PTFX_ASSET("weap_xs_weapons")
+
+						if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("weap_xs_weapons") then
+							return false
+						end
+						
+							GRAPHICS.USE_PARTICLE_FX_ASSET("weap_xs_weapons")
+							GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE("muz_xs_sr_carbine", playerPed, 0, 0.03, 0, 90, 0, 0, 25260, 1, false, false, false)
+							MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(leftEyePos.x, leftEyePos.y, leftEyePos.z, endPos.x, endPos.y, endPos.z, 1000000.0, true, projectileHash, playerPed, true, false, 1.0)
+							MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(rightEyePos.x, rightEyePos.y, rightEyePos.z, endPos.x, endPos.y, endPos.z, 1000000.0, true, projectileHash, playerPed, true, false, 2000.0)
+							GRAPHICS.DRAW_LIGHT_WITH_RANGE(endPos.x, endPos.y, endPos.z, 255, 0, 0, 8.0, 100.0)
+							FIRE.ADD_EXPLOSION(endPos.x, endPos.y, endPos.z, 3, 1000.0, false, false, 0.0, false)
+							script:yield()
+						end
+					end
+				end
+			end
+    end
+end)
+toolTip(Fun, "Shoots Lazer beams from youe eyes while unarmed OR from your gun muzzle while holding a gun.")
+
+Fun:add_sameline()
+explosivePoint = Fun:add_checkbox("Point of Death")
+-- Explosive Point loop
+script.register_looped("explosivePointer", function(script)
+    if explosivePoint:is_enabled() then
+		HUD.SHOW_HUD_COMPONENT_THIS_FRAME(14)
+		if globals.get_int(4521801 + 930) == 3 then
+			local hit, hitCoords = getEntityInCrosshair()
+			if hit ~= nil then
+				local targetPos = ENTITY.GET_ENTITY_COORDS(hit, false)
+					local entity = hit
+					if not ENTITY.IS_ENTITY_A_PED(entity) then
+						entity = PLAYER.PLAYER_PED_ID()
+					end
+					FIRE.ADD_EXPLOSION(targetPos.x, targetPos.y, targetPos.z + 1, 2, 1000.0, true, false, 1.0, false)
+					script:yield()
+			end
+		end
+	end
+end)
+toolTip(Fun, "Explodes the entity in your crosshair when you point at it")
 
 -- Stat Editor - Alestarov_Menu // Reset Stats Option
  Stats = Pla:add_tab("Stats")
@@ -3671,39 +3750,217 @@ Veh = KAOS:add_tab("Vehicle Options")
 vehTrix = Veh:add_tab("Tricks/Stunts")
 
 vehTrix:add_button('Ollie', function()
-    targ = network.get_selected_player()
-    ped = PLAYER.GET_PLAYER_PED(targ)
-    veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-    if request_control(veh) then
-        ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
-    end
+	script.run_in_fiber(function(script)
+		targ = network.get_selected_player()
+		ped = PLAYER.GET_PLAYER_PED(targ)
+		veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+		if request_control(veh) then
+			ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+		end
+	end)
 end)
+toolTip(vehTrix, "Makes the targeted players vehicle do an Ollie.")
+
 vehTrix:add_sameline()
 vehTrix:add_button('Kickflip', function()
-    targ = network.get_selected_player()
-    ped = PLAYER.GET_PLAYER_PED(targ)
-    veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-    if request_control(veh) then
-        ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.71, 5.0, 0.0, 0.0, 1, false, true, true, true, true)
-    end
+	script.run_in_fiber(function(script)
+		targ = network.get_selected_player()
+		ped = PLAYER.GET_PLAYER_PED(targ)
+		veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+		if request_control(veh) then
+			ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.71, 5.0, 0.0, 0.0, 1, false, true, true, true, true)
+		end
+	end)
 end)
+toolTip(vehTrix, "Makes the targeted players vehicle do a Kickflip.")
+
 vehTrix:add_sameline()
 vehTrix:add_button('Double Kickflip', function()
-    targ = network.get_selected_player()
-    ped = PLAYER.GET_PLAYER_PED(targ)
-    veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-    if request_control(veh) then
-        ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 21.43, 20.0, 0.0, 0.0, 1, false, true, true, true, true)
-    end
+	script.run_in_fiber(function(script)
+		targ = network.get_selected_player()
+		ped = PLAYER.GET_PLAYER_PED(targ)
+		veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+		if request_control(veh) then
+			ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 21.43, 20.0, 0.0, 0.0, 1, false, true, true, true, true)
+		end
+	end)
 end)
+toolTip(vehTrix, "Makes the targeted players vehicle do a Double Kickflip.")
+
 vehTrix:add_sameline()
 vehTrix:add_button('Heelflip', function()
-    targ = network.get_selected_player()
-    ped = PLAYER.GET_PLAYER_PED(targ)
-    veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-    if request_control(veh) then
-        ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.71, -5.0, 0.0, 0.0, 1, false, true, true, true, true)
+	script.run_in_fiber(function(script)
+		targ = network.get_selected_player()
+		ped = PLAYER.GET_PLAYER_PED(targ)
+		veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+		if request_control(veh) then
+			ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.71, -5.0, 0.0, 0.0, 1, false, true, true, true, true)
+		end
+	end)
+end)
+toolTip(vehTrix, "Makes the targeted players vehicle do a Heelflip.")
+
+vehTrix:add_sameline()
+vehTrix:add_button('Backflip', function()
+	script.run_in_fiber(function(script)
+		targ = network.get_selected_player()
+		ped = PLAYER.GET_PLAYER_PED(targ)
+		veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+		if request_control(veh) then
+			ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 25.71, 0.0, 7.0, -0.2, 1, false, true, true, true, true)
+		end
+	end)
+end)
+toolTip(vehTrix, "Makes the targeted players vehicle do a Backflip.")
+
+vehTrix:add_button('Frontflip', function()
+	script.run_in_fiber(function(script)
+		targ = network.get_selected_player()
+		ped = PLAYER.GET_PLAYER_PED(targ)
+		veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+		if request_control(veh) then
+			ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 11.71, 0.0, -5.0, 0.2, 1, false, true, true, true, true)
+		end
+	end)
+end)
+toolTip(vehTrix, "Makes the targeted players vehicle do a Frontflip.")
+
+vehTrix:add_sameline()
+vehTrix:add_button('Boost Forward', function()
+    script.run_in_fiber(function(script)
+        local targ = network.get_selected_player()
+        local ped = PLAYER.GET_PLAYER_PED(targ)
+        local veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+        if request_control(veh) then
+            -- Get the vehicle's forward vector
+            local forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(veh)
+            -- Scale the forward vector to the desired boost strength
+            local boostStrength = 2500.0
+            local forceX = forwardVector.x * boostStrength
+            local forceY = forwardVector.y * boostStrength
+            local forceZ = forwardVector.z * boostStrength
+            -- Apply the force to the vehicle
+			model = ENTITY.GET_ENTITY_MODEL(veh)
+			if VEHICLE.IS_THIS_MODEL_A_HELI(model) == true then
+			gui.show_message("test", "test")
+				ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, forceX, forceY, 250.0, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+			else
+				ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+			end
+        end
+    end)
+end)
+toolTip(vehTrix, "Makes the targeted players vehicle boost forward at a high rate of speed.")
+
+vehTrix:add_sameline()
+vehTrix:add_button('Boost Backwards', function()
+    script.run_in_fiber(function(script)
+        local targ = network.get_selected_player()
+        local ped = PLAYER.GET_PLAYER_PED(targ)
+        local veh = PED.GET_VEHICLE_PED_IS_USING(ped)
+        if request_control(veh) then
+            -- Get the vehicle's forward vector
+            local forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(veh)
+            -- Scale the forward vector to the desired boost strength
+            local boostStrength = -2500.0
+            local forceX = forwardVector.x * boostStrength
+            local forceY = forwardVector.y * boostStrength
+            local forceZ = forwardVector.z * boostStrength
+            -- Apply the force to the vehicle
+            ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+        end
+    end)
+end)
+toolTip(vehTrix, "Makes the targeted players vehicle boost backwards at a high rate of speed.")
+
+flightSpeedDefault = 120.0
+flightSpeedMax = 400.0
+flightSpeedIncrement = 0.5
+flightSpeed = flightSpeedDefault
+yawIncrement = 1.0
+vehicle = nil
+
+vehicleFly = vehTrix:add_checkbox("Vehicle Fly") -- Assume this is a toggle or a flag somewhere in your script
+toolTip(vehTrix, "Makes YOUR vehicle fly similar to a plane, read the Flight Controls for operation.")
+
+vehTrix:add_imgui(function()
+    if (ImGui.TreeNode("Flight Controls")) then
+        ImGui.Text("Keyboard")
+        ImGui.Text("W - Forward, A - Turn Left, D - Turn right, S - Stop, X - Hover Upwards")
+		ImGui.Text("Shift - Tilt Forward, Ctrl - Tilt backwards")
+		ImGui.Separator()
+		ImGui.Text("Controller")
+        ImGui.Text("RT - Forward, LB - Turn Left, RB - Turn right, LT - Stop, X/A - Hover Upwards")
+		ImGui.Text("Left Joystick for Tilt")
     end
+    toolTip("", "Controls for using Vehicle Fly.")
+end)
+
+script.register_looped("vehFlight", function(script)
+	if vehicleFly:is_enabled() then
+		while vehicleFly do
+			local playerPed = PLAYER.PLAYER_PED_ID()
+			if PED.IS_PED_IN_ANY_VEHICLE(playerPed, false) then
+				vehicle = PED.GET_VEHICLE_PED_IS_IN(playerPed, false)
+			else
+				vehicle = nil
+				flightSpeed = flightSpeedDefault
+			end
+
+			if PAD.IS_CONTROL_JUST_PRESSED(0, 87) and vehicle ~= nil then
+				flightSpeed = ENTITY.GET_ENTITY_SPEED(vehicle)
+			end
+
+			
+
+			if vehicle ~= nil then
+				-- Yaw right
+				if PAD.IS_DISABLED_CONTROL_PRESSED(0, 90) then
+					PAD.DISABLE_CONTROL_ACTION(0, 68, true) -- Aim
+					WEAPON.SET_CURRENT_PED_VEHICLE_WEAPON(playerPed, 1122011548)
+					local currentHeading = ENTITY.GET_ENTITY_HEADING(vehicle)
+					ENTITY.SET_ENTITY_HEADING(vehicle, currentHeading - yawIncrement)
+				end
+
+				-- Yaw left
+				if PAD.IS_CONTROL_PRESSED(0, 89) then
+					PAD.DISABLE_CONTROL_ACTION(0, 68, true) -- Aim
+					WEAPON.SET_CURRENT_PED_VEHICLE_WEAPON(playerPed, 1122011548)
+					local currentHeading = ENTITY.GET_ENTITY_HEADING(vehicle)
+					ENTITY.SET_ENTITY_HEADING(vehicle, currentHeading + yawIncrement)
+				end
+
+				-- Forward flight
+				if PAD.IS_CONTROL_PRESSED(0, 87) then
+					if flightSpeed < flightSpeedMax then
+						flightSpeed = flightSpeed + flightSpeedIncrement
+					end
+
+					local coords = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle, 0.0, flightSpeed, 0.0)
+					local velocity = { x = coords.x - ENTITY.GET_ENTITY_COORDS(vehicle).x, y = coords.y - ENTITY.GET_ENTITY_COORDS(vehicle).y, z = coords.z - ENTITY.GET_ENTITY_COORDS(vehicle).z}
+					ENTITY.SET_ENTITY_VELOCITY(vehicle, velocity.x, velocity.y, velocity.z)
+				end
+
+				-- Ascend
+				if PAD.IS_CONTROL_PRESSED(0, 73) and vehicleFly then
+					ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
+				end
+				-- Descend
+				PAD.DISABLE_CONTROL_ACTION(0, 80, true) -- Cinematic Camera
+				if PAD.IS_DISABLED_CONTROL_PRESSED(0, 80) and vehicleFly then 
+					ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, -0.227, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
+				end
+				-- Stop aka freeze pos
+				PAD.DISABLE_CONTROL_ACTION(0, 88)
+				if PAD.IS_DISABLED_CONTROL_PRESSED(0, 88) and vehicleFly then
+					ENTITY.FREEZE_ENTITY_POSITION(vehicle, true)
+				else
+					ENTITY.FREEZE_ENTITY_POSITION(vehicle, false)
+				end
+			end
+			script:yield(2)
+		end
+	end
 end)
 
 tokyodrift = Veh:add_tab("Tokyo Drift")
@@ -10145,3 +10402,55 @@ timeCycleMods:add_imgui(function()
         gui.show_message("Timecycle Modifier", "Timecycle modifier reset")
     end
 end)
+
+-- SCH-Lua Indirect Viewing // Revised by DeadlineEm
+spectate = gui.get_tab("")
+indirectView = spectate:add_checkbox("Indirect Viewing (Spectate)")
+local loopa13 = 0
+local specam = nil
+local viewDistance = 5
+local showSlider = false
+script.register_looped("indirectSpectate", function(script)
+    if indirectView:is_enabled() and showSlider == false then
+		spectate:add_imgui(function()
+			viewDistance, used = ImGui.SliderInt("Camera Distance", viewDistance, 5, 25)
+			showSlider = true
+		end)
+	end
+	if indirectView:is_enabled() then
+        local targetPed = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        if targetPed ~= nil then
+            local targetPPos = ENTITY.GET_ENTITY_COORDS(targetPed, false)
+            STREAMING.SET_FOCUS_POS_AND_VEL(targetPPos.x, targetPPos.y, targetPPos.z, 0.0, 0.0, 0.0)
+
+            if loopa13 == 0 then
+                specam = CAM.CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", false)
+                CAM.SET_CAM_ACTIVE(specam, true)
+                CAM.RENDER_SCRIPT_CAMS(true, true, 500, true, true, false)
+                loopa13 = 1
+            end
+
+            local forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(targetPed)
+            local camX = targetPPos.x - forwardVector.x * viewDistance
+            local camY = targetPPos.y - forwardVector.y * viewDistance
+            local camZ = targetPPos.z + 1  -- 1 unit above the target
+
+            CAM.SET_CAM_COORD(specam, camX, camY, camZ)
+
+            local targetRotation = ENTITY.GET_ENTITY_ROTATION(targetPed, 2)
+            CAM.SET_CAM_ROT(specam, targetRotation.x, targetRotation.y, targetRotation.z, 2)
+        end
+    else
+        if loopa13 == 1 then
+            CAM.SET_CAM_ACTIVE(specam, false)
+            CAM.RENDER_SCRIPT_CAMS(false, true, 500, true, true, 0)
+            CAM.DESTROY_CAM(specam, false)
+            STREAMING.CLEAR_FOCUS()
+            loopa13 = 0
+            specam = nil
+        end
+    end
+end)
+toolTip(spectate, "Spectates the selected player using a less detectable spectate method")
+
+
