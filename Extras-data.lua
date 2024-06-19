@@ -4240,6 +4240,25 @@ contracts = {
     {id = -1, name = "Don't Fuck With Dre"}
 }
 
+boneNames = {
+    "exhaust",
+    "exhaust_2",
+    "exhaust_3",
+    "exhaust_4",
+    "exhaust_5",
+    "exhaust_6",
+    "exhaust_7",
+    "exhaust_8",
+    "exhaust_9",
+    "exhaust_10",
+    "exhaust_11",
+    "exhaust_12",
+    "exhaust_13",
+    "exhaust_14",
+    "exhaust_15",
+    "exhaust_16"
+}
+
 -- Source https://www.unknowncheats.me/forum/2458458-post691.html
 ranks = {
     0,
