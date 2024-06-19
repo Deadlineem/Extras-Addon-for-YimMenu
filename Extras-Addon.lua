@@ -4211,20 +4211,40 @@ end)
 script.register_looped("Speed Boost ptfx", function(spbptfx)
     if speedBoost and ptfx then
         if PAD.IS_CONTROL_PRESSED(0, tdBtn) and PAD.IS_CONTROL_PRESSED(0, 71) then
-            local effect  = "veh_xs_vehicle_mods"
-            -- local exhaust = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, "neon_b") -- always spawns a fire in the lower middle part of the back bumper no matter what exhaust is equipped.
-            local exhaust = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, "exhaust") -- only works stock exhaust.
+            local effect = "veh_xs_vehicle_mods"
             if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect) then
                 STREAMING.REQUEST_NAMED_PTFX_ASSET(effect)
                 coroutine.yield()
             end
-            GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
-            ptfxEffect = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("veh_nitrous", current_vehicle, 0.0, -0.1, 0.0, 0.0, 0.0, 0.0, exhaust, 1.0, false, false, false, 0, 0, 0)
-            repeat
-                spbptfx:sleep(50)
-            until
-                PAD.IS_CONTROL_PRESSED(0, tdBtn) == false or PAD.IS_CONTROL_PRESSED(0, 71) == false
-            GRAPHICS.STOP_PARTICLE_FX_LOOPED(ptfxEffect)
+            
+            local foundExhaust = false
+            local ptfxEffects = {}
+            
+            -- Define possible bone name variations
+            local boneNameVariations = boneNames -- Add more variations as needed
+            
+            -- Loop through each bone name variation
+            for i, boneName in ipairs(boneNameVariations) do
+                local exhaust = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, boneName)
+                if exhaust ~= -1 then
+                    -- Start particle effect for this bone
+                    GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+                    local ptfxEffect = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("veh_nitrous", current_vehicle, 0.0, -0.1, 0.0, 0.0, 0.0, 0.0, exhaust, 1.0, false, false, false, 0, 0, 0)
+                    table.insert(ptfxEffects, ptfxEffect)
+                    foundExhaust = true
+                end
+            end
+            
+            if foundExhaust then
+                repeat
+                    spbptfx:sleep(50)
+                until not (PAD.IS_CONTROL_PRESSED(0, tdBtn) and PAD.IS_CONTROL_PRESSED(0, 71))
+                
+                -- Stop all particle effects
+                for _, ptfxEffect in ipairs(ptfxEffects) do
+                    GRAPHICS.STOP_PARTICLE_FX_LOOPED(ptfxEffect)
+                end
+            end
         end
     end
 end)
@@ -4232,7 +4252,7 @@ script.register_looped("Purge", function(nosprg)
     if nosPurge then
         if PAD.IS_CONTROL_PRESSED(0, 73) then
             local dict  = "core"
-            local purge_exit = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, "overheat")
+            local purge_exit = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, "bumper_f")
             if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(dict) then
                 STREAMING.REQUEST_NAMED_PTFX_ASSET(dict)
                 coroutine.yield()
