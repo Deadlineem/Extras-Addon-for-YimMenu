@@ -5596,27 +5596,35 @@ else
     MPX = "MP1_"
 end
 
- contract_id = {3, 4, 12, 28, 60, 124, 252, 508, 2044, 4095, -1}
- agency_contract_names = {"The Nightclub", "The Marina", "Nightlife Leak", "The Country Club", "Guest List", "High Society Leak", "Davis", "The Ballas", "The South Central Leak", "Studio Time", "Don't Fuck With Dre"}
- selectedContractIndex = 0
- selectedContractID = contract_id[selectedContractIndex + 1]
+selectedContractIndex = 0
+selectedContract = contracts[selectedContractIndex + 1]
 
 agency:add_text("Agency Contract Selection")
 
 -- Display the listbox
- contractChanged = false
+contractChanged = false
 
 agency:add_imgui(function()
-    selectedContractIndex, used = ImGui.ListBox("##ContractList", selectedContractIndex, agency_contract_names, #agency_contract_names) -- Display the listbox
+    -- Extract the contract names for the ListBox
+    local contract_names = {}
+    for i, contract in ipairs(contracts) do
+        table.insert(contract_names, contract.name)
+    end
+
+    selectedContractIndex, used = ImGui.ListBox("##ContractList", selectedContractIndex, contract_names, #contract_names) -- Display the listbox
     if used then
-        selectedContractID = contract_id[selectedContractIndex + 1]
+        selectedContract = contracts[selectedContractIndex + 1]
     end
 
     if ImGui.Button("Select Contract") then
-         contractIndexToUse = selectedContractIndex + 1  -- Adjusted index for contract names
-         contractIDToUse = contract_id[contractIndexToUse]
-        STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), contractIDToUse, true)
-        gui.show_message("Agency", "Contract: " .. agency_contract_names[contractIndexToUse] .. " ID: " .. contractIDToUse .. " Selected")
+        local contractToUse = contracts[selectedContractIndex + 1]
+        
+        if contractToUse and contractToUse.id then  -- Ensure contractToUse is not nil and has a valid id
+            STATS.STAT_SET_INT(joaat(MPX .. "FIXER_STORY_BS"), contractToUse.id, true)
+            gui.show_message("Agency", "Contract: " .. contractToUse.name .. " ID: " .. contractToUse.id .. " Selected")
+        else
+            gui.show_message("Error", "Invalid Contract ID")
+        end
     end
 end)
 toolTip(agency, "Sets the selected contract as the one you are currently playing")
@@ -5637,6 +5645,18 @@ agency:add_button("Skip Cooldown", function()
 	end)
 end)
 toolTip(agency, "Skips the cooldown between playing contracts")
+agency:add_imgui(function()
+    if (ImGui.TreeNode("How To Use")) then
+        ImGui.Text("Select the contract you want to play and press Select Contract.")
+        ImGui.Text("Press Complete Preps and then WALK OUTSIDE and roam until you get a call from Franklin.")
+		ImGui.Text("Go back inside the agency and skip the cutscene if you want to.")
+		ImGui.Separator()
+		ImGui.Text("Now, depending on which mission you select you will either go to the computer.")
+        ImGui.Text("OR")
+		ImGui.Text("If DFW Dre is selected, there should be a yellow marker on the ground outside Franklins office.")
+    end
+    toolTip("", "How to set up the agency contracts properly.")
+end)
 agency:add_separator()
 agency:add_text("Money")
  agencySafe = agency:add_checkbox("Agency Safe Loop")
