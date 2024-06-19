@@ -4251,19 +4251,35 @@ end)
 script.register_looped("Purge", function(nosprg)
     if nosPurge then
         if PAD.IS_CONTROL_PRESSED(0, 73) then
-            local dict  = "core"
-            local purge_exit = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, "bumper_f")
+            local dict       = "core"
+            local purgeBones = {"suspension_lf", "suspension_rf"}
             if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(dict) then
                 STREAMING.REQUEST_NAMED_PTFX_ASSET(dict)
                 coroutine.yield()
             end
-            GRAPHICS.USE_PARTICLE_FX_ASSET(dict)
-            nosptfx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("weap_extinguisher", current_vehicle, 0.0, 0.008, 0.06, 0.0, 0.0, 0.0, purge_exit, 0.3, false, false, false, 0, 0, 0)
-            repeat
-                nosprg:sleep(50)
-            until
-                PAD.IS_CONTROL_PRESSED(0, 73) == false
-            GRAPHICS.STOP_PARTICLE_FX_LOOPED(nosptfx)
+            for _, boneName in ipairs(purgeBones) do
+                local purge_exit = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, boneName)
+                if boneName == "suspension_lf" then
+                    rotZ = -180.0
+                else
+                    rotZ = 0.0
+                end
+                GRAPHICS.USE_PARTICLE_FX_ASSET(dict)
+                purgePtfx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("weap_extinguisher", current_vehicle, 0.0, 0.0, 0.0, 0.0, 0.0, rotZ, purge_exit, 0.6, false, false, false, 0, 0, 0)
+                table.insert(purgePtfx_t, purgePtfx)
+                purge_started = true
+            end
+            if purge_started then
+                repeat
+                    nosprg:sleep(50)
+                until
+                    PAD.IS_CONTROL_PRESSED(0, 73) == false
+                for _, purge in ipairs(purgePtfx_t) do
+                    GRAPHICS.STOP_PARTICLE_FX_LOOPED(purge)
+                    GRAPHICS.REMOVE_PARTICLE_FX(purge)
+                    purge_started = false
+                end
+            end
         end
     end
 end)
