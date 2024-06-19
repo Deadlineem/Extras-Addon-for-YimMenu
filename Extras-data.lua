@@ -4226,6 +4226,19 @@ wheelStyles = {
     }
 }
 
+contracts = {
+    {id = 3, name = "The Nightclub"},
+    {id = 4, name = "The Marina"},
+    {id = 12, name = "Nightlife Leak"},
+    {id = 28, name = "The Country Club"},
+    {id = 60, name = "Guest List"},
+    {id = 124, name = "High Society Leak"},
+    {id = 252, name = "Davis"},
+    {id = 508, name = "The Ballas"},
+    {id = 2044, name = "The South Central Leak"},
+    {id = 4095, name = "Studio Time"},
+    {id = -1, name = "Don't Fuck With Dre"}
+}
 
 -- Source https://www.unknowncheats.me/forum/2458458-post691.html
 ranks = {
