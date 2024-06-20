@@ -4319,7 +4319,7 @@ script.register_looped("Speed Boost ptfx", function(spbptfx)
                             counter = counter + 1
                         end
                     end
-                    local exhaustCount = VEHICLE.GET_VEHICLE_MAX_EXHAUST_BONE_COUNT_()
+                    local exhaustCount = VEHICLE.GET_VEHICLE_MAX_EXHAUST_BONE_COUNT_() - 1
                     for i = 0, exhaustCount do
                         local retBool, exhaust_boneIndex = VEHICLE.GET_VEHICLE_EXHAUST_BONE_(current_vehicle, i, retBool, exhaust_boneIndex)
                         if retBool then
