@@ -3338,7 +3338,7 @@ end
 
  millLoop = Money:add_tab("Loops")
 millLoop:add_text("Money Loops (SEVERELY RISKY!)")
-oneMillLoop = millLoop:add_checkbox("1M Loop")
+oneMillLoop = millLoop:add_checkbox("180k Loop")
 script.register_looped("onemLoop", function(script)
     script:yield()
     if oneMillLoop:is_enabled() == true then
@@ -3346,11 +3346,11 @@ script.register_looped("onemLoop", function(script)
         if onemLoop then
             TransactionManager:TriggerTransaction(0x615762F1)
                 script:yield();
-            gui.show_message("Money Loop", "1 Mill loop running, enjoy the easy money!")
+            gui.show_message("Money Loop", "180k loop running, enjoy the easy money!")
         end
     end
 end)
-toolTip(millLoop, "Runs a $1,000,000 loop, will run until its deactivated, does not add to earned or overall income.")
+toolTip(millLoop, "Runs a $180,000 loop, will run until its deactivated, does not add to earned or overall income.")
 
 millLoop:add_sameline()
 millLoop:add_button("2.5M (1 time)", function()
@@ -3402,7 +3402,14 @@ moneyRemover:add_button("Set Amount", function()
 end)
 toolTip(moneyRemover, "Sets the Ballistic Equipment price to the value above, once set, purchase the ballistic equipment inside your interaction menu")
 toolTip(moneyRemover, "'Health and Ammo -> Ballistic Equipment Services -> Request Ballistic Equipment'")
-
+moneyRemover:add_sameline()
+moneyRemover:add_button("Unlock Ballistic Equipment", function()
+script.run_in_fiber(function(script)
+	unlock_packed_bools(15381, 15382) --APC SAM Battery, Ballistic Equipment
+	gui.show_message("Ballistic Equipment", "Successfully unlocked, Open your interaction menu and request it to remove your money")
+end)
+end)
+toolTip(moneyRemover, "Unlocks the Ballistic Equipment if its not unlocked through bunker research")
 -- Object Spawner (Can be used negatively!) (Originally from Kuter Menu)
 
 -- Function to convert object names to hashes using joaat()
@@ -4251,35 +4258,19 @@ end)
 script.register_looped("Purge", function(nosprg)
     if nosPurge then
         if PAD.IS_CONTROL_PRESSED(0, 73) then
-            local dict       = "core"
-            local purgeBones = {"suspension_lf", "suspension_rf"}
+            local dict  = "core"
+            local purge_exit = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, "bumper_f")
             if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(dict) then
                 STREAMING.REQUEST_NAMED_PTFX_ASSET(dict)
                 coroutine.yield()
             end
-            for _, boneName in ipairs(purgeBones) do
-                local purge_exit = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, boneName)
-                if boneName == "suspension_lf" then
-                    rotZ = -180.0
-                else
-                    rotZ = 0.0
-                end
-                GRAPHICS.USE_PARTICLE_FX_ASSET(dict)
-                purgePtfx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("weap_extinguisher", current_vehicle, 0.0, 0.0, 0.0, 0.0, 0.0, rotZ, purge_exit, 0.6, false, false, false, 0, 0, 0)
-                table.insert(purgePtfx_t, purgePtfx)
-                purge_started = true
-            end
-            if purge_started then
-                repeat
-                    nosprg:sleep(50)
-                until
-                    PAD.IS_CONTROL_PRESSED(0, 73) == false
-                for _, purge in ipairs(purgePtfx_t) do
-                    GRAPHICS.STOP_PARTICLE_FX_LOOPED(purge)
-                    GRAPHICS.REMOVE_PARTICLE_FX(purge)
-                    purge_started = false
-                end
-            end
+            GRAPHICS.USE_PARTICLE_FX_ASSET(dict)
+            nosptfx = GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE("weap_extinguisher", current_vehicle, 0.0, 0.008, 0.06, 0.0, 0.0, 0.0, purge_exit, 0.3, false, false, false, 0, 0, 0)
+            repeat
+                nosprg:sleep(50)
+            until
+                PAD.IS_CONTROL_PRESSED(0, 73) == false
+            GRAPHICS.STOP_PARTICLE_FX_LOOPED(nosptfx)
         end
     end
 end)
@@ -5731,8 +5722,7 @@ bunker:add_button("Unlock All Shooting Range", function()
 	end)
 end)
 toolTip(bunker, "Sets all shooting range missions to completed @ 3 stars")
-
-bResearch = bunker:add_checkbox("Instant Research Cooldown (Looped)")
+bunker:add_sameline()
 MPX = PI
 PI = stats.get_int("MPPLY_LAST_MP_CHAR")
 if PI == 0 then
@@ -5740,16 +5730,22 @@ if PI == 0 then
 else
     MPX = "MP1_"
 end
-script.register_looped("bunkerResearch", function()
-    if bResearch:is_enabled() == true then
-        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_PRODUCTION_TIME"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_EQUIPMENT_REDUCTION_TIME"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_STAFF_REDUCTION_TIME"), 0, true)
-        gui.show_message("Bunker", "Research is moving fast, feel free to walk away")
-        gui.show_message("Bunker", "Optionally, you can access the PC and pay to fast track")
-    end
+bunker:add_button("Unlock All Research", function()
+	script.run_in_fiber(function(script)
+		globals.set_int(262145 + 22067, 1)
+		gui.show_message("Bunker Research", "ALL Bunker research has been unlocked.")
+	end)
 end)
-toolTip(bunker, "Speeds up research, toggle with resupply, optionally access the pc and fast track it")
+toolTip(bunker, "Unlocks all bunker research instantly.")
+bunker:add_button("Fast Production", function()
+	script.run_in_fiber(function(script)
+		globals.set_int(262145 + 33385, 1)
+		globals.set_int(262145 + 21742, 1)
+		globals.set_int(262145 + 33392, 1)
+		gui.show_message("Production", "Bunker production speed has been increased, make sure you loop your supplies!")
+	end)
+end)
+toolTip(bunker, "Speeds up production time, requires supplies to keep production going")
 bunker:add_sameline()
  bSupplies = bunker:add_checkbox("Resupply Bunker (Looped)")
 script.register_looped("autoGetBunkerCargo", function(script)
@@ -5758,12 +5754,8 @@ script.register_looped("autoGetBunkerCargo", function(script)
         autoGetBunkerCargo = not autoGetBunkerCargo
         if autoGetBunkerCargo then
             globals.set_int(1662873 + 1 + 5, 1)
-            if bResearch:is_enabled() == true then
-                gui.show_message("Bunker", "Resupplying your supplies for your research")
-            else
-                gui.show_message("Bunker", "Resupplying your bunker supplies, please wait...")
-                sleep(0.5)
-            end
+            gui.show_message("Bunker", "Resupplying your bunker supplies every 5 seconds.")
+            sleep(5)
         end
     end
 end)
@@ -8176,96 +8168,89 @@ toolTip(griefPlayerTab, "Spawns a Clown van full of clowns to chase/gun the play
 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Clown Jet Attack", function()
-    script.run_in_fiber(function (clownJetsTwo)
-         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-         playerName = PLAYER.GET_PLAYER_NAME(network.get_selected_player())
-         coords = ENTITY.GET_ENTITY_COORDS(player, true)
-         heading = ENTITY.GET_ENTITY_HEADING(player)
-         spawnDistance = 250.0 * math.sin(math.rad(heading))
-         spawnHeight = 10.0 -- Adjust this value to set the height at which the jet spawns
-         isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
-         clown = joaat("s_m_y_clown_01")
-         jet = joaat("Lazer")
-         weapon = -1121678507
+script.run_in_fiber(function(clownJetsOne)
+            local player = network.get_selected_player(player)
+            if player ~= -1 then
+                local players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
+                local playerName = PLAYER.GET_PLAYER_NAME(players)
+                local coords = ENTITY.GET_ENTITY_COORDS(players, true)
+                local heading = ENTITY.GET_ENTITY_HEADING(players)
+                local spawnDistance = 150.0 * math.sin(math.rad(heading))
+                local spawnHeight = 10.0
+                local isRoad, roadCoords = PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x + spawnDistance, coords.y + spawnDistance, coords.z, 1, coords, heading, 0, 9, 3.0, 2.5)
+                local clown = joaat("s_m_y_clown_01")
+                local jet = joaat("Lazer")
+                local weapon = -1121678507
 
-        STREAMING.REQUEST_MODEL(clown)
-        STREAMING.REQUEST_MODEL(jet)
-        STREAMING.REQUEST_MODEL(weapon)
+                STREAMING.REQUEST_MODEL(clown)
+                STREAMING.REQUEST_MODEL(jet)
+                STREAMING.REQUEST_MODEL(weapon)
 
-        while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do
-            STREAMING.REQUEST_MODEL(clown)
-            STREAMING.REQUEST_MODEL(jet)
-            clownJetsTwo:yield()
-        end
+                while not STREAMING.HAS_MODEL_LOADED(clown) or not STREAMING.HAS_MODEL_LOADED(jet) do
+                    STREAMING.REQUEST_MODEL(clown)
+                    STREAMING.REQUEST_MODEL(jet)
+                    STREAMING.REQUEST_MODEL(weapon)
+                    clownJetsOne:yield()
+                end
 
-        -- Calculate the spawn position for the jet in the air
-         jetSpawnX = coords.x + math.random(-1000, 1000)
-         jetSpawnY = coords.y + math.random(-1000, 1000)
-         jetSpawnZ = coords.z + math.random(100, 1200)
+                local jetSpawnX = coords.x + math.random(-1000, 1000)
+                local jetSpawnY = coords.y + math.random(-1000, 1000)
+                local jetSpawnZ = coords.z + math.random(50, 400)
 
-         colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
-         jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
+                local colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112}
+                local jetVehicle = VEHICLE.CREATE_VEHICLE(jet, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, false, false)
+                if jetVehicle ~= 0 then
+                    local primaryColor = colors[math.random(#colors)]
+                    local secondaryColor = colors[math.random(#colors)]
 
-        if jetVehicle ~= 0 then
-             primaryColor = colors[math.random(#colors)]
-             secondaryColor = colors[math.random(#colors)]
+                    VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
 
-            -- Set vehicle colors
-            VEHICLE.SET_VEHICLE_COLOURS(jetVehicle, primaryColor, secondaryColor)
-            -- Spawn clowns inside the jet
-            for seat = -1, -1 do
-                 ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
+                    for seat = -1, -1 do
+                        local ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
 
-                if ped ~= 0 then
-                    group = joaat("HATES_PLAYER")
-                    PED.ADD_RELATIONSHIP_GROUP("clowns", group)
-                    ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
-                    PED.SET_PED_CAN_BE_TARGETTED(ped, false)
+                        if ped ~= 0 then
+                            local group = joaat("HATES_PLAYER")
+                            PED.ADD_RELATIONSHIP_GROUP("clowns", group)
+                            ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
+                            PED.SET_PED_CAN_BE_TARGETTED(ped, false)
 
-							    --PED.SET_PED_CONFIG_FLAG(ped, 132, true)
-							    --PED.SET_PED_CONFIG_FLAG(ped, 42, true)
-							    --PED.SET_PED_HIGHLY_PERCEPTIVE(ped, 1)
-					PED.SET_PED_TARGET_LOSS_RESPONSE(ped, 3)
-					ENTITY.SET_ENTITY_IS_TARGET_PRIORITY(player, true, true)
-							    --PED.SET_PED_COMBAT_RANGE(ped, 10);
-							    --PED.SET_PED_SEEING_RANGE(ped, 10);
-							    --PED.SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(ped, 0)
-					PED.SET_DRIVER_AGGRESSIVENESS(ped, 1)
-                    WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
-                                --PED.SET_PED_COMBAT_ATTRIBUTES(ped, 5, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
-                    PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
-                    PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
-					TASK.TASK_PLANE_MISSION(ped, jetVehicle, 0, player, 0, 0, 0, 6, 100, 0, 90, 0, -200)
-								--TASK.TASK_VEHICLE_MISSION_PED_TARGET(ped, jetVehicle, player, 6, 300, 1, 100, 200, true)
-					PED.SET_PED_KEEP_TASK(ped, true)
-					--TASK.TASK_COMBAT_PED(ped, players, 0, 16)
-					PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
-					WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
-                    else
-                        gui.show_error("Failed", "Failed to create ped")
+                            PED.SET_PED_TARGET_LOSS_RESPONSE(ped, 3)
+                            ENTITY.SET_ENTITY_IS_TARGET_PRIORITY(players, true, true)
+                            PED.SET_DRIVER_AGGRESSIVENESS(ped, 1)
+                            WEAPON.GIVE_WEAPON_TO_PED(ped, weapon, 999999, false, true)
+                            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 13, true)
+                            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 31, true)
+                            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 17, false)
+                            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 1, true)
+                            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
+                            PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
+                            PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
+                            TASK.TASK_PLANE_MISSION(ped, jetVehicle, 0, players, 0, 0, 0, 6, 100, 0, 90, 0, -200)
+                            PED.SET_PED_KEEP_TASK(ped, true)
+                            PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
+                            WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
+                        else
+                            gui.show_error("Failed", "Failed to create ped")
+                        end
                     end
+                else
+                    gui.show_error("Failed", "Failed to create jet")
+                end
+
+                if jetVehicle == 0 then
+                    gui.show_error("Failed", "Failed to Create Jet")
+                else
+                    gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets every 15 seconds.")
+                end
+
+                STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(jetVehicle)
+                STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped)
+                STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(weapon)
+            else
+                gui.show_error("No Player Selected", "Please select a valid player.")
             end
-        else
-            gui.show_error("Failed", "Failed to create jet")
-        end
-
-        if jetVehicle == 0 then
-            gui.show_error("Failed", "Failed to Create Jet")
-        else
-            gui.show_message("Jet Attack", "Clown Lazers spawned!  Lock-on Acquired! Target: "..playerName)
-        end
-
-        -- Release the resources associated with the spawned entities
-        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(jetVehicle)
-        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
-		ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(weapon)
-		sleep(2)
-    end)
+        clownJetsOne:yield()
+end)
 end)
 toolTip(griefPlayerTab, "Spawns Randomly colored jets with Clowns as pilots to attack the selected player.")
 
@@ -9320,8 +9305,9 @@ griefPlayerTab:add_button("Model crash", function()
 				delete_entity(c[crash])
             end
         end
+		sleep(0.5)
     end)
-	sleep(0.5)
+
     script.run_in_fiber(function (vtcrash3)
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
             gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
@@ -9361,8 +9347,9 @@ griefPlayerTab:add_button("Model crash", function()
             end
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(mdl)
         STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(veh_mdl)
+		sleep(0.5)
     end)
-	sleep(0.5)
+
     script.run_in_fiber(function (vtcrash2)
         for i = 1, 10, 1 do
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
@@ -9405,8 +9392,8 @@ griefPlayerTab:add_button("Model crash", function()
         delete_entity(ped)
         vtcrash2:sleep(750)
         end
+		sleep(2)
     end)
-	sleep(2)
 end)
 toolTip(griefPlayerTab, "Crashes the player using 3 invalid model methods (Will cause severe lag, stand as far away from them as possible!)")
 
@@ -10233,7 +10220,6 @@ end
 giftPlayerTab:add_separator()
 -- Spawn Selected vehicle button with orientation and spawn position
 giftPlayerTab:add_button("Spawn Vehicle", function()
-
     script.run_in_fiber(function(spawnVeh)
 	previewVehicles:set_enabled(false)
         selectedModelIndex = selectedObjectIndex + 1
@@ -10255,14 +10241,13 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
 
                 spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationRoll, vehicleOrientationYaw, playerHeading + vehicleOrientationPitch, pR, pG, pB, sR, sG, sB, pearlescent, wheelColor)
                 gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
-				sleep(2)
+				spawnVeh:yield()
             end
         else
             gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
         end
         -- Re-enable the preview checkbox after some time (if desired)
         --previewVehicles:set_enabled(true)
-		spawnVeh:yield()
     end)
 end)
 
