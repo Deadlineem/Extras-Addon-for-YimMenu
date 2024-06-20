@@ -12262,7 +12262,7 @@ ranks = {
     1787153300,
     1787576850
 }
- balls = {
+ balls = {           -- kinda sus
 "p_ld_soc_ball_01",
 "p_ld_am_ball_01",
 "prop_bowling_ball",
