@@ -12626,3 +12626,50 @@ function playSelected(target, prop1, prop2, loopedFX, propPed, targetBone, targe
       end)
     end
 end
+
+function get_safe_spawn_point_near_player(playerPos)
+    local found, safePos = false, vector3(0, 0, 0)
+    for i = 1, 100 do
+        local offset = get_random_offset_from_entity(playerPos, 8.0, 8.0)
+        local streetPos = get_nearest_street(offset)
+        if streetPos then
+            safePos = streetPos
+            found = true
+            break
+        end
+    end
+    if not found then
+        safePos = playerPos -- Fallback to the player's position if no safe position is found
+    end
+    return safePos
+end
+
+function get_nearest_street(pos)
+    local found, outPos = PATHFIND.GET_SAFE_COORD_FOR_PED(pos.x, pos.y, pos.z, false, 16)
+    if found then
+        return vector3(outPos.x, outPos.y, outPos.z)
+    else
+        return nil
+    end
+end
+
+function get_random_offset_from_entity(entityPos, minDist, maxDist)
+    local angle = math.random() * 2 * math.pi
+    local dist = math.random() * (maxDist - minDist) + minDist
+    return vector3(
+        entityPos.x + dist * math.cos(angle),
+        entityPos.y + dist * math.sin(angle),
+        entityPos.z
+    )
+end
+
+function vector3(x, y, z)
+    return {x = x, y = y, z = z}
+end
+
+function calcDistanceFromTwoCoords(pos1, pos2)
+    local dx = pos1.x - pos2.x
+    local dy = pos1.y - pos2.y
+    local dz = pos1.z - pos2.z
+    return math.sqrt(dx*dx + dy*dy + dz*dz)
+end
