@@ -269,7 +269,7 @@ echo "Checking to see if there is an existing version of ScriptHookV"
 del "%destinationFolder3%\ScriptHookV.zip" >nul 2>&1
 
 echo "Downloading new version of ScriptHookV from the repository..."
-set "url=https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases/download/v3.6.0-nightly.88/ScriptHookVDotNet-v3.6.0-nightly.88.zip"
+set "url=https://github.com/scripthookvdotnet/scripthookvdotnet/releases/latest/ScriptHookVDotNet.zip"
 powershell -command "& { Invoke-WebRequest -Uri '%url%' -OutFile '%destinationFolder3%\ScriptHookV.zip' }"
 
 if not exist "%destinationFolder3%\ScriptHookV.zip" (
