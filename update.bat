@@ -82,8 +82,6 @@ echo 3. Download FateInjector (To Downloads or Desktop)
 echo 4. Delete YimMenu Cache Folder (Quick fix when GTA updates)
 echo 5. Optional Downloads (XML's, Animations, ASI Loader, ScriptHookV)
 echo 6. How to install/use YimMenu
-echo 7. Download YimASI (To Downloads or Desktop)
-echo 8. Download ScriptHookV (To Downloads or Desktop)
 echo 9. Exit the application
 echo ------------------------------------------------------------------
 echo If your downloads folder is not in the proper location on your
