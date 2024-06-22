@@ -80,7 +80,7 @@ echo 1. Download YimMenu (To Downloads or Desktop)
 echo 2. Download Extras Addon (To YimMenu\scripts)
 echo 3. Download FateInjector (To Downloads or Desktop)
 echo 4. Delete YimMenu Cache Folder (Quick fix when GTA updates)
-echo 5. Optional Downloads
+echo 5. Optional Downloads (XML's, Animations, ASI Loader, ScriptHookV)
 echo 6. How to install/use YimMenu
 echo 7. Download YimASI (To Downloads or Desktop)
 echo 8. Download ScriptHookV (To Downloads or Desktop)
