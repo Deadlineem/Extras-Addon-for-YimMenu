@@ -8457,17 +8457,25 @@ end
 
 griefPlayerTab:add_button("Clown Bombers", function()
     script.run_in_fiber(function(script)
-         hash = joaat("s_m_y_clown_01")
-         asset = "scr_rcbarry2"
-         explosion = "scr_exp_clown"
-         appears = "scr_clown_appears"
+        local hash = joaat("s_m_y_clown_01")
+        local asset = "scr_rcbarry2"
+        local explosion = "scr_exp_clown"
+        local appears = "scr_clown_appears"
+
         request_model(hash)
-         player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-         playerpos = ENTITY.GET_ENTITY_COORDS(player, false)
-         coord = get_random_offset_from_entity(player, 5.0, 8.0)
-        coord.z = coord.z - 1.0
-         ped = PED.CREATE_PED(0, hash, coord.x, coord.y, coord.z, 0.0, true, false)
-        if ped == 0 then gui.show_error("Clown Bomber", "Failed to Create Ped\nMost Likely The Model Isnt Loaded\nTry Again.") else gui.show_message("Clown Bomber", "Spawned as ".. tostring(ped)) end
+        local player = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+        local playerPos = ENTITY.GET_ENTITY_COORDS(player, false)
+        
+        -- Find a safe spawn point near the player
+        local spawnPos = get_safe_spawn_point_near_player(playerPos)
+
+        local ped = PED.CREATE_PED(0, hash, spawnPos.x, spawnPos.y, spawnPos.z, 0.0, true, false)
+        if ped == 0 then 
+            gui.show_error("Clown Bomber", "Failed to Create Ped\nMost Likely The Model Isn't Loaded\nTry Again.")
+            return
+        end
+
+        gui.show_message("Clown Bomber", "Spawned as " .. tostring(ped))
 
         request_fx_asset(asset)
         GRAPHICS.USE_PARTICLE_FX_ASSET(asset)
@@ -8478,40 +8486,41 @@ griefPlayerTab:add_button("Clown Bombers", function()
             0.0, 0.0, 0.0,
             0.5, false, false, false
         )
-        set_entity_face_entity(ped, player, false)
+
         PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true)
-        TASK.TASK_GO_TO_COORD_ANY_MEANS(ped, playerpos.x, playerpos.y, playerpos.z, 5.0, 0, false, 0, 0.0)
-         dest = playerpos
         PED.SET_PED_KEEP_TASK(ped, true)
         AUDIO.STOP_PED_SPEAKING(ped, true)
+        WEAPON.GIVE_WEAPON_TO_PED(ped, joaat("weapon_stickybomb"), 1, false, true)
+        TASK.TASK_GO_TO_COORD_ANY_MEANS(ped, playerPos.x, playerPos.y, playerPos.z, 3.0, 0, false, 0, 0.0)
+
         while not PED.IS_PED_FATALLY_INJURED(ped) and ENTITY.DOES_ENTITY_EXIST(ped) do
-             pos = ENTITY.GET_ENTITY_COORDS(ped, true)
-             targetPos = ENTITY.GET_ENTITY_COORDS(player, true)
-            if not ENTITY.DOES_ENTITY_EXIST(ped) or PED.IS_PED_FATALLY_INJURED(ped) then
-                return false
-            elseif calcDistanceFromTwoCoords(pos, targetPos) > 150 and request_control(ped) then
-                ENTITY.DELETE_ENTITY(ped)
-                return false
-            elseif calcDistanceFromTwoCoords(pos, targetPos) < 3.0 and request_control(ped) then
+            local pedPos = ENTITY.GET_ENTITY_COORDS(ped, true)
+            local targetPos = ENTITY.GET_ENTITY_COORDS(player, true)
+            
+            if calcDistanceFromTwoCoords(pedPos, targetPos) < 3.0 then
                 request_fx_asset(asset)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(asset)
                 GRAPHICS.START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(
                     explosion,
-                    pos.x, pos.y, pos.z,
+                    pedPos.x, pedPos.y, pedPos.z,
                     0.0, 0.0, 0.0,
                     1.0,
                     false, false, false, false
                 )
-                FIRE.ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1.0, true, true, 1.0, false)
+                FIRE.ADD_EXPLOSION(pedPos.x, pedPos.y, pedPos.z, 0, 1000.0, true, true, 1.0, false)
                 ENTITY.SET_ENTITY_VISIBLE(ped, false, false)
                 ENTITY.DELETE_ENTITY(ped)
-                return false
-            elseif calcDistanceFromTwoCoords(targetPos, dest) > 3.0 and request_control_once(ped) then
-                dest = targetPos
-                TASK.TASK_GO_TO_COORD_ANY_MEANS(ped, targetPos.x, targetPos.y, targetPos.z, 5.0, 0, false, 0, 0.0)
+                return
             end
+
+            if calcDistanceFromTwoCoords(targetPos, playerPos) > 3.0 then
+                playerPos = targetPos
+                TASK.TASK_GO_TO_COORD_ANY_MEANS(ped, playerPos.x, playerPos.y, playerPos.z, 3.0, 0, false, 0, 0.0)
+            end
+            
             script:yield()
         end
+
         ENTITY.DELETE_ENTITY(ped)
     end)
 end)
