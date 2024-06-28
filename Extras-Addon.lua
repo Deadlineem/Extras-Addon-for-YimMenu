@@ -16,7 +16,7 @@ ___________         __
   \____|__  /\____ \____ |\____/|___|  /
           \/      \/    \/           \/
 
-    Extras Addon for YimMenu v1.68
+    Extras Addon for YimMenu v1.69
         Addon Version: 1.0.9
 
         Credits:  Yimura, L7Neg,
@@ -102,7 +102,7 @@ function request_control(entity)
 end
 
 function SessionChanger(session)
-    globals.set_int(1575032, session)
+    globals.set_int(1575035, session)
         if session == -1 then
             globals.set_int(1574589 + 2, -1)
         end
@@ -112,7 +112,7 @@ function SessionChanger(session)
         globals.set_int(1574589, 0)
 end
 
--- Extras Menu Addon for YimMenu 1.68 by DeadlineEm
+-- Extras Menu Addon for YimMenu 1.69 by DeadlineEm
  KAOS = gui.get_tab("Extras Addon")
 require("Extras-data")
 newText(KAOS, "Welcome to Extras Addon v"..addonVersion.." please read the information below before proceeding to use the menu options.", 1)
@@ -3291,13 +3291,13 @@ function TransactionManager:GetPrice(hash, category)
 end
 
 function TransactionManager:TriggerTransaction(hash, amount)
-    globals.set_int(4537212 + 1, 2147483646)
-    globals.set_int(4537212 + 7, 2147483647)
-    globals.set_int(4537212 + 6, 0)
-    globals.set_int(4537212 + 5, 0)
-    globals.set_int(4537212 + 3, hash)
-    globals.set_int(4537212 + 2, amount or self:GetPrice(hash, 0x57DE404E))
-    globals.set_int(4537212, 1)
+    globals.set_int(4537311 + 1, 2147483646)
+    globals.set_int(4537311 + 7, 2147483647)
+    globals.set_int(4537311 + 6, 0)
+    globals.set_int(4537311 + 5, 0)
+    globals.set_int(4537311 + 3, hash)
+    globals.set_int(4537311 + 2, amount or self:GetPrice(hash, 0x57DE404E))
+    globals.set_int(4537311, 1)
 end
 
  millLoop = Money:add_tab("Loops")
@@ -5872,7 +5872,7 @@ script.register_looped("autoGetBunkerCargo", function(script)
     if bSupplies:is_enabled() == true then
         autoGetBunkerCargo = not autoGetBunkerCargo
         if autoGetBunkerCargo then
-            globals.set_int(1662873 + 1 + 5, 1)
+            globals.set_int(1663174 + 1 + 5, 1)
             gui.show_message("Bunker", "Resupplying your bunker supplies every 5 seconds.")
             sleep(5)
         end
@@ -5906,7 +5906,7 @@ toolTip(Hangar, "Instantly supplies your hangar with random cargo")
 mcBus:add_button("MC President (On/Off)", function()
     -- -1 is off, 0 is on
     playerID = PLAYER.PLAYER_ID()
-    g = 1886967 + (playerID * 609) + 10
+    g = 1887305 + (playerID * 609) + 10
     gb1 = globals.get_int(g + 1)
     gb2 = globals.get_int(g + 430)
     if gb1 == playerID and gb2 == 1 then
@@ -5927,7 +5927,7 @@ script.register_looped("autoGetAcidCargo", function(script)
     if acidLab:is_enabled() == true then
         autoGetAcidCargo = not autoGetAcidCargo
         if autoGetAcidCargo then
-            globals.set_int(1662873 + 1 + 6, 1)
+            globals.set_int(1663174 + 1 + 6, 1)
             gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...")
             sleep(0.5)
         end
@@ -5941,7 +5941,7 @@ script.register_looped("autoGetDocForgeCargo", function(script)
     if docForge:is_enabled() == true then
         autoGetDocForgeCargo = not autoGetDocForgeCargo
         if autoGetDocForgeCargo then
-            globals.set_int(1662873 + 1 + 1, 1)
+            globals.set_int(1663174 + 1 + 1, 1)
             gui.show_message("Document Forge", "Resupplying your document forge, please wait...")
             sleep(0.5)
         end
@@ -5954,7 +5954,7 @@ script.register_looped("autoGetWeedCargo", function(script)
     if weed:is_enabled() == true then
         autoGetWeedCargo = not autoGetWeedCargo
         if autoGetWeedCargo then
-            globals.set_int(1662873 + 1 + 2, 1)
+            globals.set_int(1663174 + 1 + 2, 1)
             gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...")
             sleep(0.5)
         end
@@ -5968,7 +5968,7 @@ script.register_looped("autoGetMethCargo", function(script)
     if meth:is_enabled() == true then
         autoGetMethCargo = not autoGetMethCargo
         if autoGetMethCargo then
-            globals.set_int(1662873 + 1 + 3, 1)
+            globals.set_int(1663174 + 1 + 3, 1)
             gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...")
             sleep(0.5)
         end
@@ -5982,7 +5982,7 @@ script.register_looped("autoGetCokeCargo", function(script)
     if cocaine:is_enabled() == true then
         autoGetCokeCargo = not autoGetCokeCargo
         if autoGetCokeCargo then
-            globals.set_int(1662873 + 1 + 4, 1)
+            globals.set_int(1663174 + 1 + 4, 1)
             gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...")
             sleep(0.5)
         end
@@ -5995,7 +5995,7 @@ script.register_looped("autoGetCashCargo", function(script)
     if fakeCash:is_enabled() == true then
         autoGetCashCargo = not autoGetCashCargo
         if autoGetCashCargo then
-            globals.set_int(1662873 + 1 + 0, 1)
+            globals.set_int(1663174 + 1 + 0, 1)
             gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...")
             sleep(0.5)
         end
@@ -6005,29 +6005,29 @@ toolTip(mcBus, "Resupply your Counterfeit Cash supplies")
 mcBus:add_separator()
 mcBus:add_button("Resupply All", function()
 	script.run_in_fiber(function(mcResupply)
-		globals.set_int(1662873 + 1 + 6, 1)
-		globals.set_int(1662873 + 1 + 6, 1)
-		globals.set_int(1662873 + 1 + 6, 1) -- Acid Lab Supplies
+		globals.set_int(1663174 + 1 + 6, 1)
+		globals.set_int(1663174 + 1 + 6, 1)
+		globals.set_int(1663174 + 1 + 6, 1) -- Acid Lab Supplies
 		gui.show_message("Acid Lab", "Resupplying your Acid Lab")
-		globals.set_int(1662873 + 1 + 5, 1)
-		globals.set_int(1662873 + 1 + 5, 1)
-		globals.set_int(1662873 + 1 + 5, 1) -- Bunker Supplies
+		globals.set_int(1663174 + 1 + 5, 1)
+		globals.set_int(1663174 + 1 + 5, 1)
+		globals.set_int(1663174 + 1 + 5, 1) -- Bunker Supplies
 		gui.show_message("Bunker", "Resupplying your Bunker")
-		globals.set_int(1662873 + 1 + 1, 1)
-		globals.set_int(1662873 + 1 + 1, 1)
-		globals.set_int(1662873 + 1 + 1, 1) -- Document Forge Supplies
+		globals.set_int(1663174 + 1 + 1, 1)
+		globals.set_int(1663174 + 1 + 1, 1)
+		globals.set_int(1663174 + 1 + 1, 1) -- Document Forge Supplies
 		gui.show_message("Document Forge", "Resupplying your Document Forge")
-		globals.set_int(1662873 + 1 + 2, 1)
-		globals.set_int(1662873 + 1 + 2, 1)
-		globals.set_int(1662873 + 1 + 2, 1) -- Weed Farm Supplies
+		globals.set_int(1663174 + 1 + 2, 1)
+		globals.set_int(1663174 + 1 + 2, 1)
+		globals.set_int(1663174 + 1 + 2, 1) -- Weed Farm Supplies
 		gui.show_message("Weed Farm", "Resupplying your Weed Farm")
-		globals.set_int(1662873 + 1 + 3, 1)
-		globals.set_int(1662873 + 1 + 3, 1)
-		globals.set_int(1662873 + 1 + 3, 1) -- Meth Lab Suplies
+		globals.set_int(1663174 + 1 + 3, 1)
+		globals.set_int(1663174 + 1 + 3, 1)
+		globals.set_int(1663174 + 1 + 3, 1) -- Meth Lab Suplies
 		gui.show_message("Meth Lab", "Resupplying your Meth Lab")
-		globals.set_int(1662873 + 1 + 4, 1)
-		globals.set_int(1662873 + 1 + 4, 1)
-		globals.set_int(1662873 + 1 + 4, 1) -- Cocaine Lockup Supplies
+		globals.set_int(1663174 + 1 + 4, 1)
+		globals.set_int(1663174 + 1 + 4, 1)
+		globals.set_int(1663174 + 1 + 4, 1) -- Cocaine Lockup Supplies
 		gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
 	end)
 end)
@@ -6187,7 +6187,7 @@ toolTip(Club, "Max your nightclubs popularity")
 CEO:add_button("Register as CEO", function()
     -- -1 is off, 0 is on
     playerID = PLAYER.PLAYER_ID()
-    g = 1886967 + (playerID * 609) + 10
+    g = 1887305 + (playerID * 609) + 10
     gb1 = globals.get_int(g + 1)
     gb2 = globals.get_int(g + 430)
     if gb1 == playerID and gb2 == 0 then
@@ -6370,15 +6370,15 @@ function cuts(cut)
         control = 2
         enter = 201 --enter
         cancel = 202 --cancel
-        globals.set_int(1928233 + 1 + 1, 100 - (cut * 4))
-        globals.set_int(1928233 + 1 + 2, cut)
-        globals.set_int(1928233 + 1 + 3, cut)
-        globals.set_int(1928233 + 1 + 4, cut)
+        globals.set_int(1928958 + 1 + 1, 100 - (cut * 4))
+        globals.set_int(1928958 + 1 + 2, cut)
+        globals.set_int(1928958 + 1 + 3, cut)
+        globals.set_int(1928958 + 1 + 4, cut)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, enter, 1)
         cuts:sleep(1000)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, cancel, 1)
         cuts:sleep(1000)
-        globals.set_int(1930201 + 3008 + 1, cut)
+        globals.set_int(1930926 + 3008 + 1, cut)
     end)
 end
 
@@ -6387,13 +6387,13 @@ function fleecaCut()
         control = 2
         enter = 201 --enter
         cancel = 202 --cancel
-        globals.set_int(1928233 + 1 + 1, 100 - (7453 * 2))
-        globals.set_int(1928233 + 1 + 2, 7453)
+        globals.set_int(1928958 + 1 + 1, 100 - (7453 * 2))
+        globals.set_int(1928958 + 1 + 2, 7453)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, enter, 1)
         fleecaCuts:sleep(1000)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, cancel, 1)
         fleecaCuts:sleep(1000)
-        globals.set_int(1930201 + 3008 + 1, 7453)
+        globals.set_int(1930926 + 3008 + 1, 7453)
     end)
 end
 
@@ -6512,7 +6512,7 @@ heistTab:add_imgui(function()
     --PAD.DISABLE_ALL_CONTROL_ACTIONS(2)
     PAD.DISABLE_CONTROL_ACTION(2, 237, true)
 
-    objectiveText = globals.get_string(1574764 + 16)
+    objectiveText = globals.get_string(1574765 + 16)
     tpdValk = false
     tpdParkingLot = false
     heistIndex = ImGui.Combo("Heist", heistIndex, {"Fleeca Job", "Prison Break", "Humane Labs", "Series A Funding", "Pacific Standard"}, 5, 5)
@@ -6605,7 +6605,7 @@ end)
 
 script.register_looped("heistTabLoop", function(heistTabScript)
     if unlockHeist:is_enabled() then
-        globals.set_int(1933381 + 420, 31)
+        globals.set_int(1934106 + 420, 31)
     end
 
     if  shootEnemies:is_enabled() then
@@ -7974,7 +7974,7 @@ chatOpt:add_button("Menu Info", function()
     isCooldown = true
 
     script.run_in_fiber(function(menuMsg)
-        local binfo = "YimMenu version 1.68, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
+        local binfo = "YimMenu version 1.69, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
         network.send_chat_message("[Menu]: "..binfo, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
