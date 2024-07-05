@@ -6524,11 +6524,11 @@ heistTab:add_imgui(function()
         end
         toolTip("", "Set every players cut to 15 million\nMust be hovering over your cut before clicking")
         if ImGui.Button("Bypass Hack") then
-            locals.set_int("fm_mission_controller", 11776 + 24, 7)
+            locals.set_int("fm_mission_controller", 11778 + 24, 7)
         end
         toolTip("", "Instantly finish hacking")
         if ImGui.Button("Bypass Drill") then
-            locals.set_float("fm_mission_controller", 10067 + 11, 100)
+            locals.set_float("fm_mission_controller", 10069 + 11, 100)
         end
         toolTip("", "Instantly finish drilling")
     end
@@ -10843,3 +10843,5 @@ script.register_looped("indirectSpectate", function(script)
     end
 end)
 toolTip(spectate, "Spectates the selected player using a less detectable spectate method")
+
+
