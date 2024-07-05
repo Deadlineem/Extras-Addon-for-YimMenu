@@ -8049,7 +8049,7 @@ griefPlayerTab:add_imgui(function()
         selPlayer = "Self"
     end
 	
-	ImGui.SetNextWindowPos(268, 12, ImGuiCond.FirstUseEver)
+	ImGui.SetNextWindowPos(280, 12, ImGuiCond.FirstUseEver)
     ImGui.SetNextWindowCollapsed(true, ImGuiCond.FirstUseEver) -- Collapse the window on first use
 	
     ImGui.Begin("Extras Addon (Grief Options) - Target: ".. selPlayer, flags)
@@ -8280,8 +8280,8 @@ griefPlayerTab:add_button("Clown Attack", function()
         else
             gui.show_message("Success", "Successfully spawned the attack clowns")
         end
+		sleep(2)
     end)
-	sleep(2)
 end)
 toolTip(griefPlayerTab, "Spawns a Clown van full of clowns to chase/gun the player down.")
 
@@ -9784,7 +9784,7 @@ dropsPlayerTab:add_imgui(function()
 			selPlayer = "Self"
 		end
 		
-		ImGui.SetNextWindowPos(736, 12, ImGuiCond.FirstUseEver)
+		ImGui.SetNextWindowPos(765, 12, ImGuiCond.FirstUseEver)
 		ImGui.SetNextWindowCollapsed(true, ImGuiCond.FirstUseEver)
 		
 		ImGui.Begin("Extras Addon (Drop Options) - Target: ".. selPlayer, flags)
@@ -10004,7 +10004,7 @@ giftPlayerTab:add_imgui(function()
 			selPlayer = "Self"
 		end
 		
-		ImGui.SetNextWindowPos(268, 48, ImGuiCond.FirstUseEver)
+		ImGui.SetNextWindowPos(280, 48, ImGuiCond.FirstUseEver)
 		ImGui.SetNextWindowCollapsed(true, ImGuiCond.FirstUseEver)
 		
         if ImGui.Begin("Extras Addon (Vehicle Options) - Target: ".. selPlayer, flags) then
