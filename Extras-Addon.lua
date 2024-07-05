@@ -592,7 +592,7 @@ explosivePoint = Fun:add_checkbox("Point of Death")
 script.register_looped("explosivePointer", function(script)
     if explosivePoint:is_enabled() then
 		HUD.SHOW_HUD_COMPONENT_THIS_FRAME(14)
-		if globals.get_int(4521801 + 930) == 3 then
+		if globals.get_int(4521801 + 932) == 3 then
 			local hit, hitCoords = getEntityInCrosshair()
 			if hit ~= nil then
 				local targetPos = ENTITY.GET_ENTITY_COORDS(hit, false)
