@@ -7365,29 +7365,27 @@ end
     gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters")
 end)
 
- properties = {
-    {name = "Drainage", id = 768}, {name = "Gold", id = 618}, {name = "Fingerprint Scanner", id = 619}, {name = "Main Gate", id = 770}, {name = "Kosatka", id = 760},
-    -- Add more properties as needed
-    -- Cayo Drainage = 768
+properties = {
+    {name = "Drainage", x = 5051.645, y = -5822.677, z = -12.310},
+    {name = "Gold 1", x = 5080.300, y = -5757.000, z = 15.830},
+    {name = "Gold 2", x = 5029.567, y = -5735.856, z = 17.866},
+    {name = "Gold 3", x = 5007.990, y = -5786.492, z = 17.832},
+    {name = "Gold 4", x = 5000.770, y = -5748.700, z = 14.840},
+    {name = "Office", x = 5010.736, y = -5751.701, z = 28.845},
+    {name = "Vault", x = 5008.466, y = -5753.206, z = 15.484},
+    {name = "Main Gate", x = 4993.848, y = -5720.731, z = 19.880},
+	{name = "Kosatka", x = 4319.710, y = -3903.497, z = -35.609},
+    -- Add more locations as needed
 }
 
 -- Function to create buttons dynamically
- function createCayoButtons(cayoHeist)
-     buttonsPerRow = 5
-     buttonCount = 0
+function createCayoButtons(cayoHeist)
+    local buttonsPerRow = 10
+    local buttonCount = 0
     for _, property in ipairs(properties) do
         cayoHeist:add_button(property.name, function()
-             ped = PLAYER.PLAYER_PED_ID()
-             blip_info = HUD.GET_FIRST_BLIP_INFO_ID(property.id)
-             coords = HUD.GET_BLIP_COORDS(blip_info)
-
-            if HUD.DOES_BLIP_EXIST(blip_info) then
-                if property.id == 740 then
-                    PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x + 5, coords.y - 5, coords.z)
-                else
-                    PED.SET_PED_COORDS_KEEP_VEHICLE(ped, coords.x, coords.y, coords.z)
-                end
-            end
+            local ped = PLAYER.PLAYER_PED_ID()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(ped, property.x, property.y, property.z)
         end)
         buttonCount = buttonCount + 1
         if buttonCount < buttonsPerRow and _ < #properties then
@@ -8881,14 +8879,6 @@ function packed_stat_set_bool(boolindex, boolval) --当游戏版本不受支持�
         log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
     end
 end
-
---[[function calcDistance(pos, tarpos) -- 计算两个三维坐标之间的距离
-    local dx = pos.x - tarpos.x
-    local dy = pos.y - tarpos.y
-    local dz = pos.z - tarpos.z
-    local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
-    return distance
-end]] -- the other one should do this
 
 function get_closest_veh(entity) -- 获取最近的载具
     local coords = ENTITY.GET_ENTITY_COORDS(entity, true)
