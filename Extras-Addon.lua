@@ -6423,6 +6423,12 @@ end
 function calcDistance(pos, tarpos)
     if ENTITY.DOES_ENTITY_EXIST(pos) then pos = ENTITY.GET_ENTITY_COORDS(pos, true) end
     if ENTITY.DOES_ENTITY_EXIST(tarpos) then tarpos = ENTITY.GET_ENTITY_COORDS(tarpos, true) end
+    if type(pos) == "table" then
+        pos = vec3.new(pos[0], pos[1], pos[2])
+    end
+    if type(tarpos) == "table" then
+        tarpos = vec3.new(tarpos[0], tarpos[1], tarpos[2])
+    end
     dx = pos.x - tarpos.x
     dy = pos.y - tarpos.y
     dz = pos.z - tarpos.z
