@@ -5953,7 +5953,7 @@ script.register_looped("autoGetDocForgeCargo", function(script)
     if docForge:is_enabled() == true then
         autoGetDocForgeCargo = not autoGetDocForgeCargo
         if autoGetDocForgeCargo then
-            globals.set_int(1663174 + 1 + 1, 1)
+            globals.set_int(1663174 + 1 + 4, 1)
             gui.show_message("Document Forge", "Resupplying your document forge, please wait...")
             sleep(0.5)
         end
@@ -5966,7 +5966,7 @@ script.register_looped("autoGetWeedCargo", function(script)
     if weed:is_enabled() == true then
         autoGetWeedCargo = not autoGetWeedCargo
         if autoGetWeedCargo then
-            globals.set_int(1663174 + 1 + 2, 1)
+            globals.set_int(1663174 + 1 + 3, 1)
             gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...")
             sleep(0.5)
         end
@@ -5980,7 +5980,7 @@ script.register_looped("autoGetMethCargo", function(script)
     if meth:is_enabled() == true then
         autoGetMethCargo = not autoGetMethCargo
         if autoGetMethCargo then
-            globals.set_int(1663174 + 1 + 3, 1)
+            globals.set_int(1663174 + 1 + 0, 1)
             gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...")
             sleep(0.5)
         end
@@ -5994,7 +5994,7 @@ script.register_looped("autoGetCokeCargo", function(script)
     if cocaine:is_enabled() == true then
         autoGetCokeCargo = not autoGetCokeCargo
         if autoGetCokeCargo then
-            globals.set_int(1663174 + 1 + 4, 1)
+            globals.set_int(1663174 + 1 + 1, 1)
             gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...")
             sleep(0.5)
         end
@@ -6007,7 +6007,7 @@ script.register_looped("autoGetCashCargo", function(script)
     if fakeCash:is_enabled() == true then
         autoGetCashCargo = not autoGetCashCargo
         if autoGetCashCargo then
-            globals.set_int(1663174 + 1 + 0, 1)
+            globals.set_int(1663174 + 1 + 2, 1)
             gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...")
             sleep(0.5)
         end
@@ -6017,30 +6017,34 @@ toolTip(mcBus, "Resupply your Counterfeit Cash supplies")
 mcBus:add_separator()
 mcBus:add_button("Resupply All", function()
     script.run_in_fiber(function(mcResupply)
-        globals.set_int(1663174 + 1 + 6, 1)
-        globals.set_int(1663174 + 1 + 6, 1)
-        globals.set_int(1663174 + 1 + 6, 1) -- Acid Lab Supplies
-        gui.show_message("Acid Lab", "Resupplying your Acid Lab")
+        globals.set_int(1663174 + 1 + 0, 1)
+        globals.set_int(1663174 + 1 + 0, 1)
+        globals.set_int(1663174 + 1 + 0, 1) -- Meth Lab Suplies
+        gui.show_message("Meth Lab", "Resupplying your Meth Lab")
+        globals.set_int(1663174 + 1 + 1, 1)
+        globals.set_int(1663174 + 1 + 1, 1)
+        globals.set_int(1663174 + 1 + 1, 1) -- Cocaine Lockup Supplies 
+        gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
+        globals.set_int(1663174 + 1 + 2, 1)
+        globals.set_int(1663174 + 1 + 2, 1)
+        globals.set_int(1663174 + 1 + 2, 1) -- Counterfeit Cash
+        gui.show_message("Counterfeit Cash Factory", "Resupplying your Counterfeit Cash Factory")
+        globals.set_int(1663174 + 1 + 3, 1)
+        globals.set_int(1663174 + 1 + 3, 1)
+        globals.set_int(1663174 + 1 + 3, 1) -- Weed Farm Supplies
+        gui.show_message("Weed Farm", "Resupplying your Weed Farm")
+        globals.set_int(1663174 + 1 + 4, 1)
+        globals.set_int(1663174 + 1 + 4, 1)
+        globals.set_int(1663174 + 1 + 4, 1) -- Document Forge Supplies
+        gui.show_message("Document Forge", "Resupplying your Document Forge")
         globals.set_int(1663174 + 1 + 5, 1)
         globals.set_int(1663174 + 1 + 5, 1)
         globals.set_int(1663174 + 1 + 5, 1) -- Bunker Supplies
         gui.show_message("Bunker", "Resupplying your Bunker")
-        globals.set_int(1663174 + 1 + 1, 1)
-        globals.set_int(1663174 + 1 + 1, 1)
-        globals.set_int(1663174 + 1 + 1, 1) -- Document Forge Supplies
-        gui.show_message("Document Forge", "Resupplying your Document Forge")
-        globals.set_int(1663174 + 1 + 2, 1)
-        globals.set_int(1663174 + 1 + 2, 1)
-        globals.set_int(1663174 + 1 + 2, 1) -- Weed Farm Supplies
-        gui.show_message("Weed Farm", "Resupplying your Weed Farm")
-        globals.set_int(1663174 + 1 + 3, 1)
-        globals.set_int(1663174 + 1 + 3, 1)
-        globals.set_int(1663174 + 1 + 3, 1) -- Meth Lab Suplies
-        gui.show_message("Meth Lab", "Resupplying your Meth Lab")
-        globals.set_int(1663174 + 1 + 4, 1)
-        globals.set_int(1663174 + 1 + 4, 1)
-        globals.set_int(1663174 + 1 + 4, 1) -- Cocaine Lockup Supplies
-        gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
+        globals.set_int(1663174 + 1 + 6, 1)
+        globals.set_int(1663174 + 1 + 6, 1)
+        globals.set_int(1663174 + 1 + 6, 1) -- Acid Lab Supplies
+        gui.show_message("Acid Lab", "Resupplying your Acid Lab")
     end)
 end)
 toolTip(mcBus, "Resupplies all your supplies for all businesses")
@@ -6412,7 +6416,6 @@ end
 function bringTeam()
     script.run_in_fiber(function(bringteam)
         for i = 1, 3 do
-            player = PLAYET.PLAYER_PED_ID()
             if (ENTITY.DOES_ENTITY_EXIST(PLAYER.GET_PLAYER_PED(i)) and calcDistance(player, PLAYER.GET_PLAYER_PED(i)) >= 20 and PLAYER.GET_PLAYER_TEAM(i) == PLAYER.GET_PLAYER_TEAM(PLAYER.PLAYER_ID())) then
                 command.call( "bring", {i})
                 bringteam:yield()
@@ -6424,12 +6427,6 @@ end
 function calcDistance(pos, tarpos)
     if ENTITY.DOES_ENTITY_EXIST(pos) then pos = ENTITY.GET_ENTITY_COORDS(pos, true) end
     if ENTITY.DOES_ENTITY_EXIST(tarpos) then tarpos = ENTITY.GET_ENTITY_COORDS(tarpos, true) end
-    if type(pos) == "table" then
-        pos = vec3.new(pos[0], pos[1], pos[2])
-    end
-    if type(tarpos) == "table" then
-        tarpos = vec3.new(tarpos[0], tarpos[1], tarpos[2])
-    end
     dx = pos.x - tarpos.x
     dy = pos.y - tarpos.y
     dz = pos.z - tarpos.z
@@ -6473,8 +6470,7 @@ heistTab:add_sameline()
 
 heistTab:add_button("Bring Everyone", function()
     script.run_in_fiber(function(bringall)
-        for i = 1, 3 do
-            player = PLAYER.PLAYER_PED_ID()
+        for i = 0, 3 do
             gui.show_message("Distance", tostring(calcDistance(player, PLAYER.GET_PLAYER_PED(i))))
             if (ENTITY.DOES_ENTITY_EXIST(PLAYER.GET_PLAYER_PED(i)) and calcDistance(player, PLAYER.GET_PLAYER_PED(i)) >= 50) then
                 command.call( "bring", {i})
@@ -7382,7 +7378,7 @@ properties = {
     {name = "Office", x = 5010.736, y = -5751.701, z = 28.845},
     {name = "Vault", x = 5008.466, y = -5753.206, z = 15.484},
     {name = "Main Gate", x = 4993.848, y = -5720.731, z = 19.880},
-    {name = "Kosatka", x = 4319.710, y = -3903.497, z = -35.609},
+	{name = "Kosatka", x = 4319.710, y = -3903.497, z = -35.609},
     -- Add more locations as needed
 }
 
