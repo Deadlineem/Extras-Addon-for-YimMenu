@@ -732,7 +732,11 @@ Stats:add_button("Change level", function()
             MPX = "MP1_"
         end
         chosenLevel = levelInput:get_value()
-        rpLevel = ranks[chosenLevel]-- get rp level from ranks
+        if chosenLevel >= 98 then
+            rpLevel = 25 * chosenLevel^2 + 23575 * chosenLevel - 1023150 --calculate rank if greater than 97
+        else
+            rpLevel = ranks[chosenLevel]-- get rp level from ranks
+        end
 
         if rpLevel == nil then
             gui.show_message("Stats", "The chosen level must be between 1 and 8000!")
