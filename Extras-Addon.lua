@@ -6412,6 +6412,7 @@ end
 function bringTeam()
     script.run_in_fiber(function(bringteam)
         for i = 1, 3 do
+            player = PLAYET.PLAYER_PED_ID()
             if (ENTITY.DOES_ENTITY_EXIST(PLAYER.GET_PLAYER_PED(i)) and calcDistance(player, PLAYER.GET_PLAYER_PED(i)) >= 20 and PLAYER.GET_PLAYER_TEAM(i) == PLAYER.GET_PLAYER_TEAM(PLAYER.PLAYER_ID())) then
                 command.call( "bring", {i})
                 bringteam:yield()
@@ -6472,7 +6473,8 @@ heistTab:add_sameline()
 
 heistTab:add_button("Bring Everyone", function()
     script.run_in_fiber(function(bringall)
-        for i = 0, 3 do
+        for i = 1, 3 do
+            player = PLAYER.PLAYER_PED_ID()
             gui.show_message("Distance", tostring(calcDistance(player, PLAYER.GET_PLAYER_PED(i))))
             if (ENTITY.DOES_ENTITY_EXIST(PLAYER.GET_PLAYER_PED(i)) and calcDistance(player, PLAYER.GET_PLAYER_PED(i)) >= 50) then
                 command.call( "bring", {i})
@@ -7380,7 +7382,7 @@ properties = {
     {name = "Office", x = 5010.736, y = -5751.701, z = 28.845},
     {name = "Vault", x = 5008.466, y = -5753.206, z = 15.484},
     {name = "Main Gate", x = 4993.848, y = -5720.731, z = 19.880},
-	{name = "Kosatka", x = 4319.710, y = -3903.497, z = -35.609},
+    {name = "Kosatka", x = 4319.710, y = -3903.497, z = -35.609},
     -- Add more locations as needed
 }
 
