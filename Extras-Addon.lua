@@ -6625,7 +6625,7 @@ heistTab:add_imgui(function()
                 end
             end)
         end
-        toolTip("", "Bring everyone to you")
+        toolTip("", "Teleports everyone to their spot at the warehouse")
     end
     if heistIndex == 4 then -- pacific standard
         if (ImGui.Button("15 Million Cuts")) then
