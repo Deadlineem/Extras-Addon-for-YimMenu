@@ -8071,7 +8071,38 @@ settingsTab:add_text("Extras Addon Settings")
 settingsTab:add_separator()
 
 chatCommands = settingsTab:add_checkbox("Enable Chat Commands")
+settingsTab:add_sameline()
+detectModders = settingsTab:add_checkbox("Snitch Mode")
 
+notifiedPlayers = {}
+detectedModders = {}
+detectModders:set_enabled(true)
+
+script.register_looped("detectModders", function(script)
+    if detectModders:is_enabled() then 
+        local localPlayerID = PLAYER.PLAYER_ID()
+        
+        -- Identify modders and store their IDs
+        for i = 0, 31 do
+            local pid = i
+            local detect = network.is_player_flagged_as_modder(pid)
+            local reason = network.get_flagged_modder_reason(pid)
+            if pid ~= localPlayerID and detect and reason then
+                if not detectedModders[pid] then
+                    detectedModders[pid] = PLAYER.GET_PLAYER_NAME(pid)
+                    -- Send chat message to everyone except modders and the local player
+                    for j = 0, 31 do
+                        local targetPid = j
+                        if not network.is_player_flagged_as_modder(targetPid) and targetPid ~= localPlayerID then
+                            network.send_chat_message_to_player(targetPid, "WARNING! " .. detectedModders[pid] .. " has been flagged as a modder in this session!")
+                        end
+                    end
+                end
+            end 
+        end
+        sleep(5)
+    end
+end)
 flags = ImGuiWindowFlags.None | ImGuiWindowFlags.NoSavedSettings
 griefPlayerTab:add_imgui(function()
         
