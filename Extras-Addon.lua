@@ -7440,6 +7440,21 @@ function createCayoButtons(cayoHeist)
 end
 cayoHeist:add_separator()
 cayoHeist:add_text("Teleports")
+cayoHeist:add_button("Bring Everyone", function()
+    script.run_in_fiber(function()
+        p = PLAYER.PLAYER_PED_ID()
+        for i = 0, 3 do
+            t = PLAYER.GET_PLAYER_PED(i)
+            if ENTITY.DOES_ENTITY_EXIST(t) then
+                gui.show_message(PLAYER.GET_PLAYER_NAME(i), calcDistance(t, p))
+                if calcDistance(t, p) > 50 then
+                    command.call("bring", {i})
+                end
+            end
+        end
+    end)
+end)
+toolTip(cayoHeist, "Bring everyone further than 50 meters to you")
 createCayoButtons(cayoHeist)
 cayoHeist:add_separator()
 cayoHeist:add_text("How to Set Up or Bypass Cooldown:")
