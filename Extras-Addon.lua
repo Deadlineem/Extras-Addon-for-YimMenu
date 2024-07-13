@@ -3929,12 +3929,12 @@ script.register_looped("vehFlight", function(script)
 
             -- Ascend
             if PAD.IS_CONTROL_PRESSED(0, 73) and vehicleFly then
-                ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
+                ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
             end
             -- Descend
             PAD.DISABLE_CONTROL_ACTION(0, 80, true) -- Cinematic Camera
             if PAD.IS_DISABLED_CONTROL_PRESSED(0, 80) and vehicleFly then 
-                ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, -0.227, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
+                ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, -0.5, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
             end
             -- Stop aka freeze pos
             PAD.DISABLE_CONTROL_ACTION(0, 88)
@@ -8141,6 +8141,7 @@ script.register_looped("autoKick", function(script)
 						local targetPid = j
 						if not network.is_player_flagged_as_modder(targetPid) and targetPid ~= localPlayerID then
 								command.call("smartkick", {pid})
+								network.send_chat_message("Auto-Kicked "..detectedModders[pid].." for modding", false)
 								gui.show_message("Auto Kick", "Automatically host kicked ".. detectedModders[pid])
 						end
 					end
@@ -10953,3 +10954,41 @@ script.register_looped("indirectSpectate", function(script)
     end
 end)
 toolTip(spectate, "Spectates the selected player using a less detectable spectate method")
+
+challengesTab = gui.get_tab("GUI_TAB_MISSIONS")
+
+challengesTab:add_separator()
+challengesTab:add_text("Challenges")
+
+--challenge = {"LONGEST_JUMP", "HIGHEST_SPEED", "LONGEST_STOPPIE", "LONGEST_NO_CRASH", "LONGEST_WHEELIE", "LONGEST_SKYDIVE", "LOWEST_PARACHUTE", "REVERSE_DRIVING", "LONGEST_FALL", "PVP_LONGEST_SNIPE", "LONGEST_BAIL", "MOST_VEHICLES_STOLEN", "MOST_NEAR_MISSES", "FURTHEST_DISTANCE_LOW_FLYING", "FURTHEST_DISTANCE_LOW_FLYING_INVERTED", "MOST_BRIDGES", "PVP_HEADSHOTS", "PVP_DRIVEBY", "PVP_MELEE"}
+--challenge = {"LONGEST_JUMP", "LONGEST_FREEFALL", "HIGHEST_SPEED", "LONGEST_STOPPIE", "LONGEST_WHEELIE", "LONGEST_NO_CRASH", "LOWEST_PARACHUTE_DEPLOY", "HIGHEST_VEHICLES_STOLEN", "MOST_NEAR_MISSES", "REVERSE_DRIVING_WITHOUT_CRASHING", "LONGEST_FALL_WITHOUT_DYING", "LONGEST_TIME_LOW_FLYING_UNDER_20M", "LONGEST_TIME_LOW_FLYING_INVERTED_UNDER_100M", "LONGEST_VEHICLE_BAIL_WITHOUT_DYING", "BRIDGES_FLOWN_UNDER", "PVP_HIGHEST_NO_OF_PLAYER_HEADSHOTS", "PVP_HIGHEST_NO_OF_PLAYER_DRIVE_BY_KILLS", "PVP_HIGHEST_NO_OF_PLAYER_MELEE_KILLS", "PVP_SNIPER_PLAYER_KILLS"}
+challenge = {"LONGEST_JUMP", "MOST_NEAR_MISSES", "LONGEST_STOPPIE", "LONGEST_WHEELIE", "HIGHEST_SPEED", "LONGEST_NO_CRASH", "LONGEST_FREEFALL", "LOWEST_PARACHUTE_DEPLOY", "HIGHEST_VEHICLES_STOLEN", "LONGEST_FALL_WITHOUT_DYING", "LONGEST_VEHICLE_BAIL_WITHOUT_DYING", "LONGEST_TIME_LOW_FLYING_UNDER_20M", "LONGEST_TIME_LOW_FLYING_INVERTED_UNDER_100M", "BRIDGES_FLOWN_UNDER", "REVERSE_DRIVING_WITHOUT_CRASHING", "PVP_HIGHEST_NO_OF_PLAYER_HEADSHOTS", "PVP_HIGHEST_NO_OF_PLAYER_DRIVE_BY_KILLS", "PVP_HIGHEST_NO_OF_PLAYER_MELEE_KILLS", "PVP_SNIPER_PLAYER_KILLS"}
+base = 262145
+
+--global = {12022, 11695, 12026, 12024, 12025, 12027, 11696, 11697, 12023, 11703, 11698, 11700, 11701, 11699, 11702, 11705, 11706, 11707, 11708} --ambient weighting
+--global = {10903, 11709, 11710, 11711, 10904, 10905, 10906, 10907, 10909, 11717, 11712, 11714, 11715, 11719, 11720, 11721, 11722, 11713, 11716} -- disable 
+--global = {11613, 11614, 11615, 11616, 11617, 11618, 11619, 11620, 11621, 11622, 11623, 11624, 11625, 11737, 11738, 11628, 11630, 11631, 11632} --challenge
+--global = {12022, 11695, 12026, 12024, 12025, 12027, 11696, 11697, 12023, 11703, 11698, 11700, 11701, 11699, 11702, 11705, 11706, 11707, 11708}
+global = {11500, 11501, 11502, 11503, 11504, 11505, 11506, 11507, 11508, 11509, 11510, 11511, 11512, 11816, 11817, 11818, 11819, 11820, 11821}
+
+index = 0
+
+challengesTab:add_imgui(function()
+index, changed = ImGui.Combo("Challenge", index, challenge, #challenge)
+if changed then
+gui.show_message("Changed", tostring((index + 1).. challenge[index + 1]))
+gui.show_message('Challenges', 'Successfully set challenge to `'.. challenge[index + 1].. '` you can now click on `Challenges` in the `Event Starter` to start it.')
+globals.set_float(base + global[index + 1], 100.0)
+end
+ImGui.SameLine()
+if ImGui.Button("Set") then
+gui.show_message("Changed", tostring((index + 1).. challenge[index + 1]))
+gui.show_message('Challenges', 'Successfully set challenge to `'.. challenge[index + 1].. '` you can now click on `Challenges` in the `Event Starter` to start it.')
+globals.set_float(base + global[index + 1], 100.0)
+end
+end)
+
+challengesTab:add_button("Count Down Timer 0", function()
+--defulat = 180000
+globals.set_int(base + 11693, 0) --dont think this works for everyone
+end)
