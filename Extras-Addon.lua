@@ -8083,7 +8083,6 @@ detectModders = settingsTab:add_checkbox("Snitch Mode")
 
 notifiedPlayers = {}
 detectedModders = {}
-detectModders:set_enabled(true)
 
 script.register_looped("detectModders", function(script)
     if detectModders:is_enabled() then 
