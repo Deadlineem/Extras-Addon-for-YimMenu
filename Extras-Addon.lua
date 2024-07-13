@@ -3885,68 +3885,66 @@ end)
 
 script.register_looped("vehFlight", function(script)
     if vehicleFly:is_enabled() then
-        while vehicleFly do
-            local playerPed = PLAYER.PLAYER_PED_ID()
-            if PED.IS_PED_IN_ANY_VEHICLE(playerPed, false) then
-                vehicle = PED.GET_VEHICLE_PED_IS_IN(playerPed, false)
-            else
-                vehicle = nil
-                flightSpeed = flightSpeedDefault
-            end
+        local playerPed = PLAYER.PLAYER_PED_ID()
+        if PED.IS_PED_IN_ANY_VEHICLE(playerPed, false) then
+            vehicle = PED.GET_VEHICLE_PED_IS_IN(playerPed, false)
+        else
+            vehicle = nil
+            flightSpeed = flightSpeedDefault
+        end
 
-            if PAD.IS_CONTROL_JUST_PRESSED(0, 87) and vehicle ~= nil then
-                flightSpeed = ENTITY.GET_ENTITY_SPEED(vehicle)
-            end
+        if PAD.IS_CONTROL_JUST_PRESSED(0, 87) and vehicle ~= nil then
+            flightSpeed = ENTITY.GET_ENTITY_SPEED(vehicle)
+        end
 
             
 
-            if vehicle ~= nil then
-                -- Yaw right
-                if PAD.IS_DISABLED_CONTROL_PRESSED(0, 90) then
-                    PAD.DISABLE_CONTROL_ACTION(0, 68, true) -- Aim
-                    WEAPON.SET_CURRENT_PED_VEHICLE_WEAPON(playerPed, 1122011548)
-                    local currentHeading = ENTITY.GET_ENTITY_HEADING(vehicle)
-                    ENTITY.SET_ENTITY_HEADING(vehicle, currentHeading - yawIncrement)
-                end
+        if vehicle ~= nil then
+            -- Yaw right
+            if PAD.IS_DISABLED_CONTROL_PRESSED(0, 90) then
+                PAD.DISABLE_CONTROL_ACTION(0, 68, true) -- Aim
+                WEAPON.SET_CURRENT_PED_VEHICLE_WEAPON(playerPed, 1122011548)
+                local currentHeading = ENTITY.GET_ENTITY_HEADING(vehicle)
+                ENTITY.SET_ENTITY_HEADING(vehicle, currentHeading - yawIncrement)
+            end
 
-                -- Yaw left
-                if PAD.IS_CONTROL_PRESSED(0, 89) then
-                    PAD.DISABLE_CONTROL_ACTION(0, 68, true) -- Aim
-                    WEAPON.SET_CURRENT_PED_VEHICLE_WEAPON(playerPed, 1122011548)
-                    local currentHeading = ENTITY.GET_ENTITY_HEADING(vehicle)
-                    ENTITY.SET_ENTITY_HEADING(vehicle, currentHeading + yawIncrement)
-                end
+            -- Yaw left
+            if PAD.IS_CONTROL_PRESSED(0, 89) then
+                PAD.DISABLE_CONTROL_ACTION(0, 68, true) -- Aim
+                WEAPON.SET_CURRENT_PED_VEHICLE_WEAPON(playerPed, 1122011548)
+                local currentHeading = ENTITY.GET_ENTITY_HEADING(vehicle)
+                ENTITY.SET_ENTITY_HEADING(vehicle, currentHeading + yawIncrement)
+            end
 
                 -- Forward flight
-                if PAD.IS_CONTROL_PRESSED(0, 87) then
-                    if flightSpeed < flightSpeedMax then
-                        flightSpeed = flightSpeed + flightSpeedIncrement
-                    end
-
-                    local coords = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle, 0.0, flightSpeed, 0.0)
-                    local velocity = { x = coords.x - ENTITY.GET_ENTITY_COORDS(vehicle).x, y = coords.y - ENTITY.GET_ENTITY_COORDS(vehicle).y, z = coords.z - ENTITY.GET_ENTITY_COORDS(vehicle).z}
-                    ENTITY.SET_ENTITY_VELOCITY(vehicle, velocity.x, velocity.y, velocity.z)
+            if PAD.IS_CONTROL_PRESSED(0, 87) then
+                if flightSpeed < flightSpeedMax then
+                    flightSpeed = flightSpeed + flightSpeedIncrement
                 end
 
-                -- Ascend
-                if PAD.IS_CONTROL_PRESSED(0, 73) and vehicleFly then
-                    ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
-                end
-                -- Descend
-                PAD.DISABLE_CONTROL_ACTION(0, 80, true) -- Cinematic Camera
-                if PAD.IS_DISABLED_CONTROL_PRESSED(0, 80) and vehicleFly then 
-                    ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, -0.227, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
-                end
-                -- Stop aka freeze pos
-                PAD.DISABLE_CONTROL_ACTION(0, 88)
-                if PAD.IS_DISABLED_CONTROL_PRESSED(0, 88) and vehicleFly then
-                    ENTITY.FREEZE_ENTITY_POSITION(vehicle, true)
-                else
-                    ENTITY.FREEZE_ENTITY_POSITION(vehicle, false)
-                end
+                local coords = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(vehicle, 0.0, flightSpeed, 0.0)
+                local velocity = { x = coords.x - ENTITY.GET_ENTITY_COORDS(vehicle).x, y = coords.y - ENTITY.GET_ENTITY_COORDS(vehicle).y, z = coords.z - ENTITY.GET_ENTITY_COORDS(vehicle).z}
+                ENTITY.SET_ENTITY_VELOCITY(vehicle, velocity.x, velocity.y, velocity.z)
             end
-            script:yield(2)
+
+            -- Ascend
+            if PAD.IS_CONTROL_PRESSED(0, 73) and vehicleFly then
+                ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
+            end
+            -- Descend
+            PAD.DISABLE_CONTROL_ACTION(0, 80, true) -- Cinematic Camera
+            if PAD.IS_DISABLED_CONTROL_PRESSED(0, 80) and vehicleFly then 
+                ENTITY.APPLY_FORCE_TO_ENTITY(vehicle, 1, 0.0, 0.0, -0.227, 0.0, 0.0, 0.0, 0, true, true, true, true, true)
+            end
+            -- Stop aka freeze pos
+            PAD.DISABLE_CONTROL_ACTION(0, 88)
+            if PAD.IS_DISABLED_CONTROL_PRESSED(0, 88) and vehicleFly then
+                ENTITY.FREEZE_ENTITY_POSITION(vehicle, true)
+            else
+                ENTITY.FREEZE_ENTITY_POSITION(vehicle, false)
+            end
         end
+        script:yield(2)
     end
 end)
 
@@ -8094,11 +8092,10 @@ settingsTab:add_separator()
 
 chatCommands = settingsTab:add_checkbox("Enable Chat Commands")
 settingsTab:add_sameline()
-detectModders = settingsTab:add_checkbox("Snitch Mode")
 
+detectModders = settingsTab:add_checkbox("Snitch Mode")
 notifiedPlayers = {}
 detectedModders = {}
-
 script.register_looped("detectModders", function(script)
     if detectModders:is_enabled() then 
         local localPlayerID = PLAYER.PLAYER_ID()
@@ -8124,6 +8121,37 @@ script.register_looped("detectModders", function(script)
         sleep(5)
     end
 end)
+toolTip(settingsTab, "Detect/Announces modders to everyone in the session who is not a modder")
+
+autoKick = settingsTab:add_checkbox("Auto Kick Modders")
+script.register_looped("autoKick", function(script)
+	if autoKick:is_enabled() then
+		local localPlayerID = PLAYER.PLAYER_ID()	
+		local isHost = NETWORK.NETWORK_IS_HOST()
+		-- Identify modders and store their IDs
+		for i = 0, 31 do
+			local pid = i
+			local detect = network.is_player_flagged_as_modder(pid)
+			local reason = network.get_flagged_modder_reason(pid)
+			if pid ~= localPlayerID and detect and reason then
+				if not detectedModders[pid] then
+					detectedModders[pid] = PLAYER.GET_PLAYER_NAME(pid)
+					-- Kick modders automatically.
+					for j = 0, 31 do
+						local targetPid = j
+						if not network.is_player_flagged_as_modder(targetPid) and targetPid ~= localPlayerID then
+								command.call("smartkick", {pid})
+								gui.show_message("Auto Kick", "Automatically host kicked ".. detectedModders[pid])
+						end
+					end
+				end
+			end 
+		end
+		sleep(5)
+	end
+end)
+toolTip(settingsTab, "Automatically kicks detected modders from the session.")
+
 flags = ImGuiWindowFlags.None | ImGuiWindowFlags.NoSavedSettings
 griefPlayerTab:add_imgui(function()
         
