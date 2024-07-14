@@ -11,8 +11,8 @@ DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT O
 1. To install the extras addon, simply download the [Update.bat](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat) you do not need to download the entire zip folder!
 
 2. After downloading, double click `update.bat`, it will check for updates to its own script every time its opened, after its finished, simply select an option:
-   - Press 1 to Download/Install Extras Addon (Only use after you've installed/used YimMenu)
-   - Press 2 to Download YimMenu (Goes to your Downloads folder)
+   - Press 1 to Download YimMenu (Goes to your Downloads folder)
+   - Press 2 to Download/Install Extras Addon (Only use after you've installed/used YimMenu)
    - Press 3 to Download FateInjector (Goes to your Downloads folder)
    - Press 4 to delete YimMenus cache (For updating/crash fixing)
    - Press 5 to go to Optional Downloads (Animations, XML Maps/Vehicles)
