@@ -2896,47 +2896,47 @@ end)
 -- CasinoPacino - gir489returns
 casino_gui = Money:add_tab("Casino")
 
-blackjack_cards              = 114
-blackjack_decks              = 846
-blackjack_table_players      = 1774
-blackjack_table_players_size = 8
+local blackjack_cards              = 116
+local blackjack_decks              = 846
+local blackjack_table_players      = 1776
+local blackjack_table_players_size = 8
 
-three_card_poker_table           = 747
-three_card_poker_table_size      = 9
-three_card_poker_cards           = 114
-three_card_poker_current_deck    = 168
-three_card_poker_anti_cheat      = 1036
-three_card_poker_anti_cheat_deck = 799
-three_card_poker_deck_size       = 55
+local three_card_poker_table           = 749
+local three_card_poker_table_size      = 9
+local three_card_poker_cards           = 116
+local three_card_poker_current_deck    = 168
+local three_card_poker_anti_cheat      = 1038
+local three_card_poker_anti_cheat_deck = 799
+local three_card_poker_deck_size       = 55
 
-roulette_master_table   = 122
-roulette_outcomes_table = 1357
-roulette_ball_table     = 153
+local roulette_master_table   = 124
+local roulette_outcomes_table = 1357
+local roulette_ball_table     = 153
 
-slots_random_results_table = 1346
-slots_slot_machine_state   = 1636
+local slots_random_results_table = 1348
+local slots_slot_machine_state   = 1638
 
-prize_wheel_win_state   = 278
-prize_wheel_prize       = 14
-prize_wheel_prize_state = 45
+local prize_wheel_win_state   = 280
+local prize_wheel_prize       = 14
+local prize_wheel_prize_state = 45
 
-gb_casino_heist_planning            = 1963945
-gb_casino_heist_planning_cut_offset = 1497 + 736 + 92
+local gb_casino_heist_planning            = 1964849
+local gb_casino_heist_planning_cut_offset = 1497 + 736 + 92
 
-fm_mission_controller_cart_grab       = 10253
-fm_mission_controller_cart_grab_speed = 14
-fm_mission_controller_cart_autograb   = true
+local fm_mission_controller_cart_grab       = 10255
+local fm_mission_controller_cart_grab_speed = 14
+local fm_mission_controller_cart_autograb   = true
 
-casino_heist_approach      = 0
-casino_heist_target        = 0
-casino_heist_last_approach = 0
-casino_heist_hard          = 0
-casino_heist_gunman        = 0
-casino_heist_driver        = 0
-casino_heist_hacker        = 0
-casino_heist_weapons       = 0
-casino_heist_cars          = 0
-casino_heist_masks         = 0
+local casino_heist_approach      = 0
+local casino_heist_target        = 0
+local casino_heist_last_approach = 0
+local casino_heist_hard          = 0
+local casino_heist_gunman        = 0
+local casino_heist_driver        = 0
+local casino_heist_hacker        = 0
+local casino_heist_weapons       = 0
+local casino_heist_cars          = 0
+local casino_heist_masks         = 0
 
 casino_gui:add_text("Lucky Wheel")
 casino_gui:add_button("Give Podium Vehicle", function ()
@@ -8091,6 +8091,7 @@ settingsTab:add_text("Extras Addon Settings")
 settingsTab:add_separator()
 
 chatCommands = settingsTab:add_checkbox("Enable Chat Commands")
+toolTip(settingsTab, "Enables .rp, .rp stop and .$ commands for others to use in chat.")
 settingsTab:add_sameline()
 
 detectModders = settingsTab:add_checkbox("Snitch Mode")
@@ -8113,45 +8114,79 @@ script.register_looped("detectModders", function(script)
                         local targetPid = j
                         if not network.is_player_flagged_as_modder(targetPid) and targetPid ~= localPlayerID then
                             network.send_chat_message_to_player(targetPid, "WARNING! " .. detectedModders[pid] .. " has been flagged as a modder in this session!")
+							detectedModders = {}
+							sleep(10)
                         end
                     end
                 end
             end 
         end
-        sleep(5)
     end
 end)
 toolTip(settingsTab, "Detect/Announces modders to everyone in the session who is not a modder")
 
+kickedModders = {}
 autoKick = settingsTab:add_checkbox("Auto Kick Modders")
-script.register_looped("autoKick", function(script)
-	if autoKick:is_enabled() then
-		local localPlayerID = PLAYER.PLAYER_ID()	
-		local isHost = NETWORK.NETWORK_IS_HOST()
-		-- Identify modders and store their IDs
-		for i = 0, 31 do
-			local pid = i
-			local detect = network.is_player_flagged_as_modder(pid)
-			local reason = network.get_flagged_modder_reason(pid)
-			if pid ~= localPlayerID and detect and reason then
-				if not detectedModders[pid] then
-					detectedModders[pid] = PLAYER.GET_PLAYER_NAME(pid)
-					-- Kick modders automatically.
-					for j = 0, 31 do
-						local targetPid = j
-						if not network.is_player_flagged_as_modder(targetPid) and targetPid ~= localPlayerID then
-								command.call("smartkick", {pid})
-								network.send_chat_message("Auto-Kicked "..detectedModders[pid].." for modding", false)
-								gui.show_message("Auto Kick", "Automatically host kicked ".. detectedModders[pid])
-						end
-					end
-				end
-			end 
-		end
-		sleep(5)
-	end
-end)
 toolTip(settingsTab, "Automatically kicks detected modders from the session.")
+settingsTab:add_sameline()
+sendChatMessage = settingsTab:add_checkbox("Announce Kicks")
+toolTip(settingsTab, "Sends a chat message when a modder is kicked.")
+
+script.register_looped("autoKick", function(script)
+    if autoKick:is_enabled() then
+        local localPlayerID = PLAYER.PLAYER_ID()    
+        local isHost = NETWORK.NETWORK_IS_HOST()
+        -- Identify modders and store their IDs
+        for i = 0, 31 do
+            local pid = i
+            local detect = network.is_player_flagged_as_modder(pid)
+            local reason = network.get_flagged_modder_reason(pid)
+            if pid ~= localPlayerID and detect and reason then
+                if not detectedModders[pid] then
+                    detectedModders[pid] = PLAYER.GET_PLAYER_NAME(pid)
+                end
+                -- Kick modders automatically if not already kicked
+                if not kickedModders[pid] then
+                    command.call("smartkick", {pid})
+					if sendChatMessage:is_enabled() then
+						network.send_chat_message("Auto-Kicked " .. detectedModders[pid] .. " - Reason: "..reason, false)
+					end
+                    gui.show_message("Auto Kick", "Automatically kicked " .. detectedModders[pid])
+                    kickedModders[pid] = true -- Mark this modder as kicked
+                end
+            end 
+        end
+    end
+end)
+
+hostKick = settingsTab:add_checkbox("Auto Kick Host")
+lastKickedHostID = nil
+script.register_looped("hostKick", function(script)
+    if hostKick:is_enabled() then
+        local localPlayerID = PLAYER.PLAYER_ID()
+        local hostPlayerID = NETWORK.NETWORK_GET_HOST_PLAYER_INDEX()
+        
+        -- Check if the host is a modder
+        local hostIsModder = network.is_player_flagged_as_modder(hostPlayerID)
+        local hostModderReason = network.get_flagged_modder_reason(hostPlayerID)
+
+        -- Only proceed if the host is not the local player, not flagged as a modder, and not the last kicked host
+        if hostPlayerID ~= localPlayerID and hostPlayerID ~= 255 and hostPlayerID ~= lastKickedHostID and not hostIsModder then
+            local hostName = PLAYER.GET_PLAYER_NAME(hostPlayerID)
+			invalid = "**Invalid**"
+            if hostName ~= invalid then
+				command.call("smartkick", {hostPlayerID})
+				gui.show_message("Auto Kick", "Automatically host kicked " .. hostName)
+				lastKickedHostID = nil
+				-- Wait for the game to assign a new host
+				sleep(10)
+			end
+        end
+    end
+end)
+toolTip(settingsTab, "Automatically kicks the host from the session, unless the host is also a modder.")
+
+
 
 flags = ImGuiWindowFlags.None | ImGuiWindowFlags.NoSavedSettings
 griefPlayerTab:add_imgui(function()
@@ -8467,6 +8502,7 @@ script.run_in_fiber(function(clownJetsOne)
                             PED.SET_PED_KEEP_TASK(ped, true)
                             PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
                             WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
+							clownJetsOne:yield()
                         else
                             gui.show_error("Failed", "Failed to create ped")
                         end
@@ -8487,7 +8523,6 @@ script.run_in_fiber(function(clownJetsOne)
             else
                 gui.show_error("No Player Selected", "Please select a valid player.")
             end
-        clownJetsOne:yield()
 end)
 end)
 toolTip(griefPlayerTab, "Spawns Randomly colored jets with Clowns as pilots to attack the selected player.")
@@ -10954,41 +10989,3 @@ script.register_looped("indirectSpectate", function(script)
     end
 end)
 toolTip(spectate, "Spectates the selected player using a less detectable spectate method")
-
-challengesTab = gui.get_tab("GUI_TAB_MISSIONS")
-
-challengesTab:add_separator()
-challengesTab:add_text("Challenges")
-
---challenge = {"LONGEST_JUMP", "HIGHEST_SPEED", "LONGEST_STOPPIE", "LONGEST_NO_CRASH", "LONGEST_WHEELIE", "LONGEST_SKYDIVE", "LOWEST_PARACHUTE", "REVERSE_DRIVING", "LONGEST_FALL", "PVP_LONGEST_SNIPE", "LONGEST_BAIL", "MOST_VEHICLES_STOLEN", "MOST_NEAR_MISSES", "FURTHEST_DISTANCE_LOW_FLYING", "FURTHEST_DISTANCE_LOW_FLYING_INVERTED", "MOST_BRIDGES", "PVP_HEADSHOTS", "PVP_DRIVEBY", "PVP_MELEE"}
---challenge = {"LONGEST_JUMP", "LONGEST_FREEFALL", "HIGHEST_SPEED", "LONGEST_STOPPIE", "LONGEST_WHEELIE", "LONGEST_NO_CRASH", "LOWEST_PARACHUTE_DEPLOY", "HIGHEST_VEHICLES_STOLEN", "MOST_NEAR_MISSES", "REVERSE_DRIVING_WITHOUT_CRASHING", "LONGEST_FALL_WITHOUT_DYING", "LONGEST_TIME_LOW_FLYING_UNDER_20M", "LONGEST_TIME_LOW_FLYING_INVERTED_UNDER_100M", "LONGEST_VEHICLE_BAIL_WITHOUT_DYING", "BRIDGES_FLOWN_UNDER", "PVP_HIGHEST_NO_OF_PLAYER_HEADSHOTS", "PVP_HIGHEST_NO_OF_PLAYER_DRIVE_BY_KILLS", "PVP_HIGHEST_NO_OF_PLAYER_MELEE_KILLS", "PVP_SNIPER_PLAYER_KILLS"}
-challenge = {"LONGEST_JUMP", "MOST_NEAR_MISSES", "LONGEST_STOPPIE", "LONGEST_WHEELIE", "HIGHEST_SPEED", "LONGEST_NO_CRASH", "LONGEST_FREEFALL", "LOWEST_PARACHUTE_DEPLOY", "HIGHEST_VEHICLES_STOLEN", "LONGEST_FALL_WITHOUT_DYING", "LONGEST_VEHICLE_BAIL_WITHOUT_DYING", "LONGEST_TIME_LOW_FLYING_UNDER_20M", "LONGEST_TIME_LOW_FLYING_INVERTED_UNDER_100M", "BRIDGES_FLOWN_UNDER", "REVERSE_DRIVING_WITHOUT_CRASHING", "PVP_HIGHEST_NO_OF_PLAYER_HEADSHOTS", "PVP_HIGHEST_NO_OF_PLAYER_DRIVE_BY_KILLS", "PVP_HIGHEST_NO_OF_PLAYER_MELEE_KILLS", "PVP_SNIPER_PLAYER_KILLS"}
-base = 262145
-
---global = {12022, 11695, 12026, 12024, 12025, 12027, 11696, 11697, 12023, 11703, 11698, 11700, 11701, 11699, 11702, 11705, 11706, 11707, 11708} --ambient weighting
---global = {10903, 11709, 11710, 11711, 10904, 10905, 10906, 10907, 10909, 11717, 11712, 11714, 11715, 11719, 11720, 11721, 11722, 11713, 11716} -- disable 
---global = {11613, 11614, 11615, 11616, 11617, 11618, 11619, 11620, 11621, 11622, 11623, 11624, 11625, 11737, 11738, 11628, 11630, 11631, 11632} --challenge
---global = {12022, 11695, 12026, 12024, 12025, 12027, 11696, 11697, 12023, 11703, 11698, 11700, 11701, 11699, 11702, 11705, 11706, 11707, 11708}
-global = {11500, 11501, 11502, 11503, 11504, 11505, 11506, 11507, 11508, 11509, 11510, 11511, 11512, 11816, 11817, 11818, 11819, 11820, 11821}
-
-index = 0
-
-challengesTab:add_imgui(function()
-index, changed = ImGui.Combo("Challenge", index, challenge, #challenge)
-if changed then
-gui.show_message("Changed", tostring((index + 1).. challenge[index + 1]))
-gui.show_message('Challenges', 'Successfully set challenge to `'.. challenge[index + 1].. '` you can now click on `Challenges` in the `Event Starter` to start it.')
-globals.set_float(base + global[index + 1], 100.0)
-end
-ImGui.SameLine()
-if ImGui.Button("Set") then
-gui.show_message("Changed", tostring((index + 1).. challenge[index + 1]))
-gui.show_message('Challenges', 'Successfully set challenge to `'.. challenge[index + 1].. '` you can now click on `Challenges` in the `Event Starter` to start it.')
-globals.set_float(base + global[index + 1], 100.0)
-end
-end)
-
-challengesTab:add_button("Count Down Timer 0", function()
---defulat = 180000
-globals.set_int(base + 11693, 0) --dont think this works for everyone
-end)
