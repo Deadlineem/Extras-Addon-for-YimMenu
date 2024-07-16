@@ -247,7 +247,7 @@ echo "Downloading new vehicles and outfits from the repository..."
 set "yimMenuFolder=%APPDATA%\YimMenu"
 
 :: Yim Json Vehicles and Outfits files manifest
-set "vehAndOutfitsManifest=https://github.com/juniorkrz/Yim-Json-Vehicles-and-Outfits/raw/master/manifest.json"
+set "vehAndOutfitsManifest=https://raw.githubusercontent.com/juniorkrz/Yim-Json-Vehicles-and-Outfits/master/manifest.json"
 
 :: PowerShell function to recursively download files and folders available in the manifest.
 powershell -Command "try { $response = Invoke-WebRequest -Uri '%vehAndOutfitsManifest%' -UseBasicParsing | ConvertFrom-Json; foreach ($item in $response) { $filename = $item.filename; $path = $item.path; $downloadUrl = $item.download_url; $path = $path -replace '^files\\', ''; $outputFilePath = Join-Path -Path '%yimMenuFolder%' -ChildPath \"$path\$filename\"; $outputDirectory = Split-Path $outputFilePath -Parent; if (!(Test-Path -Path $outputDirectory)) { New-Item -ItemType Directory -Force -Path $outputDirectory > $null }; Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFilePath > $null; Write-Host \"File saved in: $outputFilePath\" }} catch { Write-Host \"Error: $_\" }"
