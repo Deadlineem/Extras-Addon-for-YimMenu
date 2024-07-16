@@ -192,9 +192,9 @@ echo Choose an option:
 echo 1. Get XML Maps/Vehicles (Opens in Browser)
 echo 2. Download Animations Dictionary (To YimMenu Root Folder)
 echo 3. Download Yim Json Vehicles and Outfits (To YimMenu Root Folder)
-echo 3. Download YimASI (To Downloads Folder)
-echo 4. Download ScriptHookV (To Downloads Folder)
-echo 5. Back to Main Menu
+echo 4. Download YimASI (To Downloads Folder)
+echo 5. Download ScriptHookV (To Downloads Folder)
+echo 6. Back to Main Menu
 echo ------------------------------------------------------------------
 echo More optional downloads may be added in the future!
 
