@@ -80,7 +80,7 @@ echo 1. Download YimMenu (To Downloads or Desktop)
 echo 2. Download Extras Addon (To YimMenu\scripts)
 echo 3. Download FateInjector (To Downloads or Desktop)
 echo 4. Delete YimMenu Cache Folder (Quick fix when GTA updates)
-echo 5. Optional Downloads (XML's, Animations, ASI Loader, ScriptHookV)
+echo 5. Optional Downloads (XML's, Animations, ASI Loader, ScriptHookV, Vehicles and Outfits)
 echo 6. How to install/use YimMenu
 echo 7. Exit the application
 echo ------------------------------------------------------------------
@@ -191,16 +191,18 @@ echo ------------------------------------------------------------------
 echo Choose an option:
 echo 1. Get XML Maps/Vehicles (Opens in Browser)
 echo 2. Download Animations Dictionary (To YimMenu Root Folder)
+echo 3. Download Yim Json Vehicles and Outfits (To YimMenu Root Folder)
 echo 3. Download YimASI (To Downloads Folder)
 echo 4. Download ScriptHookV (To Downloads Folder)
 echo 5. Back to Main Menu
 echo ------------------------------------------------------------------
 echo More optional downloads may be added in the future!
 
-choice /c 12345 /n
-if errorlevel 5 goto menu
-if errorlevel 4 goto download_scripthookv
-if errorlevel 3 goto download_yimasi
+choice /c 123456 /n
+if errorlevel 6 goto menu
+if errorlevel 5 goto download_scripthookv
+if errorlevel 4 goto download_yimasi
+if errorlevel 3 goto download_file_3
 if errorlevel 2 goto download_file_2
 if errorlevel 1 goto download_file_1
 
@@ -230,6 +232,28 @@ if not exist "%APPDATA%\YimMenu\animDictsCompact.json" (
     echo "Extras Addon downloaded successfully. File Location: %APPDATA%\YimMenu\animDictsCompact.json"
     echo "Returning to the main menu in 5 seconds."
 )
+timeout /t 5 /nobreak >nul
+cls
+goto optional_downloads
+
+:download_file_3
+cls
+echo ------------------------------------------------------------------
+echo     Downloading Yim Json Vehicles and Outfits from the repository
+echo ------------------------------------------------------------------
+echo "Downloading new vehicles and outfits from the repository..."
+
+:: YimMenu folder
+set "yimMenuFolder=%APPDATA%\YimMenu"
+
+:: Yim Json Vehicles and Outfits files manifest
+set "vehAndOutfitsManifest=https://github.com/juniorkrz/Yim-Json-Vehicles-and-Outfits/raw/master/manifest.json"
+
+:: PowerShell function to recursively download files and folders available in the manifest.
+powershell -Command "try { $response = Invoke-WebRequest -Uri '%vehAndOutfitsManifest%' -UseBasicParsing | ConvertFrom-Json; foreach ($item in $response) { $filename = $item.filename; $path = $item.path; $downloadUrl = $item.download_url; $path = $path -replace '^files\\', ''; $outputFilePath = Join-Path -Path '%yimMenuFolder%' -ChildPath \"$path\$filename\"; $outputDirectory = Split-Path $outputFilePath -Parent; if (!(Test-Path -Path $outputDirectory)) { New-Item -ItemType Directory -Force -Path $outputDirectory > $null }; Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFilePath > $null; Write-Host \"File saved in: $outputFilePath\" }} catch { Write-Host \"Error: $_\" }"
+
+echo "Credits: Yim Json Vehicles and Outfits by Juniorkrz & NetoXP"
+echo "Returning to the main menu in 5 seconds."
 timeout /t 5 /nobreak >nul
 cls
 goto optional_downloads
