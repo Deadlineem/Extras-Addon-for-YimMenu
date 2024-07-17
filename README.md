@@ -8,7 +8,7 @@ DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT O
 
 ## How to Use/Install
 
-###NOTE: Update.bat will be left here, however if you are interested in a GUI, check out https://github.com/Deadlineem/YMU
+### NOTE: Update.bat will be left here, however if you are interested in a GUI, check out https://github.com/Deadlineem/YMU
 
 1. To install the extras addon, simply download the [Update.bat](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat) you do not need to download the entire zip folder!
 
