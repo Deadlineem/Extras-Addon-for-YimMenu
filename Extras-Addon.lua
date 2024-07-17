@@ -10136,7 +10136,7 @@ end)
 
 settingsTab:add_separator()
 chatOpt:add_text(""..caesar_decrypt(encodedTwo..": "..encoded, 3).."")
-
+--[[
 giftPlayerTab:add_imgui(function()
         ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.0, 0.0, 0.5, 1) -- Adjust the color as needed
         ImGui.PushStyleColor(ImGuiCol.WindowBg, 0.0, 0.0, 0.5, 1) -- Adjust the Window background color
@@ -10455,7 +10455,7 @@ end)
 
 -- Function to spawn the vehicle with specified orientation and spawn position
 function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2, p3, s1, s2, s3, pearl, wheels)
-    script.run_in_fiber(function (script)
+    script.run_in_fiber(function(script)
          load_counter = 0
         while STREAMING.HAS_MODEL_LOADED(vehicle_joaat) == false do
             STREAMING.REQUEST_MODEL(vehicle_joaat)
@@ -10478,15 +10478,20 @@ function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2
             max_vehicle(veh)
             max_vehicle_performance(veh)
         end
-        VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, wheels)
-         networkId = NETWORK.VEH_TO_NET(veh)
-        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-        end
-        if endPollution:is_enabled() then
+        VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, wheels)		
+		VEHICLE.SET_VEHICLE_ENGINE_ON(veh, true, true, false)
+		DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 0)
+		VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
+		
+		networkId = NETWORK.VEH_TO_NET(veh)
+		if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
+			NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+		end
+		
+		if endPollution:is_enabled() then
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
         end
-        script:yield()
+        --script:yield()
     end)
 end
 
@@ -10515,13 +10520,14 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
 
                 spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationRoll, vehicleOrientationYaw, playerHeading + vehicleOrientationPitch, pR, pG, pB, sR, sG, sB, pearlescent, wheelColor)
                 gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
-                spawnVeh:yield()
+                
             end
         else
             gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
         end
         -- Re-enable the preview checkbox after some time (if desired)
         --previewVehicles:set_enabled(true)
+		spawnVeh:yield()
     end)
 end)
 
@@ -10596,7 +10602,7 @@ script.register_looped("vehiclesPreview", function(vehPreview)
                 VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(viewVehicle, 5)
                 previewSpawned = true
                 previewVehicle = viewVehicle
-                sleep(0.06)
+                sleep(0.01)
             else
                 if previewSpawned then
                     request_control(previewVehicle)
@@ -10677,11 +10683,12 @@ script.run_in_fiber(function(script)
          netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
 
         DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 8)
+		--VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
         DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
-        DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
-
+        --DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
+		
         gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName)
         giftedsucc = true
     else
@@ -10779,7 +10786,7 @@ giftPlayerTab:add_imgui(function()
     -- Ends the ImGui wrapper, new additions should be added above this.
     ImGui.End()
 end)
-
+]]
 ----------Config--------------------
 saveConfig = false
 
