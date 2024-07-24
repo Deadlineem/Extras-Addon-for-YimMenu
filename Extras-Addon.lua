@@ -5872,16 +5872,16 @@ end)
 toolTip(bunker, "Unlocks all bunker research instantly.")
 fastProd = bunker:add_checkbox("Fast Production")
     script.register_looped("bunkerProd", function(script)
-	if fastProd:is_enabled() then
-		STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_PRODUCTION_TIME"), 1, true)
+    if fastProd:is_enabled() then
+        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_PRODUCTION_TIME"), 1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_EQUIPMENT_REDUCTION_TIME"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_STAFF_REDUCTION_TIME"), 0, true)
-		STATS.STAT_SET_INT(joaat(MPX .. "GR_MANU_PRODUCTION_TIME"), 1, true)
+        STATS.STAT_SET_INT(joaat(MPX .. "GR_MANU_PRODUCTION_TIME"), 1, true)
         STATS.STAT_SET_INT(joaat(MPX .. "GR_MANU_UPGRADE_EQUIPMENT_REDUCTION_TIME"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "GR_MANU_UPGRADE_STAFF_REDUCTION_TIME"), 0, true)
         gui.show_message("Production", "Bunker production speed has been increased, make sure you loop your supplies!")
     end
-	end)
+    end)
 toolTip(bunker, "Speeds up production time, requires supplies to keep production going")
 bunker:add_sameline()
  bSupplies = bunker:add_checkbox("Resupply Bunker (Looped)")
@@ -8114,8 +8114,8 @@ script.register_looped("detectModders", function(script)
                         local targetPid = j
                         if not network.is_player_flagged_as_modder(targetPid) and targetPid ~= localPlayerID then
                             network.send_chat_message_to_player(targetPid, "WARNING! " .. detectedModders[pid] .. " has been flagged as a modder in this session!")
-							detectedModders = {}
-							sleep(10)
+                            detectedModders = {}
+                            sleep(10)
                         end
                     end
                 end
@@ -8148,9 +8148,9 @@ script.register_looped("autoKick", function(script)
                 -- Kick modders automatically if not already kicked
                 if not kickedModders[pid] then
                     command.call("smartkick", {pid})
-					if sendChatMessage:is_enabled() then
-						network.send_chat_message("Auto-Kicked " .. detectedModders[pid] .. " - Reason: "..reason, false)
-					end
+                    if sendChatMessage:is_enabled() then
+                        network.send_chat_message("Auto-Kicked " .. detectedModders[pid] .. " - Reason: "..reason, false)
+                    end
                     gui.show_message("Auto Kick", "Automatically kicked " .. detectedModders[pid])
                     kickedModders[pid] = true -- Mark this modder as kicked
                 end
@@ -8173,14 +8173,14 @@ script.register_looped("hostKick", function(script)
         -- Only proceed if the host is not the local player, not flagged as a modder, and not the last kicked host
         if hostPlayerID ~= localPlayerID and hostPlayerID ~= 255 and hostPlayerID ~= lastKickedHostID and not hostIsModder then
             local hostName = PLAYER.GET_PLAYER_NAME(hostPlayerID)
-			invalid = "**Invalid**"
+            invalid = "**Invalid**"
             if hostName ~= invalid then
-				command.call("smartkick", {hostPlayerID})
-				gui.show_message("Auto Kick", "Automatically host kicked " .. hostName)
-				lastKickedHostID = nil
-				-- Wait for the game to assign a new host
-				sleep(10)
-			end
+                command.call("smartkick", {hostPlayerID})
+                gui.show_message("Auto Kick", "Automatically host kicked " .. hostName)
+                lastKickedHostID = nil
+                -- Wait for the game to assign a new host
+                sleep(10)
+            end
         end
     end
 end)
@@ -8502,7 +8502,7 @@ script.run_in_fiber(function(clownJetsOne)
                             PED.SET_PED_KEEP_TASK(ped, true)
                             PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
                             WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
-							clownJetsOne:yield()
+                            clownJetsOne:yield()
                         else
                             gui.show_error("Failed", "Failed to create ped")
                         end
@@ -8702,22 +8702,22 @@ toolTip(griefPlayerTab, "Causes a no damage explosion to shake the players scree
 
 script.register_looped("extrasAddonLooped", function(script)
     if npcDrive:is_enabled() then
-    if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("NPC Drive","Stopped, player has left the session.")
-                npcDrive:set_enabled(false)
-                return
-            end
+        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+            gui.show_message("NPC Drive","Stopped, player has left the session.")
+            npcDrive:set_enabled(false)
+            return
+        end
         for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
             ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
             if ped ~= 0 and not PED.IS_PED_A_PLAYER(ped) then
-                request_control(veh)
-                request_control(ped)
-                    --TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
-                    target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-                    pos = ENTITY.GET_ENTITY_COORDS(target, true)
-                    TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
+                if not request_control(veh) then return end
+                if not request_control(ped) then return end
+                --TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
+                target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+                pos = ENTITY.GET_ENTITY_COORDS(target, true)
+                TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
+                script:yield()
             end
-            script:yield()
         end
     end
     if dildos:is_enabled() then
@@ -10479,17 +10479,17 @@ function spawn_veh_with_orientation(vehicle_joaat, pos, pitch, yaw, roll, p1, p2
             max_vehicle(veh)
             max_vehicle_performance(veh)
         end
-        VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, wheels)		
-		VEHICLE.SET_VEHICLE_ENGINE_ON(veh, true, true, false)
-		DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 0)
-		VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
-		
-		networkId = NETWORK.VEH_TO_NET(veh)
-		if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
-			NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
-		end
-		
-		if endPollution:is_enabled() then
+        VEHICLE.SET_VEHICLE_EXTRA_COLOURS(veh, pearl, wheels)       
+        VEHICLE.SET_VEHICLE_ENGINE_ON(veh, true, true, false)
+        DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 0)
+        VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
+        
+        networkId = NETWORK.VEH_TO_NET(veh)
+        if NETWORK.NETWORK_GET_ENTITY_IS_NETWORKED(veh) then
+            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true)
+        end
+        
+        if endPollution:is_enabled() then
             ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(veh) -- only use to cut spawned object/vehicle/ped pollution out of sessions, plans for this eventually.
         end
         --script:yield()
@@ -10528,7 +10528,7 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
         end
         -- Re-enable the preview checkbox after some time (if desired)
         --previewVehicles:set_enabled(true)
-		spawnVeh:yield()
+        spawnVeh:yield()
     end)
 end)
 
@@ -10684,12 +10684,12 @@ script.run_in_fiber(function(script)
          netHash = NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(playerId)
 
         DECORATOR.DECOR_SET_INT(vehicle, "MPBitset", 8)
-		--VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
+        --VEHICLE.SET_VEHICLE_IS_STOLEN(vehicle, false)
         DECORATOR.DECOR_SET_INT(vehicle, "Previous_Owner", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Veh_Modded_By_Player", netHash)
         DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
         --DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
-		
+        
         gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName)
         giftedsucc = true
     else
