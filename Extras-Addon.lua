@@ -8717,6 +8717,7 @@ script.register_looped("extrasAddonLooped", function(script)
                     pos = ENTITY.GET_ENTITY_COORDS(target, true)
                     TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
             end
+            script:yield()
         end
     end
     if dildos:is_enabled() then
