@@ -8207,6 +8207,8 @@ griefPlayerTab:add_imgui(function()
     ImGui.SetNextWindowCollapsed(true, ImGuiCond.FirstUseEver) -- Collapse the window on first use
     
     ImGui.Begin("Extras Addon (Grief Options) - Target: ".. selPlayer, flags)
+    ImGui.PopStyleColor()
+    ImGui.PopStyleColor()
         -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
 end)
 
@@ -8715,7 +8717,9 @@ script.register_looped("extrasAddonLooped", function(script)
                 --TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
                 target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
                 pos = ENTITY.GET_ENTITY_COORDS(target, true)
-                TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
+                if calcDistance(target, veh) > 1 then
+                    TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
+                end
                 script:yield()
             end
         end
@@ -9936,6 +9940,9 @@ dropsPlayerTab:add_imgui(function()
         
         ImGui.Begin("Extras Addon (Drop Options) - Target: ".. selPlayer, flags)
             -- Sets a new window for the options below, theres a wrapper for ImGui.End() at the bottom of the options.
+
+        ImGui.PopStyleColor()
+        ImGui.PopStyleColor()
 end)
 
 dropsPlayerTab:add_text("Action Figures")
