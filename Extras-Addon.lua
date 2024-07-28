@@ -722,6 +722,7 @@ toolTip(Stats, "Set your level to a value between 1 and 8000")
 --PlayerId = PLAYER.PLAYER_ID()
 --PlayerRp = network.get_player_rp(PlayerId)-- Not working properly, returns -1 when the PlayerId is yours
 levelInput:set_value(1)-- TODO: Set PlayerRank as default value
+Stats:add_sameline()
 Stats:add_button("Change level", function()
     script.run_in_fiber(function (script)
         MPX = PI
@@ -749,6 +750,22 @@ Stats:add_button("Change level", function()
     end)
 end)
 toolTip(Stats, "Set your level to the value chosen above (1-8000)")
+
+rpMultiplier = 1
+Stats:add_imgui(function()
+    rpMultiplier = globals.get_float(262145 + 1)
+    rpMultiplier, used = ImGui.InputFloat("RP Multiplier", rpMultiplier, .1, 1)
+    if used then
+        if rpMultiplier < 0 then rpMultiplier = 0 end
+        globals.set_float(262145 + 1, rpMultiplier)
+    end
+end)
+toolTip(Stats, "Note: This options saves to the config\nSetting this to 0 will stop rp gain")
+
+script.register_looped("rpMultiplier", function(script)
+    globals.set_float(262145 + 1, rpMultiplier)
+end)
+
 Stats:add_separator()
 Stats:add_text("Income Statistics")
 Stats:add_button("Reset Income/Spent Stats", function()
@@ -10815,6 +10832,7 @@ if persisted_config == nil then
     configTable = {}
     --Add entries here
     presistEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)
+    presistEntry("rpMultiplier", rpMultiplier)
     --End Entires
      new_file = io.open("Extras-Addon.json", "w+")
     new_file:write(json.encode(configTable))
@@ -10824,6 +10842,7 @@ else
     configTable = json.decode(persisted_config:read("*all"))
     --add entries, they need to be set to the values in the config
     tirePTFX:set_enabled(configTable["tireParticles"]) --sets the value of the component to the value from the config
+    rpMultiplier = configTable["rpMultiplier"]
     --end entries
     persisted_config:close()
 end
@@ -10833,6 +10852,7 @@ script.register_looped("Extras Addon Config", function(script)
         saveConfig = false
         --Each entry should look like this
         setEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)
+        setEntry("rpMultiplier", rpMultiplier)
         --End Entries
         if saveConfig then
             gui.show_message("Config", "Saving")
