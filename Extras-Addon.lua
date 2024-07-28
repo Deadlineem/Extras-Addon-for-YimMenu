@@ -10224,6 +10224,7 @@ giftPlayerTab:add_button("Reset Sliders", function()
 end)
 toolTip(giftPlayerTab, "Reset the sliders to their default values")
 giftPlayerTab:add_separator()
+]]
 function max_vehicle(veh)
     script.run_in_fiber(function(maxM)
         VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
@@ -10290,7 +10291,7 @@ script.run_in_fiber(function(openW)
     openW:yield()
 end)
 end
-
+--[[
 selected_wheel_index = 0
 selected_style_index = 0
 wheelType = ""
