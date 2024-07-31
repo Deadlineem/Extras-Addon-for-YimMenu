@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
- addonVersion = "1.1.0"
+ addonVersion = "1.0.9"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -119,11 +119,9 @@ createText(KAOS, "encourage everyone to create this with me, lend your ideas, su
 createText(KAOS, "YimMenu next generation!")
 KAOS:add_separator()
 createText(KAOS, "Credits: Yimura, L7Neg, Loled69, TeaTimeTea, CSYON, Adventure Box, gir489returns, abuazizv,")
-createText(KAOS, "Alestarov, RazorGamerX, USBMenus, ShinyWasabi & the UC community")
+createText(KAOS, "Alestarov, RazorGamerX, USBMenus, ShinyWasabi, Xesdoog & more!")
 KAOS:add_separator()
-createText(KAOS, "Thanks to all my testers, your time is appreciated.  Thanks to all of the above for your scripts and")
-createText(KAOS, "for your inputs on my comments, I have done alot of reading, scrolling, testing and learning from it all")
-createText(KAOS, "Brought to you by - DeadlineEm & USBMenus")
+createText(KAOS, "Brought to you by - DeadlineEm, USBMenus & Xesdoog")
 
 -- Player Options Tab
  Pla = KAOS:add_tab("Player Options")
