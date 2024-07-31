@@ -4461,7 +4461,9 @@ encodedTwo = caesar_encrypt("Provided FREE from: ", 3)
 encoded = caesar_encrypt(url, 3)
 
 function request_control(entity)
-    return entities.take_control_of(entity)
+	script.run_in_fiber(function()
+		return entities.take_control_of(entity, 10)
+	end)
 end
 
 -- Function to get the entity in crosshair
@@ -4769,4 +4771,13 @@ function calcDistanceFromTwoCoords(pos1, pos2)
     local dy = pos1.y - pos2.y
     local dz = pos1.z - pos2.z
     return math.sqrt(dx*dx + dy*dy + dz*dz)
+end
+
+function calcDistanceFromCoords(player, target)
+    pos = ENTITY.GET_ENTITY_COORDS(player, true)
+    dx = pos.x - target[1]
+    dy = pos.y - target[2]
+    dz = pos.z - target[3]
+    distance = math.sqrt(dx*dx + dy*dy + dz*dz)
+    return distance
 end
