@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/
 
     Extras Addon for YimMenu v1.69
-        Addon Version: 1.0.9
+        Addon Version: 1.1.0
 
         Credits:  Yimura, L7Neg,
     Loled69, Alestarov, gir489returns,
@@ -91,14 +91,6 @@ function newText(tab, text, size)
         ImGui.Text(text)
         ImGui.SetWindowFontScale(1)
     end)
-end
-
-function RequestControl(entity)
-    return entities.take_control_of(entity)
-end
-
-function request_control(entity)
-    return entities.take_control_of(entity)
 end
 
 function SessionChanger(session)
@@ -4913,78 +4905,6 @@ Global:add_sameline()
         sleep(0.2)
     end)
 toolTip(Global, "Supposed to give the entire session money and rp")
---[[ Global Sound Spam Options -- Temporarily Disabled as it causes you to crash on use
-Global:add_separator()
-Global:add_text("Sound Spams")
- soundIndex = 0
- isPlaying = false
-
-useLoopedG = false
- useLoopedG = Global:add_checkbox("Loop?")
- searchQuery = ""
- filteredSoundNames = {}
- selectedFilteredSoundIndex = 0
-
- function updateFilteredSoundNames()
-    filteredSoundNames = {}
-    for _, sound in ipairs(sounds) do
-        if string.find(string.lower(sound.SoundName), string.lower(searchQuery)) then
-            table.insert(filteredSoundNames, sound.SoundName)
-        end
-    end
-end
-
--- Function to display the list of sound names
- function displaySoundNamesList()
-    updateFilteredSoundNames()
-    if selectedFilteredSoundIndex > #filteredSoundNames then
-        selectedFilteredSoundIndex = 0
-    end
-    selectedFilteredSoundIndex, _ = ImGui.Combo("Select Sound", selectedFilteredSoundIndex, filteredSoundNames, #filteredSoundNames)
-end
-
--- Add search input field and sound selection
-Global:add_imgui(function()
-    if is_typing then
-        PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
-    end
-    searchQuery, _ = ImGui.InputText("Search Sounds", searchQuery, 128)
-    if ImGui.IsItemActive() then
-        is_typing = true
-    else
-        is_typing = false
-    end
-
-    displaySoundNamesList()
-
-    if ImGui.Button("Play") then
-        isPlaying = true
-         selectedSoundName = filteredSoundNames[selectedFilteredSoundIndex + 1]
-        for i = 0, 31 do
-             playerIndex = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(i)
-                 selectedSound = sounds[1]
-                for _, sound in ipairs(sounds) do
-                    if sound.SoundName == selectedSoundName then
-                        selectedSound = sound
-                        break
-                    end
-                end
-                AUDIO.PLAY_SOUND_FROM_ENTITY(AUDIO.GET_SOUND_ID(), selectedSound.AudioName, playerIndex, selectedSound.AudioRef, true, 999999999)
-                gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on the entire session.")
-        end
-    end
-end)
-
-
-Global:add_sameline()
-Global:add_button("Stop  Sounds", function()
-    isPlaying = false
-    --for i=-1,100 do
-    -- soundId = AUDIO.PLAY_SOUND_FROM_ENTITY(AUDIO.GET_SOUND_ID(), selectedSound.AudioName, playerIndex, selectedSound.AudioRef, true, 999999999)
-        AUDIO.STOP_SOUND(soundId)
-        AUDIO.RELEASE_SOUND_ID(soundId)
-    --end
-end)]]
 
 -- Global Particle Effects
 Global:add_separator()
@@ -5598,6 +5518,21 @@ Global:add_button("Remove All Weapons from Players", function()
     end)
 end)
 toolTip(Global, "Removes all weapons from the entire session and also anounces that you have done so")
+Global:add_separator()
+
+Global:add_text("World Options")
+
+riotMode = Global:add_checkbox("Riot Mode")
+toolTip(Global, "Makes all pedestrians riot")
+
+script.register_looped("riotMode", function(script)
+	if riotMode:is_enabled() then
+		MISC.SET_RIOT_MODE_ENABLED(true)
+	else
+		MISC.SET_RIOT_MODE_ENABLED(false)
+	end
+end)
+
 -- Story Mode Options
 
 StoryCharacters = KAOS:add_tab("Story Mode")
@@ -6445,39 +6380,6 @@ function bringTeam()
             end
         end
     end)
-end
-
-function calcDistance(pos, tarpos)
-    if ENTITY.DOES_ENTITY_EXIST(pos) then pos = ENTITY.GET_ENTITY_COORDS(pos, true) end
-    if ENTITY.DOES_ENTITY_EXIST(tarpos) then tarpos = ENTITY.GET_ENTITY_COORDS(tarpos, true) end
-    if type(pos) == "table" then
-        pos = vec3.new(pos[0], pos[1], pos[2])
-    end
-    if type(tarpos) == "table" then
-        tarpos = vec3.new(tarpos[0], tarpos[1], tarpos[2])
-    end
-    dx = pos.x - tarpos.x
-    dy = pos.y - tarpos.y
-    dz = pos.z - tarpos.z
-    distance = math.sqrt(dx*dx + dy*dy + dz*dz)
-    return distance
-end
-
-function calcDistanceFromCoords(player, target)
-    pos = ENTITY.GET_ENTITY_COORDS(player, true)
-    dx = pos.x - target[1]
-    dy = pos.y - target[2]
-    dz = pos.z - target[3]
-    distance = math.sqrt(dx*dx + dy*dy + dz*dz)
-    return distance
-end
-
-function calcDistanceFromTwoCoords(pos, tarpos)
-    dx = pos.x - tarpos.x
-    dy = pos.y - tarpos.y
-    dz = pos.z - tarpos.z
-    distance = math.sqrt(dx*dx + dy*dy + dz*dz)
-    return distance
 end
 
 heistTab:add_button("Play Unavailable Heists", function()
@@ -8603,7 +8505,7 @@ end
 ---@param entity Entity
 ---@return boolean
 function request_control_once(entity)
-    return entities.take_control_of(entity)
+    return entities.take_control_of(entity, 1)
 end
 
 function atan2(y, x)
@@ -8725,26 +8627,26 @@ toolTip(griefPlayerTab, "Causes a no damage explosion to shake the players scree
 
 script.register_looped("extrasAddonLooped", function(script)
     if npcDrive:is_enabled() then
-        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-            gui.show_message("NPC Drive","Stopped, player has left the session.")
-            npcDrive:set_enabled(false)
-            return
-        end
+		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+			gui.show_message("NPC Drive","Stopped, player has left the session.")
+			npcDrive:set_enabled(false)
+			return
+		end
         for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
-            ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, false)
-            if ped ~= 0 and not PED.IS_PED_A_PLAYER(ped) then
-                if not request_control(veh) then return end
-                if not request_control(ped) then return end
-                --TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
-                target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-                pos = ENTITY.GET_ENTITY_COORDS(target, true)
-                if calcDistance(target, veh) > 1 then
-                    TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
-                end
-                script:yield()
-            end
+            ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
+				if ped ~= 0 and not PED.IS_PED_A_PLAYER(ped) then
+					request_control(veh) 
+					request_control(ped)
+					TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
+					target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+					pos = ENTITY.GET_ENTITY_COORDS(target, true)
+					if calcDistance(target, veh) > 1 then
+						TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
+					end
+				end
         end
     end
+	
     if dildos:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Dildo Spam","Stopped, player has left the session.")
@@ -8759,7 +8661,7 @@ script.register_looped("extrasAddonLooped", function(script)
         end
         OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 1.5, 0, 1, selectedItem, false, true)
     end
-
+	
     if dropBalls:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Balls Spam","Stopped, player has left the session.")
@@ -8775,6 +8677,7 @@ script.register_looped("extrasAddonLooped", function(script)
         end
         OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 2, 0, 1, joaat(selectedItem), false, true)
     end
+	
     if vehicleSpin:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Spin Vehicle","Stopped, player has left the session.")
@@ -8791,6 +8694,7 @@ script.register_looped("extrasAddonLooped", function(script)
             gui.show_message("Spin Vehicle","Spinning Vehicle")
         end
     end
+	
     if extinguisherCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Extinguisher","Stopped, player has left the session.")
@@ -8801,7 +8705,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 24, 1, true, false, 0)
     end
-
+	
     if steamCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Steam","Stopped, player has left the session.")
@@ -8812,7 +8716,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 11, 1, true, false, 0)
     end
-
+	
     if hydrantCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Hydrant","Stopped, player has left the session.")
@@ -8823,7 +8727,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 13, 1, true, false, 0)
     end
-
+	
     if explodeCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Explode","Stopped, player has left the session.")
@@ -8834,7 +8738,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 1, 100, true, false, 2147483647)
     end
-
+	
     if noDamageExplode:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Screen Shake","Stopped, player has left the session.")
