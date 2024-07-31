@@ -5243,6 +5243,7 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
     script.register_looped("clownJetAttack", function(clownJetsOne)
         if clownJetAttack:is_enabled() == true then
             for i = 0, 31 do
+				player = i
                 if player ~= PLAYER.PLAYER_ID() then
                      players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
                      playerName = PLAYER.GET_PLAYER_NAME(players)
