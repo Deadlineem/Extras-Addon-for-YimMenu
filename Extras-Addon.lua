@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
- addonVersion = "1.0.9"
+ addonVersion = "1.1.0"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
