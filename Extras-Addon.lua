@@ -3748,7 +3748,7 @@ vehTrix:add_button('Ollie', function()
         targ = network.get_selected_player()
         ped = PLAYER.GET_PLAYER_PED(targ)
         veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-        if request_control(veh) then
+        if request_control(veh, 300) then
             ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
         end
     end)
@@ -3761,7 +3761,7 @@ vehTrix:add_button('Kickflip', function()
         targ = network.get_selected_player()
         ped = PLAYER.GET_PLAYER_PED(targ)
         veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-        if request_control(veh) then
+        if request_control(veh, 300) then
             ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.71, 5.0, 0.0, 0.0, 1, false, true, true, true, true)
         end
     end)
@@ -3774,7 +3774,7 @@ vehTrix:add_button('Double Kickflip', function()
         targ = network.get_selected_player()
         ped = PLAYER.GET_PLAYER_PED(targ)
         veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-        if request_control(veh) then
+        if request_control(veh, 300) then
             ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 21.43, 20.0, 0.0, 0.0, 1, false, true, true, true, true)
         end
     end)
@@ -3787,7 +3787,7 @@ vehTrix:add_button('Heelflip', function()
         targ = network.get_selected_player()
         ped = PLAYER.GET_PLAYER_PED(targ)
         veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-        if request_control(veh) then
+        if request_control(veh, 300) then
             ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 10.71, -5.0, 0.0, 0.0, 1, false, true, true, true, true)
         end
     end)
@@ -3800,7 +3800,7 @@ vehTrix:add_button('Backflip', function()
         targ = network.get_selected_player()
         ped = PLAYER.GET_PLAYER_PED(targ)
         veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-        if request_control(veh) then
+        if request_control(veh, 300) then
             ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 25.71, 0.0, 7.0, -0.2, 1, false, true, true, true, true)
         end
     end)
@@ -3812,7 +3812,7 @@ vehTrix:add_button('Frontflip', function()
         targ = network.get_selected_player()
         ped = PLAYER.GET_PLAYER_PED(targ)
         veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-        if request_control(veh) then
+        if request_control(veh, 300) then
             ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, 0.0, 0.0, 11.71, 0.0, -5.0, 0.2, 1, false, true, true, true, true)
         end
     end)
@@ -3825,7 +3825,7 @@ vehTrix:add_button('Boost Forward', function()
         local targ = network.get_selected_player()
         local ped = PLAYER.GET_PLAYER_PED(targ)
         local veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-        if request_control(veh) then
+        if request_control(veh, 300) then
             -- Get the vehicle's forward vector
             local forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(veh)
             -- Scale the forward vector to the desired boost strength
@@ -3852,7 +3852,7 @@ vehTrix:add_button('Boost Backwards', function()
         local targ = network.get_selected_player()
         local ped = PLAYER.GET_PLAYER_PED(targ)
         local veh = PED.GET_VEHICLE_PED_IS_USING(ped)
-        if request_control(veh) then
+        if request_control(veh, 300) then
             -- Get the vehicle's forward vector
             local forwardVector = ENTITY.GET_ENTITY_FORWARD_VECTOR(veh)
             -- Scale the forward vector to the desired boost strength
@@ -5087,7 +5087,7 @@ script.register_looped("horns", function(hornsTest)
     if hornsCB:is_enabled() then
          vehicles = entities.get_all_vehicles_as_handles()
         for i, vehicle in ipairs(vehicles) do
-            if request_control(vehicle) then
+            if request_control(vehicle, 300) then
                 VEHICLE.START_VEHICLE_HORN(vehicle, 1000, 0, true)
                 AUDIO.USE_SIREN_AS_HORN(vehicle, true)
             end
@@ -5316,6 +5316,7 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                                     --TASK.TASK_COMBAT_PED(ped, players, 0, 16)
                                     PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
                                     WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
+								VEHICLE.SET_VEHICLE_FORWARD_SPEED(jetVehicle, 60)
                             else
                                 gui.show_error("Failed", "Failed to create ped")
                             end
@@ -5524,6 +5525,25 @@ Global:add_text("World Options")
 
 riotMode = Global:add_checkbox("Riot Mode")
 toolTip(Global, "Makes all pedestrians riot")
+Global:add_sameline()
+maxNPCVehicles = Global:add_checkbox("Max all NPC Vehicles")
+	script.register_looped("maxNPCVehicles", function(script)
+		if maxNPCVehicles:is_enabled() then
+			for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
+				ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
+				if not PED.IS_PED_A_PLAYER(ped) then
+					if calcDistance(PLAYER.PLAYER_PED_ID(), ped) < 100 then
+						max_vehicle(veh)
+						max_vehicle_performance(veh)
+						randomColors(veh)
+						open_wheel(veh, math.random(8, 10), math.random(0, 35))
+					end
+				end
+			end
+		end
+		script:yield()
+		sleep(5)
+	end)
 
 script.register_looped("riotMode", function(script)
 	if riotMode:is_enabled() then
@@ -6579,7 +6599,7 @@ script.register_looped("heistTabLoop", function(heistTabScript)
              ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
             if (PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 4 or PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 5 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 1 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 49 or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Swat_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Sheriff_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Sheriff_01")) and peds ~= PLAYER.PLAYER_PED_ID() and not PED.IS_PED_DEAD_OR_DYING(peds,true)  and PED.IS_PED_A_PLAYER(peds) ~= 1 and calcDistance(PLAYER.PLAYER_PED_ID(), peds) <= 100 then
                 if PED.IS_PED_IN_ANY_VEHICLE(peds, true) then
-                    request_control(peds)
+                    request_control(peds, 300)
                     TASK.CLEAR_PED_TASKS_IMMEDIATELY(peds)
                     ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
                     MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(ped_pos.x, ped_pos.y, ped_pos.z + 1, ped_pos.x, ped_pos.y, ped_pos.z, 1000, true, 2526821735, PLAYER.PLAYER_PED_ID(), false, true, 1.0)
@@ -8516,7 +8536,7 @@ end
 ---@param entity Entity
 ---@return boolean
 function request_control_once(entity)
-    return entities.take_control_of(entity, 1)
+    return entities.take_control_of(entity, 300)
 end
 
 function atan2(y, x)
@@ -8647,8 +8667,8 @@ script.register_looped("extrasAddonLooped", function(script)
             ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
 				if ped ~= 0 and not PED.IS_PED_A_PLAYER(ped) then
 					if not PED.IS_PED_DEAD_OR_DYING(ped) then
-						request_control(veh) 
-						request_control(ped)
+						request_control(veh, 300) 
+						request_control(ped, 300)
 						TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
 						target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
 						pos = ENTITY.GET_ENTITY_COORDS(target, true)
@@ -8701,7 +8721,7 @@ script.register_looped("extrasAddonLooped", function(script)
             gui.show_error("Spin Vehicle","Player is not in a vehicle")
         else
             veh = PED.GET_VEHICLE_PED_IS_USING(PLAYER.GET_PLAYER_PED(network.get_selected_player()))
-            request_control(veh)
+            request_control(veh, 300)
             ENTITY.APPLY_FORCE_TO_ENTITY(veh, 5, 0, 0, 20.0, 0, 0, 0, 0, true, false, true, false, true)
             --ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 5, 0, 150.0, 0, 0, true, false, true)
             gui.show_message("Spin Vehicle","Spinning Vehicle")
@@ -9158,17 +9178,17 @@ function writebodyguardtable()
         end)
         NPCguardTableTab:add_sameline()
         NPCguardTableTab:add_button("Delete "..npcguard_list_index, function()
-            request_control(guard_ped_id)
+            request_control(guard_ped_id, 300)
             delete_entity(guard_ped_id)
         end)
         NPCguardTableTab:add_sameline()
         NPCguardTableTab:add_button("Heal "..npcguard_list_index, function()
-            request_control(guard_ped_id)
+            request_control(guard_ped_id, 300)
             ENTITY.SET_ENTITY_HEALTH(guard_ped_id,1000,0,0)
         end)
         NPCguardTableTab:add_sameline()
         NPCguardTableTab:add_button("Clone "..npcguard_list_index, function()
-            request_control(guard_ped_id)
+            request_control(guard_ped_id, 300)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(guard_ped_id, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).x, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).y, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).z, false, false, false)
         end)
         npcguard_list_index = npcguard_list_index + 1
@@ -9203,12 +9223,12 @@ function writebodyguardhelitable()
         end)
         HeliTableTab:add_sameline()
         HeliTableTab:add_button("Delete "..npcguardheli_list_index, function()
-            request_control(guard_veh_hd)
+            request_control(guard_veh_hd, 300)
             delete_entity(guard_veh_hd)
         end)
         HeliTableTab:add_sameline()
         HeliTableTab:add_button("Clone "..npcguardheli_list_index, function()
-            request_control(guard_veh_hd)
+            request_control(guard_veh_hd, 300)
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(guard_veh_hd, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).x, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).y, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).z + 20, false, false, false)
         end)
         npcguardheli_list_index = npcguardheli_list_index + 1
@@ -9276,8 +9296,8 @@ function writeobjtable()
         end)
         ObjTableTab:add_sameline()
         ObjTableTab:add_button("Delete"..obj_list_index, function()
-            request_control(obj_id)
-            delete_entity(obj_id)
+            request_control(obj_id, 300)
+            delete_entity(obj_id, 300)
         end)
         obj_list_index = obj_list_index + 1
     end
@@ -9317,12 +9337,12 @@ function writepedtable()
         end)
         NPCTableTab:add_sameline()
         NPCTableTab:add_button("Delete "..ped_list_index, function()
-            request_control(ped_id)
-            delete_entity(ped_id)
+            request_control(ped_id, 300)
+            delete_entity(ped_id, 300)
         end)
         NPCTableTab:add_sameline()
         NPCTableTab:add_button("Heal "..ped_list_index, function()
-            request_control(ped_id)
+            request_control(ped_id, 300)
             ENTITY.SET_ENTITY_HEALTH(ped_id,1000,0,0)
         end)
         ped_list_index = ped_list_index + 1
@@ -9361,12 +9381,12 @@ function writevehtable()
         VehicleTableTab:add_text("Handle:"..t_veh_hd.." model:"..veh_mod_name.." name:"..veh_disp_name.." distance:"..formattedvehDistance.." Blip:"..vehblipsprite.." Color:"..vehblipcolor.." HP:"..veh_t_health)
         VehicleTableTab:add_sameline()
         VehicleTableTab:add_button("Delete "..Veh_list_index, function()
-            request_control(t_veh_hd)
+            request_control(t_veh_hd, 300)
             delete_entity(t_veh_hd)
         end)
         VehicleTableTab:add_sameline()
         VehicleTableTab:add_button("Teleport into "..Veh_list_index, function()
-            request_control(t_veh_hd)
+            request_control(t_veh_hd, 300)
             PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), t_veh_hd, -1)
         end)
         VehicleTableTab:add_sameline()
@@ -9375,12 +9395,12 @@ function writevehtable()
         end)
         VehicleTableTab:add_sameline()
         VehicleTableTab:add_button("Destroy the engine"..Veh_list_index, function()
-            request_control(t_veh_hd)
+            request_control(t_veh_hd, 300)
             VEHICLE.SET_VEHICLE_ENGINE_HEALTH(t_veh_hd, -4000)
         end)
         VehicleTableTab:add_sameline()
         VehicleTableTab:add_button("Throw "..Veh_list_index, function()
-            request_control(t_veh_hd)
+            request_control(t_veh_hd, 300)
             ENTITY.APPLY_FORCE_TO_ENTITY(t_veh_hd, 1, math.random(0, 3), math.random(0, 3), math.random(-10, 10), 0.0, 0.0, 0.0, 0, true, false, true, false, true)
         end)
         Veh_list_index = Veh_list_index + 1
@@ -9751,7 +9771,7 @@ griefPlayerTab:add_button("420 Cage", function()
             weedcage:yield()
         end
         local objectsfcage = {}
-        request_control(playerPed)
+        request_control(playerPed, 300)
         ENTITY.FREEZE_ENTITY_POSITION(playerPed, true)
         objectsfcage[1] = OBJECT.CREATE_OBJECT(objHash, pos.x - 0.75, pos.y, pos.z - 3.5, true, true, false)
         objectsfcage[2] = OBJECT.CREATE_OBJECT(objHash, pos.x + 0.75, pos.y, pos.z - 3.5, true, true, false)
@@ -10163,71 +10183,86 @@ end)
 toolTip(giftPlayerTab, "Reset the sliders to their default values")
 giftPlayerTab:add_separator()
 ]]
+
+function randomColors(veh)
+	script.run_in_fiber(function(script)
+		if request_control(veh, 300) then
+			colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
+			primaryColor = colors[math.random(#colors)]
+			secondaryColor = colors[math.random(#colors)]
+			VEHICLE.SET_VEHICLE_COLOURS(veh, primaryColor, secondaryColor)
+		end
+		script:yield()
+	end)
+end
+
 function max_vehicle(veh)
     script.run_in_fiber(function(maxM)
-        VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
-        VEHICLE.TOGGLE_VEHICLE_MOD(veh, 18, true) -- MOD_TURBO
-        VEHICLE.TOGGLE_VEHICLE_MOD(veh, 23, true) -- MOD_TYRE_SMOKE
-        VEHICLE.TOGGLE_VEHICLE_MOD(veh, 22, true) -- MOD_XENON_LIGHTS
-        VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
-        VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
+		if request_control(veh, 1) then
+			VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+			VEHICLE.TOGGLE_VEHICLE_MOD(veh, 18, true) -- MOD_TURBO
+			VEHICLE.TOGGLE_VEHICLE_MOD(veh, 23, true) -- MOD_TYRE_SMOKE
+			VEHICLE.TOGGLE_VEHICLE_MOD(veh, 22, true) -- MOD_XENON_LIGHTS
+			VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
+			VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
 
-        for slot = 0, 20 do
-            if slot ~= 48 and slot ~= customWheelsSlot then -- Exclude custom wheels slot
-                local count = VEHICLE.GET_NUM_VEHICLE_MODS(veh, slot)
-                if count > 0 then
-                    local selected_mod = -1
-                    for mod = count - 1, -1, -1 do
-                        if not VEHICLE.IS_VEHICLE_MOD_GEN9_EXCLUSIVE(veh, slot, mod) then
-                            selected_mod = mod
-                            break
-                        end
-                    end
+			for slot = 0, 20 do
+				if slot ~= 48 and slot ~= customWheelsSlot then -- Exclude custom wheels slot
+					local count = VEHICLE.GET_NUM_VEHICLE_MODS(veh, slot)
+					if count > 0 then
+						local selected_mod = -1
+						for mod = count - 1, -1, -1 do
+							if not VEHICLE.IS_VEHICLE_MOD_GEN9_EXCLUSIVE(veh, slot, mod) then
+								selected_mod = mod
+								break
+							end
+						end
 
-                    if selected_mod ~= -1 then
-                        VEHICLE.SET_VEHICLE_MOD(veh, slot, selected_mod, true)
-                    end
-                end
-            end
-        end
+						if selected_mod ~= -1 then
+							VEHICLE.SET_VEHICLE_MOD(veh, slot, selected_mod, true)
+						end
+					end
+				end
+			end
+		end
         maxM:yield()
     end)
 end
 
 
 function max_vehicle_performance(veh)
-script.run_in_fiber(function(maxP)
-    if request_control(veh) then
-        local performance_mods = {11, 12, 13, 15, 16, 18, 20} -- MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO
-        VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+	script.run_in_fiber(function(maxP)
+		if request_control(veh, 1) then
+			local performance_mods = {11, 12, 13, 15, 16, 18, 20} -- MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO
+			VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
 
-        for _, mod_slot in ipairs(performance_mods) do
-            if mod_slot ~= 18 and mod_slot ~= 20 then -- Exclude MOD_NITROUS and MOD_TURBO
-                VEHICLE.SET_VEHICLE_MOD(veh, mod_slot, VEHICLE.GET_NUM_VEHICLE_MODS(veh, mod_slot) - 1, true)
-            else
-                VEHICLE.TOGGLE_VEHICLE_MOD(veh, mod_slot, true)
-            end
-        end
-    end
-    maxP:yield()
-end)
+			for _, mod_slot in ipairs(performance_mods) do
+				if mod_slot ~= 18 and mod_slot ~= 20 then -- Exclude MOD_NITROUS and MOD_TURBO
+					VEHICLE.SET_VEHICLE_MOD(veh, mod_slot, VEHICLE.GET_NUM_VEHICLE_MODS(veh, mod_slot) - 1, true)
+				else
+					VEHICLE.TOGGLE_VEHICLE_MOD(veh, mod_slot, true)
+				end
+			end
+		end
+		maxP:yield()
+	end)
 end
 
 function open_wheel(veh, wheelType, wheelStyle)
-script.run_in_fiber(function(openW)
-    if request_control(veh) then
-        VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
-        local customWheelsSlot = 23
-        -- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
-            VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
-            VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, wheelType)
-            VEHICLE.SET_VEHICLE_MOD(veh, customWheelsSlot, wheelStyle, true)
-            VEHICLE.TOGGLE_VEHICLE_MOD(veh, 24, true)
-            VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, 6)
-            VEHICLE.SET_VEHICLE_MOD(veh, 24, wheelStyle, true)
-    end
-    openW:yield()
-end)
+	script.run_in_fiber(function(openW)
+		if request_control(veh, 1) then
+			VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+			local customWheelsSlot = 23
+			-- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
+				VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
+				VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, wheelType)
+				VEHICLE.SET_VEHICLE_MOD(veh, customWheelsSlot, wheelStyle, true)
+				VEHICLE.TOGGLE_VEHICLE_MOD(veh, 24, true)
+				VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, 6)
+				VEHICLE.SET_VEHICLE_MOD(veh, 24, wheelStyle, true)
+		end
+		openW:yield()
+	end)
 end
 --[[
 selected_wheel_index = 0
