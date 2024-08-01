@@ -5835,26 +5835,7 @@ if PI == 0 then
 else
     MPX = "MP1_"
 end
-bunker:add_button("Unlock All Research", function()
-    script.run_in_fiber(function(script)
-        globals.set_int(262145 + 22067, 1)
-        gui.show_message("Bunker Research", "ALL Bunker research has been unlocked.")
-    end)
-end)
-toolTip(bunker, "Unlocks all bunker research instantly.")
-fastProd = bunker:add_checkbox("Fast Production")
-    script.register_looped("bunkerProd", function(script)
-    if fastProd:is_enabled() then
-        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_PRODUCTION_TIME"), 1, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_EQUIPMENT_REDUCTION_TIME"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "GR_RESEARCH_UPGRADE_STAFF_REDUCTION_TIME"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "GR_MANU_PRODUCTION_TIME"), 1, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "GR_MANU_UPGRADE_EQUIPMENT_REDUCTION_TIME"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX .. "GR_MANU_UPGRADE_STAFF_REDUCTION_TIME"), 0, true)
-        gui.show_message("Production", "Bunker production speed has been increased, make sure you loop your supplies!")
-    end
-    end)
-toolTip(bunker, "Speeds up production time, requires supplies to keep production going")
+
 bunker:add_sameline()
  bSupplies = bunker:add_checkbox("Resupply Bunker (Looped)")
 script.register_looped("autoGetBunkerCargo", function(script)
@@ -8657,7 +8638,7 @@ noDamageExplode = griefPlayerTab:add_checkbox("Screen Shake")
 toolTip(griefPlayerTab, "Causes a no damage explosion to shake the players screen.")
 
 script.register_looped("extrasAddonLooped", function(script)
-    if npcDrive:is_enabled() then
+    --[[if npcDrive:is_enabled() then
 		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
 			gui.show_message("NPC Drive","Stopped, player has left the session.")
 			npcDrive:set_enabled(false)
@@ -8677,7 +8658,7 @@ script.register_looped("extrasAddonLooped", function(script)
 				end
 			script:yield()
         end
-    end
+    end]]
 	
     if dildos:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
