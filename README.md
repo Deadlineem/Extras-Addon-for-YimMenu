@@ -1,6 +1,6 @@
 ![Extras Addon for YimMenu](http://extrasaddon.us.to/img/extras-header-2.png)
 
-[![version](https://img.shields.io/badge/version-1.1.0-green.svg)](http://extrasaddon.us.to/) [![Button](https://img.shields.io/badge/YimMenu-brightgreen)](https://github.com/YimMenu/YimMenu)
+[![version](https://img.shields.io/badge/version-1.1.0-green.svg)](http://extrasaddon.us.to/) [![Button](https://img.shields.io/badge/YimMenu-Repository-brightgreen)](https://github.com/YimMenu/YimMenu)
 
 
 ### `Update.bat` now updates itself when its opened as of version 1.0.3
