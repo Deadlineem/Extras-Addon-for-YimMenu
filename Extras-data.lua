@@ -4460,10 +4460,8 @@ end
 encodedTwo = caesar_encrypt("Provided FREE from: ", 3)
 encoded = caesar_encrypt(url, 3)
 
-function request_control(entity)
-	script.run_in_fiber(function()
-		return entities.take_control_of(entity, 10)
-	end)
+function request_control(entity, tries)
+		return entities.take_control_of(entity, tries)
 end
 
 -- Function to get the entity in crosshair
