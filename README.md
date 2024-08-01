@@ -11,7 +11,7 @@ DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT O
 
 ### NOTE: Update.bat will be left here, however if you are interested in a GUI, check out https://github.com/Deadlineem/YMU
 
-1. To install the extras addon, simply download the [![Button](https://img.shields.io/badge/Update.bat-blue)]([https://github.com/YimMenu/YimMenu](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat)) you do not need to download the entire zip folder!
+1. To install the extras addon, simply download the [![Button](https://img.shields.io/badge/Update-batch-blue)]([https://github.com/YimMenu/YimMenu](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat)) you do not need to download the entire zip folder!
 
 2. After downloading, double click `update.bat`, it will check for updates to its own script every time its opened, after its finished, simply select an option:
    - Press 1 to Download YimMenu (Goes to your Downloads folder)
@@ -27,7 +27,7 @@ DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT O
 
 If you have v1.0.3 or later of the update.bat, simply open it and it will update itself (You'll see it show "Checking Extras Repository for updates to update.bat..." at the top)
 
-If you do not have the latest version, you can get it Here -> [![Button](https://img.shields.io/badge/Update.bat-blue)]([https://github.com/YimMenu/YimMenu](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat))
+If you do not have the latest version, you can get it Here -> [![Button](https://img.shields.io/badge/Update-batch-blue)]([https://github.com/YimMenu/YimMenu](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat))
 
 ### NOTE:
 
