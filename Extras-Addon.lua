@@ -5532,7 +5532,7 @@ maxNPCVehicles = Global:add_checkbox("Max all NPC Vehicles")
 			for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
 				ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
 				if not PED.IS_PED_A_PLAYER(ped) then
-					if calcDistance(PLAYER.PLAYER_PED_ID(), ped) < 100 then
+					if calcDistance(PLAYER.PLAYER_PED_ID(), ped) < 250 then
 						max_vehicle(veh)
 						max_vehicle_performance(veh)
 						randomColors(veh)
@@ -5544,7 +5544,7 @@ maxNPCVehicles = Global:add_checkbox("Max all NPC Vehicles")
 		script:yield()
 		sleep(5)
 	end)
-
+toolTip(Global, "Modify's nearby NPC vehicles with max mods/performance, Benny's/F1 wheels and random colors every 5 seconds.")
 script.register_looped("riotMode", function(script)
 	if riotMode:is_enabled() then
 		MISC.SET_RIOT_MODE_ENABLED(true)
@@ -8236,8 +8236,8 @@ end
 end)
 toolTip(griefPlayerTab, "Spawn Delay: Sets the delay in seconds for how long the script should wait before running again.")
 
-npcDrive = griefPlayerTab:add_checkbox("NPCs Drive To This Player")
-toolTip(griefPlayerTab, "Make all NPC's drive to this player")
+--npcDrive = griefPlayerTab:add_checkbox("NPCs Drive To This Player")
+--toolTip(griefPlayerTab, "Make all NPC's drive to this player")
 
 griefPlayerTab:add_sameline()
 dildos = griefPlayerTab:add_checkbox("Dildos")
@@ -8666,17 +8666,16 @@ script.register_looped("extrasAddonLooped", function(script)
         for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
             ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
 				if ped ~= 0 and not PED.IS_PED_A_PLAYER(ped) then
-					if not PED.IS_PED_DEAD_OR_DYING(ped) then
 						request_control(veh, 300) 
 						request_control(ped, 300)
-						TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
+						--TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
 						target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
 						pos = ENTITY.GET_ENTITY_COORDS(target, true)
-						if calcDistance(target, veh) > 1 then
-							TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 60.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
+						if calcDistance(target, veh) < 250 then
+							TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
 						end
-					end
 				end
+			script:yield()
         end
     end
 	
@@ -8914,45 +8913,6 @@ toolTip(griefPlayerTab, "Repeatedly explodes the selected player using a barrel 
 -- Crash Options
 griefPlayerTab:add_separator()
 griefPlayerTab:add_text("Crash Options")
- prCrash = false
-prCrash = griefPlayerTab:add_checkbox("PR Crash (On/Off)")
-
-script.register_looped("prCrash", function()
-    if prCrash:is_enabled() == true then
-    if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("PR Crash", "Stopped, player has left the session.")
-                prCrash:set_enabled(false)
-                return
-            end
-         model = joaat("vw_prop_vw_colle_prbubble")
-         pickup = joaat("PICKUP_CUSTOM_SCRIPT")
-         player_id = network.get_selected_player()
-         money_value = 1000000
-
-        STREAMING.REQUEST_MODEL(model)
-
-        if STREAMING.HAS_MODEL_LOADED(model) then
-        gui.show_message("PR Crash", "Crashing player")
-             coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-             objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
-                pickup,
-                coords.x,
-                coords.y,
-                coords.z + 0.5,
-                3,
-                money_value,
-                model,
-                true,
-                false
-            )
-
-             net_id = NETWORK.OBJ_TO_NET(objectIdSpawned)
-            NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(objectIdSpawned, true)
-        end
-        sleep(0.1) -- Sets the timer in seconds for how long this should pause before sending another figure
-    end
-end)
-toolTip(griefPlayerTab, "Spawns Princes Robot figurines worth $1,000,000, causing the player to crash (not very effective on modders)")
 -- SCH-Lua
 -- SCH-Lua Functions
 function globals_set_int(intglobal, intval) --当游戏版本不受支持时拒绝修改globals避免损坏线上存档
