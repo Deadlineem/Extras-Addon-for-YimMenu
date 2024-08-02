@@ -5243,7 +5243,7 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
     script.register_looped("clownJetAttack", function(clownJetsOne)
         if clownJetAttack:is_enabled() == true then
             for i = 0, 31 do
-				player = i
+                player = i
                 if player ~= PLAYER.PLAYER_ID() then
                      players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
                      playerName = PLAYER.GET_PLAYER_NAME(players)
@@ -5285,12 +5285,12 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                              ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
 
                             if ped ~= 0 then
-								TASK.CLEAR_PRIMARY_VEHICLE_TASK(jetVehicle)
+                                TASK.CLEAR_PRIMARY_VEHICLE_TASK(jetVehicle)
                                 group = joaat("HATES_PLAYER")
                                 PED.ADD_RELATIONSHIP_GROUP("clowns", group)
                                 ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
                                 PED.SET_PED_CAN_BE_TARGETTED(ped, false)
-								PED.SET_PED_TARGET_LOSS_RESPONSE(ped, 1)
+                                PED.SET_PED_TARGET_LOSS_RESPONSE(ped, 1)
                                 --PED.SET_PED_CONFIG_FLAG(ped, 132, true)
                                 --PED.SET_PED_CONFIG_FLAG(ped, 42, true)
                                 --PED.SET_PED_HIGHLY_PERCEPTIVE(ped, 1)
@@ -5309,14 +5309,14 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                                 PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
                                 PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
                                 PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
-								PED.REGISTER_TARGET(ped, players)
+                                PED.REGISTER_TARGET(ped, players)
                                 TASK.TASK_PLANE_MISSION(ped, jetVehicle, 0, players, 0, 0, 0, 6, 100, 0, 90, 0, -200)
                                 --TASK.TASK_VEHICLE_MISSION_PED_TARGET(ped, jetVehicle, players, 6, 300, 1, 100, 200, true)
                                 PED.SET_PED_KEEP_TASK(ped, true)
                                     --TASK.TASK_COMBAT_PED(ped, players, 0, 16)
                                     PED.SET_AI_WEAPON_DAMAGE_MODIFIER(10000)
                                     WEAPON.SET_WEAPON_DAMAGE_MODIFIER(1060309761, 10000)
-								VEHICLE.SET_VEHICLE_FORWARD_SPEED(jetVehicle, 60)
+                                VEHICLE.SET_VEHICLE_FORWARD_SPEED(jetVehicle, 60)
                             else
                                 gui.show_error("Failed", "Failed to create ped")
                             end
@@ -5331,7 +5331,7 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                         gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets every 15 seconds.")
                     end
                 end
-			end
+            end
             -- Release the resources associated with the spawned entities
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(jetVehicle)
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped)
@@ -5527,30 +5527,30 @@ riotMode = Global:add_checkbox("Riot Mode")
 toolTip(Global, "Makes all pedestrians riot")
 Global:add_sameline()
 maxNPCVehicles = Global:add_checkbox("Max all NPC Vehicles")
-	script.register_looped("maxNPCVehicles", function(script)
-		if maxNPCVehicles:is_enabled() then
-			for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
-				ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
-				if not PED.IS_PED_A_PLAYER(ped) then
-					if calcDistance(PLAYER.PLAYER_PED_ID(), ped) < 250 then
-						max_vehicle(veh)
-						max_vehicle_performance(veh)
-						randomColors(veh)
-						open_wheel(veh, math.random(8, 10), math.random(0, 35))
-					end
-				end
-			end
-		end
-		script:yield()
-		sleep(5)
-	end)
+    script.register_looped("maxNPCVehicles", function(script)
+        if maxNPCVehicles:is_enabled() then
+            for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
+                ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
+                if not PED.IS_PED_A_PLAYER(ped) then
+                    if calcDistance(PLAYER.PLAYER_PED_ID(), ped) < 250 then
+                        max_vehicle(veh)
+                        max_vehicle_performance(veh)
+                        randomColors(veh)
+                        open_wheel(veh, math.random(8, 10), math.random(0, 35))
+                    end
+                end
+            end
+        end
+        script:yield()
+        sleep(5)
+    end)
 toolTip(Global, "Modify's nearby NPC vehicles with max mods/performance, Benny's/F1 wheels and random colors every 5 seconds.")
 script.register_looped("riotMode", function(script)
-	if riotMode:is_enabled() then
-		MISC.SET_RIOT_MODE_ENABLED(true)
-	else
-		MISC.SET_RIOT_MODE_ENABLED(false)
-	end
+    if riotMode:is_enabled() then
+        MISC.SET_RIOT_MODE_ENABLED(true)
+    else
+        MISC.SET_RIOT_MODE_ENABLED(false)
+    end
 end)
 
 -- Story Mode Options
@@ -6453,9 +6453,17 @@ toolTip(heistTab, "Increase the life count by 5")
 shootEnemies = heistTab:add_checkbox("Kill Enemies")
 toolTip(heistTab, "Shoots every enemy ped within 150m")
 
+apartmentHeistHashes = {1328892776, 964111671, 1131632450, 1967927346, 1182286714}
+
 heistTab:add_imgui(function()
     --PAD.DISABLE_ALL_CONTROL_ACTIONS(2)
     PAD.DISABLE_CONTROL_ACTION(2, 237, true)
+
+    for i, hash in pairs(apartmentHeistHashes) do
+        if globals.get_int(1877285 + (PLAYER.PLAYER_ID() * 77) + 24 + 2) == hash then
+            heistIndex = i - 1
+        end
+    end
 
     objectiveText = globals.get_string(1574765 + 16)
     tpdValk = false
@@ -8367,7 +8375,7 @@ toolTip(griefPlayerTab, "Spawns a Clown van full of clowns to chase/gun the play
 
 griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Clown Jet Attack", function()
-	script.run_in_fiber(function(clownJetsOne)
+    script.run_in_fiber(function(clownJetsOne)
             local player = network.get_selected_player(player)
                 if player ~= PLAYER.PLAYER_ID() then
                      players = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player)
@@ -8410,12 +8418,12 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
                              ped = PED.CREATE_PED(0, clown, jetSpawnX, jetSpawnY, jetSpawnZ, heading, true, true)
 
                             if ped ~= 0 then
-								TASK.CLEAR_PRIMARY_VEHICLE_TASK(jetVehicle)
+                                TASK.CLEAR_PRIMARY_VEHICLE_TASK(jetVehicle)
                                 group = joaat("HATES_PLAYER")
                                 PED.ADD_RELATIONSHIP_GROUP("clowns", group)
                                 ENTITY.SET_ENTITY_CAN_BE_DAMAGED_BY_RELATIONSHIP_GROUP(ped, false, group)
                                 PED.SET_PED_CAN_BE_TARGETTED(ped, false)
-								PED.SET_PED_TARGET_LOSS_RESPONSE(ped, 1)
+                                PED.SET_PED_TARGET_LOSS_RESPONSE(ped, 1)
                                 --PED.SET_PED_CONFIG_FLAG(ped, 132, true)
                                 --PED.SET_PED_CONFIG_FLAG(ped, 42, true)
                                 --PED.SET_PED_HIGHLY_PERCEPTIVE(ped, 1)
@@ -8434,7 +8442,7 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
                                 PED.SET_PED_COMBAT_ATTRIBUTES(ped, 46, true)
                                 PED.SET_PED_COMBAT_ATTRIBUTES(ped, 0, false)
                                 PED.SET_PED_INTO_VEHICLE(ped, jetVehicle, seat)
-								PED.REGISTER_TARGET(ped, players)
+                                PED.REGISTER_TARGET(ped, players)
                                 TASK.TASK_PLANE_MISSION(ped, jetVehicle, 0, players, 0, 0, 0, 6, 100, 0, 90, 0, -200)
                                 --TASK.TASK_VEHICLE_MISSION_PED_TARGET(ped, jetVehicle, players, 6, 300, 1, 100, 200, true)
                                 PED.SET_PED_KEEP_TASK(ped, true)
@@ -8460,7 +8468,7 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ped)
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(weapon)
             sleep(2)
-	end)
+    end)
 end)
 toolTip(griefPlayerTab, "Spawns Randomly colored jets with Clowns as pilots to attack the selected player.")
 
@@ -8639,27 +8647,27 @@ toolTip(griefPlayerTab, "Causes a no damage explosion to shake the players scree
 
 script.register_looped("extrasAddonLooped", function(script)
     --[[if npcDrive:is_enabled() then
-		if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-			gui.show_message("NPC Drive","Stopped, player has left the session.")
-			npcDrive:set_enabled(false)
-			return
-		end
+        if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
+            gui.show_message("NPC Drive","Stopped, player has left the session.")
+            npcDrive:set_enabled(false)
+            return
+        end
         for _, veh in pairs(entities.get_all_vehicles_as_handles()) do
             ped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, -1, true)
-				if ped ~= 0 and not PED.IS_PED_A_PLAYER(ped) then
-						request_control(veh, 300) 
-						request_control(ped, 300)
-						--TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
-						target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
-						pos = ENTITY.GET_ENTITY_COORDS(target, true)
-						if calcDistance(target, veh) < 250 then
-							TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
-						end
-				end
-			script:yield()
+                if ped ~= 0 and not PED.IS_PED_A_PLAYER(ped) then
+                        request_control(veh, 300) 
+                        request_control(ped, 300)
+                        --TASK.CLEAR_PRIMARY_VEHICLE_TASK(veh)
+                        target = PLAYER.GET_PLAYER_PED(network.get_selected_player())
+                        pos = ENTITY.GET_ENTITY_COORDS(target, true)
+                        if calcDistance(target, veh) < 250 then
+                            TASK.TASK_VEHICLE_DRIVE_TO_COORD(ped, veh, pos.x, pos.y, pos.z, 70.0, 1, ENTITY.GET_ENTITY_MODEL(veh), 16777216, 0.0, 1)
+                        end
+                end
+            script:yield()
         end
     end]]
-	
+    
     if dildos:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Dildo Spam","Stopped, player has left the session.")
@@ -8674,7 +8682,7 @@ script.register_looped("extrasAddonLooped", function(script)
         end
         OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 1.5, 0, 1, selectedItem, false, true)
     end
-	
+    
     if dropBalls:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Balls Spam","Stopped, player has left the session.")
@@ -8690,7 +8698,7 @@ script.register_looped("extrasAddonLooped", function(script)
         end
         OBJECT.CREATE_AMBIENT_PICKUP(738282662, coords.x, coords.y, coords.z + 2, 0, 1, joaat(selectedItem), false, true)
     end
-	
+    
     if vehicleSpin:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Spin Vehicle","Stopped, player has left the session.")
@@ -8707,7 +8715,7 @@ script.register_looped("extrasAddonLooped", function(script)
             gui.show_message("Spin Vehicle","Spinning Vehicle")
         end
     end
-	
+    
     if extinguisherCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Extinguisher","Stopped, player has left the session.")
@@ -8718,7 +8726,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 24, 1, true, false, 0)
     end
-	
+    
     if steamCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Steam","Stopped, player has left the session.")
@@ -8729,7 +8737,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 11, 1, true, false, 0)
     end
-	
+    
     if hydrantCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Hydrant","Stopped, player has left the session.")
@@ -8740,7 +8748,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 13, 1, true, false, 0)
     end
-	
+    
     if explodeCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Explode","Stopped, player has left the session.")
@@ -8751,7 +8759,7 @@ script.register_looped("extrasAddonLooped", function(script)
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
         FIRE.ADD_OWNED_EXPLOSION(player, coords.x, coords.y, coords.z - 2.0, 1, 100, true, false, 2147483647)
     end
-	
+    
     if noDamageExplode:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
                 gui.show_message("Screen Shake","Stopped, player has left the session.")
@@ -10126,84 +10134,84 @@ giftPlayerTab:add_separator()
 ]]
 
 function randomColors(veh)
-	script.run_in_fiber(function(script)
-		if request_control(veh, 300) then
-			colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
-			primaryColor = colors[math.random(#colors)]
-			secondaryColor = colors[math.random(#colors)]
-			VEHICLE.SET_VEHICLE_COLOURS(veh, primaryColor, secondaryColor)
-		end
-		script:yield()
-	end)
+    script.run_in_fiber(function(script)
+        if request_control(veh, 300) then
+            colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
+            primaryColor = colors[math.random(#colors)]
+            secondaryColor = colors[math.random(#colors)]
+            VEHICLE.SET_VEHICLE_COLOURS(veh, primaryColor, secondaryColor)
+        end
+        script:yield()
+    end)
 end
 
 function max_vehicle(veh)
     script.run_in_fiber(function(maxM)
-		if request_control(veh, 1) then
-			VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
-			VEHICLE.TOGGLE_VEHICLE_MOD(veh, 18, true) -- MOD_TURBO
-			VEHICLE.TOGGLE_VEHICLE_MOD(veh, 23, true) -- MOD_TYRE_SMOKE
-			VEHICLE.TOGGLE_VEHICLE_MOD(veh, 22, true) -- MOD_XENON_LIGHTS
-			VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
-			VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
+        if request_control(veh, 1) then
+            VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+            VEHICLE.TOGGLE_VEHICLE_MOD(veh, 18, true) -- MOD_TURBO
+            VEHICLE.TOGGLE_VEHICLE_MOD(veh, 23, true) -- MOD_TYRE_SMOKE
+            VEHICLE.TOGGLE_VEHICLE_MOD(veh, 22, true) -- MOD_XENON_LIGHTS
+            VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
+            VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
 
-			for slot = 0, 20 do
-				if slot ~= 48 and slot ~= customWheelsSlot then -- Exclude custom wheels slot
-					local count = VEHICLE.GET_NUM_VEHICLE_MODS(veh, slot)
-					if count > 0 then
-						local selected_mod = -1
-						for mod = count - 1, -1, -1 do
-							if not VEHICLE.IS_VEHICLE_MOD_GEN9_EXCLUSIVE(veh, slot, mod) then
-								selected_mod = mod
-								break
-							end
-						end
+            for slot = 0, 20 do
+                if slot ~= 48 and slot ~= customWheelsSlot then -- Exclude custom wheels slot
+                    local count = VEHICLE.GET_NUM_VEHICLE_MODS(veh, slot)
+                    if count > 0 then
+                        local selected_mod = -1
+                        for mod = count - 1, -1, -1 do
+                            if not VEHICLE.IS_VEHICLE_MOD_GEN9_EXCLUSIVE(veh, slot, mod) then
+                                selected_mod = mod
+                                break
+                            end
+                        end
 
-						if selected_mod ~= -1 then
-							VEHICLE.SET_VEHICLE_MOD(veh, slot, selected_mod, true)
-						end
-					end
-				end
-			end
-		end
+                        if selected_mod ~= -1 then
+                            VEHICLE.SET_VEHICLE_MOD(veh, slot, selected_mod, true)
+                        end
+                    end
+                end
+            end
+        end
         maxM:yield()
     end)
 end
 
 
 function max_vehicle_performance(veh)
-	script.run_in_fiber(function(maxP)
-		if request_control(veh, 1) then
-			local performance_mods = {11, 12, 13, 15, 16, 18, 20} -- MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO
-			VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+    script.run_in_fiber(function(maxP)
+        if request_control(veh, 1) then
+            local performance_mods = {11, 12, 13, 15, 16, 18, 20} -- MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO
+            VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
 
-			for _, mod_slot in ipairs(performance_mods) do
-				if mod_slot ~= 18 and mod_slot ~= 20 then -- Exclude MOD_NITROUS and MOD_TURBO
-					VEHICLE.SET_VEHICLE_MOD(veh, mod_slot, VEHICLE.GET_NUM_VEHICLE_MODS(veh, mod_slot) - 1, true)
-				else
-					VEHICLE.TOGGLE_VEHICLE_MOD(veh, mod_slot, true)
-				end
-			end
-		end
-		maxP:yield()
-	end)
+            for _, mod_slot in ipairs(performance_mods) do
+                if mod_slot ~= 18 and mod_slot ~= 20 then -- Exclude MOD_NITROUS and MOD_TURBO
+                    VEHICLE.SET_VEHICLE_MOD(veh, mod_slot, VEHICLE.GET_NUM_VEHICLE_MODS(veh, mod_slot) - 1, true)
+                else
+                    VEHICLE.TOGGLE_VEHICLE_MOD(veh, mod_slot, true)
+                end
+            end
+        end
+        maxP:yield()
+    end)
 end
 
 function open_wheel(veh, wheelType, wheelStyle)
-	script.run_in_fiber(function(openW)
-		if request_control(veh, 1) then
-			VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
-			local customWheelsSlot = 23
-			-- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
-				VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
-				VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, wheelType)
-				VEHICLE.SET_VEHICLE_MOD(veh, customWheelsSlot, wheelStyle, true)
-				VEHICLE.TOGGLE_VEHICLE_MOD(veh, 24, true)
-				VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, 6)
-				VEHICLE.SET_VEHICLE_MOD(veh, 24, wheelStyle, true)
-		end
-		openW:yield()
-	end)
+    script.run_in_fiber(function(openW)
+        if request_control(veh, 1) then
+            VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+            local customWheelsSlot = 23
+            -- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
+                VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
+                VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, wheelType)
+                VEHICLE.SET_VEHICLE_MOD(veh, customWheelsSlot, wheelStyle, true)
+                VEHICLE.TOGGLE_VEHICLE_MOD(veh, 24, true)
+                VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, 6)
+                VEHICLE.SET_VEHICLE_MOD(veh, 24, wheelStyle, true)
+        end
+        openW:yield()
+    end)
 end
 --[[
 selected_wheel_index = 0
