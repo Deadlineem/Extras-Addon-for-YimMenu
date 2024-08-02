@@ -6469,7 +6469,7 @@ heistTab:add_imgui(function()
     tpdValk = false
     tpdParkingLot = false
     heistIndex = ImGui.Combo("Heist", heistIndex, {"Fleeca Job", "Prison Break", "Humane Labs", "Series A Funding", "Pacific Standard"}, 5, 5)
-    toolTip("", "Heist you wish to edit")
+    toolTip("", "Heist you wish to edit\nAutomatically gets the heist youre on")
     if heistIndex == 0 then -- fleeca
         ImGui.Text("Fastest as Hacker")
         if (ImGui.Button("15 Million Cuts")) then
