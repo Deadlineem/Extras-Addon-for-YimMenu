@@ -6438,14 +6438,14 @@ toolTip(heistTab, "Teleport yourself to the current objective")
 heistTab:add_button("Life Count +5", function()
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then
         network.force_script_host("fm_mission_controller_2020")
-        c_tlives_v = locals.get_int("fm_mission_controller_2020", 55004 + 873 + 1)
-        locals.set_int("fm_mission_controller_2020", 55004 + 873 + 1, c_tlives_v + 5)
+        c_tlives_v = locals.get_int("fm_mission_controller_2020", 55117)
+        locals.set_int("fm_mission_controller_2020", 55117, c_tlives_v + 5)
     end
     if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then
         network.force_script_host("fm_mission_controller")
-        globals.set_int(4718592 + 3318 + 1 + 38, 1)
-        c_tlives_v = locals.get_int("fm_mission_controller", 26154 + 1325 + 1)
-        locals.set_int("fm_mission_controller", 26154 + 1325 + 1, c_tlives_v + 5)
+        --globals.set_int(4718592 + 3318 + 1 + 38, 1)
+        c_tlives_v = locals.get_int("fm_mission_controller", 21512)
+        locals.set_int("fm_mission_controller", 21512, c_tlives_v + 5)
     end
 end)
 toolTip(heistTab, "Increase the life count by 5")
