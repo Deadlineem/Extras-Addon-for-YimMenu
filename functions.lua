@@ -31,13 +31,21 @@ function mainInfo(tab)
 			ImGui.Separator()
 			ImGui.Text("By agreeing to the terms, you are agreeing to the following:\n\nYou will not sell this script for profit\nYou will not advertise this script as your own\nYou will not publish duplicates of this script without permission to do so.\n")
 			ImGui.Separator()
-			if (ImGui.Button("Accept", 120, 0)) then
+			ImGui.Text("NOTE: We are NOT the developers of YimMenu, if your issue is not related to Extras Addon\nvisit YimMenu's Repository on github and make an issue there!")
+			ImGui.Separator()
+			local windowWidth = ImGui.GetWindowWidth()
+			local buttonWidth = 200
+			local spacing = (windowWidth - 2 * buttonWidth) / 2
+			
+			ImGui.SetCursorPosX(spacing)
+			
+			if (ImGui.Button("Accept", buttonWidth, 0)) then
 				hasUserAcceptedTerms = true
 				ImGui.CloseCurrentPopup()
 			end
 			ImGui.SetItemDefaultFocus()
 			ImGui.SameLine()
-			if (ImGui.Button("Decline", 120, 0)) then
+			if (ImGui.Button("Decline", buttonWidth, 0)) then
 				gui.show_message("ToS", "You must agree to the terms of use to use Extras Addon.")
 			end
 			ImGui.EndPopup()
