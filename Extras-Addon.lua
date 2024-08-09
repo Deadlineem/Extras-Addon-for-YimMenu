@@ -747,7 +747,7 @@ Stats:add_imgui(function()
     rpMultiplier, used = ImGui.InputFloat("RP Multiplier", rpMultiplier, .1, 1)
     if used then
         if rpMultiplier < 0 then rpMultiplier = 0 end
-        globals.set_float(262145 + 1, rpMultiplier)
+        tunables.set_float("XP_MULTIPLIER", rpMultiplier)
     end
 end)
 toolTip(Stats, "Note: This options saves to the config\nSetting this to 0 will stop rp gain")
