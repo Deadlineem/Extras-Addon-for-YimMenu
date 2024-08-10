@@ -603,13 +603,6 @@ toolTip(Fun, "Explodes the entity in your crosshair when you point at it")
 Stats:add_text("Change Levels")
 Stats:add_button("Randomize RP", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
          randomizeRP = math.random(1, 1787576850) -- 1 Rp to 1787576850 Rp (lvl 1 to 8000)
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
         gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP")
@@ -621,13 +614,6 @@ toolTip(Stats, "Randomize your RP/Level")
 Stats:add_sameline()
 Stats:add_button("Lvl 1", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
          rpLevel = 1 -- Level 1 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 1, changing session and applying RP")
@@ -639,13 +625,6 @@ toolTip(Stats, "Set your level to 1")
 Stats:add_sameline()
 Stats:add_button("Lvl 100", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
          rpLevel = 1584350 -- Level 100 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 100, changing session and applying RP")
@@ -657,13 +636,6 @@ toolTip(Stats, "Set your level to 100")
 Stats:add_sameline()
 Stats:add_button("Lvl 420", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
          rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 420, changing session and applying RP")
@@ -674,13 +646,6 @@ toolTip(Stats, "Set your level to 420")
 Stats:add_sameline()
 Stats:add_button("Lvl 1337", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
          rpLevel = 75185850 -- Level 1337 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 1337, changing session and applying RP")
@@ -692,13 +657,6 @@ toolTip(Stats, "Set your level to 1337")
 Stats:add_sameline()
 Stats:add_button("Lvl 8000", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
          rpLevel = 1787576850 -- Level 8000 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         gui.show_message("Stats", "Your level was set to 8000, changing session and applying RP")
@@ -715,13 +673,6 @@ levelInput:set_value(1)-- TODO: Set PlayerRank as default value
 Stats:add_sameline()
 Stats:add_button("Change level", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
         chosenLevel = levelInput:get_value()
         if chosenLevel >= 98 then
             rpLevel = 25 * chosenLevel^2 + 23575 * chosenLevel - 1023150 --calculate rank if greater than 97
@@ -760,13 +711,6 @@ Stats:add_separator()
 Stats:add_text("Income Statistics")
 Stats:add_button("Reset Income/Spent Stats", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_SVC"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX .. "MONEY_EARN_BETTING"), 0, true)
@@ -818,13 +762,6 @@ Stats:add_separator()
 Stats:add_text("Character Skills")
 Stats:add_button("Max All Skills", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
         STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_DRIV"), 1000, true)
         STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_FLY"), 1000, true)
         STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_LUNG"), 1000, true)
@@ -841,13 +778,7 @@ toolTip(Stats, "Max your characters skills (Driving, flying, stamina, etc.)")
 Stats:add_sameline()
 Stats:add_button("Reset All Skills", function()
     script.run_in_fiber(function (script)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
+ 
         STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_DRIV"), -1000, true)
         STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_FLY"), -1000, true)
         STATS.STAT_SET_INT(joaat(MPX .. "SCRIPT_INCREASE_LUNG"), -1000, true)
@@ -6190,13 +6121,7 @@ Weapons:add_separator()
 
  agency = Business:add_tab("Agency")
 
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+ 
 
 selectedContractIndex = 0
 selectedContract = contracts[selectedContractIndex + 1]
@@ -6276,13 +6201,7 @@ toolTip(agency, "Fills your agency safe with money")
 
 bunker:add_button("Unlock All Shooting Range", function()
     script.run_in_fiber(function(unlockSR)
-        MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
+ 
         STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_1"), 690, true)
         STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_2"), 1860, true)
         STATS.STAT_SET_INT(joaat(MPX .. "SR_HIGHSCORE_3"), 2690, true)
@@ -6298,13 +6217,7 @@ bunker:add_button("Unlock All Shooting Range", function()
 end)
 toolTip(bunker, "Sets all shooting range missions to completed @ 3 stars")
 bunker:add_sameline()
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+ 
 
 bunker:add_sameline()
  bSupplies = bunker:add_checkbox("Resupply Bunker (Looped)")
@@ -6323,13 +6236,6 @@ toolTip(bunker, "Instantly resupplies your bunker supplies")
 
 hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
 script.register_looped("autoGetHangarCargo", function(script)
-  MPX = PI
-        PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-        if PI == 0 then
-            MPX = "MP0_"
-        else
-            MPX = "MP1_"
-        end
     script:yield()
     if hStock:is_enabled() == true then
         autoGetHangarCargo = not autoGetHangarCargo
@@ -6530,13 +6436,7 @@ for i, label in ipairs(labels) do
 end
 
 mcBus:add_button("Change MC Name", function()
-    MPX = PI
-    PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-    if PI == 0 then
-        MPX = "MP0_"
-    else
-        MPX = "MP1_"
-    end
+ 
     script.run_in_fiber(function (script)
         for i, checkBox in ipairs(checkBoxes) do
             if checkBox:is_enabled() then
@@ -6580,13 +6480,7 @@ end)
 
  arcade = Business:add_tab("Arcade")
 
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+ 
 
  arcadeSafe = arcade:add_checkbox("Arcade Safe Loop")
 script.register_looped("arcadeloop", function(script)
@@ -6602,13 +6496,7 @@ toolTip(arcade, "Fills your arcade safe with money")
 -- Nightclub Loop - L7Neg
  Club = Business:add_tab("Nightclub")
 
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+ 
 
 nClub = Club:add_checkbox("Nightclub Safe Loop")
 script.register_looped("nightclubloop", function(script)
@@ -6673,13 +6561,7 @@ for i, label in ipairs(labels) do
 end
 
 CEO:add_button("Change CEO Name", function()
-    MPX = PI
-    PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-    if PI == 0 then
-        MPX = "MP0_"
-    else
-        MPX = "MP1_"
-    end
+ 
     script.run_in_fiber(function (script)
         for i, checkBox in ipairs(checkBoxes) do
             if checkBox:is_enabled() then
@@ -6784,13 +6666,7 @@ HIP = "heist_island_planning"
 
 -- Editor Stuff // Mashup Scripts L7Neg/Alestarov
  heistEditor = KAOS:add_tab("Heist Editor")
-    MPX = PI
-    PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-    if PI == 0 then
-        MPX = "MP0_"
-    else
-        MPX = "MP1_"
-    end
+ 
 
 heistTab = heistEditor:add_tab("Apartment Heists")
 
@@ -7072,11 +6948,25 @@ script.register_looped("heistTabLoop", function(heistTabScript)
 
 end)
 
-casinoHeist = heistEditor:add_tab("Casino Editor")
+ casinoHeist = heistEditor:add_tab("Casino Editor")
 -- L7NEG
 fm_mission_controller_cart_grab = 10255
 fm_mission_controller_cart_grab_speed = 14
 fm_mission_controller_cart_autograb = false
+
+DCRBl = 185 -- diamond casino reload board local
+DCCg1 = 1964849 + 1497 + 736 + 92 + 1 -- diamond casino player 1 cut global
+DCCg2 = 1964849 + 1497 + 736 + 92 + 2 -- diamond casino player 2 cut global
+DCCg3 = 1964849 + 1497 + 736 + 92 + 3 -- diamond casino player 3 cut global
+DCCg4 = 1964849 + 1497 + 736 + 92 + 4 -- diamond casino player 4 cut global
+DCCl = FMg + 28313 -- Casino_Cut_Lester_offset
+DCCh = FMg + 28349 - 1 --Casino_Cut_Hacker_offset
+DCCd = FMg + 28344 - 1 --Casino_Cut_Driver_offset
+DCCgun = FMg + 28339 - 1 --Casino_Cut_Gunman_offset
+DCFHl = 53019 -- diamond casino fingerprint hack local
+DCKHl = 54085 -- diamond casino keypad hack local
+DCDVDl1 = 10109 + 7 -- diamond casino drill vault door local 1
+DCDVDl2 = 10109 + 37 -- diamond casino drill vault door local 2
 
 casinoHeist:add_button("Setup Silent & Sneaky", function()
 	stats.set_int(MPX() .. "H3OPT_APPROACH", 1)
@@ -7210,21 +7100,17 @@ end)
 
 casinoHeist:add_imgui(function()
 	textSeparator("", "Cut Editor")
-	if ImGui.Button("Set All to 100%") then
+	if ImGui.Button("All to 100%") then
 		casinoPc1 = 100
 		casinoPc2 = 100
 		casinoPc3 = 100
 		casinoPc4 = 100
-		globals.set_int(DCCg1, casinoPc1)
-		globals.set_int(DCCg2, casinoPc2)
-		globals.set_int(DCCg3, casinoPc3)
-		globals.set_int(DCCg4, casinoPc4)
 	end
 	casinoPc1 = ImGui.InputInt("Player Cut 1", casinoPc1)
 	casinoPc2 = ImGui.InputInt("Player Cut 2", casinoPc2)
 	casinoPc3 = ImGui.InputInt("Player Cut 3", casinoPc3)
 	casinoPc4 = ImGui.InputInt("Player Cut 4", casinoPc4)
-	if ImGui.Button("Set Player Cuts") then
+	if ImGui.Button("Apply Player Cuts") then
 		globals.set_int(DCCg1, casinoPc1)
 		globals.set_int(DCCg2, casinoPc2)
 		globals.set_int(DCCg3, casinoPc3)
@@ -7238,13 +7124,6 @@ end)
 cayoHeist:add_text("Non-Legit Presets")
 
 cayoHeist:add_button("Panther/Gold (Hard)", function()
-    MPX = PI
-    PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-    if PI == 0 then
-        MPX = "MP0_"
-    else
-        MPX = "MP1_"
-    end
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
@@ -7284,13 +7163,6 @@ cayoHeist:add_button("Panther/Gold (Hard)", function()
 end)
 cayoHeist:add_sameline()
 cayoHeist:add_button("Diamond/Gold (Hard)", function()
-    MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
@@ -7331,13 +7203,6 @@ end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Bonds/Gold (Hard)", function()
-    MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
@@ -7378,13 +7243,6 @@ end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Necklace/Gold (Hard)", function()
-    MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
@@ -7425,13 +7283,6 @@ end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Tequila/Gold (Hard)", function()
-    MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
@@ -7473,13 +7324,6 @@ cayoHeist:add_separator()
 cayoHeist:add_text("Legit Presets")
 
 cayoHeist:add_button("Panther/Gold (L. Hard)", function()
-    MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
@@ -7537,13 +7381,7 @@ end)
 cayoHeist:add_sameline()
 
 cayoHeist:add_button("Diamond/Gold (L. Hard)", function()
-    MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
@@ -7601,13 +7439,7 @@ end)
 cayoHeist:add_sameline()
 
 cayoHeist:add_button("Bonds/Gold (L. Hard)", function()
-    MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
@@ -7665,13 +7497,7 @@ end)
 cayoHeist:add_sameline()
 
 cayoHeist:add_button("Necklace/Gold (L. Hard)", function()
-    MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
         STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ABIL"), 63, true)
@@ -7729,13 +7555,7 @@ end)
 cayoHeist:add_sameline()
 
 cayoHeist:add_button("Tequila/Gold (L. Hard)", function()
-    MPX = PI
-    PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-    if PI == 0 then
-        MPX = "MP0_"
-    else
-        MPX = "MP1_"
-    end
+ 
 
     STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_GEN"), 131071, true)
     STATS.STAT_SET_INT(joaat(MPX .. "H4CNF_BS_ENTR"), 63, true)
@@ -7854,13 +7674,7 @@ end)
 cayoHeist:add_separator()
 cayoHeist:add_text("After Heist")
 cayoHeist:add_button("Skip Cooldown", function()
-    MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+
     -- Solo Skip
     STATS.STAT_SET_INT(joaat(MPX .. "H4_TARGET_POSIX"), 1659643454, true)
     STATS.STAT_SET_INT(joaat(MPX .. "H4_COOLDOWN"), 0, true)
@@ -8006,13 +7820,7 @@ goldSizeVal, used = ImGui.SliderInt("Gold Value", goldSizeVal, 45375, 181500) --
     out = "Reset the board to see changes"
 
     if used then
-        MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+    
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_GOLD_V"), goldSizeVal, true)
         gui.show_message('Gold Value Modified!', out)
     end
@@ -8024,13 +7832,7 @@ cokeSizeVal, used = ImGui.SliderInt("Coke Value", cokeSizeVal, 25312, 101248) --
     out = "Reset the board to see changes"
 
     if used then
-        MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+    
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_COKE_V"), cokeSizeVal, true)
         gui.show_message('Coke Value Modified!', out)
     end
@@ -8042,13 +7844,7 @@ paintSizeVal, used = ImGui.SliderInt("Paintings Value", paintSizeVal, 22500, 900
     out = "Reset the board to see changes"
 
     if used then
-        MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+    
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_PAINT_V"), paintSizeVal, true)
         gui.show_message('Paintings Value Modified!', out)
     end
@@ -8060,13 +7856,7 @@ weedSizeVal, used = ImGui.SliderInt("Weed Value", weedSizeVal, 16875, 67500) -- 
     out = "Reset the board to see changes"
 
     if used then
-        MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+    
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), weedSizeVal, true)
         gui.show_message('Weed Value Modified!', out)
     end
@@ -8078,13 +7868,7 @@ cashSizeVal, used = ImGui.SliderInt("Cash Value", cashSizeVal, 10406, 41624) -- 
     out = "Reset the board to see changes"
 
     if used then
-        MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+    
         STATS.STAT_SET_INT(joaat(MPX .. "H4LOOT_WEED_V"), cashSizeVal, true)
         gui.show_message('Cash Value Modified!', out)
     end
@@ -8101,13 +7885,7 @@ end)
 -- Doomsday Heist Editor
 
  DP = heistEditor:add_tab("Doomsday Editor")
-MPX = PI
-PI = stats.get_int("MPPLY_LAST_MP_CHAR")
-if PI == 0 then
-    MPX = "MP0_"
-else
-    MPX = "MP1_"
-end
+ 
 
 a48 = 1
 
