@@ -6953,6 +6953,11 @@ end)
 fm_mission_controller_cart_grab = 10255
 fm_mission_controller_cart_grab_speed = 14
 fm_mission_controller_cart_autograb = false
+
+FMC = "fm_mission_controller"
+FMC2020 = "fm_mission_controller_2020"
+HIP = "heist_island_planning"
+
 FMg = 262145 -- free mode global ("CASH_MULTIPLIER") //correct
 DCRBl = 185 -- diamond casino reload board local
 DCCg1 = 1964849 + 1497 + 736 + 92 + 1 -- diamond casino player 1 cut global
