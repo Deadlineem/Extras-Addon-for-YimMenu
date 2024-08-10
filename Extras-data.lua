@@ -4779,3 +4779,56 @@ function calcDistanceFromCoords(player, target)
     distance = math.sqrt(dx*dx + dy*dy + dz*dz)
     return distance
 end
+
+MPX = PI
+PI = stats.get_int("MPPLY_LAST_MP_CHAR")
+if PI == 0 then
+    MPX = "MP0_"
+else
+    MPX = "MP1_"
+end
+
+function textSeparator(tab, text)
+	tp1 = math.random(0, 2147483647)
+    tp2 = math.random(0, 2147483647)
+	crx, cry = ImGui.GetContentRegionAvail()
+    if type(tab) ~= "string" then
+        tab:add_imgui(function()
+			if ImGui.BeginChild("##textSeparator".. tp1, ImGui.GetFontSize(), ImGui.GetFontSize(), false, ImGuiWindowFlags.NoBackground) then
+				ImGui.SetWindowFontScale(0.2)
+				ImGui.Text("\n")
+				ImGui.SetWindowFontScale(1)
+				ImGui.Separator()
+			end
+			ImGui.EndChild()
+			ImGui.SameLine()
+			ImGui.Text(text)
+			ImGui.SameLine()
+			if ImGui.BeginChild("##textSeparator".. tp2, ImGui.GetContentRegionAvail(), ImGui.GetFontSize(), false, ImGuiWindowFlags.NoBackground) then
+				ImGui.SetWindowFontScale(0.2)
+				ImGui.Text("\n")
+				ImGui.SetWindowFontScale(1)
+				ImGui.Separator()
+			end
+			ImGui.EndChild()
+		end)
+    else
+		if ImGui.BeginChild("##textSeparator".. tp1, ImGui.GetFontSize(), ImGui.GetFontSize(), false, ImGuiWindowFlags.NoBackground) then
+			ImGui.SetWindowFontScale(0.2)
+			ImGui.Text("\n")
+			ImGui.SetWindowFontScale(1)
+			ImGui.Separator()
+		end
+		ImGui.EndChild()
+		ImGui.SameLine()
+		ImGui.Text(text)
+		ImGui.SameLine()
+		if ImGui.BeginChild("##textSeparator".. tp2, ImGui.GetContentRegionAvail(), ImGui.GetFontSize(), false, ImGuiWindowFlags.NoBackground) then
+			ImGui.SetWindowFontScale(0.2)
+			ImGui.Text("\n")
+			ImGui.SetWindowFontScale(1)
+			ImGui.Separator()
+		end
+		ImGui.EndChild()
+    end
+end
