@@ -6681,10 +6681,6 @@ function tp(x, y, z, pitch, yaw, roll)
     ENTITY.SET_ENTITY_ROTATION(player, pitch, yaw, roll, 0, true)
 end
 
-function MPX()
-    return "MP" .. stats.get_int("MPPLY_LAST_MP_CHAR") .. "_"
-end
-
 function cuts(cut)
     script.run_in_fiber(function(cuts)
         control = 2
