@@ -4760,6 +4760,10 @@ function get_random_offset_from_entity(entityPos, minDist, maxDist)
     )
 end
 
+function MPX()
+    return "MP" .. stats.get_int("MPPLY_LAST_MP_CHAR") .. "_"
+end
+
 function vector3(x, y, z)
     return {x = x, y = y, z = z}
 end
@@ -4832,3 +4836,85 @@ function textSeparator(tab, text)
 		ImGui.EndChild()
     end
 end
+
+GunManLoadoutSi = {
+	"Karl Abolaji/Micro SMG",
+	"Karl Abolaji/Machine Pistol",
+	"Charlie Reed/Assault SMG",
+	"Charlie Reed/Bullpup Shotgun",
+	"Patrick McReary/Combat PDW",
+	"Patrick McReary/Assault Rifle",
+	"Gustavo Mota/Carbine Rifle",
+	"Gustavo Mota/Assault Shotgun",
+	"Chester McCoy/Pump Shotgun Mk II",
+	"Chester McCoy/Carbine Rifle Mk II",
+}
+GunManLoadoutBC = {
+	"Karl Abolaji/Micro SMG",
+	"Karl Abolaji/Double Barrel Shotgun",
+	"Charlie Reed/Machine Pistol",
+	"Charlie Reed/Sweeper Shotgun",
+	"Patrick McReary/Sawed-Off Shotgun",
+	"Patrick McReary/Compact Rifle",
+	"Gustavo Mota/Carbine Rifle",
+	"Gustavo Mota/Assault Shotgun",
+	"Chester McCoy/SMG Mk II",
+	"Chester McCoy/Bullpup Rifle Mk II",
+}
+GunManLoadoutAg = {
+	"Karl Abolaji/Sawed-Off Shotgun",
+	"Karl Abolaji/Heavy Revolver",
+	"Charlie Reed/Assault SMG",
+	"Charlie Reed/Pump Shotgun",
+	"Patrick McReary/Heavy Shotgun",
+	"Patrick McReary/Combat MG",
+	"Gustavo Mota/Carbine Rifle",
+	"Gustavo Mota/Assault Shotgun",
+	"Chester McCoy/Pump Shotgun Mk II",
+	"Chester McCoy/Assault Rifle Mk II",
+}
+DriverLoad = {
+	"Karim Denz/Issi Classic",
+	"Karim Denz/Asbo",
+	"Karim Denz/Blista Kanjo",
+	"Karim Denz/Sentinel Classic",
+	"Zach Nelson/Manchez",
+	"Zach Nelson/Stryder",
+	"Zach Nelson/Defiler",
+	"Zach Nelson/Lectro",
+	"Taliana Martinez/Retinue Mk II",
+	"Taliana Martinez/Drift Yosemite",
+	"Taliana Martinez/Sugoi",
+	"Taliana Martinez/Jugular",
+	"Eddie Toh/Sultan Classic",
+	"Eddie Toh/Gauntlet Classic",
+	"Eddie Toh/Ellie",
+	"Eddie Toh/Komoda",
+	"Chester McCoy/Zhaba",
+	"Chester McCoy/Vagrant",
+	"Chester McCoy/Outlaw",
+	"Chester McCoy/Everon",
+}
+hackerLoad = {
+	"Select",
+	"Rickie Lukens",
+	"Christian Feltz",
+	"Yohan Blair",
+	"Avi Schwartzman",
+	"Page Harris",
+}
+maskLoad = {
+	"Select",
+	"Geometic Set",
+	"Hunter Set",
+	"Oni Half Mask Set",
+	"Emoji Set",
+	"Ornate Skull Set",
+	"Lucky Fruit Set",
+	"Guerilla Set",
+	"Clown Set",
+	"Animal Set",
+	"Riot Set",
+	"Oni Full Mask Set",
+	"Hockey Set",
+}
