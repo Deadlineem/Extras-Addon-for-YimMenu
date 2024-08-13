@@ -8411,7 +8411,17 @@ script.register_looped("hostKick", function(script)
 end)
 toolTip(settingsTab, "Automatically kicks the host from the session, unless the host is also a modder.")
 
-
+noCollision = settingsTab:add_checkbox("No Window Collision")
+script.register_looped("noCollision", function(script)
+    if noCollision:is_enabled() then
+        ped = PLAYER.PLAYER_PED_ID()
+		veh = PED.GET_VEHICLE_PED_IS_IN(ped, true)
+		if veh ~= 0 and PED.IS_PED_IN_ANY_VEHICLE(ped, false) then
+			VEHICLE.SET_DONT_PROCESS_VEHICLE_GLASS(veh, true)
+		end
+	end
+end)
+toolTip(settingsTab, "Disables breaking windows on the vehicle you're using")
 
 flags = ImGuiWindowFlags.None | ImGuiWindowFlags.NoSavedSettings
 griefPlayerTab:add_imgui(function()
