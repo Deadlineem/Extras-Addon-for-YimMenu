@@ -6731,7 +6731,7 @@ end)
 toolTip("", "Lets you play the grayed-out heists on apartment planning screen")
 
 heistTab:add_button("Complete All Setups", function()
-    stats.set_int(MPX .. "HEIST_PLANNING_STAGE", -1)
+    stats.set_int(MPX() .. "HEIST_PLANNING_STAGE", -1)
 end)
 toolTip(heistTab, "Complete setups for current heist")
 

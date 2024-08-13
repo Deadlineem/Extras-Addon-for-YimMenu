@@ -4788,6 +4788,10 @@ else
     MPX = "MP1_"
 end
 
+function MPX()
+    return "MP".. stats.get_int("MPPLY_LAST_MP_CHAR").. "_"
+end
+
 function textSeparator(tab, text)
 	tp1 = math.random(0, 2147483647)
     tp2 = math.random(0, 2147483647)
