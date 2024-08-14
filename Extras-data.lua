@@ -4793,9 +4793,6 @@ function MPX()
 end
 
 function textSeparator(tab, text)
-	tp1 = math.random(0, 2147483647)
-    tp2 = math.random(0, 2147483647)
-	crx, cry = ImGui.GetContentRegionAvail()
     if type(tab) ~= "string" then
         tab:add_imgui(function()
 			ImGui.SeparatorText(text)
