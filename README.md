@@ -9,8 +9,6 @@ DO NOT USE THIS ADDON WITH ULTIMATE MENU/ALESTAROV/PESSIv2/CSYONS/ETC, TURN IT O
 
 ## How to Use/Install
 
-### NOTE: Update.bat will be left here, however if you are interested in a GUI, check out https://github.com/Deadlineem/YMU
-
 1. To install the extras addon, simply download the [![Button](https://img.shields.io/badge/Update-Batch-blue)](https://github.com/Deadlineem/Extras-Addon-for-YimMenu/blob/main/update.bat) you do not need to download the entire zip folder!
 
 2. After downloading, double click `update.bat`, it will check for updates to its own script every time its opened, after its finished, simply select an option:
