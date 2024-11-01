@@ -2,6 +2,8 @@
 
 [![version](https://img.shields.io/badge/version-1.1.0-green.svg)](http://extrasaddon.us.to/) [![Button](https://img.shields.io/badge/YimMenu-Repository-red)](https://github.com/YimMenu/YimMenu)
 
+NOTE:  YOU MUST USE FSL IN ORDER TO GET ONLINE WITH YIMMENU AND PLAY WITH OTHER PLAYERS!Z
+[![Button](https://img.shields.io/badge/Update-Batch-blue)(https://www.unknowncheats.me/forum/grand-theft-auto-v/616977-fsl-local-gtao-saves.html)
 
 ### `Update.bat` now updates itself when its opened as of version 1.0.3
 
