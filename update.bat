@@ -105,7 +105,7 @@ echo "Checking to see if there is an existing version of YimMenu"
 del "%destinationFolder2%\YimMenu.dll" >nul 2>&1
 
 echo "Downloading new version of YimMenu.dll from the repository..."
-set "url2=https://github.com/YimMenu/YimMenu/releases/download/nightly/YimMenu.dll"
+set "url2=https://github.com/Mr-X-GTA/YimMenu/releases/download/nightly/YimMenu.dll"
 powershell -command "& { Invoke-WebRequest -Uri '%url2%' -OutFile '%destinationFolder2%\YimMenu.dll' }"
 
 if not exist "%destinationFolder2%\YimMenu.dll" (
