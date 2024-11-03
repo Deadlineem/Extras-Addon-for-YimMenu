@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/
 
     Extras Addon for YimMenu v1.69
-        Addon Version: 1.1.0
+        Addon Version: 1.1.1
 
         Credits:  Yimura, L7Neg,
     Loled69, Alestarov, gir489returns,
@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
- addonVersion = "1.1.0"
+ addonVersion = "1.1.1"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -425,11 +425,11 @@ Fun:add_imgui(function()
      ped = PLAYER.PLAYER_PED_ID()
     if drunkLoop then
         script.run_in_fiber(function()
-            while not STREAMING.HAS_CLIP_SET_LOADED("move_m@drunk@verydrunk") do
-                STREAMING.REQUEST_CLIP_SET("move_m@drunk@verydrunk")
+            while not STREAMING.HAS_CLIP_SET_LOADED("move_m@drunk@moderatedrunk") do
+                STREAMING.REQUEST_CLIP_SET("move_m@drunk@moderatedrunk")
                 coroutine.yield()
             end
-            PED.SET_PED_MOVEMENT_CLIPSET(ped, "move_m@drunk@verydrunk", 1.0)
+            PED.SET_PED_MOVEMENT_CLIPSET(ped, "move_m@drunk@moderatedrunk", 1.0)
         end)
             gui.show_message("Impairment:", "You are now drunk!")
     else
@@ -3179,7 +3179,7 @@ casino_gui:add_button("How To Bet", function()
                 if casVal == -1 then
                     casVal = "00"
                 end
-                network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as the "..casVal.." number")
+                network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as "..casVal.."")
             else
                 gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
             end
@@ -3194,7 +3194,7 @@ casino_gui:add_button("Alt Betting Info", function()
     script.run_in_fiber(function(casMsg2)
         if dealers_card_gui_element:get_value() ~= "Not in Casino." then
             if force_roulette_wheel:is_enabled() then
-                network.send_chat_message("[Casino Rig]: You can optionally stack as many chips as you can on the corresponding '1st 12, 2nd 12 or 3rd 12' in the same row as the "..casVal.." number instead of '2 to 1'")
+                network.send_chat_message("[Casino Rig]: You can optionally stack as many chips as you can on the corresponding '1st 12, 2nd 12 or 3rd 12' in the same row as "..casVal.." instead of '2 to 1'")
             else
                 gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
             end
@@ -5943,7 +5943,7 @@ maxNPCVehicles = Global:add_checkbox("Max all NPC Vehicles")
             end
         end
         script:yield()
-        sleep(5)
+        sleep(10)
     end)
 toolTip(Global, "Modify's nearby NPC vehicles with max mods/performance, Benny's/F1 wheels and random colors every 5 seconds.")
 script.register_looped("riotMode", function(script)
@@ -6944,7 +6944,7 @@ script.register_looped("heistTabLoop", function(heistTabScript)
 
 end)
 
- casinoHeist = heistEditor:add_tab("Casino Editor")
+casinoHeist = heistEditor:add_tab("Casino Editor")
 -- L7NEG
 FMC = "fm_mission_controller"
 FMC2020 = "fm_mission_controller_2020"
@@ -7936,6 +7936,13 @@ h2_awd_lock = valEdit:add_checkbox("Apply Payouts")
        locals.set_int("GANGOPS_THE_MISSILE_SILO_JOB_CASH_REWARD", h2_d3_awd:get_value())
     end
 
+cluckinHeist = heistEditor:add_tab("Cluckin' Bell")
+
+cluckinHeist:add_button("Skip To Finale", function()
+	STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_CFR_COOLDOWN"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_INST_PROG"), 31, true)
+end)
+
 -- Magnet/Forcefield
  xmen = Fun:add_tab("Magnet/Forcefield")
 xmen:add_text("Magnetic field attracts all peds/vehicles")
@@ -8280,8 +8287,8 @@ if chatCommands:is_enabled() then
     isCooldown = true
 
     script.run_in_fiber(function(rpMsg)
-        local rpinfo = "Want to level up?  Simply type '.rp' into the chat to gain fast RP (Turn down your sound!)"
-        local rpinfo2 = "If at any time you want to stop gaining RP, simply type '.rp stop' into the chat."
+        local rpinfo = "Want to level up?  Simply type '.rp on' into the chat to gain fast RP (Turn down your sound!)"
+        local rpinfo2 = "If at any time you want to stop gaining RP, simply type '.rp off' into the chat."
         network.send_chat_message("[RP]: "..rpinfo, false)
         network.send_chat_message("[RP]: "..rpinfo2, false)
         sleep(5)
@@ -8319,7 +8326,7 @@ settingsTab:add_text("Extras Addon Settings")
 settingsTab:add_separator()
 
 chatCommands = settingsTab:add_checkbox("Enable Chat Commands")
-toolTip(settingsTab, "Enables .rp, .rp stop and .$ commands for others to use in chat.")
+toolTip(settingsTab, "Enables .rp on, .rp off and .$ commands for others to use in chat.")
 settingsTab:add_sameline()
 
 detectModders = settingsTab:add_checkbox("Snitch Mode")
@@ -11048,7 +11055,7 @@ if persisted_config == nil then
      new_file = io.open("Extras-Addon.json", "w+")
     new_file:write(json.encode(configTable))
     new_file:flush()
-    new_file:close()
+    new_file:close() 
 else
     configTable = json.decode(persisted_config:read("*all"))
     --add entries, they need to be set to the values in the config
@@ -11083,7 +11090,7 @@ player = false
 event.register_handler(menu_event.ChatMessageReceived, function (pid, message)
     playerName = PLAYER.GET_PLAYER_NAME(pid)
 if chatCommands:is_enabled() then
-    if message == '.rp' then
+    if message == '.rp on' then
         gui.show_message(playerName.. ' has requested RP')
         for i, p in pairs(players) do
             if p == playerName then
@@ -11092,11 +11099,11 @@ if chatCommands:is_enabled() then
         end
         if not player then
             table.insert(players, playerName)
-            network.send_chat_message_to_player(pid, playerName.." You are now receiving RP!  Type '.rp stop' to stop gaining RP.")
+            network.send_chat_message_to_player(pid, playerName.." You are now receiving RP!  Type '.rp off' to stop gaining RP.")
         end
         player = false
     end
-    if message == '.rp stop' then
+    if message == '.rp off' then
             table.remove(players, i)
             network.send_chat_message_to_player(pid, playerName.." You are no longer receiving RP.")
     end
