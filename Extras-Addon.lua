@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/
 
     Extras Addon for YimMenu v1.69
-        Addon Version: 1.1.2
+        Addon Version: 1.1.0
 
         Credits:  Yimura, L7Neg,
     Loled69, Alestarov, gir489returns,
@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
- addonVersion = "1.1.2"
+ addonVersion = "1.1.0"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -135,7 +135,9 @@ Mvmt:add_imgui(function()
     out = "Speed set to "..tostring(runSpeed).."x"
     if used then
         PLAYER.SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), runSpeed/7)
-        gui.show_message('Run Speed Modified!', out)
+		if showNotifications:is_enabled() then
+			if showNotifications:is_enabled() then gui.show_message('Run Speed Modified!', out) end
+		end
     end
     toolTip("", "Increase your Walk/Run Speed")
 end)
@@ -146,7 +148,7 @@ Mvmt:add_imgui(function()
     out = "Speed set to "..tostring(swimSpeed).."x"
     if used then
         PLAYER.SET_SWIM_MULTIPLIER_FOR_PLAYER(PLAYER.PLAYER_ID(), swimSpeed/7)
-        gui.show_message('Swim Speed Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Swim Speed Modified!', out) end
     end
     toolTip("", "Increase your Swimming Speed")
 end)
@@ -431,7 +433,7 @@ Fun:add_imgui(function()
             end
             PED.SET_PED_MOVEMENT_CLIPSET(ped, "move_m@drunk@moderatedrunk", 1.0)
         end)
-            gui.show_message("Impairment:", "You are now drunk!")
+            if showNotifications:is_enabled() then gui.show_message("Impairment:", "You are now drunk!") end
     else
         PED.RESET_PED_MOVEMENT_CLIPSET(ped, 0.0)
     end
@@ -481,7 +483,7 @@ Fun:add_button("Remove Impairments", function()
              ped = PLAYER.PLAYER_PED_ID()
             PED.RESET_PED_MOVEMENT_CLIPSET(ped, 0.0)
             drunkLoop = false
-            gui.show_message("Impairment Removed", "You are no longer impaired. Visual and movement effects are removed.")
+            if showNotifications:is_enabled() then gui.show_message("Impairment Removed", "You are no longer impaired. Visual and movement effects are removed.") end
             -- Reset acid trip visual effects when removing drunk movement
         end
         if acidTrip then
@@ -605,7 +607,7 @@ Stats:add_button("Randomize RP", function()
     script.run_in_fiber(function (script)
          randomizeRP = math.random(1, 1787576850) -- 1 Rp to 1787576850 Rp (lvl 1 to 8000)
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
-        gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP")
+        if showNotifications:is_enabled() then gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP") end
         sleep(1)
         SessionChanger(0)
     end)
@@ -616,7 +618,7 @@ Stats:add_button("Lvl 1", function()
     script.run_in_fiber(function (script)
          rpLevel = 1 -- Level 1 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-        gui.show_message("Stats", "Your level was set to 1, changing session and applying RP")
+        if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 1, changing session and applying RP") end
         sleep(1)
         SessionChanger(0)
     end)
@@ -627,7 +629,7 @@ Stats:add_button("Lvl 100", function()
     script.run_in_fiber(function (script)
          rpLevel = 1584350 -- Level 100 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-        gui.show_message("Stats", "Your level was set to 100, changing session and applying RP")
+        if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 100, changing session and applying RP") end
         sleep(1)
         SessionChanger(0)
     end)
@@ -638,7 +640,7 @@ Stats:add_button("Lvl 420", function()
     script.run_in_fiber(function (script)
          rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-        gui.show_message("Stats", "Your level was set to 420, changing session and applying RP")
+        if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 420, changing session and applying RP") end
         SessionChanger(0)
     end)
 end)
@@ -648,7 +650,7 @@ Stats:add_button("Lvl 1337", function()
     script.run_in_fiber(function (script)
          rpLevel = 75185850 -- Level 1337 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-        gui.show_message("Stats", "Your level was set to 1337, changing session and applying RP")
+        if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 1337, changing session and applying RP") end
         sleep(1)
         SessionChanger(0)
     end)
@@ -659,7 +661,7 @@ Stats:add_button("Lvl 8000", function()
     script.run_in_fiber(function (script)
          rpLevel = 1787576850 -- Level 8000 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-        gui.show_message("Stats", "Your level was set to 8000, changing session and applying RP")
+        if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 8000, changing session and applying RP") end
         sleep(1)
         SessionChanger(0)
     end)
@@ -681,10 +683,10 @@ Stats:add_button("Change level", function()
         end
 
         if rpLevel == nil then
-            gui.show_message("Stats", "The chosen level must be between 1 and 8000!")
+            if showNotifications:is_enabled() then gui.show_message("Stats", "The chosen level must be between 1 and 8000!") end
         else
             STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
-            gui.show_message("Stats", "Your level was set to ".. tostring(chosenLevel) ..", changing session and applying RP")
+            if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to ".. tostring(chosenLevel) ..", changing session and applying RP") end
             sleep(1)
             SessionChanger(0)
         end
@@ -735,9 +737,9 @@ Stats:add_button("Reset Income/Spent Stats", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "CASINO_CHIPS_PURTIM"), 0, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "CASINO_CHIPS_PUR_GD"), 0, true)
         if PI == 0 then
-            gui.show_message("Stats", "Income Stats for Player 1 have been reset to 0, changing sessions to apply.")
+            if showNotifications:is_enabled() then gui.show_message("Stats", "Income Stats for Player 1 have been reset to 0, changing sessions to apply.") end
         else
-            gui.show_message("Stats", "Income Stats for Player 2 have been reset to 0, changing sessions to apply.")
+            if showNotifications:is_enabled() then gui.show_message("Stats", "Income Stats for Player 2 have been reset to 0, changing sessions to apply.") end
         end
         sleep(1)
         SessionChanger(0)
@@ -769,7 +771,7 @@ Stats:add_button("Max All Skills", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "SCRIPT_INCREASE_STAM"), 1000, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "SCRIPT_INCREASE_STL"), 1000, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "SCRIPT_INCREASE_STRN"), 1000, true)
-        gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been maxed. Changing sessions to apply.")
+        if showNotifications:is_enabled() then gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been maxed. Changing sessions to apply.") end
         sleep(1)
         SessionChanger(0)
     end)
@@ -786,7 +788,7 @@ Stats:add_button("Reset All Skills", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "SCRIPT_INCREASE_STAM"), -1000, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "SCRIPT_INCREASE_STL"), -1000, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "SCRIPT_INCREASE_STRN"), -1000, true)
-        gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been zeroed. Changing sessions to apply.")
+        if showNotifications:is_enabled() then gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been zeroed. Changing sessions to apply.") end
         sleep(1)
         SessionChanger(0)
     end)
@@ -1705,7 +1707,7 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         end
         globals.set_int(objectives_state_global, 1)
         globals.set_int(weekly_words_global + (1 + (0 * 6)) + 1, globals.get_int(weekly_words_global + (1 + (0 * 6)) + 2)) --Unlock Weekly Objective
-        gui.show_message('WasabiWordsTM', 'Clichés Subverted')
+        if showNotifications:is_enabled() then gui.show_message('WasabiWordsTM', 'Clichés Subverted') end
     end)
 end)
 toolTip(Stats, "Unlocks everything in the game, untouched script by ShinyWasabi")
@@ -1826,7 +1828,7 @@ Tel:add_imgui(function()
     if copyLocation then
         coords = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
         coordsString = coords.x.. ", ".. coords.y.. ", ".. coords.z
-        gui.show_message("Clipboard", "Copied ".. coordsString.. " to clipboard.")
+        if showNotifications:is_enabled() then gui.show_message("Clipboard", "Copied ".. coordsString.. " to clipboard.") end
         ImGui.SetClipboardText(coordsString)
     end
 end)
@@ -2802,16 +2804,16 @@ script.register_looped("animation hotkey", function(script)
             if info == nil then
                 anim_index = 0
                 info = filteredAnims[anim_index + 1]
-                gui.show_message("Current Animation:", info.name)
+                if showNotifications:is_enabled() then gui.show_message("Current Animation:", info.name) end
             end
             if info ~= nil then
-                gui.show_message("Current Animation:", info.name)
+                if showNotifications:is_enabled() then gui.show_message("Current Animation:", info.name) end
             end
             script:sleep(200) -- average inter-key interval is about what, 250ms? this should be enough.
         elseif PAD.IS_CONTROL_PRESSED(0, 316) and anim_index > 0 then -- prevent going to index 0 which breaks the script.
             anim_index = anim_index - 1
             info = filteredAnims[anim_index + 1]
-            gui.show_message("Current Animation:", info.name)
+            if showNotifications:is_enabled() then gui.show_message("Current Animation:", info.name) end
             script:sleep(200)
         elseif PAD.IS_CONTROL_PRESSED(0, 316) and anim_index == 0 then
                 info = filteredAnims[anim_index + 1]
@@ -2837,7 +2839,7 @@ script.register_looped("animation hotkey", function(script)
                 end
             else
                 PAD.SET_CONTROL_SHAKE(0, 500, 250)
-                gui.show_message("Yim_Actions", "Press "..stopButton.." to stop the current animation before playing the next one.")
+                if showNotifications:is_enabled() then gui.show_message("Yim_Actions", "Press "..stopButton.." to stop the current animation before playing the next one.") end
                 script:sleep(800)
             end
         end
@@ -3019,7 +3021,7 @@ casino_gui:add_button("Set Dealer's Hand To Bust", function()
          player_id = PLAYER.PLAYER_ID()
         while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("blackjack", 3, 0) ~= player_id do
             network.force_script_host("blackjack")
-            gui.show_message("CasinoPacino", "Taking control of the blackjack script.") --If you see this spammed, someone if fighting you for control.
+            if showNotifications:is_enabled() then gui.show_message("CasinoPacino", "Taking control of the blackjack script.") end --If you see this spammed, someone if fighting you for control.
             script:yield()
         end
          blackjack_table = locals.get_int("blackjack", blackjack_table_players + 1 + (player_id * 8) + 4) --The Player's current table he is sitting at.
@@ -3055,7 +3057,7 @@ script.register_looped("Casino Pacino Thread", function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("three_card_poker")) ~= 0 then
             while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("three_card_poker", 3, 0) ~= player_id do
                 network.force_script_host("three_card_poker")
-                gui.show_message("CasinoPacino", "Taking control of the three_card_poker script.") --If you see this spammed, someone if fighting you for control.
+                if showNotifications:is_enabled() then gui.show_message("CasinoPacino", "Taking control of the three_card_poker script.") end --If you see this spammed, someone if fighting you for control.
                 script:sleep(500)
             end
              players_current_table = locals.get_int("three_card_poker", three_card_poker_table + 1 + (player_id * 9) + 2) --The Player's current table he is sitting at.
@@ -3098,12 +3100,12 @@ script.register_looped("Casino Pacino Thread", function (script)
         if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casinoroulette")) ~= 0 then
             while NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", -1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 0, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 1, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 2, 0) ~= player_id and NETWORK.NETWORK_GET_HOST_OF_SCRIPT("casinoroulette", 3, 0) ~= player_id do
                 network.force_script_host("casinoroulette")
-                gui.show_message("CasinoPacino", "Taking control of the casinoroulette script.") --If you see this spammed, someone if fighting you for control.
+                if showNotifications:is_enabled() then gui.show_message("CasinoPacino", "Taking control of the casinoroulette script.") end --If you see this spammed, someone if fighting you for control.
                 script:sleep(500)
             end
             for tabler_iter = 0, 6, 1 do
                 locals.set_int("casinoroulette", (roulette_master_table) + (roulette_outcomes_table) + (roulette_ball_table) + (tabler_iter), casVal)
-                gui.show_message("CasinoPacino Activated!", "Winning Number: "..casVal)
+                if showNotifications:is_enabled() then gui.show_message("CasinoPacino Activated!", "Winning Number: "..casVal) end
             end
         end
     end
@@ -3175,10 +3177,10 @@ casino_gui:add_button("Broadcast Msg", function()
                 network.send_chat_message("[Casino Rig]: Make sure you own a Casino Penthouse OR you are in a CEO with someone who does AND that you have 50k+ chips before playing!")
                 network.send_chat_message("[Casino Rig]: Roulette tables are rigged at the casino!  Come to the casino for easy money!")
             else
-                gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
+                if showNotifications:is_enabled() then gui.show_message("Error", "Roulette Rig is not enabled, enable it first!") end
             end
         else
-            gui.show_message("Error", "You need to be in the casino near the tables to use this")
+            if showNotifications:is_enabled() then gui.show_message("Error", "You need to be in the casino near the tables to use this") end
         end
         sleep(2)
     end)
@@ -3193,10 +3195,10 @@ casino_gui:add_button("How To Bet", function()
                 end
                 network.send_chat_message("[Casino Rig]: Max your bet, put 1 chip on "..casVal.." THEN stack as many chips as you can on the corresponding '2 to 1' in the same row as "..casVal.."")
             else
-                gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
+                if showNotifications:is_enabled() then gui.show_message("Error", "Roulette Rig is not enabled, enable it first!") end
             end
         else
-            gui.show_message("Error", "You need to be in the casino near the tables to use this")
+            if showNotifications:is_enabled() then gui.show_message("Error", "You need to be in the casino near the tables to use this") end
         end
         sleep(2)
     end)
@@ -3208,10 +3210,10 @@ casino_gui:add_button("Alt Betting Info", function()
             if force_roulette_wheel:is_enabled() then
                 network.send_chat_message("[Casino Rig]: You can optionally stack as many chips as you can on the corresponding '1st 12, 2nd 12 or 3rd 12' in the same row as "..casVal.." instead of '2 to 1'")
             else
-                gui.show_message("Error", "Roulette Rig is not enabled, enable it first!")
+                if showNotifications:is_enabled() then gui.show_message("Error", "Roulette Rig is not enabled, enable it first!") end
             end
         else
-            gui.show_message("Error", "You need to be in the casino near the tables to use this")
+            if showNotifications:is_enabled() then gui.show_message("Error", "You need to be in the casino near the tables to use this") end
         end
         sleep(2)
     end)
@@ -3275,7 +3277,7 @@ script.register_looped("onemLoop", function(script)
         if onemLoop then
             TransactionManager:TriggerTransaction(0x615762F1)
                 script:yield();
-            gui.show_message("Money Loop", "180k loop running, enjoy the easy money!")
+            if showNotifications:is_enabled() then gui.show_message("Money Loop", "180k loop running, enjoy the easy money!") end
         end
     end
 end)
@@ -3285,7 +3287,7 @@ millLoop:add_sameline()
 millLoop:add_button("2.5M (1 time)", function()
     script.run_in_fiber(function(script)
         TransactionManager:TriggerTransaction(0xDBF39508)
-        gui.show_message("Money Loop", "Gained 2.5 million (1 time)")
+        if showNotifications:is_enabled() then gui.show_message("Money Loop", "Gained 2.5 million (1 time)") end
     end)
 end)
 toolTip(millLoop, "Gives you 2.5 Million")
@@ -3294,7 +3296,7 @@ millLoop:add_sameline()
 millLoop:add_button("3.6M (1 time)", function()
     script.run_in_fiber(function(script)
         TransactionManager:TriggerTransaction(0xB703ED29)
-        gui.show_message("Money Loop", "Gained 3.6 million (1 time)")
+        if showNotifications:is_enabled() then gui.show_message("Money Loop", "Gained 3.6 million (1 time)") end
     end)
 end)
 toolTip(millLoop, "Gives you 3.6 Million (1 time)")
@@ -3303,7 +3305,7 @@ millLoop:add_sameline()
 millLoop:add_button("7M (1 time)", function()
     script.run_in_fiber(function(script)
         TransactionManager:TriggerTransaction(0xED97AFC1)
-        gui.show_message("Money Loop", "Gained 7 Million (1 time)")
+        if showNotifications:is_enabled() then gui.show_message("Money Loop", "Gained 7 Million (1 time)") end
     end)
 end)
 toolTip(millLoop, "Gives you 7 million (1 time)")
@@ -3312,7 +3314,7 @@ millLoop:add_sameline()
 millLoop:add_button("15M (1 time)", function()
     script.run_in_fiber(function(script)
         TransactionManager:TriggerTransaction(0x176D9D54)
-        gui.show_message("Money Loop", "Gained 15 million (1 time)")
+        if showNotifications:is_enabled() then gui.show_message("Money Loop", "Gained 15 million (1 time)") end
     end)
 end)
 toolTip(millLoop, "Gives you 15 Million (1 time)")
@@ -3326,7 +3328,7 @@ moneyRemover:add_button("Set Amount", function()
         gui.show_error("Money Remover", "Amount Must Be Greater Than 500")
     else
         globals.set_int(262145 + 20024, removerInput:get_value())
-        gui.show_message("Money Remover", "Amount Successfully Set")
+        if showNotifications:is_enabled() then gui.show_message("Money Remover", "Amount Successfully Set") end
     end
 end)
 toolTip(moneyRemover, "Sets the Ballistic Equipment price to the value above, once set, purchase the ballistic equipment inside your interaction menu")
@@ -3336,7 +3338,7 @@ moneyRemover:add_button("Unlock Ballistic Equipment", function()
 script.run_in_fiber(function(script)
     unlock_packed_bools(9461, 9481) --Ballistic Equipment, LS UR T-Shirt, Non-Stop-Pop FM T-Shirt, Radio Los Santos T-Shirt, Los Santos Rock Radio T-Shirt, Blonded Los Santos 97.8 FM T-Shirt, West Coast Talk Radio T-Shirt, Radio Mirror Park T-Shirt, Rebel Radio T-Shirt, Channel X T-Shirt, Vinewood Boulevard Radio T-Shirt, FlyLo FM T-Shirt, Space 103.2 T-Shirt, West Coast Classics T-Shirt, East Los FM T-Shirt, The Lab T-Shirt, The Lowdown 91.1 T-Shirt, WorldWide FM T-Shirt, Soulwax FM T-Shirt, Blue Ark T-Shirt, Blaine County Radio T-Shirt
         unlock_packed_bools(15381, 15382) --APC SAM Battery, Ballistic Equipment
-    gui.show_message("Ballistic Equipment", "Successfully unlocked, Open your interaction menu and request it to remove your money")
+    if showNotifications:is_enabled() then gui.show_message("Ballistic Equipment", "Successfully unlocked, Open your interaction menu and request it to remove your money") end
 end)
 end)
 toolTip(moneyRemover, "Unlocks the Ballistic Equipment if its not unlocked through bunker research")
@@ -3558,10 +3560,10 @@ script.register_looped("objectsPreview", function()
             ENTITY.SET_ENTITY_COORDS(previewObject, spawnX + spawnDistance.x, spawnY + spawnDistance.y, spawnZ + spawnDistance.z, true, false, false, false)
             ENTITY.SET_ENTITY_ROTATION(previewObject, orientationRoll, orientationYaw, playerHeading + orientationPitch, 2, true)
             ENTITY.SET_ENTITY_ALPHA(previewObject, previewAlpha, true)
-            --gui.show_message("Preview", "Moved ".. selectedObjectInfo.nom.. " to ".. tostring(spawnX).. ", ".. tostring(spawnY))
+            --if showNotifications:is_enabled() then gui.show_message("Preview", "Moved ".. selectedObjectInfo.nom.. " to ".. tostring(spawnX).. ", ".. tostring(spawnY))
             previousPreview = objectHash
         else
-            gui.show_message("Object Spawner", "Selected object not found.")
+            if showNotifications:is_enabled() then gui.show_message("Object Spawner", "Selected object not found.") end
         end
     else
         if previewObject ~= nil then if ENTITY.DOES_ENTITY_EXIST(previewObject) then delete_entity(previewObject) end end
@@ -3610,12 +3612,12 @@ Objets:add_button("Spawn Selected", function()
 
             net_id = NETWORK.OBJ_TO_NET(spawnedObject)
             NETWORK.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(net_id, true)
-            gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName)
+            if showNotifications:is_enabled() then gui.show_message("Object Spawner", "Spawned object "..selectedObjectInfo.nom.." on "..playerName) end
             STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(spawnedObject)
             table.insert(spawnedObjects, spawnedObject)
             table.insert(names, selectedObjectInfo.nom)
         else
-            gui.show_message("Object Spawner", "Selected object not found.")
+            if showNotifications:is_enabled() then gui.show_message("Object Spawner", "Selected object not found.") end
         end
         sleep(5)
     end)
@@ -3638,11 +3640,11 @@ Objets:add_imgui(function()
     else
         objects = ImGui.Combo("", objects, names, #names)
         toolTip("", "List Of Spawned Objects")
-        gui.show_message("Spawned Objects", tostring(objects).. " + ".. tostring(names[objects + 1]).. " ".. ENTITY.GET_ENTITY_MODEL(spawnedObjects[objects + 1]))
+        if showNotifications:is_enabled() then gui.show_message("Spawned Objects", tostring(objects).. " + ".. tostring(names[objects + 1]).. " ".. ENTITY.GET_ENTITY_MODEL(spawnedObjects[objects + 1])) end
     end
     ImGui.SameLine()
     if ImGui.Button("Delete") then
-        gui.show_message("Delete", "Deleted ".. spawnedObjects[objects + 1])
+        if showNotifications:is_enabled() then gui.show_message("Delete", "Deleted ".. spawnedObjects[objects + 1]) end
         delete_entity(spawnedObjects[objects + 1])
         table.remove(spawnedObjects, objects + 1)
         table.remove(names, objects + 1)
@@ -3779,7 +3781,6 @@ vehTrix:add_button('Boost Forward', function()
             -- Apply the force to the vehicle
             model = ENTITY.GET_ENTITY_MODEL(veh)
             if VEHICLE.IS_THIS_MODEL_A_HELI(model) == true then
-            gui.show_message("test", "test")
                 ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, forceX, forceY, 250.0, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
             else
                 ENTITY.APPLY_FORCE_TO_ENTITY(veh, 1, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
@@ -4303,7 +4304,7 @@ vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current
         widgetToolTip(false, "Click to copy link")
         if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
             ImGui.SetClipboardText("https://github.com/Harmless05")
-            gui.show_message("Tokyo Drift", "Copied \"https://github.com/Harmless05\" to clipboard!")
+            if showNotifications:is_enabled() then gui.show_message("Tokyo Drift", "Copied \"https://github.com/Harmless05\" to clipboard!") end
             log.info("Copied \"https://github.com/Harmless05\" to clipboard!")
         end
         ImGui.Unindent()
@@ -4313,7 +4314,7 @@ vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current
         widgetToolTip(false, "Click to copy link")
         if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
             ImGui.SetClipboardText("https://github.com/xesdoog")
-            gui.show_message("Tokyo Drift", "Copied \"https://github.com/xesdoog\" to clipboard!")
+            if showNotifications:is_enabled() then gui.show_message("Tokyo Drift", "Copied \"https://github.com/xesdoog\" to clipboard!") end
             log.info("Copied \"https://github.com/xesdoog\" to clipboard!")
         end
         ImGui.Unindent()
@@ -4326,7 +4327,7 @@ vehicle_name = vehicles.get_vehicle_display_name(ENTITY.GET_ENTITY_MODEL(current
         -- end
         -- if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
         --     ImGui.SetClipboardText("https://github.com/YimMenu-Lua/Harmless-Scripts") <-- Crashes my game for some reason! The profile link is fine but clicking the YimMenu-Lua repo link crashes my game???🤨
-        --     gui.show_message("TokyoDrift Credits", "Copied \"https://github.com/YimMenu-Lua/Harmless-Scripts\" to clipboard!")
+        --     if showNotifications:is_enabled() then gui.show_message("TokyoDrift Credits", "Copied \"https://github.com/YimMenu-Lua/Harmless-Scripts\" to clipboard!")
         -- end
         ImGui.EndPopup()
     end
@@ -5017,10 +5018,10 @@ flatbedScript:add_imgui(function()
                     end)
                 end
                 if closestVehicle ~= nil and closestVehicleModel ~= flatbedModel and not valid_Model then
-                    gui.show_message("Flatbed Script", "You can only tow cars, trucks and bikes.")
+                    if showNotifications:is_enabled() then gui.show_message("Flatbed Script", "You can only tow cars, trucks and bikes.") end
                 end
                 if closestVehicle ~= nil and closestVehicleModel == flatbedModel then
-                    gui.show_message("Flatbed Script", "Sorry but you can not tow another flatbed truck.")
+                    if showNotifications:is_enabled() then gui.show_message("Flatbed Script", "Sorry but you can not tow another flatbed truck.") end
                 end
             else
                 gui.show_error("Flatbed Script", "You are already towing a vehicle.")
@@ -5179,12 +5180,12 @@ script.register_looped("flatbed script", function(script)
             end
         end
         if PAD.IS_CONTROL_PRESSED(0, 73) and closestVehicle ~= nil and not valid_Model then
-            gui.show_message("Flatbed Script", "You can only tow cars, trucks and bikes.")
+            if showNotifications:is_enabled() then gui.show_message("Flatbed Script", "You can only tow cars, trucks and bikes.") end
             script:sleep(400)
         end
         if PAD.IS_CONTROL_PRESSED(0, 73) and closestVehicleModel == flatbedModel then
             script:sleep(400)
-            gui.show_message("Flatbed Script", "Sorry but you can not tow another flatbed truck.")
+            if showNotifications:is_enabled() then gui.show_message("Flatbed Script", "Sorry but you can not tow another flatbed truck.") end
         end
     elseif is_in_flatbed and attached_vehicle[1] ~= nil then
         if PAD.IS_CONTROL_PRESSED(0, 73) then
@@ -5241,7 +5242,7 @@ end)
           model = joaat("vw_prop_vw_colle_prbubble")
           pickup = joaat("PICKUP_CUSTOM_SCRIPT")
           money_value = 0
-         gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.")
+         if showNotifications:is_enabled() then gui.show_message("WARNING", "15 or more players may cause lag or RP to not drop.") end
          STREAMING.REQUEST_MODEL(model)
          while STREAMING.HAS_MODEL_LOADED(model) == false do
              coroutine.yield()
@@ -5250,7 +5251,7 @@ end)
          if STREAMING.HAS_MODEL_LOADED(model) then
               PlayerId = PLAYER.PLAYER_ID()
               player_count = PLAYER.GET_NUMBER_OF_PLAYERS() - 1 -- Minus 1 player (yourself) from the drop count.
-             gui.show_message("Global", "Dropping figurines to ".. player_count.." Players in the session.")
+             if showNotifications:is_enabled() then gui.show_message("Global", "Dropping figurines to ".. player_count.." Players in the session.") end
 
              for i = 0, 31 do
                  if i ~= PlayerId then
@@ -5289,7 +5290,7 @@ script.register_looped("goodRP", function()
                 for i = 20, 24 do
                     network.trigger_script_event(1 << p, {968269233 , p, 1, 4, i, 1, 1, 1, 1})
                      player_count = PLAYER.GET_NUMBER_OF_PLAYERS()
-                    gui.show_message("Fast RP", "Giving massive amounts of RP to "..player_count.." players in the session")
+                    if showNotifications:is_enabled() then gui.show_message("Fast RP", "Giving massive amounts of RP to "..player_count.." players in the session") end
                 end
             end
         end
@@ -5307,7 +5308,7 @@ Global:add_sameline()
                     for n = 0, 10 do
                         for l = -10, 10 do
                             network.trigger_script_event(1 << pid, {968269233 , pid, 1, l, l, n, 1, 1, 1})
-                            gui.show_message("Money", "Giving money (max 225k) to "..player_count.." players in the session")
+                            if showNotifications:is_enabled() then gui.show_message("Money", "Giving money (max 225k) to "..player_count.." players in the session") end
                         end
                     end
                 end
@@ -5514,7 +5515,7 @@ Global:add_separator()
 Global:add_text("Toxic Options")
 Global:add_button("Boat Skin Crash", function()
     script.run_in_fiber(function (pedpacrash)
-        gui.show_message("Boat Skin", "Giving everyone the boat skin.")
+        if showNotifications:is_enabled() then gui.show_message("Boat Skin", "Giving everyone the boat skin.") end
         PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), -74.94, -818.58, 327)
          spped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(PLAYER.PLAYER_ID())
          ppos = ENTITY.GET_ENTITY_COORDS(spped, true)
@@ -5646,8 +5647,8 @@ Global:add_button("HUD Breaker", function()
                 end
             end
         end
-            gui.show_message("HUD Breaker", "You have broken the entire sessions HUD and Interiors.")
-            gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
+            if showNotifications:is_enabled() then gui.show_message("HUD Breaker", "You have broken the entire sessions HUD and Interiors.") end
+            if showNotifications:is_enabled() then gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.") end
     end)
 end)
 toolTip(Global, "Breaks the HUD for every player in the session, causes their missions to break in freemode, removes their HUD, prevents pausing and prevents entering properties as it removes the entrace markers")
@@ -5741,7 +5742,7 @@ clownJetAttack = Global:add_checkbox("Clown Jet Attack")
                     if jetVehicle == 0 then
                         gui.show_error("Failed", "Failed to Create Jet")
                     else
-                        gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets every 15 seconds.")
+                        if showNotifications:is_enabled() then gui.show_message("Griefing", "Clown Lazers spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player).." Spawning jets every 15 seconds.") end
                     end
                 end
             end
@@ -5766,7 +5767,7 @@ script.register_looped("explosionLoop", function()
             if i ~= PlayerId then
                  player_id = i
                  coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
-                gui.show_message("Global (Toxic)", "Exploding " .. PLAYER.GET_PLAYER_NAME(player_id) .. " repeatedly")
+                if showNotifications:is_enabled() then gui.show_message("Global (Toxic)", "Exploding " .. PLAYER.GET_PLAYER_NAME(player_id) .. " repeatedly")end
 
                 FIRE.ADD_EXPLOSION(coords.x, coords.y, coords.z, explosionType, 100000.0, true, false, 0, false)
                 GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
@@ -5829,7 +5830,7 @@ script.register_looped("ramGlobal", function()
                             VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
                         end
 
-                        gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+                        if showNotifications:is_enabled() then gui.show_message("Grief", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles") end
 
                         -- Use these lines to delete the vehicle after spawning.
                         -- Needs some type of delay between spawning and deleting to function properly
@@ -5862,7 +5863,7 @@ script.register_looped("crashGlobal", function()
                 STREAMING.REQUEST_MODEL(model)
 
                 if STREAMING.HAS_MODEL_LOADED(model) then
-                gui.show_message("Global (Toxic)", "Crashing " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with figurines")
+                if showNotifications:is_enabled() then gui.show_message("Global (Toxic)", "Crashing " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with figurines") end
                      coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                      objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                         pickup,
@@ -5905,7 +5906,7 @@ Global:add_button("Give All Weapons to Players", function()
         end
         msg = "I have given the entire lobby all weapons.  This only lasts until you switch sessions, enjoy!"
         network.send_chat_message(msg, false)
-        gui.show_message("Global", "Successfully given all weapons to all players")
+        if showNotifications:is_enabled() then gui.show_message("Global", "Successfully given all weapons to all players") end
     end)
 end)
 toolTip(Global, "Gives all weapons to the entire session and also announces that you have done so")
@@ -5928,7 +5929,7 @@ Global:add_button("Remove All Weapons from Players", function()
         end
          msg = "I have removed all weapons from the entire lobby.  This only lasts until you switch sessions, have fun!"
         network.send_chat_message(msg, false)
-        gui.show_message("Global", "Successfully removed all weapons from all players")
+        if showNotifications:is_enabled() then gui.show_message("Global", "Successfully removed all weapons from all players") end
     end)
 end)
 toolTip(Global, "Removes all weapons from the entire session and also anounces that you have done so")
@@ -5976,7 +5977,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
         out = "Michael's cash set to $"..tostring(mCash)
         if used then
             STATS.STAT_SET_INT(joaat("SP0_TOTAL_CASH"), mCash, true)
-            gui.show_message('Story Mode Cash Updated!', out)
+            if showNotifications:is_enabled() then gui.show_message('Story Mode Cash Updated!', out) end
         end
     end)
 
@@ -5986,7 +5987,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
         out = "Franklins's cash set to $"..tostring(fCash)
         if used then
             STATS.STAT_SET_INT(joaat("SP1_TOTAL_CASH"), fCash, true)
-            gui.show_message('Story Mode Cash Updated!', out)
+            if showNotifications:is_enabled() then gui.show_message('Story Mode Cash Updated!', out) end
         end
     end)
 
@@ -5996,7 +5997,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
         out = "Trevor's cash set to $"..tostring(tCash)
         if used then
             STATS.STAT_SET_INT(joaat("SP2_TOTAL_CASH"), tCash, true)
-            gui.show_message('Story Mode Cash Updated!', out)
+            if showNotifications:is_enabled() then gui.show_message('Story Mode Cash Updated!', out) end
         end
     end)
     StoryCharacters:add_separator()
@@ -6013,7 +6014,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
             STATS.STAT_SET_INT(joaat("SP0_FLYING_ABILITY"), mStats, true)
             STATS.STAT_SET_INT(joaat("SP0_SHOOTING_ABILITY"), mStats, true)
             STATS.STAT_SET_INT(joaat("SP0_STEALTH_ABILITY"), mStats, true)
-            gui.show_message('Story Mode Stats Updated!', out)
+            if showNotifications:is_enabled() then gui.show_message('Story Mode Stats Updated!', out) end
         end
     end)
 
@@ -6030,7 +6031,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
             STATS.STAT_SET_INT(joaat("SP1_FLYING_ABILITY"), fStats, true)
             STATS.STAT_SET_INT(joaat("SP1_SHOOTING_ABILITY"), fStats, true)
             STATS.STAT_SET_INT(joaat("SP1_STEALTH_ABILITY"), fStats, true)
-            gui.show_message('Story Mode Stats Updated!', out)
+            if showNotifications:is_enabled() then gui.show_message('Story Mode Stats Updated!', out) end
         end
     end)
 
@@ -6047,7 +6048,7 @@ StoryCharacters = KAOS:add_tab("Story Mode")
             STATS.STAT_SET_INT(joaat("SP2_FLYING_ABILITY"), tStats, true)
             STATS.STAT_SET_INT(joaat("SP2_SHOOTING_ABILITY"), tStats, true)
             STATS.STAT_SET_INT(joaat("SP2_STEALTH_ABILITY"), tStats, true)
-            gui.show_message('Story Mode Stats Updated!', out)
+            if showNotifications:is_enabled() then gui.show_message('Story Mode Stats Updated!', out) end
         end
     end)
 
@@ -6065,7 +6066,7 @@ Weapons:add_button("Remove All Weapons", function()
                 if name ~= weapon_unarmed then
                     weaponHash = MISC.GET_HASH_KEY(name)
                     WEAPON.REMOVE_WEAPON_FROM_PED(ent, weaponHash)
-                    gui.show_message('Weapons', out)
+                    if showNotifications:is_enabled() then gui.show_message('Weapons', out) end
                 end
             end
         end
@@ -6082,7 +6083,7 @@ Weapons:add_button("Give All Weapons", function()
             for _, name in ipairs(weaponNamesString) do
                  weaponHash = MISC.GET_HASH_KEY(name)
                 WEAPON.GIVE_WEAPON_TO_PED(ent, weaponHash, 9999, false, true)
-                gui.show_message('Weapons', out)
+                if showNotifications:is_enabled() then gui.show_message('Weapons', out) end
 
             end
         end
@@ -6104,7 +6105,7 @@ Weapons:add_button("Drop Random Weapon", function()
             randomWeapon:yield()
         end
         if STREAMING.HAS_MODEL_LOADED(modelHash) then
-            gui.show_message("Weapon Drop Started", "Dropping " .. weaponName .. " on "..PLAYER.GET_PLAYER_NAME(player_id))
+            if showNotifications:is_enabled() then gui.show_message("Weapon Drop Started", "Dropping " .. weaponName .. " on "..PLAYER.GET_PLAYER_NAME(player_id)) end
              coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
              objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                 joaat("PICKUP_" .. string.upper(weaponName)),
@@ -6160,9 +6161,9 @@ agency:add_imgui(function()
         
         if contractToUse and contractToUse.id then  -- Ensure contractToUse is not nil and has a valid id
             STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_BS"), contractToUse.id, true)
-            gui.show_message("Agency", "Contract: " .. contractToUse.name .. " ID: " .. contractToUse.id .. " Selected")
+            if showNotifications:is_enabled() then gui.show_message("Agency", "Contract: " .. contractToUse.name .. " ID: " .. contractToUse.id .. " Selected") end
         else
-            gui.show_message("Error", "Invalid Contract ID")
+            if showNotifications:is_enabled() then gui.show_message("Error", "Invalid Contract ID") end
         end
     end
 end)
@@ -6202,7 +6203,7 @@ agency:add_text("Money")
 script.register_looped("agencyloop", function(script)
     script:yield()
     if agencySafe:is_enabled() == true then
-        gui.show_message("Business Manager", "Supplying Agency Safe with money")
+        if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying Agency Safe with money") end
         STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COUNT"), 500, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
         sleep(0.5)
@@ -6239,7 +6240,7 @@ script.register_looped("autoGetBunkerCargo", function(script)
         autoGetBunkerCargo = not autoGetBunkerCargo
         if autoGetBunkerCargo then
             globals.set_int(1663174 + 1 + 5, 1)
-            gui.show_message("Bunker", "Resupplying your bunker supplies.")
+            if showNotifications:is_enabled() then gui.show_message("Bunker", "Resupplying your bunker supplies.") end
         end
     end
 end)
@@ -6253,7 +6254,7 @@ script.register_looped("autoGetHangarCargo", function(script)
         autoGetHangarCargo = not autoGetHangarCargo
         if autoGetHangarCargo then
             stats.set_bool_masked(MPX() .. "DLC22022PSTAT_BOOL3", true, 9)
-            gui.show_message("Hangar", "Restocking hangar cargo, please wait...")
+            if showNotifications:is_enabled() then gui.show_message("Hangar", "Restocking hangar cargo, please wait...") end
             sleep(0.5)
         end
     end
@@ -6270,11 +6271,11 @@ mcBus:add_button("MC President (On/Off)", function()
     if gb1 == playerID and gb2 == 1 then
         globals.set_int(g + 1, -1)
         globals.set_int(g + 430, -1)
-        gui.show_message("Motorcycle Club", "You are no longer an MC President")
+        if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "You are no longer an MC President") end
     else
         globals.set_int(g + 1, playerID)
         globals.set_int(g + 430, 1)
-        gui.show_message("Motorcycle Club", "You are now an MC President")
+        if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "You are now an MC President") end
     end
 end)
 toolTip(mcBus, "Register as an MC President")
@@ -6286,7 +6287,7 @@ script.register_looped("autoGetAcidCargo", function(script)
         autoGetAcidCargo = not autoGetAcidCargo
         if autoGetAcidCargo then
             globals.set_int(1663174 + 1 + 6, 1)
-            gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...")
+            if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...") end
             sleep(0.5)
         end
     end
@@ -6300,7 +6301,7 @@ script.register_looped("autoGetDocForgeCargo", function(script)
         autoGetDocForgeCargo = not autoGetDocForgeCargo
         if autoGetDocForgeCargo then
             globals.set_int(1663174 + 1 + 4, 1)
-            gui.show_message("Document Forge", "Resupplying your document forge, please wait...")
+            if showNotifications:is_enabled() then gui.show_message("Document Forge", "Resupplying your document forge, please wait...") end
             sleep(0.5)
         end
     end
@@ -6313,7 +6314,7 @@ script.register_looped("autoGetWeedCargo", function(script)
         autoGetWeedCargo = not autoGetWeedCargo
         if autoGetWeedCargo then
             globals.set_int(1663174 + 1 + 3, 1)
-            gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...")
+            if showNotifications:is_enabled() then gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...") end
             sleep(0.5)
         end
     end
@@ -6327,7 +6328,7 @@ script.register_looped("autoGetMethCargo", function(script)
         autoGetMethCargo = not autoGetMethCargo
         if autoGetMethCargo then
             globals.set_int(1663174 + 1 + 0, 1)
-            gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...")
+            if showNotifications:is_enabled() then gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...") end
             sleep(0.5)
         end
     end
@@ -6341,7 +6342,7 @@ script.register_looped("autoGetCokeCargo", function(script)
         autoGetCokeCargo = not autoGetCokeCargo
         if autoGetCokeCargo then
             globals.set_int(1663174 + 1 + 1, 1)
-            gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...")
+            if showNotifications:is_enabled() then gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...") end
             sleep(0.5)
         end
     end
@@ -6354,7 +6355,7 @@ script.register_looped("autoGetCashCargo", function(script)
         autoGetCashCargo = not autoGetCashCargo
         if autoGetCashCargo then
             globals.set_int(1663174 + 1 + 2, 1)
-            gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...")
+            if showNotifications:is_enabled() then gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...") end
             sleep(0.5)
         end
     end
@@ -6366,31 +6367,31 @@ mcBus:add_button("Resupply All", function()
                 globals.set_int(1663174 + 1 + 0, 1)
         globals.set_int(1663174 + 1 + 0, 1)
         globals.set_int(1663174 + 1 + 0, 1) -- Meth Lab Suplies
-        gui.show_message("Meth Lab", "Resupplying your Meth Lab")
+        if showNotifications:is_enabled() then gui.show_message("Meth Lab", "Resupplying your Meth Lab") end
         globals.set_int(1663174 + 1 + 1, 1)
         globals.set_int(1663174 + 1 + 1, 1)
         globals.set_int(1663174 + 1 + 1, 1) -- Cocaine Lockup Supplies 
-        gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup")
+        if showNotifications:is_enabled() then gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup") end
         globals.set_int(1663174 + 1 + 2, 1)
         globals.set_int(1663174 + 1 + 2, 1)
         globals.set_int(1663174 + 1 + 2, 1) -- Counterfeit Cash
-        gui.show_message("Counterfeit Cash Factory", "Resupplying your Counterfeit Cash Factory")
+        if showNotifications:is_enabled() then gui.show_message("Counterfeit Cash Factory", "Resupplying your Counterfeit Cash Factory") end
         globals.set_int(1663174 + 1 + 3, 1)
         globals.set_int(1663174 + 1 + 3, 1)
         globals.set_int(1663174 + 1 + 3, 1) -- Weed Farm Supplies
-        gui.show_message("Weed Farm", "Resupplying your Weed Farm")
+        if showNotifications:is_enabled() then gui.show_message("Weed Farm", "Resupplying your Weed Farm") end
         globals.set_int(1663174 + 1 + 4, 1)
         globals.set_int(1663174 + 1 + 4, 1)
         globals.set_int(1663174 + 1 + 4, 1) -- Document Forge Supplies
-        gui.show_message("Document Forge", "Resupplying your Document Forge")
+        if showNotifications:is_enabled() then gui.show_message("Document Forge", "Resupplying your Document Forge") end
         globals.set_int(1663174 + 1 + 5, 1)
         globals.set_int(1663174 + 1 + 5, 1)
         globals.set_int(1663174 + 1 + 5, 1) -- Bunker Supplies
-        gui.show_message("Bunker", "Resupplying your Bunker")
+        if showNotifications:is_enabled() then gui.show_message("Bunker", "Resupplying your Bunker") end
         globals.set_int(1663174 + 1 + 6, 1)
         globals.set_int(1663174 + 1 + 6, 1)
         globals.set_int(1663174 + 1 + 6, 1) -- Acid Lab Supplies
-        gui.show_message("Acid Lab", "Resupplying your Acid Lab")
+        if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your Acid Lab") end
     end)
 end)
 toolTip(mcBus, "Resupplies all your supplies for all businesses")
@@ -6403,8 +6404,8 @@ mcBus:add_button("Fast Production", function()
         globals.set_int(262145 + 17602, 25500) -- prod time for document forge
         globals.set_int(262145 + 17603, 25500) -- prod time for cash
         --globals.set_int(262145 + 17632, 10000)
-        gui.show_message("Production Speed", "Production speed has been sped up for all businesses")
-        gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar")
+        if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed has been sped up for all businesses") end
+        if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar") end
     end)
 end)
 toolTip(mcBus, "Activates fast production for all MC businesses (read top right for info after pressing the button)")
@@ -6416,7 +6417,7 @@ mcBus:add_button("Raise Sale Prices", function()
     globals.set_int(262145 + 17628, 20000) -- price for document forge
     globals.set_int(262145 + 17629, 30000) -- price for cash
     --globals.set_int(262145 + 17632, 10000)
-    gui.show_message("Production Value", "Production sale value has been increased for all businesses")
+    if showNotifications:is_enabled() then gui.show_message("Production Value", "Production sale value has been increased for all businesses") end
 end)
 toolTip(mcBus, "Raises the sale price for all MC Businesses to over 1 million each")
 mcBus:add_separator()
@@ -6456,14 +6457,14 @@ mcBus:add_button("Change MC Name", function()
                     STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME"), values[i].. " ", true)
                     STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), mcName, true)
                      MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), -1)
-                    gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply")
+                    if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply") end
                     SessionChanger(0)
                     return
                 else
                     STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME"), mcName, true)
                     STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), values[i].. " ", true)
                      MCnOne = STATS.STAT_GET_STRING(joaat(MPX() .. "MC_GANG_NAME"), -1)
-                    gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply")
+                    if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply") end
                     SessionChanger(0)
                     return
                 end
@@ -6472,7 +6473,7 @@ mcBus:add_button("Change MC Name", function()
         STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME"), "", true)
         STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), mcName, true)
          MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), -1)
-        gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply")
+        if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply") end
         SessionChanger(0)
     end)
 end)
@@ -6485,7 +6486,7 @@ script.register_looped("mcNameCB", function(mcName)
         end
         if cbE > 1 then
             checkBox:set_enabled(false)
-            gui.show_message("Icons", "you can only select one checkbox")
+            if showNotifications:is_enabled() then gui.show_message("Icons", "you can only select one checkbox") end
         end
     end
 end)
@@ -6498,7 +6499,7 @@ end)
 script.register_looped("arcadeloop", function(script)
     script:yield()
     if arcadeSafe:is_enabled() == true then
-        gui.show_message("Business Manager", "Supplying Arcade Safe with money")
+        if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying Arcade Safe with money") end
         STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_PAY_TIME_LEFT"), -1, true)
         sleep(0.5)
@@ -6508,24 +6509,33 @@ toolTip(arcade, "Fills your arcade safe with money")
 -- Nightclub Loop - L7Neg
  Club = Business:add_tab("Nightclub")
 
- 
+Club:add_button("Skip Preps/Setups", function()
+		stats.set_packed_stat_bool(22067, true)
+		stats.set_packed_stat_bool(22068, true)
+		stats.set_packed_stat_bool(18161, true)
+		if showNotifications:is_enabled() then gui.show_message("Nightclub", "All Preps/Setups have been skipped!") end
+end)
+toolTip(Club, "Skips all of the Setups and Preps for setting up your nightclub")
 
+Club:add_sameline()
+Club:add_button("Max Club Popularity", function()
+    STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
+end)
+toolTip(Club, "Max your nightclubs popularity")
+
+Club:add_separator()
 nClub = Club:add_checkbox("Nightclub Safe Loop")
 script.register_looped("nightclubloop", function(script)
     script:yield()
     if nClub:is_enabled() == true then
-        gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe")
+        if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe") end
         STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_PAY_TIME_LEFT"), -1, true)
         sleep(0.5)
     end
 end)
 toolTip(Club, "Fills your nightclub safe with money")
-Club:add_separator()
-Club:add_button("Max Club Popularity", function()
-    STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
-end)
-toolTip(Club, "Max your nightclubs popularity")
+
  CEO = Business:add_tab("CEO")
 
 CEO:add_button("Register as CEO", function()
@@ -6537,11 +6547,11 @@ CEO:add_button("Register as CEO", function()
     if gb1 == playerID and gb2 == 0 then
         globals.set_int(g + 1, -1)
         globals.set_int(g + 430, -1)
-        gui.show_message("CEO", "You are no longer a CEO")
+        if showNotifications:is_enabled() then gui.show_message("CEO", "You are no longer a CEO") end
     else
         globals.set_int(g + 1, playerID)
         globals.set_int(g + 430, 0)
-        gui.show_message("CEO", "You are now a CEO")
+        if showNotifications:is_enabled() then gui.show_message("CEO", "You are now a CEO") end
     end
 end)
 toolTip(CEO, "Register as a CEO")
@@ -6581,14 +6591,14 @@ CEO:add_button("Change CEO Name", function()
                     STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME"), values[i].. " ", true)
                     STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), setName, true)
                      MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), -1)
-                    gui.show_message("Motorcycle Club", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply")
+                    if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply") end
                     SessionChanger(0)
                     return
                 else
                     STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME"), setName, true)
                     STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), values[i].. " ", true)
                      MCnOne = STATS.STAT_GET_STRING(joaat(MPX() .. "GB_OFFICE_NAME"), -1)
-                    gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply")
+                    if showNotifications:is_enabled() then gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply") end
                     SessionChanger(0)
                     return
                 end
@@ -6597,7 +6607,7 @@ CEO:add_button("Change CEO Name", function()
         STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME"), "", true)
         STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), setName, true)
          MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), -1)
-        gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..MCnTwo..". Changing sessions to apply")
+        if showNotifications:is_enabled() then gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..MCnTwo..". Changing sessions to apply") end
         SessionChanger(0)
     end)
 end)
@@ -6630,7 +6640,7 @@ script.register_looped("yimceoloop", function(script)
         script:sleep(1000)  -- Adjust the sleep duration as needed
 
         if yCEO:is_enabled() == true then
-        gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!")
+        if showNotifications:is_enabled() then gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!") end
             if locals.get_int("appsecuroserv", 2) == 1 then
                 script:sleep(500)
                 locals.set_int("appsecuroserv", 740, 1)
@@ -6652,7 +6662,7 @@ script.register_looped("yimceoloop", function(script)
                 locals.set_int("gb_contraband_buy", 601 + 5, 1)
                 locals.set_int("gb_contraband_buy", 601 + 191, 6)
                 locals.set_int("gb_contraband_buy", 601 + 192, 4)
-                gui.show_message("Warehouse full!")
+                if showNotifications:is_enabled() then gui.show_message("Warehouse full!") end
             end
         end
     end
@@ -6758,7 +6768,7 @@ heistTab:add_button("Bring Everyone", function()
     script.run_in_fiber(function(bringall)
         for i = 1, 3 do
             player = PLAYER.PLAYER_PED_ID()
-            gui.show_message("Distance", tostring(calcDistance(player, PLAYER.GET_PLAYER_PED(i))))
+            if showNotifications:is_enabled() then gui.show_message("Distance", tostring(calcDistance(player, PLAYER.GET_PLAYER_PED(i)))) end
             if (ENTITY.DOES_ENTITY_EXIST(PLAYER.GET_PLAYER_PED(i)) and calcDistance(player, PLAYER.GET_PLAYER_PED(i)) >= 50) then
                 command.call( "bring", {i})
                 bringall:yield()
@@ -7000,7 +7010,7 @@ casinoHeist:add_button("Silent & Sneaky", function()
 	STATS.STAT_SET_INT(joaat(MPX() .. "H3OPT_POI"), 1023, true)
 	STATS.STAT_SET_INT(joaat(MPX() .. "H3OPT_ACCESSPOINTS"), 2047, true)
 	STATS.STAT_SET_INT(joaat(MPX() .. "H3OPT_BODYARMORLVL"), -1, true)
-    gui.show_message("Casino Heist", "Setup Silent & Sneaky applied")
+    if showNotifications:is_enabled() then gui.show_message("Casino Heist", "Setup Silent & Sneaky applied") end
 end)
 casinoHeist:add_sameline()
 casinoHeist:add_button("Big Con", function()
@@ -7023,7 +7033,7 @@ casinoHeist:add_button("Big Con", function()
 	STATS.STAT_SET_INT(joaat(MPX() .. "H3OPT_POI"), 1023, true)
 	STATS.STAT_SET_INT(joaat(MPX() .. "H3OPT_ACCESSPOINTS"), 2047, true)
 	STATS.STAT_SET_INT(joaat(MPX() .. "H3OPT_BODYARMORLVL"), -1, true)
-    gui.show_message("Casino Heist", "Setup Big Con applied")
+    if showNotifications:is_enabled() then gui.show_message("Casino Heist", "Setup Big Con applied") end
 end)
 casinoHeist:add_sameline()
 casinoHeist:add_button("Aggressive", function()
@@ -7046,7 +7056,7 @@ casinoHeist:add_button("Aggressive", function()
 	STATS.STAT_SET_INT(joaat(MPX() .. "H3OPT_POI"), 1023, true)
 	STATS.STAT_SET_INT(joaat(MPX() .. "H3OPT_ACCESSPOINTS"), 2047, true)
 	STATS.STAT_SET_INT(joaat(MPX() .. "H3OPT_BODYARMORLVL"), -1, true)
-    gui.show_message("Casino Heist", "Setup Aggressive applied")
+    if showNotifications:is_enabled() then gui.show_message("Casino Heist", "Setup Aggressive applied") end
 end)
 
 textSeparator(casinoHeist, "Quick Tools")
@@ -7153,8 +7163,8 @@ cayoHeist:add_button("Panther/Gold (Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Panther Hard Mode has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Panther Hard Mode has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 cayoHeist:add_sameline()
 cayoHeist:add_button("Diamond/Gold (Hard)", function()
@@ -7192,8 +7202,8 @@ cayoHeist:add_button("Diamond/Gold (Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Diamond Hard Mode has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Diamond Hard Mode has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 
 cayoHeist:add_sameline()
@@ -7232,8 +7242,8 @@ cayoHeist:add_button("Bonds/Gold (Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Bonds Hard Mode has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Bonds Hard Mode has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 
 cayoHeist:add_sameline()
@@ -7272,8 +7282,8 @@ cayoHeist:add_button("Necklace/Gold (Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Necklace Hard Mode has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Necklace Hard Mode has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 
 cayoHeist:add_sameline()
@@ -7312,8 +7322,8 @@ cayoHeist:add_button("Tequila/Gold (Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Tequila Hard Mode has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Tequila Hard Mode has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 cayoHeist:add_separator()
 cayoHeist:add_text("Legit Presets")
@@ -7369,8 +7379,8 @@ cayoHeist:add_button("Panther/Gold (L. Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Panther Hard Mode (Legit) has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Panther Hard Mode (Legit) has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 
 cayoHeist:add_sameline()
@@ -7427,8 +7437,8 @@ cayoHeist:add_button("Diamond/Gold (L. Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Diamond Hard Mode (Legit) has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Diamond Hard Mode (Legit) has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 
 cayoHeist:add_sameline()
@@ -7485,8 +7495,8 @@ cayoHeist:add_button("Bonds/Gold (L. Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Bonds Hard Mode (Legit) has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Bonds Hard Mode (Legit) has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 
 cayoHeist:add_sameline()
@@ -7543,8 +7553,8 @@ cayoHeist:add_button("Necklace/Gold (L. Hard)", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
         STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Necklace Hard Mode (Legit) has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Necklace Hard Mode (Legit) has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 
 cayoHeist:add_sameline()
@@ -7602,34 +7612,34 @@ cayoHeist:add_button("Tequila/Gold (L. Hard)", function()
     STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
     STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
 
-    gui.show_message("Cayo Heist", "Tequila Hard Mode (Legit) has been set up!")
-    gui.show_message("Cayo Heist", "Reset the board to see the changes")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Tequila Hard Mode (Legit) has been set up!") end
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
 end)
 
 cayoHeist:add_separator()
 cayoHeist:add_text("Press this after clicking one of the above presets")
 cayoHeist:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1546, 2)
-        gui.show_message("Cayo Heist", "Planning board has been reset!")
+        if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Planning board has been reset!") end
 end)
 
 cayoHeist:add_separator()
 cayoHeist:add_text("During Heist")
 cayoHeist:add_button("Skip Drainage Cut", function()
     locals.set_int(FMC2020, 29700, 6)
-    gui.show_message("Cayo Heist", "Bypassed Drainage Cut")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Bypassed Drainage Cut") end
 end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Skip Fingerprint Scanner", function()
    locals.set_int(FMC2020, 24880, 5)
-   gui.show_message("Cayo Heist", "Bypassed Fingerprint Scanner")
+   if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Bypassed Fingerprint Scanner") end
 end)
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Skip Glass Cut", function()
     locals.set_float(FMC2020, 30939 + 3, 100.0)
-    gui.show_message("Cayo Heist", "Bypassed Plasma Cutter")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Bypassed Plasma Cutter") end
 end)
 
 cayoHeist:add_sameline()
@@ -7640,7 +7650,7 @@ cayoHeist:add_button("Remove All CCTV's", function()
                 if ENTITY.GET_ENTITY_MODEL(ent) == cam then
                     ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
                     ENTITY.DELETE_ENTITY(ent)
-                    gui.show_message("Cayo Heist", "Deleted all mission Cameras")
+                    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Deleted all mission Cameras") end
                 end
             end
         end
@@ -7661,7 +7671,7 @@ cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX
         if model == 0x7ED5AD78 or model == 0x6C8C08E5 or model == 0x995B3F9F or model == 0xB881AEE then
                 ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
                 PED.DELETE_PED(ped)
-                gui.show_message("Cayo Heist", "Deleted all mission NPC's.  This will cause the keycards to not drop, use Gold teleport to bypass when standing near a secondary loot room.")
+                if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Deleted all mission NPC's.  This will cause the keycards to not drop, use Gold teleport to bypass when standing near a secondary loot room.") end
         end
     end
 end)
@@ -7683,7 +7693,7 @@ cayoHeist:add_button("Skip Cooldown", function()
     STATS.STAT_SET_INT(joaat(MPX() .. "H4_COOLDOWN_HARD_TIME"), 0, true)
 	STATS.STAT_SET_INT(joaat(MPX() .. "H4_SOLO_COOLDOWN"), 0, true)
 
-    gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters")
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters") end
 end)
 
 properties = {
@@ -7724,7 +7734,7 @@ cayoHeist:add_button("Bring Everyone", function()
         for i = 0, 3 do
             t = PLAYER.GET_PLAYER_PED(i)
             if ENTITY.DOES_ENTITY_EXIST(t) then
-                gui.show_message(PLAYER.GET_PLAYER_NAME(i), calcDistance(t, p))
+                if showNotifications:is_enabled() then gui.show_message(PLAYER.GET_PLAYER_NAME(i), calcDistance(t, p)) end
                 if calcDistance(t, p) > 50 then
                     command.call("bring", {i})
                 end
@@ -7749,7 +7759,7 @@ bagSizeVal, used = ImGui.SliderInt("Bag Size", bagSizeVal, 1800, 7200) -- 7200 =
 
     if used then
         globals.set_int(262145 + 29211, bagSizeVal)
-        gui.show_message('Bag Size Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Bag Size Modified!', out) end
     end
 end)
 
@@ -7762,7 +7772,7 @@ pantherSizeVal, used = ImGui.SliderInt("Panther Value", pantherSizeVal, 1900000,
 
     if used then
         globals.set_int(262145 + 29463, pantherSizeVal)
-        gui.show_message('Panther Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Panther Value Modified!', out) end
     end
 end)
 
@@ -7773,7 +7783,7 @@ diamondSizeVal, used = ImGui.SliderInt("Diamond Value", diamondSizeVal, 1300000,
 
     if used then
         globals.set_int(262145 + 29462, diamondSizeVal)
-        gui.show_message('Diamond Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Diamond Value Modified!', out) end
     end
 end)
 
@@ -7784,7 +7794,7 @@ bondSizeVal, used = ImGui.SliderInt("Bonds Value", bondSizeVal, 770000, 1540000)
 
     if used then
         globals.set_int(262145 + 29461, bondSizeVal)
-        gui.show_message('Bonds Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Bonds Value Modified!', out) end
     end
 end)
 
@@ -7795,7 +7805,7 @@ necklaceSizeVal, used = ImGui.SliderInt("Necklace Value", necklaceSizeVal, 70000
 
     if used then
         globals.set_int(262145 + 29460, necklaceSizeVal)
-        gui.show_message('Necklace Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Necklace Value Modified!', out) end
     end
 end)
 
@@ -7806,7 +7816,7 @@ tequilaSizeVal, used = ImGui.SliderInt("Tequila Value", tequilaSizeVal, 693000, 
 
     if used then
         globals.set_int(262145 + 29459, tequilaSizeVal)
-        gui.show_message('Tequila Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Tequila Value Modified!', out) end
     end
 end)
 
@@ -7821,7 +7831,7 @@ goldSizeVal, used = ImGui.SliderInt("Gold Value", goldSizeVal, 45375, 181500) --
     if used then
     
         STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), goldSizeVal, true)
-        gui.show_message('Gold Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Gold Value Modified!', out) end
     end
 end)
 
@@ -7833,7 +7843,7 @@ cokeSizeVal, used = ImGui.SliderInt("Coke Value", cokeSizeVal, 25312, 101248) --
     if used then
     
         STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_V"), cokeSizeVal, true)
-        gui.show_message('Coke Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Coke Value Modified!', out) end
     end
 end)
 
@@ -7845,7 +7855,7 @@ paintSizeVal, used = ImGui.SliderInt("Paintings Value", paintSizeVal, 22500, 900
     if used then
     
         STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_V"), paintSizeVal, true)
-        gui.show_message('Paintings Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Paintings Value Modified!', out) end
     end
 end)
 
@@ -7857,7 +7867,7 @@ weedSizeVal, used = ImGui.SliderInt("Weed Value", weedSizeVal, 16875, 67500) -- 
     if used then
     
         STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_V"), weedSizeVal, true)
-        gui.show_message('Weed Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Weed Value Modified!', out) end
     end
 end)
 
@@ -7869,7 +7879,7 @@ cashSizeVal, used = ImGui.SliderInt("Cash Value", cashSizeVal, 10406, 41624) -- 
     if used then
     
         STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_V"), cashSizeVal, true)
-        gui.show_message('Cash Value Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Cash Value Modified!', out) end
     end
 end)
 cayoSizeEditor:add_text("These values seem incorrect, but the game reads them properly.")
@@ -7878,7 +7888,7 @@ cayoSizeEditor:add_separator()
 cayoSizeEditor:add_text("Press this after setting values.")
 cayoSizeEditor:add_button("Reset Kosatka Board", function()
         locals.set_int(HIP, 1546, 2)
-        gui.show_message("Cayo Heist", "Planning board has been reset!")
+        if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Planning board has been reset!") end
 end)
 
 -- Doomsday Heist Editor
@@ -7943,7 +7953,7 @@ h2_awd_lock = valEdit:add_checkbox("Apply Payouts")
 
  if  h2_awd_lock:is_enabled() then
         if h2_d1_awd:get_value() > 2500000 or h2_d1_awd:get_value() <= 0 or h2_d2_awd:get_value() > 2500000 or h2_d2_awd:get_value() <= 0 or h2_d3_awd:get_value() > 2500000 or h2_d3_awd:get_value() <= 0 then
-            gui.show_message("Error", "Final chapter income may not exceed 2.500.000 and must be greater than 0")
+            if showNotifications:is_enabled() then gui.show_message("Error", "Final chapter income may not exceed 2.500.000 and must be greater than 0") end
             h2_awd_lock:set_enabled(false)
            return
        end
@@ -8000,13 +8010,13 @@ xmen:add_imgui(function()
     blackHoleRadius, used = ImGui.SliderFloat("Magnet Radius", blackHoleRadius, 0.0, 100.0)
     out = "Radius set to " .. tostring(blackHoleRadius)
     if used then
-        gui.show_message('Magnet Radius Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Magnet Radius Modified!', out) end
     end
 
     magnitude, used = ImGui.SliderFloat("Magnitude", magnitude, 0.0, 50.0) -- Add the magnitude slider
     out = "Magnitude set to " .. tostring(magnitude)
     if used then
-        gui.show_message('Magnitude Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Magnitude Modified!', out) end
     end
 
     blackHoleMarkerVisible = blackHoleLoopCheckbox:is_enabled()
@@ -8084,13 +8094,13 @@ xmen:add_imgui(function()
     forceFieldRadius, used = ImGui.SliderFloat("Force Field Radius", forceFieldRadius, 0.0, 100.0)
     out = "Radius set to " .. tostring(forceFieldRadius)
     if used then
-        gui.show_message('Force Field Radius Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Force Field Radius Modified!', out) end
     end
 
     forceFieldMagnitude, used = ImGui.SliderFloat("Force Field Magnitude", forceFieldMagnitude, 0.0, 100.0)
     out = "Magnitude set to " .. tostring(forceFieldMagnitude)
     if used then
-        gui.show_message('Force Field Magnitude Modified!', out)
+        if showNotifications:is_enabled() then gui.show_message('Force Field Magnitude Modified!', out) end
     end
 
     forceFieldMarkerVisible = forceFieldLoopCheckbox:is_enabled()
@@ -8221,7 +8231,7 @@ toolTip(chatOpt, "Shows [Extras Addon] before your message")
 
 chatOpt:add_button("Send Message", function()
     if isCooldown then
-        gui.show_message('Chat', "There is a delay before sending another chat message.")
+        if showNotifications:is_enabled() then gui.show_message('Chat', "There is a delay before sending another chat message.") end
         return
     end
 
@@ -8270,7 +8280,7 @@ end)
 chatOpt:add_button("Send", function()
     if discordBox ~= "" then
         if isCooldown then
-            gui.show_message('Chat', "There is a delay before sending another discord message.")
+            if showNotifications:is_enabled() then gui.show_message('Chat', "There is a delay before sending another discord message.") end
             return
         end
 
@@ -8288,7 +8298,7 @@ end)
 chatOpt:add_separator()
 chatOpt:add_button("Addon Info", function()
     if isCooldown then
-        gui.show_message('Chat', "There is a delay before sending another addon info message.")
+        if showNotifications:is_enabled() then gui.show_message('Chat', "There is a delay before sending another addon info message.") end
         return
     end
 
@@ -8305,7 +8315,7 @@ end)
 chatOpt:add_sameline()
 chatOpt:add_button("Menu Info", function()
     if isCooldown then
-        gui.show_message('Chat', "There is a delay before sending another menu info message.")
+        if showNotifications:is_enabled() then gui.show_message('Chat', "There is a delay before sending another menu info message.") end
         return
     end
 
@@ -8325,7 +8335,7 @@ chatOpt:add_separator()
 chatOpt:add_button("Announce .rp", function()
 if chatCommands:is_enabled() then
     if isCooldown then
-        gui.show_message('Chat', "There is a delay before sending another menu info message.")
+        if showNotifications:is_enabled() then gui.show_message('Chat', "There is a delay before sending another menu info message.") end
         return
     end
 
@@ -8341,14 +8351,14 @@ if chatCommands:is_enabled() then
         rpMsg:yield()
     end)
 else
-    gui.show_message("Error", "Chat commands are disabled!  Enable them in Settings.")
+    if showNotifications:is_enabled() then gui.show_message("Error", "Chat commands are disabled!  Enable them in Settings.") end
 end
 end)
 chatOpt:add_sameline()
 chatOpt:add_button("Announce .$", function()
 if chatCommands:is_enabled() then
     if isCooldown then
-        gui.show_message('Chat', "There is a delay before sending another menu info message.")
+        if showNotifications:is_enabled() then gui.show_message('Chat', "There is a delay before sending another menu info message.") end
         return
     end
 
@@ -8362,7 +8372,7 @@ if chatCommands:is_enabled() then
         moneyMsg:yield()
     end)
 else
-    gui.show_message("Error", "Chat commands are disabled!  Enable them in Settings.")
+    if showNotifications:is_enabled() then gui.show_message("Error", "Chat commands are disabled!  Enable them in Settings.") end
 end
 end)
 
@@ -8430,7 +8440,7 @@ script.register_looped("autoKick", function(script)
                     if sendChatMessage:is_enabled() then
                         network.send_chat_message("Auto-Kicked " .. detectedModders[pid] .. " - Reason: "..reason, false)
                     end
-                    gui.show_message("Auto Kick", "Automatically kicked " .. detectedModders[pid])
+                    if showNotifications:is_enabled() then gui.show_message("Auto Kick", "Automatically kicked " .. detectedModders[pid]) end
                     kickedModders[pid] = true -- Mark this modder as kicked
                 end
             end 
@@ -8455,7 +8465,7 @@ script.register_looped("hostKick", function(script)
             invalid = "**Invalid**"
             if hostName ~= invalid then
                 command.call("smartkick", {hostPlayerID})
-                gui.show_message("Auto Kick", "Automatically host kicked " .. hostName)
+                if showNotifications:is_enabled() then gui.show_message("Auto Kick", "Automatically host kicked " .. hostName) end
                 lastKickedHostID = nil
                 -- Wait for the game to assign a new host
                 sleep(10)
@@ -8476,6 +8486,12 @@ script.register_looped("noCollision", function(script)
 	end
 end)
 toolTip(settingsTab, "Disables breaking windows on the vehicle you're using")
+
+settingsTab:add_sameline()
+
+showNotifications = settingsTab:add_checkbox("Notifications")
+toolTip(settingsTab, "Shows notification messages from Extras Addon")
+showNotifications:set_enabled(true)
 
 flags = ImGuiWindowFlags.None | ImGuiWindowFlags.NoSavedSettings
 griefPlayerTab:add_imgui(function()
@@ -8525,7 +8541,7 @@ script.register_looped("vehRam", function()
         local randomModel = vehicleModels[math.random(1, #vehicleModels)]
         local modelHash = MISC.GET_HASH_KEY(randomModel)
         if playerPed == PLAYER.PLAYER_PED_ID() then
-            gui.show_message("Vehicle Ram", "Stopped, target has quit the session")
+            if showNotifications:is_enabled() then gui.show_message("Vehicle Ram", "Stopped, target has quit the session") end
             vehRam:set_enabled(false)
             return
         end
@@ -8558,7 +8574,7 @@ script.register_looped("vehRam", function()
                 VEHICLE.SET_DISABLE_MAP_COLLISION(vehicle)
                 ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(vehicle)
                 ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ped)
-                gui.show_message("Vehicle Ram", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with upgraded vehicles with a "..waitTime.." second delay")
+                if showNotifications:is_enabled() then gui.show_message("Vehicle Ram", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with upgraded vehicles with a "..waitTime.." second delay") end
                 sleep(waitTime)
             end
         end
@@ -8604,14 +8620,14 @@ script.register_looped("trollLoop", function(script)
     script:yield()
     if trollLoop:is_enabled() == true then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Teleport Troll","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Teleport Troll","Stopped, player has left the session.") end
                 trollLoop:set_enabled(false)
                 return
             end
          Player = PLAYER.PLAYER_ID()
          player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
         coords = ENTITY.GET_ENTITY_COORDS(player, true)
-        gui.show_message("Teleport Troll", "Teleporting randomly around "..PLAYER.GET_PLAYER_NAME(network.get_selected_player()))
+        if showNotifications:is_enabled() then gui.show_message("Teleport Troll", "Teleporting randomly around "..PLAYER.GET_PLAYER_NAME(network.get_selected_player())) end
         PLAYER.START_PLAYER_TELEPORT(Player, coords.x + math.random(-5, 5), coords.y + math.random(-5, 5), coords.z, 0, true, true, true)
         sleep(0.1)
     end
@@ -8723,7 +8739,7 @@ griefPlayerTab:add_button("Clown Attack", function()
         if ped == 0 then
             gui.show_error("Failed", "Failed To Create Clowns")
         else
-            gui.show_message("Success", "Successfully spawned the attack clowns")
+            if showNotifications:is_enabled() then gui.show_message("Success", "Successfully spawned the attack clowns") end
         end
         sleep(2)
     end)
@@ -8817,7 +8833,7 @@ griefPlayerTab:add_button("Clown Jet Attack", function()
                     if jetVehicle == 0 then
                         gui.show_error("Failed", "Failed to Create Jet")
                     else
-                        gui.show_message("Griefing", "Clown Lazer spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player))
+                        if showNotifications:is_enabled() then gui.show_message("Griefing", "Clown Lazer spawned!  Lock-on Acquired! Target: "..PLAYER.GET_PLAYER_NAME(player)) end
                     end
                 end
             -- Release the resources associated with the spawned entities
@@ -8931,7 +8947,7 @@ griefPlayerTab:add_button("Clown Bombers", function()
             return
         end
 
-        gui.show_message("Clown Bomber", "Spawned as " .. tostring(ped))
+        if showNotifications:is_enabled() then gui.show_message("Clown Bomber", "Spawned as " .. tostring(ped)) end
 
         request_fx_asset(asset)
         GRAPHICS.USE_PARTICLE_FX_ASSET(asset)
@@ -9005,7 +9021,7 @@ toolTip(griefPlayerTab, "Causes a no damage explosion to shake the players scree
 script.register_looped("extrasAddonLooped", function(script)
     --[[if npcDrive:is_enabled() then
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-            gui.show_message("NPC Drive","Stopped, player has left the session.")
+            if showNotifications:is_enabled() then gui.show_message("NPC Drive","Stopped, player has left the session.")
             npcDrive:set_enabled(false)
             return
         end
@@ -9027,7 +9043,7 @@ script.register_looped("extrasAddonLooped", function(script)
     
     if dildos:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Dildo Spam","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Dildo Spam","Stopped, player has left the session.") end
                 dildos:set_enabled(false)
                 return
             end
@@ -9042,7 +9058,7 @@ script.register_looped("extrasAddonLooped", function(script)
     
     if dropBalls:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Balls Spam","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Balls Spam","Stopped, player has left the session.") end
                 dropBalls:set_enabled(false)
                 return
             end
@@ -9058,7 +9074,7 @@ script.register_looped("extrasAddonLooped", function(script)
     
     if vehicleSpin:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Spin Vehicle","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Spin Vehicle","Stopped, player has left the session.") end
                 vehicleSpin:set_enabled(false)
                 return
             end
@@ -9069,13 +9085,13 @@ script.register_looped("extrasAddonLooped", function(script)
             request_control(veh, 300)
             ENTITY.APPLY_FORCE_TO_ENTITY(veh, 5, 0, 0, 20.0, 0, 0, 0, 0, true, false, true, false, true)
             --ENTITY.APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(veh, 5, 0, 150.0, 0, 0, true, false, true)
-            gui.show_message("Spin Vehicle","Spinning Vehicle")
+            if showNotifications:is_enabled() then gui.show_message("Spin Vehicle","Spinning Vehicle") end
         end
     end
     
     if extinguisherCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Extinguisher","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Extinguisher","Stopped, player has left the session.") end
                 extinguisherCB:set_enabled(false)
                 return
             end
@@ -9086,7 +9102,7 @@ script.register_looped("extrasAddonLooped", function(script)
     
     if steamCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Steam","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Steam","Stopped, player has left the session.") end
                 steamCB:set_enabled(false)
                 return
             end
@@ -9097,7 +9113,7 @@ script.register_looped("extrasAddonLooped", function(script)
     
     if hydrantCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Hydrant","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Hydrant","Stopped, player has left the session.") end
                 hydrantCB:set_enabled(false)
                 return
             end
@@ -9108,7 +9124,7 @@ script.register_looped("extrasAddonLooped", function(script)
     
     if explodeCB:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Explode","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Explode","Stopped, player has left the session.") end
                 explodeCB:set_enabled(false)
                 return
             end
@@ -9119,7 +9135,7 @@ script.register_looped("extrasAddonLooped", function(script)
     
     if noDamageExplode:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Screen Shake","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Screen Shake","Stopped, player has left the session.") end
                 noDamageExplode:set_enabled(false)
                 return
             end
@@ -9137,7 +9153,7 @@ burnLoop = griefPlayerTab:add_checkbox("Burn")
 script.register_looped("burnLoop", function()
     if burnLoop:is_enabled() == true then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Burn","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Burn","Stopped, player has left the session.") end
                 burnLoop:set_enabled(false)
                 return
             end
@@ -9151,7 +9167,7 @@ script.register_looped("burnLoop", function()
         GRAPHICS.USE_PARTICLE_FX_ASSET(ptfxAsset)
         GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD(particle, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
 
-        gui.show_message("griefPlayerTab", "Burning "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
+        if showNotifications:is_enabled() then gui.show_message("griefPlayerTab", "Burning "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly") end
 
         -- Optionally, you can play a fire sound here using AUDIO.PLAY_SOUND_FROM_COORD
 
@@ -9166,7 +9182,7 @@ toolTip(griefPlayerTab, "Repeatedly burns the selected player using molotovs")
 script.register_looped("ramLoopz", function()
     if ramLoopz:is_enabled() then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Vehicle Sandwich","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Vehicle Sandwich","Stopped, player has left the session.") end
                 ramLoopz:set_enabled(false)
                 return
             end
@@ -9211,7 +9227,7 @@ script.register_looped("ramLoopz", function()
                             VEHICLE.SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(vehicle2, true)
                         end
 
-                        gui.show_message("griefPlayerTab", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles")
+                        if showNotifications:is_enabled() then gui.show_message("griefPlayerTab", "Ramming " .. PLAYER.GET_PLAYER_NAME(player_id) .. " with vehicles") end
 
                         -- Use these lines to delete the vehicle after spawning.
                         -- Needs some type of delay between spawning and deleting to function properly
@@ -9234,7 +9250,7 @@ explodeLoop = griefPlayerTab:add_checkbox("Explosion")
 script.register_looped("explodeLoop", function()
     if explodeLoop:is_enabled() == true then
     if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Explosion","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Explosion","Stopped, player has left the session.") end
                 explodeLoop:set_enabled(false)
                 return
             end
@@ -9248,7 +9264,7 @@ script.register_looped("explodeLoop", function()
                 GRAPHICS.USE_PARTICLE_FX_ASSET(explosionFx)
                 GRAPHICS.START_PARTICLE_FX_NON_LOOPED_AT_COORD("explosion_barrel", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, true, false)
 
-                gui.show_message("griefPlayerTab", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly")
+                if showNotifications:is_enabled() then gui.show_message("griefPlayerTab", "Exploding "..PLAYER.GET_PLAYER_NAME(player_id).." repeatedly") end
                 -- Optionally, you can play an explosion sound here using AUDIO.PLAY_SOUND_FROM_COORD
 
         sleep(0.4)  -- Sets the timer in seconds for how long this should pause before exploding another player
@@ -9739,7 +9755,7 @@ griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Fragment crash", function()
     script.run_in_fiber(function (fragcrash)
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-            gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+            if showNotifications:is_enabled() then gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself") end
             return
         end
         fraghash = joaat("prop_fragtest_cnst_04")
@@ -9755,7 +9771,7 @@ griefPlayerTab:add_button("Fragment crash", function()
             OBJECT.BREAK_OBJECT_FRAGMENT_CHILD(crashstaff4, 1, false)
         for i = 0, 100 do
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                if showNotifications:is_enabled() then gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself") end
                 return
             end
             local TargetPlayerPos = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
@@ -9776,7 +9792,7 @@ griefPlayerTab:add_button("Fragment crash", function()
         STREAMING.REQUEST_MODEL(fraghash)
         for i=1,10 do
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                if showNotifications:is_enabled() then gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself") end
                 return
             end
             local object = OBJECT.CREATE_OBJECT(fraghash, TargetCrds.x, TargetCrds.y, TargetCrds.z, true, false, false)
@@ -9820,7 +9836,7 @@ griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Model crash", function()
     script.run_in_fiber(function (vtcrash)
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-            gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+            if showNotifications:is_enabled() then gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself") end
             return
         end
         local ship = {-1043459709, -276744698, 1861786828, -2100640717,}
@@ -9830,13 +9846,13 @@ griefPlayerTab:add_button("Model crash", function()
             local c = {}
             for i = 1, 10, 1 do
                 if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-                    gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                    if showNotifications:is_enabled() then gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself") end
                     return
                 end
                 local pos2010 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
                 local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
                 if calcDistance(selfpos, pos2010) <= 100 then
-                    gui.show_message("The attack has stopped","Please stay away from the target first")
+                    if showNotifications:is_enabled() then gui.show_message("The attack has stopped","Please stay away from the target first") end
                     return
                 end
                 c[crash] = CreateVehicle(value, pos2010, 0)
@@ -9853,7 +9869,7 @@ griefPlayerTab:add_button("Model crash", function()
 
     script.run_in_fiber(function (vtcrash3)
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-            gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+            if showNotifications:is_enabled() then gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself") end
             return
         end
         local mdl = joaat("mp_m_freemode_01")
@@ -9864,12 +9880,12 @@ griefPlayerTab:add_button("Model crash", function()
                 local pos114 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
                 local ped = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(network.get_selected_player())
                 if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-                    gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                    if showNotifications:is_enabled() then gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself") end
                     return
                 end
                 local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
                 if calcDistance(selfpos, pos114) <= 100 then
-                    gui.show_message("The attack has stopped","Please stay away from the target first")
+                    if showNotifications:is_enabled() then gui.show_message("The attack has stopped","Please stay away from the target first") end
                     return
                 end
                 local veh = CreateVehicle(veh_mdl, pos114, 0)
@@ -9896,7 +9912,7 @@ griefPlayerTab:add_button("Model crash", function()
     script.run_in_fiber(function (vtcrash2)
         for i = 1, 10, 1 do
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                if showNotifications:is_enabled() then gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself") end
                 return
             end
             local anim_dict = "anim@mp_player_intupperstinker"
@@ -9907,7 +9923,7 @@ griefPlayerTab:add_button("Model crash", function()
         local pos115 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
         local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
         if calcDistance(selfpos, pos115) <= 300 then
-            gui.show_message("The attack has stopped","Please stay away from the target first")
+            if showNotifications:is_enabled() then gui.show_message("The attack has stopped","Please stay away from the target first") end
             return
         end
         local ped = PED.CREATE_RANDOM_PED(pos115.x, pos115.y, pos115.z+10)
@@ -9918,13 +9934,13 @@ griefPlayerTab:add_button("Model crash", function()
         PED.SET_PED_COMBAT_ABILITY(ped, 3)
         for i = 1, 10 do
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then --避免目标离开战局后作用于自己
-                gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself")
+                if showNotifications:is_enabled() then gui.show_message("The attack has stopped","The target has been detected to have left or the target is himself") end
                 return
             end
             local pos116 = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(network.get_selected_player()), false)
             local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
             if calcDistance(selfpos, pos116) <= 300 then
-                gui.show_message("The attack has stopped","Please stay away from the target first")
+                if showNotifications:is_enabled() then gui.show_message("The attack has stopped","Please stay away from the target first") end
                 return
             end
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ped, pos116.x, pos116.y, pos116.z+5, true, true, true)
@@ -9944,8 +9960,8 @@ griefPlayerTab:add_sameline()
 griefPlayerTab:add_button("Break HUD", function()
      pid = network.get_selected_player()
     network.trigger_script_event(1 << pid, {1450115979, pid, 1})
-    gui.show_message("HUD Breaker", "You have broken "..PLAYER.GET_PLAYER_NAME(pid).."'s HUD and Interiors.")
-    gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.")
+    if showNotifications:is_enabled() then gui.show_message("HUD Breaker", "You have broken "..PLAYER.GET_PLAYER_NAME(pid).."'s HUD and Interiors.") end
+    if showNotifications:is_enabled() then gui.show_message("HUD Breaker", "This causes them to have no HUD and also cannot see interior entry points, they can't pause or switch weapons either.") end
 end)
 toolTip(griefPlayerTab, "Removes and breaks the HUD of the selected player, this causes them to not be able to pause, enter apartments and ruins their freemode missions")
 
@@ -10162,8 +10178,8 @@ griefPlayerTab:add_imgui(function()
                 end
                 soundId = AUDIO.PLAY_SOUND_FROM_ENTITY(-1, selectedSound.AudioName, PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(targetPlayer), selectedSound.AudioRef, true, 999999999)
                 soundId = AUDIO.GET_SOUND_ID()
-                gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on "..PLAYER.GET_PLAYER_NAME(targetPlayer))
-                gui.show_message("Sound ID", soundId)
+                if showNotifications:is_enabled() then gui.show_message("Sound Spam", "Playing "..selectedSound.SoundName.." on "..PLAYER.GET_PLAYER_NAME(targetPlayer)) end
+                if showNotifications:is_enabled() then gui.show_message("Sound ID", soundId) end
             end)
     end
 end)
@@ -10214,7 +10230,7 @@ prLoop = dropsPlayerTab:add_checkbox("Princess Robot Bubblegum (On/Off)")
     script.register_looped("princessbubblegumLoop", function(script)
         if prLoop:is_enabled() then
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Princess Robot Figurines","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Princess Robot Figurines","Stopped, player has left the session.") end
                 prLoop:set_enabled(false)
                 return
             end
@@ -10229,7 +10245,7 @@ prLoop = dropsPlayerTab:add_checkbox("Princess Robot Bubblegum (On/Off)")
             end
 
             if STREAMING.HAS_MODEL_LOADED(model) then
-            gui.show_message("RP/Cash Drop Started", "Dropping Princess Robot figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
+            if showNotifications:is_enabled() then gui.show_message("RP/Cash Drop Started", "Dropping Princess Robot figurines on "..PLAYER.GET_PLAYER_NAME(player_id)) end
                  coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                  objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                     pickup,
@@ -10259,7 +10275,7 @@ alienLoop = dropsPlayerTab:add_checkbox("Alien (On/Off)")
     script.register_looped("alienfigurineLoop", function(script)
         if alienLoop:is_enabled() then
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Alien Figurines","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Alien Figurines","Stopped, player has left the session.") end
                 alienLoop:set_enabled(false)
                 return
             end
@@ -10274,7 +10290,7 @@ alienLoop = dropsPlayerTab:add_checkbox("Alien (On/Off)")
             end
 
             if STREAMING.HAS_MODEL_LOADED(model) then
-            gui.show_message("RP/Cash Drop Started", "Dropping Alien figurines on "..PLAYER.GET_PLAYER_NAME(player_id))
+            if showNotifications:is_enabled() then gui.show_message("RP/Cash Drop Started", "Dropping Alien figurines on "..PLAYER.GET_PLAYER_NAME(player_id)) end
                  coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                  objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                     pickup,
@@ -10303,7 +10319,7 @@ cardsLoop = dropsPlayerTab:add_checkbox("Casino Cards (On/Off)")
     script.register_looped("casinocardsLoop", function(script)
         if cardsLoop:is_enabled() then
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Casino Cards","Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Casino Cards","Stopped, player has left the session.") end
                 cardsLoop:set_enabled(false)
                 return
             end
@@ -10318,7 +10334,7 @@ cardsLoop = dropsPlayerTab:add_checkbox("Casino Cards (On/Off)")
             end
 
             if STREAMING.HAS_MODEL_LOADED(model) then
-            gui.show_message("RP/Cash Drop Started", "Dropping Casino Cards on "..PLAYER.GET_PLAYER_NAME(player_id))
+            if showNotifications:is_enabled() then gui.show_message("RP/Cash Drop Started", "Dropping Casino Cards on "..PLAYER.GET_PLAYER_NAME(player_id)) end
                  coords = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(player_id), true)
                  objectIdSpawned = OBJECT.CREATE_AMBIENT_PICKUP(
                     pickup,
@@ -10360,7 +10376,7 @@ dropsPlayerTab:add_button("Give 25k & Random RP", function()
             network.trigger_script_event(1 << pid, {968269233, pid, 0, i, 1, 1, 1})
             tse:yield()
 
-            gui.show_message("Bless RP", "Blessing "..PLAYER.GET_PLAYER_NAME(pid).." with 25k RP (1 time)")
+            if showNotifications:is_enabled() then gui.show_message("Bless RP", "Blessing "..PLAYER.GET_PLAYER_NAME(pid).." with 25k RP (1 time)") end
         end
     end)
 end)
@@ -10371,7 +10387,7 @@ script.register_looped("tseTest", function()
     if tseTest:is_enabled() == true then
         pid = network.get_selected_player()
         if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-            gui.show_message("Super Fast RP", "RP Stopped, player has left the session.")
+            if showNotifications:is_enabled() then gui.show_message("Super Fast RP", "RP Stopped, player has left the session.") end
             tseTest:set_enabled(false)
             return
         end
@@ -10388,7 +10404,7 @@ dropsPlayerTab:add_sameline()
         if ezMoney:is_enabled() == true then
              pid = network.get_selected_player()
             if PLAYER.GET_PLAYER_PED(network.get_selected_player()) == PLAYER.PLAYER_PED_ID() then
-                gui.show_message("Money ($225k)","Money Stopped, player has left the session.")
+                if showNotifications:is_enabled() then gui.show_message("Money ($225k)","Money Stopped, player has left the session.") end
                 ezMoney:set_enabled(false)
                 return
             end
@@ -10591,7 +10607,7 @@ function displayWheelSelection()
                 if selected_wheel_value then
                     wheelType = selected_wheel_value -- Update wheelType variable
                     wheelName = selected_wheel_name
-                    gui.show_message("Wheel Type", "You've selected "..wheelName.." now scroll down and select the style of wheel you want")
+                    if showNotifications:is_enabled() then gui.show_message("Wheel Type", "You've selected "..wheelName.." now scroll down and select the style of wheel you want")
                 end
             end
     ImGui.SameLine()
@@ -10609,7 +10625,7 @@ function displayWheelSelection()
                 local selected_style_value = wheelStyles[wheelName][selected_style_name]
                 wheelStyle = selected_style_value
                 styleName = selected_style_name
-                gui.show_message("Wheel Style", "Your custom wheels - \nType: "..wheelName.. "\nStyle: "..styleName.."\nhave been applied!"..wheelStyle)
+                if showNotifications:is_enabled() then gui.show_message("Wheel Style", "Your custom wheels - \nType: "..wheelName.. "\nStyle: "..styleName.."\nhave been applied!"..wheelStyle)
             end
         end
     ImGui.EndGroup()
@@ -10670,7 +10686,7 @@ giftPlayerTab:add_imgui(function()
             pG = math.floor(primary[2] * 255 + 0.5)
             pB = math.floor(primary[3] * 255 + 0.5)
 
-            gui.show_message("Primary Color", ""..pR.. ', '.. pG.. ', '.. pB)
+            if showNotifications:is_enabled() then gui.show_message("Primary Color", ""..pR.. ', '.. pG.. ', '.. pB)
         end
     end
 end)
@@ -10684,7 +10700,7 @@ giftPlayerTab:add_imgui(function()
             sG = math.floor(secondary[2] * 255 + 0.5)
             sB = math.floor(secondary[3] * 255 + 0.5)
 
-            gui.show_message("Secondary Color", "".. sR.. ', '.. sG.. ', '.. sB)
+            if showNotifications:is_enabled() then gui.show_message("Secondary Color", "".. sR.. ', '.. sG.. ', '.. sB)
         end
     end
 end)
@@ -10703,7 +10719,7 @@ function displayColorSelection()
         local selected_color_value = allColors[selected_color_name]
         if selected_color_value then
             pearlescent = selected_color_value
-            gui.show_message("Pearlescent", selected_color_name)
+            if showNotifications:is_enabled() then gui.show_message("Pearlescent", selected_color_name)
         end
     end
 end
@@ -10729,8 +10745,8 @@ function displayWheelColorSelection()
         local selected_wheel_color_value = allWheelColors[selected_wheel_color_name]
         if selected_wheel_color_value then
             wheelColor = selected_wheel_color_value
-            gui.show_message("Wheel color", selected_wheel_color_name)
-            gui.show_message("Wheel Color", "Only works on upgraded wheels")
+            if showNotifications:is_enabled() then gui.show_message("Wheel color", selected_wheel_color_name)
+            if showNotifications:is_enabled() then gui.show_message("Wheel Color", "Only works on upgraded wheels")
         end
     end
 end
@@ -10807,11 +10823,11 @@ giftPlayerTab:add_button("Spawn Vehicle", function()
                 playerPos.z = playerPos.z + vehicleSpawnDistance.z
 
                 spawn_veh_with_orientation(vehicleHash, playerPos, vehicleOrientationRoll, vehicleOrientationYaw, playerHeading + vehicleOrientationPitch, pR, pG, pB, sR, sG, sB, pearlescent, wheelColor)
-                gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
+                if showNotifications:is_enabled() then gui.show_message("Vehicle Spawner", "Spawned "..vehicles.get_vehicle_display_name(vehicleHash).." for "..playerName)
                 
             end
         else
-            gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
+            if showNotifications:is_enabled() then gui.show_message("Vehicle Spawner", "Please select a vehicle model.")
         end
         -- Re-enable the preview checkbox after some time (if desired)
         --previewVehicles:set_enabled(true)
@@ -10918,7 +10934,7 @@ script.register_looped("vehiclesPreview", function(vehPreview)
                 end
             end
         else
-            gui.show_message("Vehicle Spawner", "Selected vehicle not found.")
+            if showNotifications:is_enabled() then gui.show_message("Vehicle Spawner", "Selected vehicle not found.")
         end
     else
         -- Delete the preview vehicle if preview checkbox is disabled
@@ -10977,10 +10993,10 @@ script.run_in_fiber(function(script)
         DECORATOR.DECOR_SET_INT(vehicle, "Not_Allow_As_Saved_Veh", 0)
         --DECORATOR.DECOR_SET_INT(vehicle, "Player_Vehicle", netHash)
         
-        gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName)
+        if showNotifications:is_enabled() then gui.show_message("Gift Vehicle Success", "Gifted "..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle)).." to "..playerName)
         giftedsucc = true
     else
-        gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
+        if showNotifications:is_enabled() then gui.show_message("Gift Vehicle Failure", "Failed to gain control of the vehicle")
         giftedsucc = false
     end
     script:yield()
@@ -10997,7 +11013,7 @@ function clear_invisible_vehicles(pid, range)
         if dist <= range then
             if vehicle_handle ~= -1 and not ENTITY.IS_ENTITY_VISIBLE(vehicle_handle) then
                 local vehicle_name = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicle_handle))
-                gui.show_message("Deleting invisible vehicle: "..vehicle_name)
+                if showNotifications:is_enabled() then gui.show_message("Deleting invisible vehicle: "..vehicle_name)
                 entities.delete(vehicle_handle)
             end
         end
@@ -11047,7 +11063,7 @@ giftPlayerTab:add_button("Get Vehicle Stats", function()
 
         if last_veh  then
              playerName = PLAYER.GET_PLAYER_NAME(selectedPlayer)
-            gui.show_message("Info",
+            if showNotifications:is_enabled() then gui.show_message("Info",
                 " Player:"..PLAYER.GET_PLAYER_NAME(selectedPlayer).."->"..NETWORK.NETWORK_HASH_FROM_PLAYER_HANDLE(selectedPlayer).."->".. joaat(playerName).."\n".. --NETWORK.GET_HASH_KEY(playerName).."\n"..
                 " Previous_Owner:"..DECORATOR.DECOR_GET_INT(last_veh , "Previous_Owner").."\n"..
                 " Vehicle Model:"..VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(last_veh)).."\n"..
@@ -11117,7 +11133,7 @@ script.register_looped("Extras Addon Config", function(script)
         setEntry("rpMultiplier", rpMultiplier)
         --End Entries
         if saveConfig then
-            gui.show_message("Config", "Saving")
+            if showNotifications:is_enabled() then gui.show_message("Config", "Saving") end
              json_file = io.open("Extras-Addon.json", "w")
             json_file:write(json.encode(configTable))
             json_file:flush()
@@ -11135,7 +11151,7 @@ event.register_handler(menu_event.ChatMessageReceived, function (pid, message)
     playerName = PLAYER.GET_PLAYER_NAME(pid)
 if chatCommands:is_enabled() then
     if message == '.rp on' then
-        gui.show_message(playerName.. ' has requested RP')
+        if showNotifications:is_enabled() then gui.show_message(playerName.. ' has requested RP') end
         for i, p in pairs(players) do
             if p == playerName then
                 player = true
@@ -11225,9 +11241,9 @@ timeCycleMods:add_imgui(function()
         local selectedTimecycle = timecycleNames[selectedModifierIndex + 1]
         if selectedTimecycle then
             GRAPHICS.SET_TIMECYCLE_MODIFIER(selectedTimecycle)
-            gui.show_message("Timecycle Modifier", "Applied: " .. selectedTimecycle)
+            if showNotifications:is_enabled() then gui.show_message("Timecycle Modifier", "Applied: " .. selectedTimecycle) end
         else
-            gui.show_message("Timecycle Modifier", "No modifier selected")
+            if showNotifications:is_enabled() then gui.show_message("Timecycle Modifier", "No modifier selected") end
         end
     end
     
@@ -11235,7 +11251,7 @@ timeCycleMods:add_imgui(function()
     
     if ImGui.Button("Reset") then
         GRAPHICS.CLEAR_TIMECYCLE_MODIFIER()
-        gui.show_message("Timecycle Modifier", "Timecycle modifier reset")
+        if showNotifications:is_enabled() then gui.show_message("Timecycle Modifier", "Timecycle modifier reset") end
     end
 end)
 
