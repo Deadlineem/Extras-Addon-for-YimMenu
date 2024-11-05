@@ -1,0 +1,19 @@
+Documentation & Information
+
+There are several ease of access tools inside of Extras Addon that allow you to do simple tasks when scripting.  Below is a list of these tools and their usages.
+
+
+toolTip(tab, "message") - Adds a tooltip to the button/checkbox in the tab relative to it, tooltip must be below your option.
+Example:  tab:add_button("Some Button", function() end)  toolTip(tab, "Some Button Tooltip info")
+
+showNotifications - used for gui.show_message portions to allow for disabling them.
+Example: if showNotifications:is_enabled() then gui.show_message("Title", "Message Text") end
+
+textSeparator - A separator with text inside of it for clean separation of options inside of your custom tabs.
+Example: textSeparator(tab, "Some Separator Text")
+
+coloredText - Sets the text to a custom color in RGBA
+Example: coloredText("Some Text", {247, 185, 104, 0.78})
+
+helpmarker - displays a hoverable {?} with a tooltip 
+Example: helpmarker(false, "Tooltip Text")
