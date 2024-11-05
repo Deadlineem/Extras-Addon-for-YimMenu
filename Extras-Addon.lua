@@ -17,7 +17,7 @@ ___________         __
           \/      \/    \/           \/
 
     Extras Addon for YimMenu v1.69
-        Addon Version: 1.1.1
+        Addon Version: 1.1.2
 
         Credits:  Yimura, L7Neg,
     Loled69, Alestarov, gir489returns,
@@ -25,7 +25,7 @@ ___________         __
 
 ]]--
 
- addonVersion = "1.1.1"
+ addonVersion = "1.1.2"
 
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
@@ -1709,6 +1709,18 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
     end)
 end)
 toolTip(Stats, "Unlocks everything in the game, untouched script by ShinyWasabi")
+
+Stats:add_sameline()
+genderChange = Stats:add_checkbox("Unlock Gender Change")
+script.register_looped("UnlockGenderChange", function(script)
+	script:yield()
+	if genderChange:is_enabled() then
+		stats.set_int(MPX() .. "ALLOW_GENDER_CHANGE", 52)
+	else
+		stats.set_int(MPX() .. "ALLOW_GENDER_CHANGE", 52)
+	end
+end)
+toolTip(Stats, "Allows you to change your gender from Male to Female and vice versa")
 
 -- Autorun Drops
  Money = KAOS:add_tab("Money Options")
@@ -7655,17 +7667,21 @@ cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX
 end)
 
 cayoHeist:add_separator()
+
+
 cayoHeist:add_text("After Heist")
 cayoHeist:add_button("Skip Cooldown", function()
-
+	current_time = os.time()
     -- Solo Skip
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4_TARGET_POSIX"), 1659643454, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4_COOLDOWN"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4_COOLDOWN_HARD"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .. "H4_TARGET_WEIGHTING_POSIX_TIME"), current_time, true)
+    STATS.STAT_SET_INT(joaat(MPX() .. "H4_COOLDOWN_TIME"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .. "H4_COOLDOWN_HARD_TIME"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX() .. "H4_SOLO_COOLDOWN"), 0, true)
     -- Multiplayer Skip
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4_TARGET_POSIX"), 1659429119, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4_COOLDOWN"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4_COOLDOWN_HARD"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .. "H4_TARGET_WEIGHTING_POSIX_TIME"), current_time, true)
+    STATS.STAT_SET_INT(joaat(MPX() .. "H4_COOLDOWN_TIME"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .. "H4_COOLDOWN_HARD_TIME"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX() .. "H4_SOLO_COOLDOWN"), 0, true)
 
     gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters")
 end)
@@ -7732,7 +7748,7 @@ bagSizeVal, used = ImGui.SliderInt("Bag Size", bagSizeVal, 1800, 7200) -- 7200 =
     out = "Reset the board to see changes"
 
     if used then
-        globals.set_int(262145 + 30009, bagSizeVal)
+        globals.set_int(262145 + 29211, bagSizeVal)
         gui.show_message('Bag Size Modified!', out)
     end
 end)
@@ -7745,7 +7761,7 @@ pantherSizeVal, used = ImGui.SliderInt("Panther Value", pantherSizeVal, 1900000,
     out = "Reset the board to see changes"
 
     if used then
-        globals.set_int(262145 + 30264, pantherSizeVal)
+        globals.set_int(262145 + 29463, pantherSizeVal)
         gui.show_message('Panther Value Modified!', out)
     end
 end)
@@ -7756,7 +7772,7 @@ diamondSizeVal, used = ImGui.SliderInt("Diamond Value", diamondSizeVal, 1300000,
     out = "Reset the board to see changes"
 
     if used then
-        globals.set_int(262145 + 30262, diamondSizeVal)
+        globals.set_int(262145 + 29462, diamondSizeVal)
         gui.show_message('Diamond Value Modified!', out)
     end
 end)
@@ -7767,7 +7783,7 @@ bondSizeVal, used = ImGui.SliderInt("Bonds Value", bondSizeVal, 770000, 1540000)
     out = "Reset the board to see changes"
 
     if used then
-        globals.set_int(262145 + 30261, bondSizeVal)
+        globals.set_int(262145 + 29461, bondSizeVal)
         gui.show_message('Bonds Value Modified!', out)
     end
 end)
@@ -7778,7 +7794,7 @@ necklaceSizeVal, used = ImGui.SliderInt("Necklace Value", necklaceSizeVal, 70000
     out = "Reset the board to see changes"
 
     if used then
-        globals.set_int(262145 + 30260, necklaceSizeVal)
+        globals.set_int(262145 + 29460, necklaceSizeVal)
         gui.show_message('Necklace Value Modified!', out)
     end
 end)
@@ -7789,7 +7805,7 @@ tequilaSizeVal, used = ImGui.SliderInt("Tequila Value", tequilaSizeVal, 693000, 
     out = "Reset the board to see changes"
 
     if used then
-        globals.set_int(262145 + 30259, tequilaSizeVal)
+        globals.set_int(262145 + 29459, tequilaSizeVal)
         gui.show_message('Tequila Value Modified!', out)
     end
 end)
@@ -7936,12 +7952,41 @@ h2_awd_lock = valEdit:add_checkbox("Apply Payouts")
        locals.set_int("GANGOPS_THE_MISSILE_SILO_JOB_CASH_REWARD", h2_d3_awd:get_value())
     end
 
-cluckinHeist = heistEditor:add_tab("Cluckin' Bell")
+missionsTab = KAOS:add_tab("Mission Editor")
+cluckinHeist = missionsTab:add_tab("Cluckin' Bell Editor")
 
-cluckinHeist:add_button("Skip To Finale", function()
-	STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_CFR_COOLDOWN"), -1, true)
-	STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_INST_PROG"), 31, true)
+textSeparator(cluckinHeist, "Cluckin Bell Mission Select")
+
+salvageID = {0, 1, 2, 3, 4, 5, 6}
+salvageNames = {"Select a Mission", "Slush Fund", "Breaking & Entering", "Concealed Weapons", "Hit & Run", "Disorganized Crime", "Scene of the Crime"}
+salvageMissionIndex = 0
+salvageMissionID = salvageID[salvageMissionIndex + 1]
+
+cluckinHeist:add_imgui(function()
+    salvageMissionIndex, used = ImGui.ListBox("##SalvageMissionList", salvageMissionIndex, salvageNames, #salvageNames)
+    
+    if used then
+        salvageMissionID = salvageID[salvageMissionIndex + 1]
+    end
+
+    if ImGui.Button("Set Mission") then
+        if salvageMissionID == 1 then
+            STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_INST_PROG"), 0, true) -- Slush Fund
+        elseif salvageMissionID == 2 then
+            STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_INST_PROG"), 1, true) -- Breaking and Entering
+        elseif salvageMissionID == 3 then
+            STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_INST_PROG"), 3, true) -- Concealed Weapons
+        elseif salvageMissionID == 4 then
+            STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_INST_PROG"), 7, true) -- Hit and Run
+        elseif salvageMissionID == 5 then
+            STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_INST_PROG"), 15, true) -- Disorganized Crime
+        elseif salvageMissionID == 6 then
+            STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_INST_PROG"), 31, true) -- Scene of The Crime
+        end
+        STATS.STAT_SET_INT(joaat(MPX() .. "SALV23_CFR_COOLDOWN"), -1, true) -- Removes the cooldown
+    end
 end)
+toolTip(cluckinHeist, "Applies the selected Mission")
 
 -- Magnet/Forcefield
  xmen = Fun:add_tab("Magnet/Forcefield")
@@ -8116,7 +8161,7 @@ end
 
 -- USBMenus (Contributor) Additions
 
-raceTab = KAOS:add_tab("Race Editor")
+raceTab = Veh:add_tab("Race Editor")
 raceTab:add_imgui(function()
     if (ImGui.TreeNode("Drift Races")) then
         ImGui.SetNextItemWidth(250)
@@ -8154,8 +8199,8 @@ raceTab:add_imgui(function()
 end)
 
 --Chat Options
-local chatOpt = KAOS:add_tab("Chat Options")
-
+local chatOpt = gui.get_tab("GUI_TAB_CHAT")
+textSeparator(chatOpt, "Extras Addon Chat Options")
 chatOpt:add_text("Send Unfiltered Messages")
 local chatBox = ""
 chatOpt:add_imgui(function()
@@ -8267,7 +8312,7 @@ chatOpt:add_button("Menu Info", function()
     isCooldown = true
 
     script.run_in_fiber(function(menuMsg)
-        local binfo = "YimMenu version 1.69, find it on Github for FREE @ https://github.com/YimMenu/YimMenu!"
+        local binfo = "YimMenu version 1.69"
         network.send_chat_message("[Menu]: "..binfo, false)
         sleep(5)
         isCooldown = false  -- Reset the cooldown after the delay
@@ -8322,8 +8367,7 @@ end
 end)
 
 settingsTab = gui.get_tab("GUI_TAB_SETTINGS")
-settingsTab:add_text("Extras Addon Settings")
-settingsTab:add_separator()
+textSeparator(settingsTab, "Extras Addon Settings")
 
 chatCommands = settingsTab:add_checkbox("Enable Chat Commands")
 toolTip(settingsTab, "Enables .rp on, .rp off and .$ commands for others to use in chat.")
@@ -11138,7 +11182,8 @@ script.register_looped('rpChatters', function(script)
     end
 end)
 
-timeCycleMods = KAOS:add_tab("TimeCycles")
+
+timeCycleMods = gui.get_tab("GUI_TAB_WORLD"):add_tab("TimeCycles")
 
 searchQuery = ""
 filteredTimecycleModifiers = {}
