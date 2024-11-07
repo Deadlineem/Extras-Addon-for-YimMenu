@@ -4801,3 +4801,26 @@ function textSeparator(tab, text)
         ImGui.SeparatorText(text)
     end
 end
+
+-- GoldenGets
+function start_script(script_name, stack_size, script) -- Computer thread
+	if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat(script_name)) >= 1 then
+		return
+	end
+	SCRIPT.REQUEST_SCRIPT(script_name)
+	repeat script:yield() until SCRIPT.HAS_SCRIPT_LOADED(script_name)
+	SYSTEM.START_NEW_SCRIPT(script_name, stack_size)
+	SCRIPT.SET_SCRIPT_AS_NO_LONGER_NEEDED(script_name)
+	script:sleep(100)
+	if script_name == 'appArcadeBusinessHub' then
+		while SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat(script_name)) >= 1 do
+			if globals.get_int(global_computer_type) == -1 then
+				globals.set_int(has_bought_something, 0)
+			end
+			script:yield()
+		end
+	else
+		repeat script:yield() until SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat(script_name)) == 0
+		globals.set_int(has_bought_something, 0)
+	end
+end
