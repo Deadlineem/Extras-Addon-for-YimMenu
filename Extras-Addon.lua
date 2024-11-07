@@ -5939,6 +5939,14 @@ Global:add_text("World Options")
 
 riotMode = Global:add_checkbox("Riot Mode")
 toolTip(Global, "Makes all pedestrians riot")
+script.register_looped("riotMode", function(script)
+    if riotMode:is_enabled() then
+        MISC.SET_RIOT_MODE_ENABLED(true)
+    else
+        MISC.SET_RIOT_MODE_ENABLED(false)
+    end
+end)
+
 Global:add_sameline()
 maxNPCVehicles = Global:add_checkbox("Max all NPC Vehicles")
     script.register_looped("maxNPCVehicles", function(script)
@@ -5959,14 +5967,6 @@ maxNPCVehicles = Global:add_checkbox("Max all NPC Vehicles")
         sleep(10)
     end)
 toolTip(Global, "Modify's nearby NPC vehicles with max mods/performance, Benny's/F1 wheels and random colors every 5 seconds.")
-script.register_looped("riotMode", function(script)
-    if riotMode:is_enabled() then
-        MISC.SET_RIOT_MODE_ENABLED(true)
-    else
-        MISC.SET_RIOT_MODE_ENABLED(false)
-    end
-end)
-
 -- Story Mode Options
 
 StoryCharacters = KAOS:add_tab("Story Mode")
@@ -6131,10 +6131,15 @@ Weapons:add_separator()
 
 -- Business Management
  Business = KAOS:add_tab("Business Manager")
-
- agency = Business:add_tab("Agency")
-
  
+Business:add_button("Master Control Terminal", function()
+	script.run_in_fiber(function (script)
+		start_script('appArcadeBusinessHub', 1424, script)
+	end)
+end)
+toolTip(Business, "Opens the Master Control Terminal for managing all businesses")
+
+agency = Business:add_tab("Agency")
 
 selectedContractIndex = 0
 selectedContract = contracts[selectedContractIndex + 1]
@@ -6280,10 +6285,10 @@ mcBus:add_button("MC President (On/Off)", function()
 end)
 toolTip(mcBus, "Register as an MC President")
 mcBus:add_text("Resuppliers")
-acidLab = mcBus:add_checkbox("Resupply Acid Lab (Looped)")
+acidResupply = mcBus:add_checkbox("Resupply Acid Lab (Looped)")
 script.register_looped("autoGetAcidCargo", function(script)
     script:yield()
-    if acidLab:is_enabled() == true then
+    if acidResupply:is_enabled() == true then
         autoGetAcidCargo = not autoGetAcidCargo
         if autoGetAcidCargo then
             globals.set_int(1663174 + 1 + 6, 1)
@@ -6491,11 +6496,18 @@ script.register_looped("mcNameCB", function(mcName)
     end
 end)
 
- arcade = Business:add_tab("Arcade")
+acidLab = Business:add_tab("Acid Lab")
 
- 
+acidLab:add_button("Skip Missions", function()
+	if stats.get_int("MPX_AWD_CALLME") < 10 then -- Job Finished
+		stats.set_int("MPX_AWD_CALLME", 10)
+	end
+end)
+toolTip(acidLab, "Instantly unlocks the Acid Lab for purchase on warstock.")
 
- arcadeSafe = arcade:add_checkbox("Arcade Safe Loop")
+arcade = Business:add_tab("Arcade")
+
+arcadeSafe = arcade:add_checkbox("Arcade Safe Loop")
 script.register_looped("arcadeloop", function(script)
     script:yield()
     if arcadeSafe:is_enabled() == true then
@@ -11111,6 +11123,10 @@ if persisted_config == nil then
     --Add entries here
     presistEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)
     presistEntry("rpMultiplier", rpMultiplier)
+	presistEntry("notifications", showNotifications:is_enabled())
+	presistEntry("kickHost", hostKick:is_enabled())
+	presistEntry("pedsRiot", riotMode:is_enabled())
+	presistEntry("maxVehicles", maxNPCVehicles:is_enabled())
     --End Entires
      new_file = io.open("Extras-Addon.json", "w+")
     new_file:write(json.encode(configTable))
@@ -11121,6 +11137,10 @@ else
     --add entries, they need to be set to the values in the config
     tirePTFX:set_enabled(configTable["tireParticles"]) --sets the value of the component to the value from the config
     rpMultiplier = configTable["rpMultiplier"]
+	showNotifications:set_enabled(configTable["notifications"])
+	hostKick:set_enabled(configTable["kickHost"])
+	riotMode:set_enabled(configTable["pedsRiot"])
+	maxNPCVehicles:set_enabled(configTable["maxVehicles"])
     --end entries
     persisted_config:close()
 end
@@ -11131,6 +11151,10 @@ script.register_looped("Extras Addon Config", function(script)
         --Each entry should look like this
         setEntry("tireParticles", tirePTFX:is_enabled()) --param0 is the entry in the config table, param1 is the value to set the entry in the table(this will be the current value of the component)
         setEntry("rpMultiplier", rpMultiplier)
+		setEntry("notifications", showNotifications:is_enabled())
+		setEntry("kickHost", hostKick:is_enabled())
+		setEntry("pedsRiot", riotMode:is_enabled())
+		setEntry("maxVehicles", maxNPCVehicles:is_enabled())
         --End Entries
         if saveConfig then
             if showNotifications:is_enabled() then gui.show_message("Config", "Saving") end
