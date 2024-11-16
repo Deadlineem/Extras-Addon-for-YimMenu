@@ -4502,6 +4502,112 @@ function calcDistance(player, target)
     return distance
 end
 
+function delete_entity(ent)
+	if ENTITY.DOES_ENTITY_EXIST(ent) then
+		ENTITY.DETACH_ENTITY(ent, true, true)
+		ENTITY.SET_ENTITY_VISIBLE(ent, false, false)
+		NETWORK.NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true)
+		ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ent, 0.0, 0.0, -1000.0, false, false, false)
+		ENTITY.SET_ENTITY_COLLISION(ent, false, false)
+		ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
+		ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ent)
+		ENTITY.DELETE_ENTITY(ent)
+	end
+end
+
+function selfTP(keepVehicle, setHeading, coords, heading)
+    script.run_in_fiber(function(selftp)
+      STREAMING.REQUEST_COLLISION_AT_COORD(coords.x, coords.y, coords.z)
+      selftp:sleep(300)
+      if setHeading then
+        if heading == nil then
+          heading = 0
+        end
+        ENTITY.SET_ENTITY_HEADING(PLAYER.PLAYER_PED_ID(), heading)
+      end
+      if keepVehicle then
+        PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), coords.x, coords.y, coords.z)
+      else
+        TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.PLAYER_PED_ID())
+        ENTITY.SET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), coords.x, coords.y, coords.z, false, false, false, true)
+      end
+    end)
+  end
+
+ function createText(tab, text)
+    tab:add_text(text)
+end
+
+function sleep(seconds)
+    local start = os.clock()
+    while os.clock() - start < seconds do
+        -- Yield the CPU to avoid high CPU usage during the delay
+        coroutine.yield()
+    end
+end
+
+function delete_entity(ent) --discord@rostal315
+    if ENTITY.DOES_ENTITY_EXIST(ent) then
+        ENTITY.DETACH_ENTITY(ent, true, true)
+        ENTITY.SET_ENTITY_VISIBLE(ent, false, false)
+        NETWORK.NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ent, 0.0, 0.0, -1000.0, false, false, false)
+        ENTITY.SET_ENTITY_COLLISION(ent, false, false)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ent)
+        ENTITY.DELETE_ENTITY(ent)
+    end
+end
+
+function toolTip(tab, text, seperate)
+    seperate = seperate or false
+    if tab == "" then
+        if seperate then --waiting approval
+            ImGui.SameLine()
+            ImGui.TextDisabled("(?)")
+        end
+        if ImGui.IsItemHovered() then
+            ImGui.BeginTooltip()
+      ImGui.Text(text)
+            ImGui.EndTooltip()
+        end
+    else
+        tab:add_imgui(function()
+            if seperate then
+                ImGui.SameLine()
+                ImGui.TextDisabled("(?)")
+            end
+            if ImGui.IsItemHovered() then
+                ImGui.BeginTooltip()
+                ImGui.Text(text)
+                ImGui.EndTooltip()
+            end
+        end)
+    end
+end
+
+function newText(tab, text, size)
+    size = size or 1
+    tab:add_imgui(function()
+        ImGui.SetWindowFontScale(size)
+        ImGui.Text(text)
+        ImGui.SetWindowFontScale(1)
+    end)
+end
+
+function SessionChanger(session)
+    globals.set_int(1575035, session)
+        if session == -1 then
+            globals.set_int(1574589 + 2, -1)
+        end
+        sleep(0.5)
+        globals.set_int(1574589, 1)
+        sleep(0.5)
+        globals.set_int(1574589, 0)
+end
+
+
+
 function playSelected(target, prop1, prop2, loopedFX, propPed, targetBone, targetCoords, targetHeading, targetForwardX, targetForwardY, targetBoneCoords, ent, propTable, ptfxTable)
     if info.type == 1 then
       if ent == "self" then
