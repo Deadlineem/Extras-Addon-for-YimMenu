@@ -1,7 +1,6 @@
- json = require('json')
+json = require('json')
 
---[[
-
+credits = [[
 
 ___________         __
 \_   _____/__  ____/  |_____________    ______
@@ -21,92 +20,18 @@ ___________         __
 
         Credits:  Yimura, L7Neg,
     Loled69, Alestarov, gir489returns,
-      TheKuter, RazorGamerX, USBMenus & More!
+  TheKuter, RazorGamerX, USBMenus & More!
+]]
 
-]]--
-
- addonVersion = "1.1.2"
-
+addonVersion = "1.1.2"
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
 giftPlayerTab = gui.get_tab("")
 
--- Function to create a text element
- function createText(tab, text)
-    tab:add_text(text)
-end
-
-function sleep(seconds)
-    local start = os.clock()
-    while os.clock() - start < seconds do
-        -- Yield the CPU to avoid high CPU usage during the delay
-        coroutine.yield()
-    end
-end
-
-function delete_entity(ent) --discord@rostal315
-    if ENTITY.DOES_ENTITY_EXIST(ent) then
-        ENTITY.DETACH_ENTITY(ent, true, true)
-        ENTITY.SET_ENTITY_VISIBLE(ent, false, false)
-        NETWORK.NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true)
-        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ent, 0.0, 0.0, -1000.0, false, false, false)
-        ENTITY.SET_ENTITY_COLLISION(ent, false, false)
-        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
-        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ent)
-        ENTITY.DELETE_ENTITY(ent)
-    end
-end
-
-function toolTip(tab, text, seperate)
-    seperate = seperate or false
-    if tab == "" then
-        if seperate then --waiting approval
-            ImGui.SameLine()
-            ImGui.TextDisabled("(?)")
-        end
-        if ImGui.IsItemHovered() then
-            ImGui.BeginTooltip()
-      ImGui.Text(text)
-            ImGui.EndTooltip()
-        end
-    else
-        tab:add_imgui(function()
-            if seperate then
-                ImGui.SameLine()
-                ImGui.TextDisabled("(?)")
-            end
-            if ImGui.IsItemHovered() then
-                ImGui.BeginTooltip()
-                ImGui.Text(text)
-                ImGui.EndTooltip()
-            end
-        end)
-    end
-end
-
-function newText(tab, text, size)
-    size = size or 1
-    tab:add_imgui(function()
-        ImGui.SetWindowFontScale(size)
-        ImGui.Text(text)
-        ImGui.SetWindowFontScale(1)
-    end)
-end
-
-function SessionChanger(session)
-    globals.set_int(1575035, session)
-        if session == -1 then
-            globals.set_int(1574589 + 2, -1)
-        end
-        sleep(0.5)
-        globals.set_int(1574589, 1)
-        sleep(0.5)
-        globals.set_int(1574589, 0)
-end
-
 -- Extras Menu Addon for YimMenu 1.69 by DeadlineEm
- KAOS = gui.get_tab("Extras Addon")
+KAOS = gui.get_tab("Extras Addon")
 require("Extras-data")
+log.info(credits)
 newText(KAOS, "Welcome to Extras Addon v"..addonVersion.." please read the information below before proceeding to use the menu options.", 1)
 KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
@@ -4543,62 +4468,67 @@ script.register_looped("Auto Brake Lights", function()
     end
 end)
 
+function load_ptfx(ptfxName)
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET(ptfxName)
+	
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(ptfxName) then
+        return false
+    end
+
+    return true
+end
+
 script.register_looped("NOS ptfx", function(spbptfx)
     if isDriving() then
         if speedBoost and ptfx then
-            if validModel or is_boat or is_bike then
-                if PAD.IS_DISABLED_CONTROL_PRESSED(0, tdBtn) and PAD.IS_CONTROL_PRESSED(0, 71) then
-                    if VEHICLE.GET_IS_VEHICLE_ENGINE_RUNNING(current_vehicle) then
-                        local effect  = "veh_xs_vehicle_mods"
-                        local counter = 0
-                        while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(effect) do
-                            STREAMING.REQUEST_NAMED_PTFX_ASSET(effect)
-                            spbptfx:yield()
-                            if counter > 100 then
-                                return
-                            else
-                                counter = counter + 1
-                            end
-                        end
-                        local exhaustCount = VEHICLE.GET_VEHICLE_MAX_EXHAUST_BONE_COUNT_() - 1
-                        for i = 0, exhaustCount do
-                            local retBool, boneIndex = VEHICLE.GET_VEHICLE_EXHAUST_BONE_(current_vehicle, i, retBool, boneIndex)
-                            if retBool then
-                                GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
-                                nosPtfx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("veh_nitrous", current_vehicle, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, boneIndex, 1.0, false, false, false, 0, 0, 0)
-                                table.insert(nosptfx_t, nosPtfx)
-                                if nosvfx then
-                                    GRAPHICS.ANIMPOSTFX_PLAY("DragRaceNitrous", 0, false)
-                                end
-                                nos_started = true
-                            end
-                        end
-                        if nos_started then
-                            repeat
-                                spbptfx:sleep(50)
-                            until
-                                PAD.IS_DISABLED_CONTROL_RELEASED(0, tdBtn) or PAD.IS_CONTROL_RELEASED(0, 71)
-                            if nosvfx then
-                                GRAPHICS.ANIMPOSTFX_PLAY("DragRaceNitrousOut", 0, false)
-                            end
-                            if GRAPHICS.ANIMPOSTFX_IS_RUNNING("DragRaceNitrous") then
-                                GRAPHICS.ANIMPOSTFX_STOP("DragRaceNitrous")
-                            end
-                            if GRAPHICS.ANIMPOSTFX_IS_RUNNING("DragRaceNitrousOut") then
-                                GRAPHICS.ANIMPOSTFX_STOP("DragRaceNitrousOut")
-                            end
-                            for _, nos in ipairs(nosptfx_t) do
-                                if GRAPHICS.DOES_PARTICLE_FX_LOOPED_EXIST(nos) then
-                                    GRAPHICS.STOP_PARTICLE_FX_LOOPED(nos)
-                                    GRAPHICS.REMOVE_PARTICLE_FX(nos)
-                                    nos_started = false
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
+			if load_ptfx("veh_xs_vehicle_mods") then
+				if validModel or is_boat or is_bike then
+					if PAD.IS_DISABLED_CONTROL_PRESSED(0, tdBtn) and PAD.IS_CONTROL_PRESSED(0, 71) then
+						if VEHICLE.GET_IS_VEHICLE_ENGINE_RUNNING(current_vehicle) then
+							local effect  = "veh_xs_vehicle_mods"
+							local counter = 0
+							
+							local exhaustCount = VEHICLE.GET_VEHICLE_MAX_EXHAUST_BONE_COUNT_() - 1
+							for i = 0, exhaustCount do
+								local retBool, boneIndex = VEHICLE.GET_VEHICLE_EXHAUST_BONE_(current_vehicle, i, retBool, boneIndex)
+								if retBool then
+									GRAPHICS.USE_PARTICLE_FX_ASSET(effect)
+									nosPtfx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("veh_nitrous", current_vehicle, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, boneIndex, 1.0, false, false, false, 0, 0, 0)
+									table.insert(nosptfx_t, nosPtfx)
+									if nosvfx then
+										GRAPHICS.ANIMPOSTFX_PLAY("DragRaceNitrous", 0, false)
+									end
+									nos_started = true
+								end
+							end
+							if nos_started then
+								repeat
+									spbptfx:sleep(50)
+								until
+									PAD.IS_DISABLED_CONTROL_RELEASED(0, tdBtn) or PAD.IS_CONTROL_RELEASED(0, 71)
+								if nosvfx then
+									GRAPHICS.ANIMPOSTFX_PLAY("DragRaceNitrousOut", 0, false)
+								end
+								if GRAPHICS.ANIMPOSTFX_IS_RUNNING("DragRaceNitrous") then
+									GRAPHICS.ANIMPOSTFX_STOP("DragRaceNitrous")
+								end
+								if GRAPHICS.ANIMPOSTFX_IS_RUNNING("DragRaceNitrousOut") then
+									GRAPHICS.ANIMPOSTFX_STOP("DragRaceNitrousOut")
+								end
+								for _, nos in ipairs(nosptfx_t) do
+									if GRAPHICS.DOES_PARTICLE_FX_LOOPED_EXIST(nos) then
+										GRAPHICS.STOP_PARTICLE_FX_LOOPED(nos)
+										GRAPHICS.REMOVE_PARTICLE_FX(nos)
+										nos_started = false
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
     end
 end)
 
@@ -4781,42 +4711,40 @@ end)
 script.register_looped("Purge", function(nosprg)
     if isDriving() then
         if nosPurge and validModel or nosPurge and is_bike then
-            if PAD.IS_DISABLED_CONTROL_PRESSED(0, 73) then
-                local dict       = "core"
-                local purgeBones = {"suspension_lf", "suspension_rf"}
-                if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(dict) then
-                    STREAMING.REQUEST_NAMED_PTFX_ASSET(dict)
-                    coroutine.yield()
-                end
-                for _, boneName in ipairs(purgeBones) do
-                    local purge_exit = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, boneName)
-                    if boneName == "suspension_lf" then
-                        rotZ = -180.0
-                        posX = -0.3
-                    else
-                        rotZ = 0.0
-                        posX = 0.3
-                    end
-                    GRAPHICS.USE_PARTICLE_FX_ASSET(dict)
-                    purgePtfx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("weap_extinguisher", current_vehicle, posX, -0.33, 0.2, 0.0, -17.5, rotZ, purge_exit, 0.4, false, false, false, 0, 0, 0)
-                    table.insert(purgePtfx_t, purgePtfx)
-                    purge_started = true
-                end
-                if purge_started then
-                    repeat
-                        nosprg:sleep(50)
-                    until
-                        PAD.IS_DISABLED_CONTROL_RELEASED(0, 73)
-                    for _, purge in ipairs(purgePtfx_t) do
-                        if GRAPHICS.DOES_PARTICLE_FX_LOOPED_EXIST(purge) then
-                            GRAPHICS.STOP_PARTICLE_FX_LOOPED(purge)
-                            GRAPHICS.REMOVE_PARTICLE_FX(purge)
-                            purge_started = false
-                        end
-                    end
-                end
-            end
-        end
+			if load_ptfx("core") then
+				if PAD.IS_DISABLED_CONTROL_PRESSED(0, 73) then
+					local dict       = "core"
+					local purgeBones = {"suspension_lf", "suspension_rf"}
+					for _, boneName in ipairs(purgeBones) do
+						local purge_exit = ENTITY.GET_ENTITY_BONE_INDEX_BY_NAME(current_vehicle, boneName)
+						if boneName == "suspension_lf" then
+							rotZ = -180.0
+							posX = -0.3
+						else
+							rotZ = 0.0
+							posX = 0.3
+						end
+						GRAPHICS.USE_PARTICLE_FX_ASSET(dict)
+						purgePtfx = GRAPHICS.START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("weap_extinguisher", current_vehicle, posX, -0.33, 0.2, 0.0, -17.5, rotZ, purge_exit, 0.4, false, false, false, 0, 0, 0)
+						table.insert(purgePtfx_t, purgePtfx)
+						purge_started = true
+					end
+					if purge_started then
+						repeat
+							nosprg:sleep(50)
+						until
+							PAD.IS_DISABLED_CONTROL_RELEASED(0, 73)
+						for _, purge in ipairs(purgePtfx_t) do
+							if GRAPHICS.DOES_PARTICLE_FX_LOOPED_EXIST(purge) then
+								GRAPHICS.STOP_PARTICLE_FX_LOOPED(purge)
+								GRAPHICS.REMOVE_PARTICLE_FX(purge)
+								purge_started = false
+							end
+						end
+					end
+				end
+			end
+		end
     else
         nosprg:yield()
     end
@@ -6139,117 +6067,6 @@ Business:add_button("Master Control Terminal", function()
 end)
 toolTip(Business, "Opens the Master Control Terminal for managing all businesses")
 
-agency = Business:add_tab("Agency")
-
-selectedContractIndex = 0
-selectedContract = contracts[selectedContractIndex + 1]
-
-agency:add_text("Agency Contract Selection")
-
--- Display the listbox
-contractChanged = false
-
-agency:add_imgui(function()
-    -- Extract the contract names for the ListBox
-    local contract_names = {}
-    for i, contract in ipairs(contracts) do
-        table.insert(contract_names, contract.name)
-    end
-
-    selectedContractIndex, used = ImGui.ListBox("##ContractList", selectedContractIndex, contract_names, #contract_names) -- Display the listbox
-    if used then
-        selectedContract = contracts[selectedContractIndex + 1]
-    end
-
-    if ImGui.Button("Select Contract") then
-        local contractToUse = contracts[selectedContractIndex + 1]
-        
-        if contractToUse and contractToUse.id then  -- Ensure contractToUse is not nil and has a valid id
-            STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_BS"), contractToUse.id, true)
-            if showNotifications:is_enabled() then gui.show_message("Agency", "Contract: " .. contractToUse.name .. " ID: " .. contractToUse.id .. " Selected") end
-        else
-            if showNotifications:is_enabled() then gui.show_message("Error", "Invalid Contract ID") end
-        end
-    end
-end)
-toolTip(agency, "Sets the selected contract as the one you are currently playing")
-agency:add_sameline()
-
-agency:add_button("Complete Preps", function()
-    script.run_in_fiber(function(agencyPreps)
-        STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_GENERAL_BS"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COMPLETED_BS"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_COOLDOWN_POSIX"), -1, true)
-    end)
-end)
-toolTip(agency, "Completes the preps of your current contract")
-agency:add_sameline()
-agency:add_button("Skip Cooldown", function()
-    script.run_in_fiber(function(agencyCD)
-        STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_COOLDOWN"), -1, true)
-    end)
-end)
-toolTip(agency, "Skips the cooldown between playing contracts")
-agency:add_imgui(function()
-    if (ImGui.TreeNode("How To Use")) then
-        ImGui.Text("Select the contract you want to play and press Select Contract.")
-        ImGui.Text("Press Complete Preps and then WALK OUTSIDE and roam until you get a call from Franklin.")
-        ImGui.Text("Go back inside the agency and skip the cutscene if you want to.")
-        ImGui.Separator()
-        ImGui.Text("Now, depending on which mission you select you will either go to the computer.")
-        ImGui.Text("OR")
-        ImGui.Text("If DFW Dre is selected, there should be a yellow marker on the ground outside Franklins office.")
-    end
-    toolTip("", "How to set up the agency contracts properly.")
-end)
-agency:add_separator()
-agency:add_text("Money")
- agencySafe = agency:add_checkbox("Agency Safe Loop")
-script.register_looped("agencyloop", function(script)
-    script:yield()
-    if agencySafe:is_enabled() == true then
-        if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying Agency Safe with money") end
-        STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COUNT"), 500, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
-        sleep(0.5)
-    end
-end)
-toolTip(agency, "Fills your agency safe with money")
- bunker = Business:add_tab("Bunker")
-
-bunker:add_button("Unlock All Shooting Range", function()
-    script.run_in_fiber(function(unlockSR)
- 
-        STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_1"), 690, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_2"), 1860, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_3"), 2690, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_4"), 2660, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_5"), 2650, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_6"), 450, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "SR_TARGETS_HIT"), 269, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "SR_WEAPON_BIT_SET"), -1, true)
-        STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_TIER_1_REWARD"), true, true)
-        STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_TIER_3_REWARD"), true, true)
-        STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_INCREASE_THROW_CAP"), true, true)
-    end)
-end)
-toolTip(bunker, "Sets all shooting range missions to completed @ 3 stars")
-bunker:add_sameline()
- 
-
-bunker:add_sameline()
- bSupplies = bunker:add_checkbox("Resupply Bunker (Looped)")
-script.register_looped("autoGetBunkerCargo", function(script)
-    script:yield()
-    if bSupplies:is_enabled() == true then
-        autoGetBunkerCargo = not autoGetBunkerCargo
-        if autoGetBunkerCargo then
-            globals.set_int(1663174 + 1 + 5, 1)
-            if showNotifications:is_enabled() then gui.show_message("Bunker", "Resupplying your bunker supplies.") end
-        end
-    end
-end)
-toolTip(bunker, "Instantly resupplies your bunker supplies")
  Hangar = Business:add_tab("Hangar")
 
 hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
@@ -6496,30 +6313,8 @@ script.register_looped("mcNameCB", function(mcName)
     end
 end)
 
-acidLab = Business:add_tab("Acid Lab")
-
-acidLab:add_button("Skip Missions", function()
-	if stats.get_int("MPX_AWD_CALLME") < 10 then -- Job Finished
-		stats.set_int("MPX_AWD_CALLME", 10)
-	end
-end)
-toolTip(acidLab, "Instantly unlocks the Acid Lab for purchase on warstock.")
-
-arcade = Business:add_tab("Arcade")
-
-arcadeSafe = arcade:add_checkbox("Arcade Safe Loop")
-script.register_looped("arcadeloop", function(script)
-    script:yield()
-    if arcadeSafe:is_enabled() == true then
-        if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying Arcade Safe with money") end
-        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_PAY_TIME_LEFT"), -1, true)
-        sleep(0.5)
-    end
-end)
-toolTip(arcade, "Fills your arcade safe with money")
 -- Nightclub Loop - L7Neg
- Club = Business:add_tab("Nightclub")
+Club = Business:add_tab("Nightclub")
 
 Club:add_button("Skip Preps/Setups", function()
 		stats.set_packed_stat_bool(22067, true)
@@ -6532,10 +6327,25 @@ toolTip(Club, "Skips all of the Setups and Preps for setting up your nightclub")
 Club:add_sameline()
 Club:add_button("Max Club Popularity", function()
     STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
+	if showNotifications:is_enabled() then gui.show_message("Nightclub", "Popularity Maxed") end
 end)
 toolTip(Club, "Max your nightclubs popularity")
 
+Club:add_sameline()
+Club:add_button("Remove Cooldowns", function()
+	tunables.set_int("BB_CLUB_MANAGEMENT_CLUB_MANAGEMENT_MISSION_COOLDOWN", 0)
+	tunables.set_int("BB_SELL_MISSIONS_MISSION_COOLDOWN", 0)
+	tunables.set_int("BB_SELL_MISSIONS_DELIVERY_VEHICLE_COOLDOWN_AFTER_SELL_MISSION", 0)
+	stats.set_int("MPX_SOURCE_GOODS_CDTIMER", -1)
+	stats.set_int("MPX_SOURCE_RESEARCH_CDTIMER", -1)
+	tunables.set_int("EXPORT_CARGO_LAUNCH_CD_TIME", 0)
+	tunables.set_int("NC_SOURCE_TRUCK_COOLDOWN", 0)
+	tunables.set_int("NIGHTCLUB_SOURCE_GOODS_CD_TIME", 0)
+	if showNotifications:is_enabled() then gui.show_message("Nightclub", "Missions/Exports/Sourcing/Sales Cooldowns removed") end
+end)
+toolTip(Club, "Removes cooldowns for all Nightclub Missions/Exports/Sourcing/Sales")
 Club:add_separator()
+
 nClub = Club:add_checkbox("Nightclub Safe Loop")
 script.register_looped("nightclubloop", function(script)
     script:yield()
@@ -6548,7 +6358,7 @@ script.register_looped("nightclubloop", function(script)
 end)
 toolTip(Club, "Fills your nightclub safe with money")
 
- CEO = Business:add_tab("CEO")
+CEO = Business:add_tab("CEO")
 
 CEO:add_button("Register as CEO", function()
     -- -1 is off, 0 is on
@@ -7660,8 +7470,8 @@ cayoHeist:add_button("Remove All CCTV's", function()
         for _, ent in pairs(entities.get_all_objects_as_handles()) do
             for __, cam in pairs(CamList) do
                 if ENTITY.GET_ENTITY_MODEL(ent) == cam then
-                    ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
-                    ENTITY.DELETE_ENTITY(ent)
+					request_control(ent, 300)
+                    delete_entity(ent)
                     if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Deleted all mission Cameras") end
                 end
             end
@@ -7681,7 +7491,8 @@ cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX
     for index, ped in ipairs(entities.get_all_peds_as_handles()) do
          model = ENTITY.GET_ENTITY_MODEL(ped)
         if model == 0x7ED5AD78 or model == 0x6C8C08E5 or model == 0x995B3F9F or model == 0xB881AEE then
-                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
+				request_control(ped, 300)
+                delete_entity(ped)
                 PED.DELETE_PED(ped)
                 if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Deleted all mission NPC's.  This will cause the keycards to not drop, use Gold teleport to bypass when standing near a secondary loot room.") end
         end
@@ -11128,7 +10939,7 @@ if persisted_config == nil then
 	presistEntry("pedsRiot", riotMode:is_enabled())
 	presistEntry("maxVehicles", maxNPCVehicles:is_enabled())
     --End Entires
-     new_file = io.open("Extras-Addon.json", "w+")
+    new_file = io.open("Extras-Addon.json", "w+")
     new_file:write(json.encode(configTable))
     new_file:flush()
     new_file:close() 
@@ -11328,3 +11139,210 @@ script.register_looped("indirectSpectate", function(script)
     end
 end)
 toolTip(spectate, "Spectates the selected player using a less detectable spectate method")
+
+Business:add_imgui(function()
+local selectedTab = 1
+	if ImGui.BeginTabBar("##MainTabBar") then
+		if ImGui.BeginTabItem("Agency") then
+			selectedContractIndex = 0
+			selectedContract = contracts[selectedContractIndex + 1]
+
+			contractChanged = false
+				local contract_names = {}
+				for i, contract in ipairs(contracts) do
+					table.insert(contract_names, contract.name)
+				end
+
+				selectedContractIndex, used = ImGui.ListBox("##ContractList", selectedContractIndex, contract_names, #contract_names) -- Display the listbox
+				if used then
+					selectedContract = contracts[selectedContractIndex + 1]
+				end
+
+				if ImGui.Button("Select Contract") then
+					local contractToUse = contracts[selectedContractIndex + 1]
+					
+					if contractToUse and contractToUse.id then  -- Ensure contractToUse is not nil and has a valid id
+						STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_BS"), contractToUse.id, true)
+						if showNotifications:is_enabled() then gui.show_message("Agency", "Contract: " .. contractToUse.name .. " ID: " .. contractToUse.id .. " Selected") end
+					else
+						if showNotifications:is_enabled() then gui.show_message("Error", "Invalid Contract ID") end
+					end
+				end
+			toolTip("", "Sets the selected contract as the one you are currently playing")	
+			
+			ImGui.SameLine()
+			if ImGui.Button("Complete Preps") then
+				script.run_in_fiber(function(script)
+					if showNotifications:is_enabled() then gui.show_message("Agency", "Completed Mission Preps") end
+					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_GENERAL_BS"), -1, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COMPLETED_BS"), -1, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_COOLDOWN_POSIX"), -1, true)
+					script:yield()
+				end)
+			end
+			toolTip("", "Completes the preps of your current contract")
+			
+			ImGui.SameLine()
+			if ImGui.Button("Skip Cooldown") then
+				script.run_in_fiber(function(script)
+					if showNotifications:is_enabled() then gui.show_message("Agency", "Skipped cooldown between missions.") end
+					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_COOLDOWN"), -1, true)
+					script:yield()
+				end)
+			end
+			toolTip("", "Skips the cooldown between playing contracts")
+			
+			if (ImGui.TreeNode("How To Use")) then
+				ImGui.Text("Select the contract you want to play and press Select Contract.")
+				ImGui.Text("Press Complete Preps and then WALK OUTSIDE and roam until you get a call from Franklin.")
+				ImGui.Text("Go back inside the agency and skip the cutscene if you want to.")
+				ImGui.Separator()
+				ImGui.Text("Now, depending on which mission you select you will either go to the computer.")
+				ImGui.Text("OR")
+				ImGui.Text("If DFW Dre is selected, there should be a yellow marker on the ground outside Franklins office.")
+				ImGui.TreePop()
+			end
+			toolTip("", "How to set up the agency contracts properly.")
+			
+			agencySafeLoop, used = ImGui.Checkbox("Agency Safe Loop", agencySafeLoop)
+			toolTip("", "Fills your agency safe with money")	
+		ImGui.EndTabItem()
+		selectedTab = 1
+		end
+		
+		if ImGui.BeginTabItem("Arcade") then
+			arcadeSafeLoop, used = ImGui.Checkbox("Arcade Safe Loop", arcadeSafeLoop)
+			toolTip("", "Fills your Arcade safe with money")
+		ImGui.EndTabItem()
+		selectedTab = 2
+		end
+		
+		if ImGui.BeginTabItem("Acid Lab") then
+			acidSupplyLoop, used = ImGui.Checkbox("Resupply Acid Lab", acidSupplyLoop)
+			toolTip("", "Resupplies your Acid Lab supplies")
+			
+			if ImGui.Button("Skip Missions") then 
+				script.run_in_fiber(function(script)
+					if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Skipped all Acid Lab missions, you can now purchase the Acid Lab from warstock.") end
+					if stats.get_int("MPX_AWD_CALLME") < 10 then -- Job Finished
+						stats.set_int("MPX_AWD_CALLME", 10)
+					end
+				end)
+			end
+			toolTip("", "Instantly unlocks the Acid Lab for purchase on warstock.")
+		ImGui.EndTabItem()
+		selectedTab = 3
+		end
+		if ImGui.BeginTabItem("Bunker") then 
+			if ImGui.Button("Unlock Shooting Range") then 
+				script.run_in_fiber(function(script)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_1"), 690, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_2"), 1860, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_3"), 2690, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_4"), 2660, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_5"), 2650, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_6"), 450, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_TARGETS_HIT"), 269, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_WEAPON_BIT_SET"), -1, true)
+					STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_TIER_1_REWARD"), true, true)
+					STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_TIER_3_REWARD"), true, true)
+					STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_INCREASE_THROW_CAP"), true, true)
+					if showNotifications:is_enabled() then gui.show_message("Bunker", "Completed All Shooting Range missions with 3 Stars.") end
+				end)
+			end
+			toolTip("", "Sets all shooting range missions to completed @ 3 stars")
+			
+			ImGui.SameLine()
+			if ImGui.Button("Instant Sell") then 
+				script.run_in_fiber(function()
+					locals.set_int("gb_gunrunning", 1211 + 774, 0)
+					if showNotifications:is_enabled() then gui.show_message("Bunker", "Instant Sale (Must start the mission and go outside the bunker to use)") end
+				end)
+			end
+			toolTip("", "Instantly sells your bunker stock, must be outside with the mission started to sell.")
+
+			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 0 then
+				if ImGui.Button("Teleport##bunker") then
+				  script.run_in_fiber(function()
+					local bunkerBlip = HUD.GET_FIRST_BLIP_INFO_ID(557)
+					local bunkerLoc
+					if HUD.DOES_BLIP_EXIST(bunkerBlip) then
+					  bunkerLoc = HUD.GET_BLIP_COORDS(bunkerBlip)
+					  selfTP(true, false, bunkerLoc)
+					end
+				  end)
+				end
+				toolTip("", "Teleports you to your Bunker if you're outside.")
+			  end
+			
+			local MPx = "MP" .. stats.get_character_index()
+			local bunkerSupply = stats.get_int(MPx .. "_MATTOTALFORFACTORY5")
+			local bunkerStock = stats.get_int(MPx .. "_PRODTOTALFORFACTORY5")
+			if stats.get_int(MPx .. "_PROP_FAC_SLOT5") ~= 0 then
+				bunkerOwned = true
+			else
+				bunkerOwned = false
+			end
+			if bunkerOwned then
+			  ImGui.Text("Supplies:"); ImGui.SameLine(); ImGui.Dummy(30, 1); ImGui.SameLine(); ImGui.ProgressBar(
+				(bunkerSupply / 100), 140, 30)
+			  
+			  ImGui.Text("Stock:"); ImGui.SameLine(); ImGui.Dummy(50, 1); ImGui.SameLine(); ImGui.ProgressBar((bunkerStock / 100), 140, 30)
+			  
+			  if math.ceil(bunkerSupply) < 100 then	
+			  
+			  end
+			  autoFillBunker, used = ImGui.Checkbox("Automate Bunker", autoFillBunker)
+			  toolTip("", "Automatically Resupplies & Fast Tracks Research/Production Stock on repeat.")
+			  
+			  if ImGui.TreeNode("Help") then
+					ImGui.TextWrapped("Open the Master Control Terminal and Sell your bunker stock, it must be empty!")
+					ImGui.TextWrapped("If your Bunker stock is not stocking, wait for your stock bar to show that you have stock and then toggle Automate on, This usually takes no longer than 5 minutes after joining a session.")
+					ImGui.TreePop()
+			  end
+			else
+			  ImGui.Text("You don't own a Bunker.")
+			end
+		ImGui.EndTabItem()
+		selectedTab = 4
+		end
+	ImGui.EndTabBar()
+	end
+end)
+
+-- Loops
+script.register_looped("agencySafeloop", function(script)
+	if agencySafeLoop then
+		if showNotifications:is_enabled() then gui.show_message("Agency", "Supplying Agency Safe with money every 5 seconds.") end
+		STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COUNT"), 500, true)
+		STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
+		sleep(5)
+	end
+end)
+
+script.register_looped("arcadeSafeLoop", function(script)
+    if arcadeSafeLoop then
+        if showNotifications:is_enabled() then gui.show_message("Arcade", "Supplying Arcade Safe with money every 2 seconds.") end
+        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_PAY_TIME_LEFT"), -1, true)
+        sleep(2)
+    end
+end)
+
+script.register_looped("acidSupplyLoop", function(script)
+    if acidSupplyLoop then
+		globals.set_int(1663174 + 1 + 6, 1)
+        if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...") end
+        sleep(0.5)
+    end
+end)
+
+script.register_looped("autoFillBunker", function(script)
+    if autoFillBunker then
+		if showNotifications:is_enabled() then gui.show_message("Bunker", "Fast Tracking Production/Research and Refilling supplies.") end
+		globals.set_int(262145 + 21249, 1)
+		globals.set_int(262145 + 21265, 1)
+		globals.set_int(1663174 + 5 + 1, 1)
+		sleep(5)
+	end
+end)
