@@ -49,7 +49,7 @@ KAOS:add_separator()
 createText(KAOS, "Brought to you by - DeadlineEm, USBMenus & Xesdoog")
 KAOS:add_separator()
 KAOS:add_button("Check for Updates", function()
-	getUpdates("Extras-Addon.lua", "Extras-Data.lua", "json.lua")
+	getUpdates("Extras-Addon.lua", "Extras-data.lua", "json.lua")
 end)
 
 -- Player Options Tab
