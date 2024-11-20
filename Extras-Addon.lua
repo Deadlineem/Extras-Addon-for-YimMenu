@@ -51,6 +51,7 @@ KAOS:add_separator()
 KAOS:add_button("Check for Updates", function()
 	getUpdates("Extras-Addon.lua", "Extras-data.lua", "json.lua")
 end)
+toolTip(KAOS, "Checks the repository for Updates to the addon (Only works if YimMenu supports os.getenv and os.execute)")
 
 -- Player Options Tab
  Pla = KAOS:add_tab("Player Options")
