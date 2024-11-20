@@ -4350,6 +4350,38 @@ ranks = {
 "v_ilev_exball_blue"
 }
 
+sessions = {
+	{ name = "Story Mode", id = -1 },
+    { name = "Join Public", id = 0 },
+    { name = "New Public", id = 1 },
+    { name = "Crew", id = 2 },
+    { name = "Closed Friend", id = 6 },
+    { name = "Solo", id = 8 },
+    { name = "Find Friends", id = 9 },
+    { name = "Invite Only", id = 11 },
+}
+
+function getUpdates(file1, file2, file3)
+    local base_url = "https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/refs/heads/main/"
+    local appdata = os.getenv("APPDATA")  -- Get the APPDATA environment variable
+    local script_dir = appdata .. "\\YimMenu\\scripts\\"
+
+    -- Helper function to download a file
+    local function downloadFile(filename)
+        if filename then  -- Only proceed if filename is not nil
+            local url = base_url .. filename
+            local script_path = script_dir .. filename
+            os.execute(string.format('curl -o "%s" "%s"', script_path, url))
+            log.info("Downloaded:", filename) -- Optional: Print progress
+        end
+    end
+
+    -- Download the provided files
+    downloadFile(file1)
+    downloadFile(file2)
+    downloadFile(file3)
+end
+
 function Button(text, color, hovercolor, activecolor)
     ImGui.PushStyleColor(ImGuiCol.Button, color[1]/255, color[2]/255, color[3]/255, color[4])
     ImGui.PushStyleColor(ImGuiCol.ButtonHovered, hovercolor[1]/255, hovercolor[2]/255, hovercolor[3]/255, hovercolor[4])
@@ -4604,6 +4636,7 @@ function SessionChanger(session)
         globals.set_int(1574589, 1)
         sleep(0.5)
         globals.set_int(1574589, 0)
+-- -1 = story, 0 = join public, 1 = new public, 2 = crew, 3 = crew, 4 = crew, 5 = crew, 6 = closed friends, 7 = ?, 8 = solo, 9 = find friends, 10 = solo, 11 = invite
 end
 
 
