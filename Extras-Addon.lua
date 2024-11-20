@@ -16,14 +16,14 @@ ___________         __
           \/      \/    \/           \/
 
     Extras Addon for YimMenu v1.69
-        Addon Version: 1.1.2
+        Addon Version: 1.1.3
 
         Credits:  Yimura, L7Neg,
     Loled69, Alestarov, gir489returns,
   TheKuter, RazorGamerX, USBMenus & More!
 ]]
 
-addonVersion = "1.1.3(Test)"
+addonVersion = "1.1.3"
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
 giftPlayerTab = gui.get_tab("")
@@ -47,6 +47,10 @@ createText(KAOS, "Credits: Yimura, L7Neg, Loled69, TeaTimeTea, CSYON, Adventure 
 createText(KAOS, "Alestarov, RazorGamerX, USBMenus, ShinyWasabi, Xesdoog & more!")
 KAOS:add_separator()
 createText(KAOS, "Brought to you by - DeadlineEm, USBMenus & Xesdoog")
+KAOS:add_separator()
+KAOS:add_button("Check for Updates", function()
+	getUpdates("Extras-Addon.lua", "Extras-Data.lua", "json.lua")
+end)
 
 -- Player Options Tab
  Pla = KAOS:add_tab("Player Options")
@@ -527,6 +531,31 @@ toolTip(Fun, "Explodes the entity in your crosshair when you point at it")
 
 -- Stat Editor - Alestarov_Menu // Reset Stats Option
  Stats = Pla:add_tab("Stats")
+ 
+sessionType = 11
+sessionDisplayList = {}
+for _, session in ipairs(sessions) do
+    local sessionName = session.name
+    local sessionID = session.id
+    table.insert(sessionDisplayList, string.format("%s", sessionName, sessionID))
+end
+
+Stats:add_imgui(function()
+    local sessionTypeIndex = nil
+    for i, session in ipairs(sessions) do
+        if session.id == sessionType then
+            sessionTypeIndex = i - 1 -- Zero-based index for ImGui
+            break
+        end
+    end
+
+    local newSessionTypeIndex = ImGui.Combo("Session Type", sessionTypeIndex, sessionDisplayList, #sessionDisplayList)
+    if newSessionTypeIndex ~= sessionTypeIndex then
+        sessionType = sessions[newSessionTypeIndex + 1].id -- Map back to session ID
+    end
+	toolTip("", "Session to switch to when applying stats/levels")
+end)
+
 Stats:add_text("Change Levels")
 Stats:add_button("Randomize RP", function()
     script.run_in_fiber(function (script)
@@ -534,7 +563,7 @@ Stats:add_button("Randomize RP", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP") end
         sleep(1)
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(Stats, "Randomize your RP/Level")
@@ -545,7 +574,7 @@ Stats:add_button("Lvl 1", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 1, changing session and applying RP") end
         sleep(1)
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(Stats, "Set your level to 1")
@@ -556,7 +585,7 @@ Stats:add_button("Lvl 100", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 100, changing session and applying RP") end
         sleep(1)
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(Stats, "Set your level to 100")
@@ -566,7 +595,7 @@ Stats:add_button("Lvl 420", function()
          rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 420, changing session and applying RP") end
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(Stats, "Set your level to 420")
@@ -577,7 +606,7 @@ Stats:add_button("Lvl 1337", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 1337, changing session and applying RP") end
         sleep(1)
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(Stats, "Set your level to 1337")
@@ -588,7 +617,7 @@ Stats:add_button("Lvl 8000", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 8000, changing session and applying RP") end
         sleep(1)
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(Stats, "Set your level to 8000")
@@ -613,7 +642,7 @@ Stats:add_button("Change level", function()
             STATS.STAT_SET_INT(joaat(MPX() .. "CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
             if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to ".. tostring(chosenLevel) ..", changing session and applying RP") end
             sleep(1)
-            SessionChanger(0)
+            SessionChanger(sessionType)
         end
     end)
 end)
@@ -667,7 +696,7 @@ Stats:add_button("Reset Income/Spent Stats", function()
             if showNotifications:is_enabled() then gui.show_message("Stats", "Income Stats for Player 2 have been reset to 0, changing sessions to apply.") end
         end
         sleep(1)
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(Stats, "Reset your Earned income, Overall Income, Casino Chip Earnings, etc. to 0")
@@ -698,7 +727,7 @@ Stats:add_button("Max All Skills", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "SCRIPT_INCREASE_STRN"), 1000, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been maxed. Changing sessions to apply.") end
         sleep(1)
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(Stats, "Max your characters skills (Driving, flying, stamina, etc.)")
@@ -715,7 +744,7 @@ Stats:add_button("Reset All Skills", function()
         STATS.STAT_SET_INT(joaat(MPX() .. "SCRIPT_INCREASE_STRN"), -1000, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been zeroed. Changing sessions to apply.") end
         sleep(1)
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(Stats, "Resets your skills to minimum values.")
@@ -3146,6 +3175,7 @@ end)
 
 casino_gui:add_separator()
 casino_gui:add_text("Everything except for Slot rig works for everyone.")
+
 -- Instant Money Loops - Pessi v2
 local TransactionManager <const> = {};
 TransactionManager.__index = TransactionManager
@@ -3192,7 +3222,7 @@ function TransactionManager:TriggerTransaction(hash, amount)
     globals.set_int(4537311, 1)
 end
 
- millLoop = Money:add_tab("Loops")
+millLoop = Money:add_tab("Loops")
 millLoop:add_text("Money Loops (SEVERELY RISKY!)")
 oneMillLoop = millLoop:add_checkbox("180k Loop")
 script.register_looped("onemLoop", function(script)
@@ -5979,7 +6009,12 @@ StoryCharacters = KAOS:add_tab("Story Mode")
             if showNotifications:is_enabled() then gui.show_message('Story Mode Stats Updated!', out) end
         end
     end)
-
+	StoryCharacters:add_button("Reveal Map", function()
+		script.run_in_fiber(function()
+			HUD.SET_MINIMAP_HIDE_FOW(true)
+		end)
+	end)
+	toolTip(StoryCharacters, "Removes the Fog of War from the entire map")
 -- Weapons Tab
 
  Weapons = KAOS:add_tab("Weapons")
@@ -6280,14 +6315,14 @@ mcBus:add_button("Change MC Name", function()
                     STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), mcName, true)
                      MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), -1)
                     if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply") end
-                    SessionChanger(0)
+                    SessionChanger(sessionType)
                     return
                 else
                     STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME"), mcName, true)
                     STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), values[i].. " ", true)
                      MCnOne = STATS.STAT_GET_STRING(joaat(MPX() .. "MC_GANG_NAME"), -1)
                     if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply") end
-                    SessionChanger(0)
+                    SessionChanger(sessionType)
                     return
                 end
             end
@@ -6296,7 +6331,7 @@ mcBus:add_button("Change MC Name", function()
         STATS.STAT_SET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), mcName, true)
          MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .. "MC_GANG_NAME2"), -1)
         if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply") end
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(mcBus, "Apply changes and switch sessions.")
@@ -6414,14 +6449,14 @@ CEO:add_button("Change CEO Name", function()
                     STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), setName, true)
                      MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), -1)
                     if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply") end
-                    SessionChanger(0)
+                    SessionChanger(sessionType)
                     return
                 else
                     STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME"), setName, true)
                     STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), values[i].. " ", true)
                      MCnOne = STATS.STAT_GET_STRING(joaat(MPX() .. "GB_OFFICE_NAME"), -1)
                     if showNotifications:is_enabled() then gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply") end
-                    SessionChanger(0)
+                    SessionChanger(sessionType)
                     return
                 end
             end
@@ -6430,7 +6465,7 @@ CEO:add_button("Change CEO Name", function()
         STATS.STAT_SET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), setName, true)
          MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .. "GB_OFFICE_NAME2"), -1)
         if showNotifications:is_enabled() then gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..MCnTwo..". Changing sessions to apply") end
-        SessionChanger(0)
+        SessionChanger(sessionType)
     end)
 end)
 toolTip(CEO, "Apply changes and switch sessions")
