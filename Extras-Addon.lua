@@ -23,7 +23,7 @@ ___________         __
   TheKuter, RazorGamerX, USBMenus & More!
 ]]
 
-addonVersion = "1.1.2"
+addonVersion = "1.1.3(Test)"
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
 giftPlayerTab = gui.get_tab("")
