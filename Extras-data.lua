@@ -4369,12 +4369,6 @@ function getUpdates(file1, file2, file3)
             local success, message = pcall(function()
                 os.execute(url)  -- Pass the URL to os.execute, let the C++ logic handle the rest including sanitization
             end)
-
-            if success then
-                log.info("Downloaded: "..filename) -- Optional: Print progress
-            else
-                log.error("Failed to download: "..filename.." - "..message)
-            end
         end
     end
     downloadFile(file1)
