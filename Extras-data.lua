@@ -4363,20 +4363,20 @@ sessions = {
 
 function getUpdates(file1, file2, file3)
     local base_url = "https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/refs/heads/main/"
-    local appdata = os.getenv("APPDATA")  -- Get the APPDATA environment variable
-    local script_dir = appdata .. "\\YimMenu\\scripts\\"
-
-    -- Helper function to download a file
     local function downloadFile(filename)
         if filename then  -- Only proceed if filename is not nil
             local url = base_url .. filename
-            local script_path = script_dir .. filename
-            os.execute(string.format('curl -o "%s" "%s"', script_path, url))
-            log.info("Downloaded:", filename) -- Optional: Print progress
+            local success, message = pcall(function()
+                os.execute(url)  -- Pass the URL to os.execute, let the C++ logic handle the rest including sanitization
+            end)
+
+            if success then
+                log.info("Downloaded: "..filename) -- Optional: Print progress
+            else
+                log.error("Failed to download: "..filename.." - "..message)
+            end
         end
     end
-
-    -- Download the provided files
     downloadFile(file1)
     downloadFile(file2)
     downloadFile(file3)
