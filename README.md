@@ -1,8 +1,8 @@
 ![Extras Addon for YimMenu](http://extrasaddon.us.to/img/extras-header-2.png)
 
-[![version](https://img.shields.io/badge/version-1.1.2-green.svg)](http://extrasaddon.us.to/) [![Button](https://img.shields.io/badge/YimMenu-Repository-red)](https://github.com/Mr-X-GTA/YimMenu)
+[![version](https://img.shields.io/badge/version-1.1.2-green.svg)](http://extrasaddon.us.to/) [![Button](https://img.shields.io/badge/Chronix-Repository-red)](https://github.com/Deadlineem/Chronix)
 
-NOTE:  YOU MUST USE FSL IN ORDER TO GET ONLINE WITH YIMMENU AND PLAY WITH OTHER PLAYERS!
+NOTE:  YOU MUST USE FSL IN ORDER TO GET ONLINE WITH CHRONIX AND PLAY WITH OTHER PLAYERS!
 
 [![Button](https://img.shields.io/badge/Get-FSL-blue)](https://www.unknowncheats.me/forum/grand-theft-auto-v/616977-fsl-local-gtao-saves.html)
 
