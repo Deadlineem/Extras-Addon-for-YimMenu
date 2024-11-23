@@ -641,7 +641,7 @@ Stats:add_button("Change level", function()
 end)
 toolTip(Stats, "Set your level to the value chosen above (1-8000)")
 
-rpMultiplier = 1
+rpMultiplier = stats.get_int("XP_MULTIPLIER")
 Stats:add_imgui(function()
     rpMultiplier = globals.get_float(262145 + 1)
     rpMultiplier, used = ImGui.InputFloat("RP Multiplier", rpMultiplier, .1, 1)
@@ -651,6 +651,42 @@ Stats:add_imgui(function()
     end
 end)
 toolTip(Stats, "Note: This options saves to the config\nSetting this to 0 will stop rp gain")
+
+Stats:add_separator()
+Stats:add_text("K/D Statistics")
+
+-- Retrieve initial stats
+kills = stats.get_int("MPPLY_KILLS_PLAYERS")
+deaths = stats.get_int("MPPLY_DEATHS_PLAYER")
+kd = kills > 0 and deaths > 0 and (kills / deaths) or 0.0 -- Calculate initial K/D ratio
+
+Stats:add_imgui(function()
+    -- Input for Kills
+    newKills = ImGui.InputInt("Kills", kills, 0, 99999)
+    if newKills and newKills ~= kills then
+        kills = math.max(newKills, 0) -- Ensure kills are not negative
+        STATS.STAT_SET_INT(joaat("MPPLY_KILLS_PLAYERS"), kills, true)
+        
+        -- Recalculate K/D ratio
+        kd = deaths > 0 and (kills / deaths) or kills
+        STATS.STAT_SET_FLOAT(joaat("MPPLY_KILL_DEATH_RATIO"), kd, true)
+    end
+
+    -- Input for Deaths
+    newDeaths = ImGui.InputInt("Deaths", deaths, 0, 99999)
+    if newDeaths and newDeaths ~= deaths then
+        deaths = math.max(newDeaths, 0) -- Ensure deaths are not negative
+        STATS.STAT_SET_INT(joaat("MPPLY_DEATHS_PLAYER"), deaths, true)
+        
+        -- Recalculate K/D ratio
+        kd = deaths > 0 and (kills / deaths) or kills
+        STATS.STAT_SET_FLOAT(joaat("MPPLY_KILL_DEATH_RATIO"), kd, true)
+    end
+
+    -- Display K/D Ratio (read-only)
+    ImGui.Text(string.format("K/D Ratio: %.2f", kd))
+end)
+
 
 script.register_looped("rpMultiplier", function(script)
     globals.set_float(262145 + 1, rpMultiplier)
@@ -11170,6 +11206,11 @@ toolTip(spectate, "Spectates the selected player using a less detectable spectat
 
 Business:add_imgui(function()
 local selectedTab = 1
+	ImGui.PushStyleColor(ImGuiCol.Tab, 0.7, 0.0, 0.0, 1.0)          -- Default tab color (red)
+	ImGui.PushStyleColor(ImGuiCol.TabHovered, 0.4, 0.3, 0.3, 1.0)   -- Hovered tab color (lighter red)
+	ImGui.PushStyleColor(ImGuiCol.TabActive, 0.5, 0.0, 0.0, 1.0)    -- Active tab color (bright red)
+	ImGui.PushStyleColor(ImGuiCol.TabUnfocused, 1.0, 0.1, 0.1, 1.0) -- Unfocused tab color (darker red)
+	ImGui.PushStyleColor(ImGuiCol.TabUnfocusedActive, 1.0, 0.1, 0.1, 1.0)
 	if ImGui.BeginTabBar("##MainTabBar") then
 		if ImGui.BeginTabItem("Agency") then
 			selectedContractIndex = 0
@@ -11336,6 +11377,7 @@ local selectedTab = 1
 		end
 	ImGui.EndTabBar()
 	end
+	ImGui.PopStyleColor(5)
 end)
 
 -- Loops
