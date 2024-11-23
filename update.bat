@@ -2,7 +2,7 @@
 
 :: Set environment variables
 set "scriptFolder=%~dp0"
-set "updateScriptUrl=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/update.bat"
+set "updateScriptUrl=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-Chronix/main/update.bat"
 
 :: Check for updates
 echo Checking Repository for updates to update.bat...
@@ -43,15 +43,15 @@ echo "          /    |    \/ /_/ / /_/ (  <_> )   |  \               "
 echo "          \____|__  /\____ \____ |\____/|___|  /               "
 echo "                  \/      \/    \/           \/                "
 echo "                                                               "
-echo "                Extras Addon for YimMenu                       "
+echo "                       Extras Addon                            "
 echo "                  Addon Version: 1.0.9                         "
-echo "    https://github.com/Deadlineem/Extras-Addon-for-YimMenu     "
-echo "            http://extrasaddon.us.to/                          "
+echo "        https://github.com/Deadlineem/Extras_Addon             "
+echo "                http://extrasaddon.us.to/                      "
 echo "  ______   ______   ______   ______   ______   ______   ______ "
 echo " /_____/  /_____/  /_____/  /_____/  /_____/  /_____/  /_____/ "
 
 :: Set environment variables for source and destination paths
-set "destinationFolder=%APPDATA%\YimMenu\scripts"
+set "destinationFolder=%APPDATA%\Chronix\scripts"
 set "destinationFolder2=%USERPROFILE%\Downloads"
 set "destinationFolder3=%USERPROFILE%\Downloads"
 if not exist "%destinationFolder2%" (
@@ -69,19 +69,19 @@ if not exist "%destinationFolder3%" (
     set "destinationFolder3=%USERPROFILE%\Desktop"
 )
 echo ------------------------------------------------------------------
-echo   This app is for easily Downloading/Updating Yim/Extras Addon
-echo       and tools you may want/need for YimMenu itself.
+echo  This app is for easily Downloading/Updating Chronix/Extras Addon
+echo       and tools you may want/need for Chronix itself.
 echo ------------------------------------------------------------------
 echo ------------------------------------------------------------------
 echo             Main Menu
 echo ------------------------------------------------------------------
 echo Choose an option:
-echo 1. Download YimMenu (To Downloads or Desktop)
-echo 2. Download Extras Addon (To YimMenu\scripts)
+echo 1. Download Chronix (To Downloads or Desktop)
+echo 2. Download Extras Addon (To Chronix\scripts)
 echo 3. Download FateInjector (To Downloads or Desktop)
-echo 4. Delete YimMenu Cache Folder (Quick fix when GTA updates)
+echo 4. Delete Chronix Cache Folder (Quick fix when GTA updates)
 echo 5. Optional Downloads (XML's, Animations, ASI Loader, ScriptHookV, Vehicles and Outfits)
-echo 6. How to install/use YimMenu
+echo 6. How to install/use Chronix
 echo 7. Exit the application
 echo ------------------------------------------------------------------
 echo If your downloads folder is not in the proper location on your
@@ -94,24 +94,24 @@ if errorlevel 5 goto optional_downloads
 if errorlevel 4 goto delete_cache_folder
 if errorlevel 3 goto download_fate_injector
 if errorlevel 2 goto download_extras_addon
-if errorlevel 1 goto download_yimmenu
+if errorlevel 1 goto download_Chronix
 
-:download_yimmenu
+:download_Chronix
 cls
 echo ------------------------------------------------------------------
-echo     Downloading YimMenu from the repository
+echo     Downloading Chronix from the repository
 echo ------------------------------------------------------------------
-echo "Checking to see if there is an existing version of YimMenu"
-del "%destinationFolder2%\YimMenu.dll" >nul 2>&1
+echo "Checking to see if there is an existing version of Chronix"
+del "%destinationFolder2%\Chronix.dll" >nul 2>&1
 
-echo "Downloading new version of YimMenu.dll from the repository..."
-set "url2=https://github.com/Mr-X-GTA/YimMenu/releases/download/nightly/YimMenu.dll"
-powershell -command "& { Invoke-WebRequest -Uri '%url2%' -OutFile '%destinationFolder2%\YimMenu.dll' }"
+echo "Downloading new version of Chronix.dll from the repository..."
+set "url2=https://github.com/Deadlineem/Chronix/releases/download/nightly/Chronix.dll"
+powershell -command "& { Invoke-WebRequest -Uri '%url2%' -OutFile '%destinationFolder2%\Chronix.dll' }"
 
-if not exist "%destinationFolder2%\YimMenu.dll" (
-    echo "Error: Failed to download YimMenu. Check the internet connection or the source URL."
+if not exist "%destinationFolder2%\Chronix.dll" (
+    echo "Error: Failed to download Chronix. Check the internet connection or the source URL."
 ) else (
-    echo "YimMenu downloaded successfully. File Location: %destinationFolder2%\YimMenu.dll"
+    echo "Chronix downloaded successfully. File Location: %destinationFolder2%\Chronix.dll"
     echo "Returning to the main menu in 5 seconds."
 )
 timeout /t 5 /nobreak >nul
@@ -127,9 +127,9 @@ echo "Checking to see if there is an existing version of Extras Addon"
 del "%destinationFolder%\Extras-Addon.lua" >nul 2>&1
 
 echo "Downloading new version of Extras-Addon.lua from the repository..."
-set "url=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/Extras-Addon.lua"
-set "url2=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/json.lua"
-set "url3=https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/main/Extras-data.lua"
+set "url=https://raw.githubusercontent.com/Deadlineem/Extras_Addon/main/Extras-Addon.lua"
+set "url2=https://raw.githubusercontent.com/Deadlineem/Extras_Addon/main/json.lua"
+set "url3=https://raw.githubusercontent.com/Deadlineem/Extras_Addon/main/Extras-data.lua"
 powershell -command "& { Invoke-WebRequest -Uri '%url%' -OutFile '%destinationFolder%\Extras-Addon.lua' }"
 powershell -command "& { Invoke-WebRequest -Uri '%url2%' -OutFile '%destinationFolder%\json.lua' }"
 powershell -command "& { Invoke-WebRequest -Uri '%url3%' -OutFile '%destinationFolder%\Extras-data.lua' }"
@@ -149,9 +149,9 @@ cls
 goto menu
 
 :delete_cache_folder
-echo "Deleting YimMenu's cache folder, this is ONLY necessary if you've updated YimMenu.dll and you're still crashing."
-echo "If this does not fix the issue, check their github issues page at https://github.com/YimMenu/YimMenu/issues"
-rmdir /s /q "%APPDATA%\YimMenu\cache"
+echo "Deleting Chronix's cache folder, this is ONLY necessary if you've updated Chronix.dll and you're still crashing."
+echo "If this does not fix the issue, check their github issues page at https://github.com/Chronix/Chronix/issues"
+rmdir /s /q "%APPDATA%\Chronix\cache"
 echo "Cache folder deleted successfully."
 echo "Returning to main menu in 10 seconds."
 timeout /t 10 /nobreak >nul
@@ -190,8 +190,8 @@ echo     Optional Downloads
 echo ------------------------------------------------------------------
 echo Choose an option:
 echo 1. Get XML Maps/Vehicles (Opens in Browser)
-echo 2. Download Animations Dictionary (To YimMenu Root Folder)
-echo 3. Download Yim Json Vehicles and Outfits (To YimMenu Root Folder)
+echo 2. Download Animations Dictionary (To Chronix Root Folder)
+echo 3. Download Yim Json Vehicles and Outfits (To Chronix Root Folder)
 echo 4. Download YimASI (To Downloads Folder)
 echo 5. Download ScriptHookV (To Downloads Folder)
 echo 6. Back to Main Menu
@@ -209,7 +209,7 @@ if errorlevel 1 goto download_file_1
 :download_file_1
 echo Opening MagicModz89's MEGA drive in a browser window...
 start "XML Maps" "https://mega.nz/folder/BnM2jQoT#Lb6MG4m24nGv0GkNGsD3sQ"
-echo To use these, download the file as zip and extract the corresponding contents to %APPDATA%\YimMenu\xml_maps and xml_vehicles
+echo To use these, download the file as zip and extract the corresponding contents to %APPDATA%\Chronix\xml_maps and xml_vehicles
 echo Returning to Optional Downloads Menu
 timeout /t 5 /nobreak >nul
 goto optional_downloads
@@ -220,16 +220,16 @@ echo ------------------------------------------------------------------
 echo     Downloading Animations Dictionary from the repository
 echo ------------------------------------------------------------------
 echo "Checking to see if there is an existing version of animDictsCompact.json"
-del "%APPDATA%\YimMenu\animDictsCompact.json" >nul 2>&1
+del "%APPDATA%\Chronix\animDictsCompact.json" >nul 2>&1
 
 echo "Downloading new version of animDictsCompact.json from the repository..."
 set "url=https://raw.githubusercontent.com/DurtyFree/gta-v-data-dumps/master/animDictsCompact.json"
-powershell -command "& { Invoke-WebRequest -Uri '%url%' -OutFile '%APPDATA%\YimMenu\animDictsCompact.json' }"
+powershell -command "& { Invoke-WebRequest -Uri '%url%' -OutFile '%APPDATA%\Chronix\animDictsCompact.json' }"
 
-if not exist "%APPDATA%\YimMenu\animDictsCompact.json" (
+if not exist "%APPDATA%\Chronix\animDictsCompact.json" (
     echo "Error: Failed to download Animations. Check the internet connection or the source URL."
 ) else (
-    echo "Extras Addon downloaded successfully. File Location: %APPDATA%\YimMenu\animDictsCompact.json"
+    echo "Extras Addon downloaded successfully. File Location: %APPDATA%\Chronix\animDictsCompact.json"
     echo "Returning to the main menu in 5 seconds."
 )
 timeout /t 5 /nobreak >nul
@@ -243,14 +243,14 @@ echo     Downloading Yim Json Vehicles and Outfits from the repository
 echo ------------------------------------------------------------------
 echo "Downloading new vehicles and outfits from the repository..."
 
-:: YimMenu folder
-set "yimMenuFolder=%APPDATA%\YimMenu"
+:: Chronix folder
+set "ChronixFolder=%APPDATA%\Chronix"
 
 :: Yim Json Vehicles and Outfits files manifest
 set "vehAndOutfitsManifest=https://raw.githubusercontent.com/juniorkrz/Yim-Json-Vehicles-and-Outfits/master/manifest.json"
 
 :: PowerShell function to recursively download files and folders available in the manifest.
-powershell -Command "try { $response = Invoke-WebRequest -Uri '%vehAndOutfitsManifest%' -UseBasicParsing | ConvertFrom-Json; foreach ($item in $response) { $filename = $item.filename; $path = $item.path; $downloadUrl = $item.download_url; $path = $path -replace '^files\\', ''; $outputFilePath = Join-Path -Path '%yimMenuFolder%' -ChildPath \"$path\$filename\"; $outputDirectory = Split-Path $outputFilePath -Parent; if (!(Test-Path -Path $outputDirectory)) { New-Item -ItemType Directory -Force -Path $outputDirectory > $null }; Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFilePath > $null; Write-Host \"File saved in: $outputFilePath\" }} catch { Write-Host \"Error: $_\" }"
+powershell -Command "try { $response = Invoke-WebRequest -Uri '%vehAndOutfitsManifest%' -UseBasicParsing | ConvertFrom-Json; foreach ($item in $response) { $filename = $item.filename; $path = $item.path; $downloadUrl = $item.download_url; $path = $path -replace '^files\\', ''; $outputFilePath = Join-Path -Path '%ChronixFolder%' -ChildPath \"$path\$filename\"; $outputDirectory = Split-Path $outputFilePath -Parent; if (!(Test-Path -Path $outputDirectory)) { New-Item -ItemType Directory -Force -Path $outputDirectory > $null }; Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFilePath > $null; Write-Host \"File saved in: $outputFilePath\" }} catch { Write-Host \"Error: $_\" }"
 
 echo "Credits: Yim Json Vehicles and Outfits by Juniorkrz & NetoXP"
 echo "Returning to the main menu in 5 seconds."
@@ -305,13 +305,13 @@ goto optional_downloads
 :instructions
 cls
 echo ------------------------------------------------------------------
-echo         How to Install/Use YimMenu
+echo         How to Install/Use Chronix
 echo ------------------------------------------------------------------
 echo "1. Start GTA 5 on your PC"
-echo "2. Open your preferred injector, and find/select YimMenu.dll"
-echo "3. Select the process (gta5.exe) to inject YimMenu into"
-echo "4. Once YimMenu is injected open GTA and you should see the menu"
-echo "If this is your first time using YimMenu, press Update Cache"
+echo "2. Open your preferred injector, and find/select Chronix.dll"
+echo "3. Select the process (gta5.exe) to inject Chronix into"
+echo "4. Once Chronix is injected open GTA and you should see the menu"
+echo "If this is your first time using Chronix, press Update Cache"
 echo "Press the Insert key to open/close the menu"
 echo "Go to Settings > GUI and uncheck Show Overlay to show/hide Yim"
 timeout /t 10 /nobreak >nul
