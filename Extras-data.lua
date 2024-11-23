@@ -2245,7 +2245,7 @@ sounds = {
         {SoundName = "PROPERTY PURCHASE MEDIUM", AudioName = "PROPERTY_PURCHASE_MEDIUM", AudioRef = "HUD_PROPERTY_SOUNDSET"},
 }
 
-url = "https://github.com/Deadlineem/Extras-Addon-for-YimMenu/"
+url = "https://github.com/Deadlineem/Extras_Addon/"
 
 weaponModels = {
         "prop_w_me_dagger", "prop_baseball_bat", "prop_ld_flow_bottle", "prop_tool_crowbar", "prop_ld_ammo_pack_01", "prop_ld_shovel", "prop_golf_iron_01", "prop_tool_hammer", "prop_ld_fireaxe", "prop_ld_handbag", "prop_knife", "prop_ld_w_me_machette", "prop_ld_w_me_switchblade",
