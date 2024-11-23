@@ -15,12 +15,11 @@ ___________         __
   \____|__  /\____ \____ |\____/|___|  /
           \/      \/    \/           \/
 
-    Extras Addon for YimMenu v1.69
+		 Extras Addon v1.69
         Addon Version: 1.1.3
 
-        Credits:  Yimura, L7Neg,
-    Loled69, Alestarov, gir489returns,
-  TheKuter, RazorGamerX, USBMenus & More!
+        Credits:  DeadlineEm,
+		 USBMenus & Xesdoog
 ]]
 
 addonVersion = "1.1.3"
@@ -37,14 +36,7 @@ KAOS:add_separator()
 createText(KAOS, "Some, if not most of these options are considered Recovery based options, use them at your own risk!")
 KAOS:add_separator()
 createText(KAOS, "This menu is a mashup of multiple menu features, some altered, some not.  It was created with the intent")
-createText(KAOS, "of having as many options as possible for everything you can imagine, but to allow complete mod freedom")
-createText(KAOS, "without needing to compile your own version of YimMenu yet still being able to use its base features in")
-createText(KAOS, "one small dropdown tab without needing multiple lua scripts to do so.  The project is open source and I")
-createText(KAOS, "encourage everyone to create this with me, lend your ideas, submit PR's, make discussions and lets make")
-createText(KAOS, "YimMenu next generation!")
-KAOS:add_separator()
-createText(KAOS, "Credits: Yimura, L7Neg, Loled69, TeaTimeTea, CSYON, Adventure Box, gir489returns, abuazizv,")
-createText(KAOS, "Alestarov, RazorGamerX, USBMenus, ShinyWasabi, Xesdoog & more!")
+createText(KAOS, "of having as many options as possible for everything you can imagine, but to allow complete mod freedom.")
 KAOS:add_separator()
 createText(KAOS, "Brought to you by - DeadlineEm, USBMenus & Xesdoog")
 KAOS:add_separator()
