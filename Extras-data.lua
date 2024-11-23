@@ -4362,7 +4362,7 @@ sessions = {
 }
 
 function getUpdates(file1, file2, file3)
-    local base_url = "https://raw.githubusercontent.com/Deadlineem/Extras-Addon-for-YimMenu/refs/heads/main/"
+    local base_url = "https://raw.githubusercontent.com/Deadlineem/Extras_Addon/refs/heads/main/"
     local function downloadFile(filename)
         if filename then  -- Only proceed if filename is not nil
             local url = base_url .. filename
