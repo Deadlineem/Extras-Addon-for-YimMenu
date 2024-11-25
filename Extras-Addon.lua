@@ -15,14 +15,14 @@ ___________         __
   \____|__  /\____ \____ |\____/|___|  /
           \/      \/    \/           \/
 
-		 Extras Addon v1.69
-        Addon Version: 1.1.3
+	 Extras Addon v1.69
+        Addon Version: 1.1.4
 
         Credits:  DeadlineEm,
-		 USBMenus & Xesdoog
+	 USBMenus & Xesdoog
 ]]
 
-addonVersion = "1.1.3"
+addonVersion = "1.1.4"
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
 giftPlayerTab = gui.get_tab("")
@@ -618,7 +618,7 @@ levelInput = Stats:add_input_int("Level")
 toolTip(Stats, "Set your level to a value between 1 and 8000")
 --PlayerId = PLAYER.PLAYER_ID()
 --PlayerRp = network.get_player_rp(PlayerId)-- Not working properly, returns -1 when the PlayerId is yours
-levelInput:set_value(1)-- TODO: Set PlayerRank as default value
+levelInput:set_value(stats.get_int(MPX() .. "CHAR_RANK_FM"))-- TODO: Set PlayerRank as default value
 Stats:add_sameline()
 Stats:add_button("Change level", function()
     script.run_in_fiber(function (script)
@@ -3497,7 +3497,7 @@ previewObject = nil
 
 previousPreview = nil
 
-script.register_looped("objectsPreview", function()
+script.register_looped("objectsPreview", function(script)
     if not Objets:is_selected() then
         previewObjects:set_enabled(false)
     end
@@ -3564,7 +3564,7 @@ Objets:add_imgui(function()
 end)
 
 Objets:add_button("Spawn Selected", function()
-    script.run_in_fiber(function(spawnObj)
+    script.run_in_fiber(function(script)
         selectedObjectInfo = filteredItems[selectedObjectIndex + 1]
         if selectedObjectInfo then
             -- Get the player's ped handle
@@ -3603,7 +3603,7 @@ Objets:add_button("Spawn Selected", function()
         else
             if showNotifications:is_enabled() then gui.show_message("Object Spawner", "Selected object not found.") end
         end
-        sleep(5)
+        script:yield()
     end)
 end)
 toolTip(Objets, "Spawn the selected item on the selected players position, if no player is targeted, it spawns on you")
@@ -6130,31 +6130,32 @@ Business:add_button("Master Control Terminal", function()
 	end)
 end)
 toolTip(Business, "Opens the Master Control Terminal for managing all businesses")
-
- Hangar = Business:add_tab("Hangar")
-
-hStock = Hangar:add_checkbox("Resupply Hangar Cargo (Looped)")
-script.register_looped("autoGetHangarCargo", function(script)
-    script:yield()
-    if hStock:is_enabled() == true then
-        autoGetHangarCargo = not autoGetHangarCargo
-        if autoGetHangarCargo then
-            stats.set_bool_masked(MPX() .. "DLC22022PSTAT_BOOL3", true, 9)
-            if showNotifications:is_enabled() then gui.show_message("Hangar", "Restocking hangar cargo, please wait...") end
-            sleep(0.5)
-        end
+Business:add_sameline()
+Business:add_button("Register as CEO", function()
+-- -1 is off, 0 is on
+    playerID = PLAYER.PLAYER_ID()
+    g = 1887305 + (playerID * 609) + 10
+    gb1 = globals.get_int(g + 1)
+    gb2 = globals.get_int(g + 430)
+    if gb2 ~= -1 and gb1 == playerID then
+        globals.set_int(g + 1, -1)
+        globals.set_int(g + 430, -1)
+        if showNotifications:is_enabled() then gui.show_message("CEO", "You are no longer a CEO") end
+    else
+        globals.set_int(g + 1, playerID)
+        globals.set_int(g + 430, 0)
+        if showNotifications:is_enabled() then gui.show_message("CEO", "You are now a CEO") end
     end
 end)
-toolTip(Hangar, "Instantly supplies your hangar with random cargo")
- mcBus = Business:add_tab("Motorcycle Club")
-
-mcBus:add_button("MC President (On/Off)", function()
+toolTip(Business, "Register as a CEO.")
+Business:add_sameline()
+Business:add_button("Register as MC", function()
     -- -1 is off, 0 is on
     playerID = PLAYER.PLAYER_ID()
     g = 1887305 + (playerID * 609) + 10
     gb1 = globals.get_int(g + 1)
     gb2 = globals.get_int(g + 430)
-    if gb1 == playerID and gb2 == 1 then
+    if gb2 ~= -1 and gb1 == playerID then
         globals.set_int(g + 1, -1)
         globals.set_int(g + 430, -1)
         if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "You are no longer an MC President") end
@@ -6164,149 +6165,441 @@ mcBus:add_button("MC President (On/Off)", function()
         if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "You are now an MC President") end
     end
 end)
-toolTip(mcBus, "Register as an MC President")
-mcBus:add_text("Resuppliers")
-acidResupply = mcBus:add_checkbox("Resupply Acid Lab (Looped)")
-script.register_looped("autoGetAcidCargo", function(script)
+toolTip(Business, "Register as an MC President")
+
+textSeparator(Business, "Businesses")
+Business:add_imgui(function()
+local selectedTab = 1
+	ImGui.PushStyleColor(ImGuiCol.Tab, 0.7, 0.0, 0.0, 1.0)          -- Default tab color (red)
+	ImGui.PushStyleColor(ImGuiCol.TabHovered, 0.4, 0.3, 0.3, 1.0)   -- Hovered tab color (lighter red)
+	ImGui.PushStyleColor(ImGuiCol.TabActive, 0.5, 0.0, 0.0, 1.0)    -- Active tab color (bright red)
+	ImGui.PushStyleColor(ImGuiCol.TabUnfocused, 1.0, 0.1, 0.1, 1.0) -- Unfocused tab color (darker red)
+	ImGui.PushStyleColor(ImGuiCol.TabUnfocusedActive, 1.0, 0.1, 0.1, 1.0)
+	
+	if ImGui.BeginTabBar("##MainTabBar") then
+		if ImGui.BeginTabItem("Agency") then
+		textSeparator("", "Agency Controls")
+			selectedContractIndex = 0
+			selectedContract = contracts[selectedContractIndex + 1]
+
+			contractChanged = false
+				local contract_names = {}
+				for i, contract in ipairs(contracts) do
+					table.insert(contract_names, contract.name)
+				end
+
+				selectedContractIndex, used = ImGui.ListBox("##ContractList", selectedContractIndex, contract_names, #contract_names) -- Display the listbox
+				if used then
+					selectedContract = contracts[selectedContractIndex + 1]
+				end
+
+				if ImGui.Button("Select Contract") then
+					local contractToUse = contracts[selectedContractIndex + 1]
+					
+					if contractToUse and contractToUse.id then  -- Ensure contractToUse is not nil and has a valid id
+						STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_BS"), contractToUse.id, true)
+						if showNotifications:is_enabled() then gui.show_message("Agency", "Contract: " .. contractToUse.name .. " ID: " .. contractToUse.id .. " Selected") end
+					else
+						if showNotifications:is_enabled() then gui.show_message("Error", "Invalid Contract ID") end
+					end
+				end
+			toolTip("", "Sets the selected contract as the one you are currently playing")	
+			
+			ImGui.SameLine()
+			if ImGui.Button("Complete Preps") then
+				script.run_in_fiber(function(script)
+					if showNotifications:is_enabled() then gui.show_message("Agency", "Completed Mission Preps") end
+					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_GENERAL_BS"), -1, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COMPLETED_BS"), -1, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_COOLDOWN_POSIX"), -1, true)
+					script:yield()
+				end)
+			end
+			toolTip("", "Completes the preps of your current contract")
+			
+			ImGui.SameLine()
+			if ImGui.Button("Skip Cooldown") then
+				script.run_in_fiber(function(script)
+					if showNotifications:is_enabled() then gui.show_message("Agency", "Skipped cooldown between missions.") end
+					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_COOLDOWN"), -1, true)
+					script:yield()
+				end)
+			end
+			toolTip("", "Skips the cooldown between playing contracts")
+			
+			if (ImGui.TreeNode("How To Use")) then
+				ImGui.Text("Select the contract you want to play and press Select Contract.")
+				ImGui.Text("Press Complete Preps and then WALK OUTSIDE and roam until you get a call from Franklin.")
+				ImGui.Text("Go back inside the agency and skip the cutscene if you want to.")
+				ImGui.Separator()
+				ImGui.Text("Now, depending on which mission you select you will either go to the computer.")
+				ImGui.Text("OR")
+				ImGui.Text("If DFW Dre is selected, there should be a yellow marker on the ground outside Franklins office.")
+				ImGui.TreePop()
+			end
+			toolTip("", "How to set up the agency contracts properly.")
+			
+			agencySafeLoop, used = ImGui.Checkbox("Agency Safe Loop", agencySafeLoop)
+			toolTip("", "Fills your agency safe with money")	
+		ImGui.EndTabItem()
+		selectedTab = 1
+		end
+		
+		if ImGui.BeginTabItem("Arcade") then
+		textSeparator("", "Arcade Controls")
+			arcadeSafeLoop, used = ImGui.Checkbox("Arcade Safe Loop", arcadeSafeLoop)
+			toolTip("", "Fills your Arcade safe with money")
+		ImGui.EndTabItem()
+		selectedTab = 2
+		end
+		
+		if ImGui.BeginTabItem("Acid Lab") then
+		textSeparator("", "Acid Lab Controls")
+			acidSupplyLoop, used = ImGui.Checkbox("Resupply Acid Lab", acidSupplyLoop)
+			toolTip("", "Resupplies your Acid Lab supplies")
+			
+			if ImGui.Button("Skip Missions") then 
+				script.run_in_fiber(function(script)
+					if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Skipped all Acid Lab missions, you can now purchase the Acid Lab from warstock.") end
+					if stats.get_int("MPX_AWD_CALLME") < 10 then -- Job Finished
+						stats.set_int("MPX_AWD_CALLME", 10)
+					end
+				end)
+			end
+			toolTip("", "Instantly unlocks the Acid Lab for purchase on warstock.")
+		ImGui.EndTabItem()
+		selectedTab = 3
+		end
+		if ImGui.BeginTabItem("Bunker") then 
+		textSeparator("", "Bunker Controls")
+			if ImGui.Button("Unlock Shooting Range") then 
+				script.run_in_fiber(function(script)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_1"), 690, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_2"), 1860, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_3"), 2690, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_4"), 2660, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_5"), 2650, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_6"), 450, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_TARGETS_HIT"), 269, true)
+					STATS.STAT_SET_INT(joaat(MPX() .. "SR_WEAPON_BIT_SET"), -1, true)
+					STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_TIER_1_REWARD"), true, true)
+					STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_TIER_3_REWARD"), true, true)
+					STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_INCREASE_THROW_CAP"), true, true)
+					if showNotifications:is_enabled() then gui.show_message("Bunker", "Completed All Shooting Range missions with 3 Stars.") end
+				end)
+			end
+			toolTip("", "Sets all shooting range missions to completed @ 3 stars")
+			
+			ImGui.SameLine()
+			if ImGui.Button("Instant Sell") then 
+				script.run_in_fiber(function()
+					locals.set_int("gb_gunrunning", 1211 + 774, 0)
+					if showNotifications:is_enabled() then gui.show_message("Bunker", "Instant Sale (Must start the mission and go outside the bunker to use)") end
+				end)
+			end
+			toolTip("", "Instantly sells your bunker stock, must be outside with the mission started to sell.")
+			
+			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 0 then
+			ImGui.SameLine()
+				if ImGui.Button("Teleport to Bunker") then
+				  script.run_in_fiber(function()
+					local bunkerBlip = HUD.GET_FIRST_BLIP_INFO_ID(557)
+					local bunkerLoc
+					if HUD.DOES_BLIP_EXIST(bunkerBlip) then
+					  bunkerLoc = HUD.GET_BLIP_COORDS(bunkerBlip)
+					  selfTP(true, false, bunkerLoc.x + 1, bunkerLoc.y, bunkerLoc.z)
+					end
+				  end)
+				end
+				toolTip("", "Teleports you to your Bunker if you're outside.")
+			end
+			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 258561 then
+			ImGui.SameLine()
+				if ImGui.Button("Teleport to PC") then
+				  script.run_in_fiber(function()
+					local laptopBlip = HUD.GET_FIRST_BLIP_INFO_ID(521)
+					local laptopLoc
+					if HUD.DOES_BLIP_EXIST(laptopBlip) then
+					  laptopLoc = HUD.GET_BLIP_COORDS(laptopBlip)
+					  selfTP(true, false, laptopLoc.x - 1.5, laptopLoc.y + 0.5, laptopLoc.z)
+					end
+				  end)
+				end
+				toolTip("", "Teleports you to the computer if you're inside.")
+			ImGui.SameLine()
+				if ImGui.Button("Teleport to Duneloader") then
+				  script.run_in_fiber(function()
+					local duneloaderBlip = HUD.GET_FIRST_BLIP_INFO_ID(556)
+					local duneloaderLoc
+					if HUD.DOES_BLIP_EXIST(duneloaderBlip) then
+					  duneloaderLoc = HUD.GET_BLIP_COORDS(duneloaderBlip)
+					  selfTP(true, false, duneloaderLoc.x + 2, duneloaderLoc.y - 2, duneloaderLoc.z)
+					end
+				  end)
+				end
+				toolTip("", "Teleports you to the computer if you're inside.")
+			end
+			
+			local bunkerSupply = stats.get_int(MPX() .. "MATTOTALFORFACTORY5")
+			local bunkerStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY5")
+			if stats.get_int(MPX() .. "PROP_FAC_SLOT5") ~= 0 then
+				bunkerOwned = true
+			else
+				bunkerOwned = false
+			end
+			if bunkerOwned then
+			  ImGui.Text("Supplies:"); ImGui.SameLine(); ImGui.Dummy(28, 1); ImGui.SameLine(); ImGui.ProgressBar(
+				(bunkerSupply / 100), ImGui.GetContentRegionAvail() - 5, 30)
+			  
+			  ImGui.Text("Stock:"); ImGui.SameLine(); ImGui.Dummy(50, 1); ImGui.SameLine(); ImGui.ProgressBar((bunkerStock / 100), ImGui.GetContentRegionAvail() - 5, 30)
+			  
+			  if bunkerStock == 100 then	
+				autoFillBunker = false
+			  end
+			  autoFillBunker, used = ImGui.Checkbox("Automate Bunker", autoFillBunker)
+			  toolTip("", "Automatically Resupplies & Fast Tracks Research/Production Stock on repeat.")
+			  
+			  if ImGui.TreeNode("Help") then
+					ImGui.TextWrapped("Open the Master Control Terminal and Sell your bunker stock, it must be empty!")
+					ImGui.TextWrapped("If your Bunker stock is not stocking, wait for your stock bar to show that you have stock and then toggle Automate on, This usually takes no longer than 5 minutes after joining a session.")
+					ImGui.TreePop()
+			  end
+			else
+			  ImGui.Text("You don't own a Bunker.")
+			end
+		ImGui.EndTabItem()
+		selectedTab = 4
+		end
+		
+		if ImGui.BeginTabItem("Hangar") then
+			textSeparator("", "Hangar Controls")
+			local hangarStock = stats.get_int(MPX() .. "HANGAR_CONTRABAND_TOTAL")
+			if stats.get_int(MPX() .. "PROP_HANGAR") ~= 0 then
+				hangarOwned = true
+			else
+				hangarOwned = false
+			end
+			
+			if ImGui.Button("Instant Sell (Air)") then 
+				locals.set_int("gb_smuggler", 1934 + 1035, 0)
+				locals.set_int("gb_smuggler", 1934 + 1078, 0)
+			end
+			toolTip("", "Instantly sells Hangar Cargo while in the mission.")
+			ImGui.SameLine()
+			if ImGui.Button("Skip Cooldown") then 
+				STATS.STAT_SET_INT(joaat("SMUG_SELL_SELL_COOLDOWN_TIMER", 0, true))
+			end
+			toolTip("", "Removes cooldown between sales.")
+			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 0 then
+			ImGui.SameLine()
+				if ImGui.Button("Teleport to Hangar") then
+					script.run_in_fiber(function()
+						local hangarBlip = HUD.GET_FIRST_BLIP_INFO_ID(569)
+						local hangarLoc
+						if HUD.DOES_BLIP_EXIST(hangarBlip) then
+						  hangarLoc = HUD.GET_BLIP_COORDS(hangarBlip)
+						  selfTP(true, false, hangarLoc.x, hangarLoc.y, hangarLoc.z)
+						end
+					end)
+				end
+			end
+			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 260353 then
+			ImGui.SameLine()
+				if ImGui.Button("Teleport to PC") then
+				  script.run_in_fiber(function()
+					local laptopBlip = HUD.GET_FIRST_BLIP_INFO_ID(521)
+					local laptopLoc
+					if HUD.DOES_BLIP_EXIST(laptopBlip) then
+					  laptopLoc = HUD.GET_BLIP_COORDS(laptopBlip)
+					  selfTP(true, false, laptopLoc.x + 0.8, laptopLoc.y + 0.7, laptopLoc.z)
+					end
+				  end)
+				end
+				toolTip("", "Teleports you to the computer if you're inside.")
+			end
+			
+			if hangarOwned then
+				ImGui.Text("Stock:"); ImGui.SameLine(); ImGui.Dummy(50, 1); ImGui.SameLine(); ImGui.ProgressBar((hangarStock / 50), ImGui.GetContentRegionAvail() - 5, 30)
+				if hangarStock == 50 then
+					fillHangar = false
+				end
+			end
+			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 0 then
+				fillHangar, used = ImGui.Checkbox("Auto Hangar Cargo", fillHangar)
+				toolTip("", "Automatically supplies your hangar with random cargo.")
+			end 
+		ImGui.EndTabItem()
+		selectedTab = 5
+		end
+		
+		if ImGui.BeginTabItem("Motorcycle Club") then
+		textSeparator("", "Motorcycle Club Controls")
+			if ImGui.Button("Resupply Businesses") then 
+				script.run_in_fiber(function(mcResupply)
+					globals.set_int(1663174 + 1 + 0, 1)
+					globals.set_int(1663174 + 1 + 0, 1)
+					globals.set_int(1663174 + 1 + 0, 1) -- Meth Lab Suplies
+					if showNotifications:is_enabled() then gui.show_message("Meth Lab", "Resupplying your Meth Lab") end
+					globals.set_int(1663174 + 1 + 1, 1)
+					globals.set_int(1663174 + 1 + 1, 1)
+					globals.set_int(1663174 + 1 + 1, 1) -- Cocaine Lockup Supplies 
+					if showNotifications:is_enabled() then gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup") end
+					globals.set_int(1663174 + 1 + 2, 1)
+					globals.set_int(1663174 + 1 + 2, 1)
+					globals.set_int(1663174 + 1 + 2, 1) -- Counterfeit Cash
+					if showNotifications:is_enabled() then gui.show_message("Counterfeit Cash Factory", "Resupplying your Counterfeit Cash Factory") end
+					globals.set_int(1663174 + 1 + 3, 1)
+					globals.set_int(1663174 + 1 + 3, 1)
+					globals.set_int(1663174 + 1 + 3, 1) -- Weed Farm Supplies
+					if showNotifications:is_enabled() then gui.show_message("Weed Farm", "Resupplying your Weed Farm") end
+					globals.set_int(1663174 + 1 + 4, 1)
+					globals.set_int(1663174 + 1 + 4, 1)
+					globals.set_int(1663174 + 1 + 4, 1) -- Document Forge Supplies
+					if showNotifications:is_enabled() then gui.show_message("Document Forge", "Resupplying your Document Forge") end
+					globals.set_int(1663174 + 1 + 5, 1)
+					globals.set_int(1663174 + 1 + 5, 1)
+					globals.set_int(1663174 + 1 + 5, 1) -- Bunker Supplies
+					if showNotifications:is_enabled() then gui.show_message("Bunker", "Resupplying your Bunker") end
+					globals.set_int(1663174 + 1 + 6, 1)
+					globals.set_int(1663174 + 1 + 6, 1)
+					globals.set_int(1663174 + 1 + 6, 1) -- Acid Lab Supplies
+					if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your Acid Lab") end
+				end)
+			end 
+			toolTip("", "Resupplies all your business supplies.")
+			ImGui.SameLine()
+			if ImGui.Button("Fast Production") then 
+				script.run_in_fiber(function(fastProd)
+					globals.set_int(262145 + 17599, 25500) -- prod time for weed
+					globals.set_int(262145 + 17600, 25500) -- prod time for meth
+					globals.set_int(262145 + 17601, 25500) -- prod time for cocaine
+					globals.set_int(262145 + 17602, 25500) -- prod time for document forge
+					globals.set_int(262145 + 17603, 25500) -- prod time for cash
+					--globals.set_int(262145 + 17632, 10000)
+					if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed has been sped up for all businesses") end
+					if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar") end
+				end)
+			end
+			toolTip("", "Speeds up production for all businesses.")
+			ImGui.SameLine()
+			if ImGui.Button("Raise Stock Prices") then 
+				globals.set_int(262145 + 17632, 15000) -- price for weed
+				globals.set_int(262145 + 17631, 60000) -- price for meth
+				globals.set_int(262145 + 17630, 100000) -- price for cocaine
+				globals.set_int(262145 + 17628, 20000) -- price for document forge
+				globals.set_int(262145 + 17629, 30000) -- price for cash
+				--globals.set_int(262145 + 17632, 10000)
+				if showNotifications:is_enabled() then gui.show_message("Production Value", "Production sale value has been increased for all businesses") end
+			end
+			toolTip("", "Raises prices for Weed/Meth/Coke/Documents/Cash businesses.")
+		ImGui.EndTabItem()
+		selectedTab = 6
+		end 
+		
+		if ImGui.BeginTabItem("Nightclub") then 
+		textSeparator("", "Nightclub Controls")
+			if ImGui.Button("Skip Preps/Setups") then 
+				stats.set_packed_stat_bool(22067, true)
+				stats.set_packed_stat_bool(22068, true)
+				stats.set_packed_stat_bool(18161, true)
+				if showNotifications:is_enabled() then gui.show_message("Nightclub", "All Preps/Setups have been skipped!") end
+			end
+			toolTip("", "Skips all of the Setups and Preps for setting up your nightclub.")
+			ImGui.SameLine()
+			if ImGui.Button("Max Popularity") then 
+				STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
+				if showNotifications:is_enabled() then gui.show_message("Nightclub", "Popularity Maxed") end
+			end
+			toolTip("", "Max your Nightclub's Popularity.")
+			ImGui.SameLine()
+			if ImGui.Button("Remove Cooldowns") then 
+				tunables.set_int("BB_CLUB_MANAGEMENT_CLUB_MANAGEMENT_MISSION_COOLDOWN", 0)
+				tunables.set_int("BB_SELL_MISSIONS_MISSION_COOLDOWN", 0)
+				tunables.set_int("BB_SELL_MISSIONS_DELIVERY_VEHICLE_COOLDOWN_AFTER_SELL_MISSION", 0)
+				stats.set_int("MPX_SOURCE_GOODS_CDTIMER", -1)
+				stats.set_int("MPX_SOURCE_RESEARCH_CDTIMER", -1)
+				tunables.set_int("EXPORT_CARGO_LAUNCH_CD_TIME", 0)
+				tunables.set_int("NC_SOURCE_TRUCK_COOLDOWN", 0)
+				tunables.set_int("NIGHTCLUB_SOURCE_GOODS_CD_TIME", 0)
+				if showNotifications:is_enabled() then gui.show_message("Nightclub", "Missions/Exports/Sourcing/Sales Cooldowns removed") end
+			end
+			toolTip("", "Removes cooldowns for all Nightclub Missions/Exports/Sourcing/Sales")
+			nightclubSafe, used = ImGui.Checkbox("Auto-Fill Safe", nightclubSafe)
+			toolTip("", "Automatically fills your Nightclub safe with 50k/s.")
+		ImGui.EndTabItem()
+		selectedTab = 7
+		end
+		
+	ImGui.EndTabBar()
+	end
+	ImGui.PopStyleColor(5)
+end)
+
+-- Loops
+script.register_looped("agencySafeloop", function(script)
+	script:yield()
+	if agencySafeLoop then
+		if showNotifications:is_enabled() then gui.show_message("Agency", "Supplying Agency Safe with money every 5 seconds.") end
+		STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COUNT"), 500, true)
+		STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
+		sleep(5)
+	end
+end)
+
+script.register_looped("arcadeSafeLoop", function(script)
+	script:yield()
+    if arcadeSafeLoop then
+        if showNotifications:is_enabled() then gui.show_message("Arcade", "Supplying Arcade Safe with money every 2 seconds.") end
+        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_PAY_TIME_LEFT"), -1, true)
+        sleep(2)
+    end
+end)
+
+script.register_looped("acidSupplyLoop", function(script)
+	script:yield()
+    if acidSupplyLoop then
+		globals.set_int(1663174 + 1 + 6, 1)
+        if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...") end
+        sleep(0.5)
+    end
+end)
+
+script.register_looped("autoFillBunker", function(script)
+	script:yield()
+    if autoFillBunker then
+		if showNotifications:is_enabled() then gui.show_message("Bunker", "Fast Tracking Production/Research and Refilling supplies.") end
+		globals.set_int(262145 + 21249, 1)
+		globals.set_int(262145 + 21265, 1)
+		globals.set_int(1663174 + 5 + 1, 1)
+		sleep(5)
+	end
+end)
+
+script.register_looped("autoFillHangar", function(script)
     script:yield()
-    if acidResupply:is_enabled() == true then
-        autoGetAcidCargo = not autoGetAcidCargo
-        if autoGetAcidCargo then
-            globals.set_int(1663174 + 1 + 6, 1)
-            if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...") end
+    if fillHangar then
+        autoGetHangarCargo = not autoGetHangarCargo
+        if autoGetHangarCargo then
+            stats.set_bool_masked(MPX() .. "DLC22022PSTAT_BOOL3", true, 9)
+            if showNotifications:is_enabled() then gui.show_message("Hangar", "Restocking hangar cargo, please wait...") end
             sleep(0.5)
         end
     end
 end)
-toolTip(mcBus, "Resupply your Acid Lab supplies")
-mcBus:add_sameline()
-docForge = mcBus:add_checkbox("Resupply Document Forge (Looped)")
-script.register_looped("autoGetDocForgeCargo", function(script)
+
+script.register_looped("nightclubSafeLoop", function(script)
     script:yield()
-    if docForge:is_enabled() == true then
-        autoGetDocForgeCargo = not autoGetDocForgeCargo
-        if autoGetDocForgeCargo then
-            globals.set_int(1663174 + 1 + 4, 1)
-            if showNotifications:is_enabled() then gui.show_message("Document Forge", "Resupplying your document forge, please wait...") end
-            sleep(0.5)
-        end
+    if nightclubSafe then
+        if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe") end
+        STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_PAY_TIME_LEFT"), -1, true)
+        sleep(0.5)
     end
 end)
-toolTip(mcBus, "Resupply your Document Forge supplies")
-weed = mcBus:add_checkbox("Resupply Weed (Looped)")
-script.register_looped("autoGetWeedCargo", function(script)
-    script:yield()
-    if weed:is_enabled() == true then
-        autoGetWeedCargo = not autoGetWeedCargo
-        if autoGetWeedCargo then
-            globals.set_int(1663174 + 1 + 3, 1)
-            if showNotifications:is_enabled() then gui.show_message("Weed Farm", "Resupplying your weed farm, please wait...") end
-            sleep(0.5)
-        end
-    end
-end)
-toolTip(mcBus, "Resupply your Weed Farm supplies")
-mcBus:add_sameline()
-meth = mcBus:add_checkbox("Resupply Meth (Looped)")
-script.register_looped("autoGetMethCargo", function(script)
-    script:yield()
-    if meth:is_enabled() == true then
-        autoGetMethCargo = not autoGetMethCargo
-        if autoGetMethCargo then
-            globals.set_int(1663174 + 1 + 0, 1)
-            if showNotifications:is_enabled() then gui.show_message("Meth Lab", "Resupplying your meth lab, please wait...") end
-            sleep(0.5)
-        end
-    end
-end)
-toolTip(mcBus, "Resupply your Meth Lab supplies")
-mcBus:add_sameline()
-cocaine = mcBus:add_checkbox("Resupply Cocaine (Looped)")
-script.register_looped("autoGetCokeCargo", function(script)
-    script:yield()
-    if cocaine:is_enabled() == true then
-        autoGetCokeCargo = not autoGetCokeCargo
-        if autoGetCokeCargo then
-            globals.set_int(1663174 + 1 + 1, 1)
-            if showNotifications:is_enabled() then gui.show_message("Cocaine Lockup", "Resupplying your cocaine lockup, please wait...") end
-            sleep(0.5)
-        end
-    end
-end)
-toolTip(mcBus, "Resupply your Cocaine Lockup supplies")
-fakeCash = mcBus:add_checkbox("Resupply Counterfeit Cash (Looped)")
-script.register_looped("autoGetCashCargo", function(script)
-    script:yield()
-    if fakeCash:is_enabled() == true then
-        autoGetCashCargo = not autoGetCashCargo
-        if autoGetCashCargo then
-            globals.set_int(1663174 + 1 + 2, 1)
-            if showNotifications:is_enabled() then gui.show_message("Counterfeit Cash", "Resupplying your counterfeit cash, please wait...") end
-            sleep(0.5)
-        end
-    end
-end)
-toolTip(mcBus, "Resupply your Counterfeit Cash supplies")
-mcBus:add_separator()
-mcBus:add_button("Resupply All", function()
-    script.run_in_fiber(function(mcResupply)
-                globals.set_int(1663174 + 1 + 0, 1)
-        globals.set_int(1663174 + 1 + 0, 1)
-        globals.set_int(1663174 + 1 + 0, 1) -- Meth Lab Suplies
-        if showNotifications:is_enabled() then gui.show_message("Meth Lab", "Resupplying your Meth Lab") end
-        globals.set_int(1663174 + 1 + 1, 1)
-        globals.set_int(1663174 + 1 + 1, 1)
-        globals.set_int(1663174 + 1 + 1, 1) -- Cocaine Lockup Supplies 
-        if showNotifications:is_enabled() then gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup") end
-        globals.set_int(1663174 + 1 + 2, 1)
-        globals.set_int(1663174 + 1 + 2, 1)
-        globals.set_int(1663174 + 1 + 2, 1) -- Counterfeit Cash
-        if showNotifications:is_enabled() then gui.show_message("Counterfeit Cash Factory", "Resupplying your Counterfeit Cash Factory") end
-        globals.set_int(1663174 + 1 + 3, 1)
-        globals.set_int(1663174 + 1 + 3, 1)
-        globals.set_int(1663174 + 1 + 3, 1) -- Weed Farm Supplies
-        if showNotifications:is_enabled() then gui.show_message("Weed Farm", "Resupplying your Weed Farm") end
-        globals.set_int(1663174 + 1 + 4, 1)
-        globals.set_int(1663174 + 1 + 4, 1)
-        globals.set_int(1663174 + 1 + 4, 1) -- Document Forge Supplies
-        if showNotifications:is_enabled() then gui.show_message("Document Forge", "Resupplying your Document Forge") end
-        globals.set_int(1663174 + 1 + 5, 1)
-        globals.set_int(1663174 + 1 + 5, 1)
-        globals.set_int(1663174 + 1 + 5, 1) -- Bunker Supplies
-        if showNotifications:is_enabled() then gui.show_message("Bunker", "Resupplying your Bunker") end
-        globals.set_int(1663174 + 1 + 6, 1)
-        globals.set_int(1663174 + 1 + 6, 1)
-        globals.set_int(1663174 + 1 + 6, 1) -- Acid Lab Supplies
-        if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your Acid Lab") end
-    end)
-end)
-toolTip(mcBus, "Resupplies all your supplies for all businesses")
-mcBus:add_sameline()
-mcBus:add_button("Fast Production", function()
-    script.run_in_fiber(function(fastProd)
-        globals.set_int(262145 + 17599, 25500) -- prod time for weed
-        globals.set_int(262145 + 17600, 25500) -- prod time for meth
-        globals.set_int(262145 + 17601, 25500) -- prod time for cocaine
-        globals.set_int(262145 + 17602, 25500) -- prod time for document forge
-        globals.set_int(262145 + 17603, 25500) -- prod time for cash
-        --globals.set_int(262145 + 17632, 10000)
-        if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed has been sped up for all businesses") end
-        if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar") end
-    end)
-end)
-toolTip(mcBus, "Activates fast production for all MC businesses (read top right for info after pressing the button)")
-mcBus:add_sameline()
-mcBus:add_button("Raise Sale Prices", function()
-    globals.set_int(262145 + 17632, 15000) -- price for weed
-    globals.set_int(262145 + 17631, 60000) -- price for meth
-    globals.set_int(262145 + 17630, 100000) -- price for cocaine
-    globals.set_int(262145 + 17628, 20000) -- price for document forge
-    globals.set_int(262145 + 17629, 30000) -- price for cash
-    --globals.set_int(262145 + 17632, 10000)
-    if showNotifications:is_enabled() then gui.show_message("Production Value", "Production sale value has been increased for all businesses") end
-end)
-toolTip(mcBus, "Raises the sale price for all MC Businesses to over 1 million each")
-mcBus:add_separator()
+
+mcBus = Business:add_tab("Motorcycle Club")
+
 mcBus:add_text("Motorcycle Club Name Changer")
  mcName = ""
 mcBus:add_imgui(function()
@@ -6377,70 +6670,9 @@ script.register_looped("mcNameCB", function(mcName)
     end
 end)
 
--- Nightclub Loop - L7Neg
-Club = Business:add_tab("Nightclub")
-
-Club:add_button("Skip Preps/Setups", function()
-		stats.set_packed_stat_bool(22067, true)
-		stats.set_packed_stat_bool(22068, true)
-		stats.set_packed_stat_bool(18161, true)
-		if showNotifications:is_enabled() then gui.show_message("Nightclub", "All Preps/Setups have been skipped!") end
-end)
-toolTip(Club, "Skips all of the Setups and Preps for setting up your nightclub")
-
-Club:add_sameline()
-Club:add_button("Max Club Popularity", function()
-    STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
-	if showNotifications:is_enabled() then gui.show_message("Nightclub", "Popularity Maxed") end
-end)
-toolTip(Club, "Max your nightclubs popularity")
-
-Club:add_sameline()
-Club:add_button("Remove Cooldowns", function()
-	tunables.set_int("BB_CLUB_MANAGEMENT_CLUB_MANAGEMENT_MISSION_COOLDOWN", 0)
-	tunables.set_int("BB_SELL_MISSIONS_MISSION_COOLDOWN", 0)
-	tunables.set_int("BB_SELL_MISSIONS_DELIVERY_VEHICLE_COOLDOWN_AFTER_SELL_MISSION", 0)
-	stats.set_int("MPX_SOURCE_GOODS_CDTIMER", -1)
-	stats.set_int("MPX_SOURCE_RESEARCH_CDTIMER", -1)
-	tunables.set_int("EXPORT_CARGO_LAUNCH_CD_TIME", 0)
-	tunables.set_int("NC_SOURCE_TRUCK_COOLDOWN", 0)
-	tunables.set_int("NIGHTCLUB_SOURCE_GOODS_CD_TIME", 0)
-	if showNotifications:is_enabled() then gui.show_message("Nightclub", "Missions/Exports/Sourcing/Sales Cooldowns removed") end
-end)
-toolTip(Club, "Removes cooldowns for all Nightclub Missions/Exports/Sourcing/Sales")
-Club:add_separator()
-
-nClub = Club:add_checkbox("Nightclub Safe Loop")
-script.register_looped("nightclubloop", function(script)
-    script:yield()
-    if nClub:is_enabled() == true then
-        if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe") end
-        STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_PAY_TIME_LEFT"), -1, true)
-        sleep(0.5)
-    end
-end)
-toolTip(Club, "Fills your nightclub safe with money")
-
 CEO = Business:add_tab("CEO")
 
-CEO:add_button("Register as CEO", function()
-    -- -1 is off, 0 is on
-    playerID = PLAYER.PLAYER_ID()
-    g = 1887305 + (playerID * 609) + 10
-    gb1 = globals.get_int(g + 1)
-    gb2 = globals.get_int(g + 430)
-    if gb1 == playerID and gb2 == 0 then
-        globals.set_int(g + 1, -1)
-        globals.set_int(g + 430, -1)
-        if showNotifications:is_enabled() then gui.show_message("CEO", "You are no longer a CEO") end
-    else
-        globals.set_int(g + 1, playerID)
-        globals.set_int(g + 430, 0)
-        if showNotifications:is_enabled() then gui.show_message("CEO", "You are now a CEO") end
-    end
-end)
-toolTip(CEO, "Register as a CEO")
+CEO:add_text("CEO Name Changer")
  setName = ""
 CEO:add_imgui(function()
     if is_typing then
@@ -8380,7 +8612,7 @@ showNotifications = settingsTab:add_checkbox("Notifications")
 toolTip(settingsTab, "Shows notification messages from Extras Addon")
 showNotifications:set_enabled(true)
 
-flags = ImGuiWindowFlags.None | ImGuiWindowFlags.NoSavedSettings
+flags = ImGuiWindowFlags.None
 griefPlayerTab:add_imgui(function()
         
     ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, 0.5, 0.0, 0.0, 1) -- Adjust the Title color as needed
@@ -8394,8 +8626,9 @@ griefPlayerTab:add_imgui(function()
     if selPlayer == self then
         selPlayer = "Self"
     end
-    
-    ImGui.SetNextWindowPos(280, 12, ImGuiCond.FirstUseEver)
+
+	-- Set the scaled position
+	ImGui.SetNextWindowPos(335, 10, ImGuiCond.Always)
     ImGui.SetNextWindowCollapsed(true, ImGuiCond.FirstUseEver) -- Collapse the window on first use
     
     ImGui.Begin("Extras Addon (Grief Options) - Target: ".. selPlayer, flags)
@@ -10101,8 +10334,9 @@ dropsPlayerTab:add_imgui(function()
         if selPlayer == self then
             selPlayer = "Self"
         end
-        
-        ImGui.SetNextWindowPos(765, 12, ImGuiCond.FirstUseEver)
+
+		-- Set the scaled position
+		ImGui.SetNextWindowPos(890, 10, ImGuiCond.Always)
         ImGui.SetNextWindowCollapsed(true, ImGuiCond.FirstUseEver)
         
         ImGui.Begin("Extras Addon (Drop Options) - Target: ".. selPlayer, flags)
@@ -11204,215 +11438,3 @@ script.register_looped("indirectSpectate", function(script)
 end)
 toolTip(spectate, "Spectates the selected player using a less detectable spectate method")
 
-Business:add_imgui(function()
-local selectedTab = 1
-	ImGui.PushStyleColor(ImGuiCol.Tab, 0.7, 0.0, 0.0, 1.0)          -- Default tab color (red)
-	ImGui.PushStyleColor(ImGuiCol.TabHovered, 0.4, 0.3, 0.3, 1.0)   -- Hovered tab color (lighter red)
-	ImGui.PushStyleColor(ImGuiCol.TabActive, 0.5, 0.0, 0.0, 1.0)    -- Active tab color (bright red)
-	ImGui.PushStyleColor(ImGuiCol.TabUnfocused, 1.0, 0.1, 0.1, 1.0) -- Unfocused tab color (darker red)
-	ImGui.PushStyleColor(ImGuiCol.TabUnfocusedActive, 1.0, 0.1, 0.1, 1.0)
-	if ImGui.BeginTabBar("##MainTabBar") then
-		if ImGui.BeginTabItem("Agency") then
-			selectedContractIndex = 0
-			selectedContract = contracts[selectedContractIndex + 1]
-
-			contractChanged = false
-				local contract_names = {}
-				for i, contract in ipairs(contracts) do
-					table.insert(contract_names, contract.name)
-				end
-
-				selectedContractIndex, used = ImGui.ListBox("##ContractList", selectedContractIndex, contract_names, #contract_names) -- Display the listbox
-				if used then
-					selectedContract = contracts[selectedContractIndex + 1]
-				end
-
-				if ImGui.Button("Select Contract") then
-					local contractToUse = contracts[selectedContractIndex + 1]
-					
-					if contractToUse and contractToUse.id then  -- Ensure contractToUse is not nil and has a valid id
-						STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_BS"), contractToUse.id, true)
-						if showNotifications:is_enabled() then gui.show_message("Agency", "Contract: " .. contractToUse.name .. " ID: " .. contractToUse.id .. " Selected") end
-					else
-						if showNotifications:is_enabled() then gui.show_message("Error", "Invalid Contract ID") end
-					end
-				end
-			toolTip("", "Sets the selected contract as the one you are currently playing")	
-			
-			ImGui.SameLine()
-			if ImGui.Button("Complete Preps") then
-				script.run_in_fiber(function(script)
-					if showNotifications:is_enabled() then gui.show_message("Agency", "Completed Mission Preps") end
-					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_GENERAL_BS"), -1, true)
-					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COMPLETED_BS"), -1, true)
-					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_COOLDOWN_POSIX"), -1, true)
-					script:yield()
-				end)
-			end
-			toolTip("", "Completes the preps of your current contract")
-			
-			ImGui.SameLine()
-			if ImGui.Button("Skip Cooldown") then
-				script.run_in_fiber(function(script)
-					if showNotifications:is_enabled() then gui.show_message("Agency", "Skipped cooldown between missions.") end
-					STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_STORY_COOLDOWN"), -1, true)
-					script:yield()
-				end)
-			end
-			toolTip("", "Skips the cooldown between playing contracts")
-			
-			if (ImGui.TreeNode("How To Use")) then
-				ImGui.Text("Select the contract you want to play and press Select Contract.")
-				ImGui.Text("Press Complete Preps and then WALK OUTSIDE and roam until you get a call from Franklin.")
-				ImGui.Text("Go back inside the agency and skip the cutscene if you want to.")
-				ImGui.Separator()
-				ImGui.Text("Now, depending on which mission you select you will either go to the computer.")
-				ImGui.Text("OR")
-				ImGui.Text("If DFW Dre is selected, there should be a yellow marker on the ground outside Franklins office.")
-				ImGui.TreePop()
-			end
-			toolTip("", "How to set up the agency contracts properly.")
-			
-			agencySafeLoop, used = ImGui.Checkbox("Agency Safe Loop", agencySafeLoop)
-			toolTip("", "Fills your agency safe with money")	
-		ImGui.EndTabItem()
-		selectedTab = 1
-		end
-		
-		if ImGui.BeginTabItem("Arcade") then
-			arcadeSafeLoop, used = ImGui.Checkbox("Arcade Safe Loop", arcadeSafeLoop)
-			toolTip("", "Fills your Arcade safe with money")
-		ImGui.EndTabItem()
-		selectedTab = 2
-		end
-		
-		if ImGui.BeginTabItem("Acid Lab") then
-			acidSupplyLoop, used = ImGui.Checkbox("Resupply Acid Lab", acidSupplyLoop)
-			toolTip("", "Resupplies your Acid Lab supplies")
-			
-			if ImGui.Button("Skip Missions") then 
-				script.run_in_fiber(function(script)
-					if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Skipped all Acid Lab missions, you can now purchase the Acid Lab from warstock.") end
-					if stats.get_int("MPX_AWD_CALLME") < 10 then -- Job Finished
-						stats.set_int("MPX_AWD_CALLME", 10)
-					end
-				end)
-			end
-			toolTip("", "Instantly unlocks the Acid Lab for purchase on warstock.")
-		ImGui.EndTabItem()
-		selectedTab = 3
-		end
-		if ImGui.BeginTabItem("Bunker") then 
-			if ImGui.Button("Unlock Shooting Range") then 
-				script.run_in_fiber(function(script)
-					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_1"), 690, true)
-					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_2"), 1860, true)
-					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_3"), 2690, true)
-					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_4"), 2660, true)
-					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_5"), 2650, true)
-					STATS.STAT_SET_INT(joaat(MPX() .. "SR_HIGHSCORE_6"), 450, true)
-					STATS.STAT_SET_INT(joaat(MPX() .. "SR_TARGETS_HIT"), 269, true)
-					STATS.STAT_SET_INT(joaat(MPX() .. "SR_WEAPON_BIT_SET"), -1, true)
-					STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_TIER_1_REWARD"), true, true)
-					STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_TIER_3_REWARD"), true, true)
-					STATS.STAT_SET_BOOL(joaat(MPX() .. "SR_INCREASE_THROW_CAP"), true, true)
-					if showNotifications:is_enabled() then gui.show_message("Bunker", "Completed All Shooting Range missions with 3 Stars.") end
-				end)
-			end
-			toolTip("", "Sets all shooting range missions to completed @ 3 stars")
-			
-			ImGui.SameLine()
-			if ImGui.Button("Instant Sell") then 
-				script.run_in_fiber(function()
-					locals.set_int("gb_gunrunning", 1211 + 774, 0)
-					if showNotifications:is_enabled() then gui.show_message("Bunker", "Instant Sale (Must start the mission and go outside the bunker to use)") end
-				end)
-			end
-			toolTip("", "Instantly sells your bunker stock, must be outside with the mission started to sell.")
-
-			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 0 then
-				if ImGui.Button("Teleport##bunker") then
-				  script.run_in_fiber(function()
-					local bunkerBlip = HUD.GET_FIRST_BLIP_INFO_ID(557)
-					local bunkerLoc
-					if HUD.DOES_BLIP_EXIST(bunkerBlip) then
-					  bunkerLoc = HUD.GET_BLIP_COORDS(bunkerBlip)
-					  selfTP(true, false, bunkerLoc)
-					end
-				  end)
-				end
-				toolTip("", "Teleports you to your Bunker if you're outside.")
-			  end
-			
-			local MPx = "MP" .. stats.get_character_index()
-			local bunkerSupply = stats.get_int(MPx .. "_MATTOTALFORFACTORY5")
-			local bunkerStock = stats.get_int(MPx .. "_PRODTOTALFORFACTORY5")
-			if stats.get_int(MPx .. "_PROP_FAC_SLOT5") ~= 0 then
-				bunkerOwned = true
-			else
-				bunkerOwned = false
-			end
-			if bunkerOwned then
-			  ImGui.Text("Supplies:"); ImGui.SameLine(); ImGui.Dummy(30, 1); ImGui.SameLine(); ImGui.ProgressBar(
-				(bunkerSupply / 100), 140, 30)
-			  
-			  ImGui.Text("Stock:"); ImGui.SameLine(); ImGui.Dummy(50, 1); ImGui.SameLine(); ImGui.ProgressBar((bunkerStock / 100), 140, 30)
-			  
-			  if math.ceil(bunkerSupply) < 100 then	
-			  
-			  end
-			  autoFillBunker, used = ImGui.Checkbox("Automate Bunker", autoFillBunker)
-			  toolTip("", "Automatically Resupplies & Fast Tracks Research/Production Stock on repeat.")
-			  
-			  if ImGui.TreeNode("Help") then
-					ImGui.TextWrapped("Open the Master Control Terminal and Sell your bunker stock, it must be empty!")
-					ImGui.TextWrapped("If your Bunker stock is not stocking, wait for your stock bar to show that you have stock and then toggle Automate on, This usually takes no longer than 5 minutes after joining a session.")
-					ImGui.TreePop()
-			  end
-			else
-			  ImGui.Text("You don't own a Bunker.")
-			end
-		ImGui.EndTabItem()
-		selectedTab = 4
-		end
-	ImGui.EndTabBar()
-	end
-	ImGui.PopStyleColor(5)
-end)
-
--- Loops
-script.register_looped("agencySafeloop", function(script)
-	if agencySafeLoop then
-		if showNotifications:is_enabled() then gui.show_message("Agency", "Supplying Agency Safe with money every 5 seconds.") end
-		STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COUNT"), 500, true)
-		STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
-		sleep(5)
-	end
-end)
-
-script.register_looped("arcadeSafeLoop", function(script)
-    if arcadeSafeLoop then
-        if showNotifications:is_enabled() then gui.show_message("Arcade", "Supplying Arcade Safe with money every 2 seconds.") end
-        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_PAY_TIME_LEFT"), -1, true)
-        sleep(2)
-    end
-end)
-
-script.register_looped("acidSupplyLoop", function(script)
-    if acidSupplyLoop then
-		globals.set_int(1663174 + 1 + 6, 1)
-        if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...") end
-        sleep(0.5)
-    end
-end)
-
-script.register_looped("autoFillBunker", function(script)
-    if autoFillBunker then
-		if showNotifications:is_enabled() then gui.show_message("Bunker", "Fast Tracking Production/Research and Refilling supplies.") end
-		globals.set_int(262145 + 21249, 1)
-		globals.set_int(262145 + 21265, 1)
-		globals.set_int(1663174 + 5 + 1, 1)
-		sleep(5)
-	end
-end)
