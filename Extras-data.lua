@@ -4367,7 +4367,7 @@ function getUpdates(file1, file2, file3)
         if filename then  -- Only proceed if filename is not nil
             local url = base_url .. filename
             local success, message = pcall(function()
-                os.execute(url)  -- Pass the URL to os.execute, let the C++ logic handle the rest including sanitization
+                os.execute(url)
             end)
         end
     end
@@ -4541,9 +4541,9 @@ function delete_entity(ent)
 	end
 end
 
-function selfTP(keepVehicle, setHeading, coords, heading)
+function selfTP(keepVehicle, setHeading, xCoords, yCoords, zCoords, heading)
     script.run_in_fiber(function(selftp)
-      STREAMING.REQUEST_COLLISION_AT_COORD(coords.x, coords.y, coords.z)
+      STREAMING.REQUEST_COLLISION_AT_COORD(xCoords, yCoords, zCoords)
       selftp:sleep(300)
       if setHeading then
         if heading == nil then
@@ -4552,10 +4552,10 @@ function selfTP(keepVehicle, setHeading, coords, heading)
         ENTITY.SET_ENTITY_HEADING(PLAYER.PLAYER_PED_ID(), heading)
       end
       if keepVehicle then
-        PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), coords.x, coords.y, coords.z)
+        PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), xCoords, yCoords, zCoords)
       else
         TASK.CLEAR_PED_TASKS_IMMEDIATELY(PLAYER.PLAYER_PED_ID())
-        ENTITY.SET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), coords.x, coords.y, coords.z, false, false, false, true)
+        ENTITY.SET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), xCoords, yCoords, zCoords, false, false, false, true)
       end
     end)
   end
