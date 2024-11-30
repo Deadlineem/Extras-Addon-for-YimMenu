@@ -15,11 +15,11 @@ ___________         __
   \____|__  /\____ \____ |\____/|___|  /
           \/      \/    \/           \/
 
-	 Extras Addon v1.69
+		 Extras Addon v1.69
         Addon Version: 1.1.4
 
         Credits:  DeadlineEm,
-	 USBMenus & Xesdoog
+		 USBMenus & Xesdoog
 ]]
 
 addonVersion = "1.1.4"
@@ -729,20 +729,6 @@ Stats:add_button("Reset Income/Spent Stats", function()
     end)
 end)
 toolTip(Stats, "Reset your Earned income, Overall Income, Casino Chip Earnings, etc. to 0")
-Stats:add_sameline()
-Stats:add_button("Bank 2 Wallet", function()
-    script.run_in_fiber(function(pocketMoney)
-        NETSHOPPING.NET_GAMESERVER_TRANSFER_BANK_TO_WALLET(stats.get_character_index(), MONEY.NETWORK_GET_VC_BANK_BALANCE(stats.get_character_index()))
-    end)
-end)
-toolTip(Stats, "Take all your money out of the bank")
-Stats:add_sameline()
-Stats:add_button("Wallet 2 Bank", function()
-    script.run_in_fiber(function(bankMoney)
-        NETSHOPPING.NET_GAMESERVER_TRANSFER_WALLET_TO_BANK(stats.get_character_index(), MONEY.NETWORK_GET_VC_WALLET_BALANCE(stats.get_character_index()))
-    end)
-end)
-toolTip(Stats, "Put all your money into the bank")
 Stats:add_separator()
 Stats:add_text("Character Skills")
 Stats:add_button("Max All Skills", function()
@@ -3312,6 +3298,7 @@ moneyRemover:add_button("Set Amount", function()
         gui.show_error("Money Remover", "Amount Must Be Greater Than 500")
     else
         globals.set_int(262145 + 20024, removerInput:get_value())
+		globals.set_int(262145 + 20906, -1)
         if showNotifications:is_enabled() then gui.show_message("Money Remover", "Amount Successfully Set") end
     end
 end)
@@ -6167,7 +6154,9 @@ Business:add_button("Register as MC", function()
 end)
 toolTip(Business, "Register as an MC President")
 
-textSeparator(Business, "Businesses")
+textSeparator(Business, "Tab Bar Selection")
+arcadeSafeVal = 2000
+bailSafeVal = 2000
 Business:add_imgui(function()
 local selectedTab = 1
 	ImGui.PushStyleColor(ImGuiCol.Tab, 0.7, 0.0, 0.0, 1.0)          -- Default tab color (red)
@@ -6175,7 +6164,15 @@ local selectedTab = 1
 	ImGui.PushStyleColor(ImGuiCol.TabActive, 0.5, 0.0, 0.0, 1.0)    -- Active tab color (bright red)
 	ImGui.PushStyleColor(ImGuiCol.TabUnfocused, 1.0, 0.1, 0.1, 1.0) -- Unfocused tab color (darker red)
 	ImGui.PushStyleColor(ImGuiCol.TabUnfocusedActive, 1.0, 0.1, 0.1, 1.0)
-	
+
+showBusinessOne = ImGui.Checkbox("Business 1", showBusinessOne)
+toolTip("", "Shows the Business Tab Bar")
+--ImGui.SameLine()
+--showBusinessTwo = ImGui.Checkbox("Business 2", showBusinessTwo)
+--toolTip("", "Shows the 2nd Business Tab Bar.")
+
+if showBusinessOne then
+textSeparator("", "Business Tab")
 	if ImGui.BeginTabBar("##MainTabBar") then
 		if ImGui.BeginTabItem("Agency") then
 		textSeparator("", "Agency Controls")
@@ -6245,13 +6242,15 @@ local selectedTab = 1
 		selectedTab = 1
 		end
 		
-		if ImGui.BeginTabItem("Arcade") then
+		--[[if ImGui.BeginTabItem("Arcade") then
 		textSeparator("", "Arcade Controls")
 			arcadeSafeLoop, used = ImGui.Checkbox("Arcade Safe Loop", arcadeSafeLoop)
 			toolTip("", "Fills your Arcade safe with money")
+			arcadeSafeVal = ImGui.SliderInt("Safe Amount", arcadeSafeVal, 2000, 500000)
+			toolTip("", "The amount to supply the arcade safe with every 2 seconds.")
 		ImGui.EndTabItem()
 		selectedTab = 2
-		end
+		end]]
 		
 		if ImGui.BeginTabItem("Acid Lab") then
 		textSeparator("", "Acid Lab Controls")
@@ -6270,6 +6269,26 @@ local selectedTab = 1
 		ImGui.EndTabItem()
 		selectedTab = 3
 		end
+		
+		if ImGui.BeginTabItem("Auto Shop") then 
+			if ImGui.Button("Instant Staff Delivery") then 
+				globals.set_int(262145 + 30427, -1)
+			end
+		
+		ImGui.EndTabItem()
+		selectedTab = 4
+		end
+		
+		--[[if ImGui.BeginTabItem("Bail Office") then 
+			bailSafeLoop, used = ImGui.Checkbox("Bail Safe Loop", bailSafeLoop)
+			toolTip("", "Supplies your Bail Office safe with money, alter the slider to change the amount.")
+			bailSafeVal = ImGui.SliderInt("Safe Amount", bailSafeVal, 2000, 1200000000)
+			toolTip("", "Set the amount of money to supply the Bail Office safe with. (Only works using FSL)")
+
+		ImGui.EndTabItem()
+		selectedTab = 5
+		end]]
+		
 		if ImGui.BeginTabItem("Bunker") then 
 		textSeparator("", "Bunker Controls")
 			if ImGui.Button("Unlock Shooting Range") then 
@@ -6356,21 +6375,22 @@ local selectedTab = 1
 			  if bunkerStock == 100 then	
 				autoFillBunker = false
 			  end
-			  autoFillBunker, used = ImGui.Checkbox("Automate Bunker", autoFillBunker)
-			  toolTip("", "Automatically Resupplies & Fast Tracks Research/Production Stock on repeat.")
+			  if bunkerStock ~= 100 then
+					autoFillBunker, used = ImGui.Checkbox("Automate Bunker", autoFillBunker)
+					toolTip("", "Automatically Resupplies & Fast Tracks Research/Production Stock on repeat.")
 			  
-			  if ImGui.TreeNode("Help") then
-					ImGui.TextWrapped("Open the Master Control Terminal and Sell your bunker stock, it must be empty!")
+				if ImGui.TreeNode("Help") then
 					ImGui.TextWrapped("If your Bunker stock is not stocking, wait for your stock bar to show that you have stock and then toggle Automate on, This usually takes no longer than 5 minutes after joining a session.")
 					ImGui.TreePop()
+				end
 			  end
 			else
 			  ImGui.Text("You don't own a Bunker.")
 			end
 		ImGui.EndTabItem()
-		selectedTab = 4
+		selectedTab = 6
 		end
-		
+	
 		if ImGui.BeginTabItem("Hangar") then
 			textSeparator("", "Hangar Controls")
 			local hangarStock = stats.get_int(MPX() .. "HANGAR_CONTRABAND_TOTAL")
@@ -6424,14 +6444,19 @@ local selectedTab = 1
 					fillHangar = false
 				end
 			end
-			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 0 then
+			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 0 and hangarStock ~= 50 then
 				fillHangar, used = ImGui.Checkbox("Auto Hangar Cargo", fillHangar)
-				toolTip("", "Automatically supplies your hangar with random cargo.")
+				toolTip("", "Automatically supplies your hangar with random cargo while outside your hangar.")
 			end 
 		ImGui.EndTabItem()
-		selectedTab = 5
+		selectedTab = 7
 		end
-		
+	--end
+--end
+
+--if showBusinessTwo then
+--textSeparator("", "Business Tab 2")
+	--if ImGui.BeginTabBar("##SecondaryTab") then	
 		if ImGui.BeginTabItem("Motorcycle Club") then
 		textSeparator("", "Motorcycle Club Controls")
 			if ImGui.Button("Resupply Businesses") then 
@@ -6493,7 +6518,7 @@ local selectedTab = 1
 			end
 			toolTip("", "Raises prices for Weed/Meth/Coke/Documents/Cash businesses.")
 		ImGui.EndTabItem()
-		selectedTab = 6
+		selectedTab = 8
 		end 
 		
 		if ImGui.BeginTabItem("Nightclub") then 
@@ -6503,8 +6528,9 @@ local selectedTab = 1
 				stats.set_packed_stat_bool(22068, true)
 				stats.set_packed_stat_bool(18161, true)
 				if showNotifications:is_enabled() then gui.show_message("Nightclub", "All Preps/Setups have been skipped!") end
+				SessionChanger(sessionType)
 			end
-			toolTip("", "Skips all of the Setups and Preps for setting up your nightclub.")
+			toolTip("", "Skips all of the Setups and Preps for setting up your nightclub.  Requires a session change.")
 			ImGui.SameLine()
 			if ImGui.Button("Max Popularity") then 
 				STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
@@ -6524,14 +6550,48 @@ local selectedTab = 1
 				if showNotifications:is_enabled() then gui.show_message("Nightclub", "Missions/Exports/Sourcing/Sales Cooldowns removed") end
 			end
 			toolTip("", "Removes cooldowns for all Nightclub Missions/Exports/Sourcing/Sales")
-			nightclubSafe, used = ImGui.Checkbox("Auto-Fill Safe", nightclubSafe)
-			toolTip("", "Automatically fills your Nightclub safe with 50k/s.")
+			if INTERIOR.GET_INTERIOR_FROM_ENTITY(PLAYER.PLAYER_PED_ID()) == 271617 then
+				if ImGui.Button("Teleport to PC") then
+					script.run_in_fiber(function()
+					local laptopBlip = HUD.GET_FIRST_BLIP_INFO_ID(521)
+					local laptopLoc
+						if HUD.DOES_BLIP_EXIST(laptopBlip) then
+							laptopLoc = HUD.GET_BLIP_COORDS(laptopBlip)
+							selfTP(true, false, laptopLoc.x - 0.8, laptopLoc.y + 0.4, laptopLoc.z)
+						end
+					end)
+				end
+				toolTip("", "Teleports you to the computer if you're inside.")
+				
+				nightclubSafe, used = ImGui.Checkbox("Automate Safe", nightclubSafe)
+				toolTip("", "Automatically fills your Nightclub safe and retrieves the money.")
+			else
+				if ImGui.Button("Teleport to Nightclub") then
+					script.run_in_fiber(function()
+					local clubBlip = HUD.GET_FIRST_BLIP_INFO_ID(614)
+					local clubLoc
+						if HUD.DOES_BLIP_EXIST(clubBlip) then
+							clubLoc = HUD.GET_BLIP_COORDS(clubBlip)
+							selfTP(true, false, clubLoc.x - 0.2, clubLoc.y - 1.2, clubLoc.z)
+						end
+					end)
+				end
+				toolTip("", "Teleports you to your nightclub.")
+			end
+			
 		ImGui.EndTabItem()
-		selectedTab = 7
+		selectedTab = 9
 		end
 		
+		--[[if ImGui.BeginTabItem("Salvage Yard") then 
+			
+		
+		ImGui.EndTabItem()
+		selectedTab = 10
+		end]]
 	ImGui.EndTabBar()
 	end
+end
 	ImGui.PopStyleColor(5)
 end)
 
@@ -6542,18 +6602,8 @@ script.register_looped("agencySafeloop", function(script)
 		if showNotifications:is_enabled() then gui.show_message("Agency", "Supplying Agency Safe with money every 5 seconds.") end
 		STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_COUNT"), 500, true)
 		STATS.STAT_SET_INT(joaat(MPX() .. "FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
-		sleep(5)
+		sleep(0.5)
 	end
-end)
-
-script.register_looped("arcadeSafeLoop", function(script)
-	script:yield()
-    if arcadeSafeLoop then
-        if showNotifications:is_enabled() then gui.show_message("Arcade", "Supplying Arcade Safe with money every 2 seconds.") end
-        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_SAFE_CASH_VALUE"), 2000, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "ARCADE_PAY_TIME_LEFT"), -1, true)
-        sleep(2)
-    end
 end)
 
 script.register_looped("acidSupplyLoop", function(script)
@@ -6591,12 +6641,20 @@ end)
 script.register_looped("nightclubSafeLoop", function(script)
     script:yield()
     if nightclubSafe then
-        if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying 50k/s to Nightclub Safe") end
-        STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_PAY_TIME_LEFT"), -1, true)
-        sleep(0.5)
+		local ncSafeVal = stats.get_int(MPX() .. "CLUB_SAFE_CASH_VALUE")
+		if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying your nightclub safe with money and collecting it.") end
+		if ncSafeVal ~= 250000 then
+			globals.set_int(4537455, 0)
+			STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
+			STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_PAY_TIME_LEFT"), -1, true)
+		else
+			globals.set_int(4537455, 0)
+			locals.set_int("am_mp_nightclub", 181 + 32 + 1, 1)
+			sleep(2.5)
+		end
     end
 end)
+
 
 mcBus = Business:add_tab("Motorcycle Club")
 
