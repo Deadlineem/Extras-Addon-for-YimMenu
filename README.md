@@ -1,6 +1,6 @@
 ![Extras Addon for YimMenu](http://extrasaddon.us.to/img/extras-header-2.png)
 
-[![version](https://img.shields.io/badge/version-1.1.3-green.svg)](http://extrasaddon.us.to/) [![Button](https://img.shields.io/badge/Chronix-Repository-red)](https://github.com/Deadlineem/Chronix)
+[![version](https://img.shields.io/badge/version-1.1.5-green.svg)](http://extrasaddon.us.to/) [![Button](https://img.shields.io/badge/Chronix-Repository-red)](https://github.com/Deadlineem/Chronix)
 
 NOTE:  YOU MUST USE FSL IN ORDER TO GET ONLINE WITH CHRONIX AND PLAY WITH OTHER PLAYERS!
 
