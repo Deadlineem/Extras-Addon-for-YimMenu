@@ -16,13 +16,13 @@ ___________         __
           \/      \/    \/           \/
 
 		 Extras Addon v1.69
-        Addon Version: 1.1.4
+        Addon Version: 1.1.5
 
         Credits:  DeadlineEm,
 		 USBMenus & Xesdoog
 ]]
 
-addonVersion = "1.1.4"
+addonVersion = "1.1.5"
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
 giftPlayerTab = gui.get_tab("")
@@ -6459,48 +6459,36 @@ textSeparator("", "Business Tab")
 	--if ImGui.BeginTabBar("##SecondaryTab") then	
 		if ImGui.BeginTabItem("Motorcycle Club") then
 		textSeparator("", "Motorcycle Club Controls")
-			if ImGui.Button("Resupply Businesses") then 
-				script.run_in_fiber(function(mcResupply)
-					globals.set_int(1663174 + 1 + 0, 1)
-					globals.set_int(1663174 + 1 + 0, 1)
-					globals.set_int(1663174 + 1 + 0, 1) -- Meth Lab Suplies
-					if showNotifications:is_enabled() then gui.show_message("Meth Lab", "Resupplying your Meth Lab") end
-					globals.set_int(1663174 + 1 + 1, 1)
-					globals.set_int(1663174 + 1 + 1, 1)
-					globals.set_int(1663174 + 1 + 1, 1) -- Cocaine Lockup Supplies 
-					if showNotifications:is_enabled() then gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup") end
-					globals.set_int(1663174 + 1 + 2, 1)
-					globals.set_int(1663174 + 1 + 2, 1)
-					globals.set_int(1663174 + 1 + 2, 1) -- Counterfeit Cash
-					if showNotifications:is_enabled() then gui.show_message("Counterfeit Cash Factory", "Resupplying your Counterfeit Cash Factory") end
-					globals.set_int(1663174 + 1 + 3, 1)
-					globals.set_int(1663174 + 1 + 3, 1)
-					globals.set_int(1663174 + 1 + 3, 1) -- Weed Farm Supplies
-					if showNotifications:is_enabled() then gui.show_message("Weed Farm", "Resupplying your Weed Farm") end
-					globals.set_int(1663174 + 1 + 4, 1)
-					globals.set_int(1663174 + 1 + 4, 1)
-					globals.set_int(1663174 + 1 + 4, 1) -- Document Forge Supplies
-					if showNotifications:is_enabled() then gui.show_message("Document Forge", "Resupplying your Document Forge") end
-					globals.set_int(1663174 + 1 + 5, 1)
-					globals.set_int(1663174 + 1 + 5, 1)
-					globals.set_int(1663174 + 1 + 5, 1) -- Bunker Supplies
-					if showNotifications:is_enabled() then gui.show_message("Bunker", "Resupplying your Bunker") end
-					globals.set_int(1663174 + 1 + 6, 1)
-					globals.set_int(1663174 + 1 + 6, 1)
-					globals.set_int(1663174 + 1 + 6, 1) -- Acid Lab Supplies
-					if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your Acid Lab") end
-				end)
-			end 
+		local cashStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY0")
+		local docStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY1")
+		local weedStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY2")
+		local methStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY3")
+		local cokeStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY4")
+		
+		local cashSupply   = stats.get_int(MPX() .. "MATTOTALFORFACTORY0")
+        local docSupply     = stats.get_int(MPX() .. "MATTOTALFORFACTORY1")
+		local weedSupply   = stats.get_int(MPX() .. "MATTOTALFORFACTORY2")
+        local methSupply   = stats.get_int(MPX() .. "MATTOTALFORFACTORY3")
+        local cokeSupply   = stats.get_int(MPX() .. "MATTOTALFORFACTORY4")
+		
+			resupplyAll, used = ImGui.Checkbox("Automate Business Supplies", resupplyAll)
 			toolTip("", "Resupplies all your business supplies.")
+			if cashStock == 40 and docStock == 60 and methStock == 20 and weedStock == 80 and cokeStock == 10 then 
+				resupplyAll = false
+			end
 			ImGui.SameLine()
 			if ImGui.Button("Fast Production") then 
 				script.run_in_fiber(function(fastProd)
-					globals.set_int(262145 + 17599, 25500) -- prod time for weed
-					globals.set_int(262145 + 17600, 25500) -- prod time for meth
-					globals.set_int(262145 + 17601, 25500) -- prod time for cocaine
-					globals.set_int(262145 + 17602, 25500) -- prod time for document forge
-					globals.set_int(262145 + 17603, 25500) -- prod time for cash
-					--globals.set_int(262145 + 17632, 10000)
+					globals.set_int(262145 + 17290, 10) -- prod time for weed
+					globals.set_int(262145 + 17291, 10) -- prod time for meth
+					globals.set_int(262145 + 17292, 10) -- prod time for cocaine
+					globals.set_int(262145 + 17293, 10) -- prod time for document forge
+					globals.set_int(262145 + 17294, 10) -- prod time for cash
+					globals.set_int(262145 + 17341, 0) -- Prod Time Delay Documents
+					globals.set_int(262145 + 17342, 0) -- Prod Time Delay Cash
+					globals.set_int(262145 + 17343, 0) -- Prod Time Delay Cocaine
+					globals.set_int(262145 + 17344, 0) -- Prod Time Delay Meth
+					globals.set_int(262145 + 17345, 0) -- Prod Time Delay Weed
 					if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed has been sped up for all businesses") end
 					if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar") end
 				end)
@@ -6508,15 +6496,38 @@ textSeparator("", "Business Tab")
 			toolTip("", "Speeds up production for all businesses.")
 			ImGui.SameLine()
 			if ImGui.Button("Raise Stock Prices") then 
-				globals.set_int(262145 + 17632, 15000) -- price for weed
-				globals.set_int(262145 + 17631, 60000) -- price for meth
-				globals.set_int(262145 + 17630, 100000) -- price for cocaine
-				globals.set_int(262145 + 17628, 20000) -- price for document forge
-				globals.set_int(262145 + 17629, 30000) -- price for cash
-				--globals.set_int(262145 + 17632, 10000)
+				globals.set_int(262145 + 17319, 20000) -- price for document forge
+				globals.set_int(262145 + 17320, 30000) -- price for cash
+				globals.set_int(262145 + 17321, 100000) -- price for cocaine
+				globals.set_int(262145 + 17322, 60000) -- price for meth
+				globals.set_int(262145 + 17323, 15000) -- price for weed
+				globals.set_bool(262145 + 17347, false) -- Enables production during missions
 				if showNotifications:is_enabled() then gui.show_message("Production Value", "Production sale value has been increased for all businesses") end
 			end
 			toolTip("", "Raises prices for Weed/Meth/Coke/Documents/Cash businesses.")
+			ImGui.SameLine()
+			if ImGui.Button("Instant Sell") then
+				locals.set_int("gb_biker_contraband_sell", 704+122, 15)
+			end
+			toolTip("", "Instantly Sells your Weed/Cash/Coke/Meth/Documents while in the mission.")
+			if ImGui.TreeNode("MC Business Stock & Supplies") then
+				ImGui.Text("Cash Stock:"); ImGui.SameLine(); ImGui.Dummy(50, 1); ImGui.SameLine(); ImGui.ProgressBar((cashStock / 40), ImGui.GetContentRegionAvail() - 5, 30)
+				ImGui.Text("Cash Supplies:"); ImGui.SameLine(); ImGui.Dummy(50, 1); ImGui.SameLine(); ImGui.ProgressBar((cashSupply / 100), ImGui.GetContentRegionAvail() - 5, 30)
+				
+				ImGui.Text("Documents Stock:"); ImGui.SameLine(); ImGui.Dummy(0, 1); ImGui.SameLine(); ImGui.ProgressBar((docStock / 60), ImGui.GetContentRegionAvail() - 5, 30)
+				ImGui.Text("Documents Supplies:"); ImGui.SameLine(); ImGui.Dummy(0, 1); ImGui.SameLine(); ImGui.ProgressBar((docSupply / 100), ImGui.GetContentRegionAvail() - 5, 30)
+				
+				ImGui.Text("Meth Stock:"); ImGui.SameLine(); ImGui.Dummy(48, 1); ImGui.SameLine(); ImGui.ProgressBar((methStock / 20), ImGui.GetContentRegionAvail() - 5, 30)
+				ImGui.Text("Meth Supplies:"); ImGui.SameLine(); ImGui.Dummy(48, 1); ImGui.SameLine(); ImGui.ProgressBar((methSupply / 100), ImGui.GetContentRegionAvail() - 5, 30)
+				
+				ImGui.Text("Weed Stock:"); ImGui.SameLine(); ImGui.Dummy(42, 1); ImGui.SameLine(); ImGui.ProgressBar((weedStock / 80), ImGui.GetContentRegionAvail() - 5, 30)
+				ImGui.Text("Weed Supplies:"); ImGui.SameLine(); ImGui.Dummy(42, 1); ImGui.SameLine(); ImGui.ProgressBar((weedSupply / 100), ImGui.GetContentRegionAvail() - 5, 30)
+				
+				ImGui.Text("Cocaine Stock:"); ImGui.SameLine(); ImGui.Dummy(28, 1); ImGui.SameLine(); ImGui.ProgressBar((cokeStock / 10), ImGui.GetContentRegionAvail() - 5, 30)
+				ImGui.Text("Cocaine Supplies:"); ImGui.SameLine(); ImGui.Dummy(28, 1); ImGui.SameLine(); ImGui.ProgressBar((cokeSupply / 100), ImGui.GetContentRegionAvail() - 5, 30)
+			end
+			toolTip("", "Expand to show all your MC businesses Stock and Supplies progress.")
+			ImGui.TreePop()
 		ImGui.EndTabItem()
 		selectedTab = 8
 		end 
@@ -6655,6 +6666,26 @@ script.register_looped("nightclubSafeLoop", function(script)
     end
 end)
 
+script.register_looped("resupplyAllMC", function(script)
+	script:yield()
+	if resupplyAll then 
+		globals.set_int(1663174 + 1 + 0, 1) -- Meth Lab Suplies
+		if showNotifications:is_enabled() then gui.show_message("Meth Lab", "Resupplying your Meth Lab") end
+		globals.set_int(1663174 + 1 + 1, 1) -- Cocaine Lockup Supplies 
+		if showNotifications:is_enabled() then gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup") end
+		globals.set_int(1663174 + 1 + 2, 1) -- Counterfeit Cash
+		if showNotifications:is_enabled() then gui.show_message("Counterfeit Cash Factory", "Resupplying your Counterfeit Cash Factory") end
+		globals.set_int(1663174 + 1 + 3, 1) -- Weed Farm Supplies
+		if showNotifications:is_enabled() then gui.show_message("Weed Farm", "Resupplying your Weed Farm") end
+		globals.set_int(1663174 + 1 + 4, 1) -- Document Forge Supplies
+		if showNotifications:is_enabled() then gui.show_message("Document Forge", "Resupplying your Document Forge") end
+		globals.set_int(1663174 + 1 + 5, 1) -- Bunker Supplies
+		if showNotifications:is_enabled() then gui.show_message("Bunker", "Resupplying your Bunker") end
+		globals.set_int(1663174 + 1 + 6, 1) -- Acid Lab Supplies
+		if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your Acid Lab") end
+		sleep(5)
+	end
+end)
 
 mcBus = Business:add_tab("Motorcycle Club")
 
@@ -6863,8 +6894,209 @@ FMC2020 = "fm_mission_controller_2020"
 HIP = "heist_island_planning"
 
 -- Editor Stuff // Mashup Scripts L7Neg/Alestarov
- heistEditor = KAOS:add_tab("Heist Editor")
- 
+heistEditor = KAOS:add_tab("Heist Editor")
+
+heistEditor:add_imgui(function()
+	if ImGui.Button("Instant Hack/Mini Games") then
+		local local_H4_hack = 24880 --3274    --func_6004(&Local_24880, &(Local_24871[func_389(bParam1, 3) /*2*/]), 0, joaat("heist"), Global_786547.f_1);
+	
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then
+	
+			locals.set_int("fm_mission_controller_2020", 29700, 6) --3274 --??????????
+	
+			globals.set_float("fm_mission_controller_2020", 30939 + 3, 100) --3274 ????????
+	
+			if locals.get_int("fm_mission_controller_2020", 30914) == 3 then --?????? --Input_Code_Enter_Correct
+				locals.set_int("fm_mission_controller_2020", 30915, 2) --3274 --???????
+				globals.set_float("fm_mission_controller_2020", 30915 + 1 + 1, locals.get_int("fm_mission_controller_2020", 30915 + 1 + 1 + 1)) --3274 --???????????
+				globals.set_float("fm_mission_controller_2020", 30915 + 1 + 1 + 2, locals.get_int("fm_mission_controller_2020", 30915 + 1 + 1 + 1 + 2)) --3274 --???????????
+				globals.set_float("fm_mission_controller_2020", 30915 + 1 + 1 + 4, locals.get_int("fm_mission_controller_2020", 30915 + 1 + 1 + 1 + 4)) --3274 --???????????
+				PAD.SET_CONTROL_VALUE_NEXT_FRAME(2, 237, 1.0) --????
+			end
+		
+			local_H4_hack_v = locals.get_int("fm_mission_controller_2020", local_H4_hack) --???finger clone
+			if (local_H4_hack_v & (1 << 0)) == 0 then
+				local_H4_hack_v = local_H4_hack_v ~ (1 << 0)
+				locals.set_int("fm_mission_controller_2020", local_H4_hack, local_H4_hack_v)
+			end
+		end
+				
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then --????
+			globals.set_float("fm_mission_controller", 10069 + 11, 1) --3274 ??????
+			locals.set_int("fm_mission_controller", 10109 + 2, 8) --3274 ??????? DLC_HEIST3\HEIST_FINALE_LASER_DRILL case 8
+		end
+		--???????????
+		local local_H3_hack_1 = 53019 --3274    --func_14102(&Local_52985, &(Local_52920[Local_31603[bLocal_3229 /*292*/].f_27 /*2*/]), 0, joaat("heist"), Global_786547.f_1);
+		local local_H3_hack_2 = 54085 --3274    --func_14104(&Local_54047, &(Local_53982[Local_31603[bLocal_3229 /*292*/].f_27 /*2*/]), 0, joaat("heist"), Global_786547.f_1);
+		local local_H3_hack_1_p = 2840 --3274    
+		local local_H3_hack_2_p = 3841 --3274    
+	
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then --??????
+			local_H3_hack_1_v = locals.get_int("fm_mission_controller", local_H3_hack_1)
+			if (local_H3_hack_1_v & (1 << 0)) == 0 then
+				local_H3_hack_1_v = local_H3_hack_1_v ~ (1 << 0)
+				locals.set_int("fm_mission_controller", local_H3_hack_1, local_H3_hack_1_v)
+			end
+			local_H3_hack_2_v = locals.get_int("fm_mission_controller", local_H3_hack_2)
+			if (local_H3_hack_2_v & (1 << 0)) == 0 then
+				local_H3_hack_2_v = local_H3_hack_2_v ~ (1 << 0)
+				locals.set_int("fm_mission_controller", local_H3_hack_2, local_H3_hack_2_v)
+			end
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("am_mp_arc_cab_manager")) ~= 0 then --??????-??
+			local_H3_hack_1_p_v = locals.get_int("am_mp_arc_cab_manager", local_H3_hack_1_p)
+			if (local_H3_hack_1_p_v & (1 << 0)) == 0 then
+				local_H3_hack_1_p_v = local_H3_hack_1_p_v ~ (1 << 0)
+				locals.set_int("am_mp_arc_cab_manager", local_H3_hack_1_p, local_H3_hack_1_p_v)
+			end
+			local_H3_hack_2_p_v = locals.get_int("am_mp_arc_cab_manager", local_H3_hack_2_p)
+			if (local_H3_hack_2_p_v & (1 << 0)) == 0 then
+				local_H3_hack_2_p_v = local_H3_hack_2_p_v ~ (1 << 0)
+				locals.set_int("am_mp_arc_cab_manager", local_H3_hack_2_p, local_H3_hack_2_p_v)
+			end
+		end
+	
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then
+			locals.set_int("fm_mission_controller", 1545, 2)  --???-?????(Heist2-Mission1-Prep3:SERVER FARM)  GRAPHICS::DRAW_SPRITE("MPHotwire", "failed"
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then
+			locals.set_int("fm_mission_controller_2020", 1254, 2)  --??????? (Bottom Dollar Bail Office Mission)  GRAPHICS::DRAW_SPRITE("MPHotwire", "failed"
+		end
+	
+		--??voltlab
+			--[[
+			if (iLocal_765 == iLocal_764)
+				{
+					AUDIO::PLAY_SOUND_FRONTEND(-1, "All_Connected_Correct", uParam1->f_741, true);
+				}
+		]]
+	
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then --voltlab????
+			locals.set_int("fm_mission_controller_2020", 1723, locals.get_int("fm_mission_controller_2020", 1724)) --3274 --voltlab???????????
+			locals.set_int("fm_mission_controller_2020", 1725, 3) --3274 ??????
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_content_island_heist")) ~= 0 then
+			locals.set_int("fm_content_island_heist", 766, locals.get_int("fm_content_island_heist", 767)) --3274 --voltlab???????????
+			locals.set_int("fm_content_island_heist", 768, 3) --3274  ??????
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_content_vehrob_prep")) ~= 0 then
+			locals.set_int("fm_content_vehrob_prep", 547, locals.get_int("fm_content_vehrob_prep", 548)) --3274 --voltlab???????????
+			locals.set_int("fm_content_vehrob_prep", 549, 3) --3274  ??????
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("am_mp_arc_cab_manager")) ~= 0 then
+			locals.set_int("am_mp_arc_cab_manager", 455, locals.get_int("am_mp_arc_cab_manager", 456)) --3274 --voltlab???????????
+			locals.set_int("am_mp_arc_cab_manager", 457, 3) --3274  ??????
+		end
+	
+	
+		--??????????????
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_content_vehrob_casino_prize")) ~= 0 then
+			locals.set_int("fm_content_vehrob_casino_prize", 1045 + 135 , 3) --3274 case 3 Pass_Remote
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then --
+			locals.set_int("fm_mission_controller", 1271 + 135 , 3) --3274 case 3 Pass_Remote
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then
+			locals.set_int("fm_mission_controller_2020", 980 + 135 , 3) --3095 case 3 Pass_Remote
+		end
+	
+		--??????? CIRC_COMP
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then --
+			locals.set_int("fm_mission_controller", 11778 + 24 , 7)
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller_2020")) ~= 0 then --
+			locals.set_int("fm_mission_controller_2020", 9018 + 24 , 7)
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_content_business_battles")) ~= 0 then --
+			locals.set_int("fm_content_business_battles", 4101 + 24 , 7)
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_content_island_heist")) ~= 0 then --
+			locals.set_int("fm_content_island_heist", 10080 + 24 , 7)
+		end
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_content_vehrob_prep")) ~= 0 then --
+			locals.set_int("fm_content_vehrob_prep", 9134 + 24 , 7)
+		end
+	
+	
+		--int* iParam0, int iParam1, int iParam2, int iParam3, int iParam4, var uParam5, var uParam6, int iParam7, bool bParam8, bool bParam9, bool bParam10, bool bParam11, bool bParam12, bool bParam13, int iParam14, int iParam15, bool bParam16, bool bParam17, bool bParam18, bool bParam19, bool bParam20, bool bParam21
+		local minigamelocaltable = {
+			[1]  = {script_name = "agency_heist3b", minigame_local = 6210},
+			[2]  = {script_name = "business_battles_sell", minigame_local = 431},
+			[3]  = {script_name = "fm_content_business_battles", minigame_local = 4101},
+			[4]  = {script_name = "fm_content_island_heist", minigame_local = 10080},
+			[5]  = {script_name = "fm_content_vehrob_casino_prize", minigame_local = 7651 + 2},
+			[6]  = {script_name = "fm_content_vehrob_police", minigame_local = 7511},
+			[7]  = {script_name = "fm_content_vehrob_prep", minigame_local = 9134},
+			[8]  = {script_name = "fm_content_vip_contract_1", minigame_local = 7323},
+			[9]  = {script_name = "fm_mission_controller_2020", minigame_local = 28917},
+			[10]  = {script_name = "fm_mission_controller", minigame_local = 9775},
+			[11]  = {script_name = "gb_cashing_out", minigame_local = 401},
+			[12]  = {script_name = "gb_gunrunning_defend", minigame_local = 2261},
+			[13]  = {script_name = "gb_sightseer", minigame_local = 460},
+		}
+			--[12]  = {script_name = "gb_casino_heist", minigame_local = }, --Global_2737317
+			--[12]  = {script_name = "gb_casino", minigame_local = }, --Global_2737317
+			--[12]  = {script_name = "gb_gangops", minigame_local = }, --Global_2737317
+			--[12]  = {script_name = "gb_gunrunning", minigame_local = }, --Global_2737317
+			--[12]  = {script_name = "gb_infiltration", minigame_local = }, --Global_2737317
+			--[12]  = {script_name = "gb_smuggler", minigame_local = }, --Global_2737317
+			--[0]  = {script_name = "business_battles", minigame_local = }, --Global_2737317
+	
+		for i = 1, 13 do
+			if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat(minigamelocaltable[i].script_name)) ~= 0 then
+				minigame_tmp_v = locals.get_int(minigamelocaltable[i].script_name, minigamelocaltable[i].minigame_local) --3274 -- WINBRUTE 
+				if (minigame_tmp_v & (1 << 9)) == 0 then
+					minigame_tmp_v = minigame_tmp_v ~ (1 << 9)
+					locals.set_int(minigamelocaltable[i].script_name, minigamelocaltable[i].minigame_local, minigame_tmp_v)
+				end
+			end
+			if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat(minigamelocaltable[i].script_name)) ~= 0 then
+				minigame_tmp_v = locals.get_int(minigamelocaltable[i].script_name, minigamelocaltable[i].minigame_local) --3274 -- WINIP 
+				if (minigame_tmp_v & (1 << 18)) == 0 then
+					minigame_tmp_v = minigame_tmp_v ~ (1 << 18)
+					locals.set_int(minigamelocaltable[i].script_name, minigamelocaltable[i].minigame_local, minigame_tmp_v)
+				end
+			end
+			if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat(minigamelocaltable[i].script_name)) ~= 0 then
+				minigame_tmp_v = locals.get_int(minigamelocaltable[i].script_name, minigamelocaltable[i].minigame_local) --3274 --  --Biolab ?????????? ???? --"Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"
+				if (minigame_tmp_v & (1 << 26)) == 0 then
+					minigame_tmp_v = minigame_tmp_v ~ (1 << 26)
+					locals.set_int(minigamelocaltable[i].script_name, minigamelocaltable[i].minigame_local, minigame_tmp_v)
+				end
+			end
+			if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat(minigamelocaltable[i].script_name)) ~= 0 then
+				minigame_tmp_v = locals.get_int(minigamelocaltable[i].script_name, minigamelocaltable[i].minigame_local) --3274 --  --Biolab ?????????? ???? --"Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"
+				if (minigame_tmp_v & (1 << 28)) == 0 then
+					minigame_tmp_v = minigame_tmp_v ~ (1 << 28)
+					locals.set_int(minigamelocaltable[i].script_name, minigamelocaltable[i].minigame_local, minigame_tmp_v)
+				end
+			end
+		end
+	
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_mission_controller")) ~= 0 then --patch for WINIP
+			locals.set_int("fm_mission_controller", 142 , 0)
+			locals.set_int("fm_mission_controller", 143 , 0)
+			locals.set_int("fm_mission_controller", 158 , 7)
+		end
+	
+		minigame_tmp_v2 = globals.get_int(2737663)
+		if (minigame_tmp_v2 & (1 << 9)) == 0 then
+			minigame_tmp_v2 = minigame_tmp_v2 ~ (1 << 9)
+		end
+		if (minigame_tmp_v2 & (1 << 18)) == 0 then
+			minigame_tmp_v2 = minigame_tmp_v2 ~ (1 << 18)
+		end
+		if (minigame_tmp_v2 & (1 << 26)) == 0 then
+			minigame_tmp_v2 = minigame_tmp_v2 ~ (1 << 26)
+		end
+		globals.set_int(2737663, minigame_tmp_v2)
+		
+		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("fm_content_stash_house")) ~= 0 then --??????
+			locals.set_int("fm_content_stash_house", 119 + 1 , 1)
+		end
+	end
+	toolTip("", "Instantly hacks all minigames across all jobs/heists (Cayo, Fleeca, Etc.)")
+end)
 
 heistTab = heistEditor:add_tab("Apartment Heists")
 
@@ -7302,500 +7534,195 @@ end)
 -- Cayo Heist Editor - converted from L7Negs Ultimate Menu for Kiddions and some features like remove CCTV from Alestarov.
  cayoHeist = heistEditor:add_tab("Cayo Perico Editor")
 
-cayoHeist:add_text("Non-Legit Presets")
-
-cayoHeist:add_button("Panther/Gold (Hard)", function()
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 1191817, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Panther Hard Mode has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
-end)
-cayoHeist:add_sameline()
-cayoHeist:add_button("Diamond/Gold (Hard)", function()
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 1191817, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Diamond Hard Mode has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
-end)
-
-cayoHeist:add_sameline()
-cayoHeist:add_button("Bonds/Gold (Hard)", function()
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 1191817, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Bonds Hard Mode has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
-end)
-
-cayoHeist:add_sameline()
-cayoHeist:add_button("Necklace/Gold (Hard)", function()
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 1191817, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Necklace Hard Mode has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
-end)
-
-cayoHeist:add_sameline()
-cayoHeist:add_button("Tequila/Gold (Hard)", function()
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 1191817, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Tequila Hard Mode has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
-end)
-cayoHeist:add_separator()
-cayoHeist:add_text("Legit Presets")
-
-cayoHeist:add_button("Panther/Gold (L. Hard)", function()
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 5, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-        -- Island Loot // -1 shows all, 0 shows none
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-
-        -- Compound Loot // -1 shows all, 0 shows none
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-
-        -- These are what is set when you find loot throughout the island/compound
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-
-        -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 45375, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_V"), 10406, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_V"), 16875, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_V"), 25312, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_V"), 22500, true)
-        globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-        --globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-        --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-        --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-        --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Panther Hard Mode (Legit) has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
+cayoTab = 1
+cayoHeist:add_imgui(function()
+ImGui.BeginTabBar("Cayo Editor", ImGuiTabBarFlags.None)
+if ImGui.BeginTabItem("Loot") then
+	ImGui.BeginGroup()
+		ImGui.Text("Loot Editor")
+            if ImGui.BeginListBox("##primaryTargetList", 290, 170) then
+                for k, v in pairs(primaryTargets) do
+                    local selected = primaryTarget == k + 1
+					if ImGui.Selectable(v, selected) and not selected then
+						stats.set_int(MPX() .. "H4CNF_TARGET", k)
+					end
+				end
+			ImGui.EndListBox()
+			end
+	ImGui.EndGroup()
+	ImGui.BeginGroup()
+	if ImGui.TreeNode("Compound Loot") then
+		compoundCash, used = ImGui.Checkbox("Compound Cash", compoundCash)
+		if compoundCash then
+			ImGui.SameLine()
+			ImGui.SetNextItemWidth(150)
+			cashSliderCompound, changed = ImGui.SliderInt("Scoped Cash Amount", cashSliderCompound, 1, #allowedValues)
+			if changed then
+				sliderValue = allowedValues[cashSliderCompound]
+				stats.set_int(joaat(MPX() .. "H4LOOT_CASH_C"), sliderValue)
+				stats.set_int(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), sliderValue)
+			end
+		else
+			stats.set_int(joaat(MPX() .. "H4LOOT_CASH_C"), 0)
+			stats.set_int(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0)
+		end
+		
+		compoundWeed, used = ImGui.Checkbox("Compound Weed", compoundWeed)
+		if compoundWeed then
+			ImGui.SameLine()
+			ImGui.SetNextItemWidth(150)
+			weedSliderCompound, changed = ImGui.SliderInt("Scoped Weed Amount", weedSliderCompound, 0, #allowedValues)
+			if changed then
+				sliderValue = allowedValues[weedSliderCompound]
+				stats.set_int(joaat(MPX() .. "H4LOOT_WEED_C"), sliderValue)
+				stats.set_int(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), sliderValue)
+			end
+		else
+			stats.set_int(joaat(MPX() .. "H4LOOT_WEED_C"), 0)
+			stats.set_int(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0)
+		end
+		
+		compoundCoke, used = ImGui.Checkbox("Compound Coke", compoundCoke)
+		if compoundCoke then
+			ImGui.SameLine()
+			ImGui.SetNextItemWidth(150)
+			cokeSliderCompound, changed = ImGui.SliderInt("Scoped Coke Amount", cokeSliderCompound, 0, #allowedValues)
+			if changed then
+				sliderValue = allowedValues[cokeSliderCompound]
+				stats.set_int(joaat(MPX() .. "H4LOOT_COKE_C"), sliderValue)
+				stats.set_int(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), sliderValue)
+			end
+		else
+			stats.set_int(joaat(MPX() .. "H4LOOT_COKE_C"), 0)
+			stats.set_int(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0)
+		end
+		
+		compoundGold, used = ImGui.Checkbox("Compound Gold", compoundGold)
+		if compoundGold then
+			ImGui.SameLine()
+			ImGui.SetNextItemWidth(100)
+			goldSliderCompound, changed2 = ImGui.SliderInt("Scoped Gold Amount", goldSliderCompound, 0, #allowedValues)
+			if changed2 then
+				sliderValue = allowedValues[goldSliderCompound]
+				stats.set_int(joaat(MPX() .. "H4LOOT_GOLD_C"), sliderValue)
+				stats.set_int(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), sliderValue)
+			end
+		else
+			stats.set_int(joaat(MPX() .. "H4LOOT_GOLD_C"), 0)
+			stats.set_int(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), 0)
+		end
+		
+		compoundPaintings, used = ImGui.Checkbox("Compound Paintings", compoundPaintings)
+		if compoundPaintings then
+			ImGui.SameLine()
+			ImGui.SetNextItemWidth(150)
+			paintingSliderCompound, changed = ImGui.SliderInt("Scoped Paintings Amount", paintingSliderCompound, 0, #allowedPaintValues)
+			if changed then
+				sliderValue = allowedPaintValues[paintingSliderCompound]
+				stats.set_int(joaat(MPX() .. "H4LOOT_PAINT"), sliderValue)
+				stats.set_int(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), sliderValue)
+			end
+		else
+			stats.set_int(joaat(MPX() .. "H4LOOT_PAINT"), 0)
+			stats.set_int(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0)
+		end
+		ImGui.TreePop()
+	end
+	if ImGui.TreeNode("Island Loot") then
+		islandCash, used = ImGui.Checkbox("Island Cash", islandCash)
+		if islandCash then
+			ImGui.SameLine()
+			ImGui.SetNextItemWidth(150)
+			cashSliderIsland, changed = ImGui.SliderInt("Scoped Cash Amount", cashSliderIsland, 1, #allowedValues)
+			if changed then
+				sliderValue = allowedValues[cashSliderIsland]
+				stats.set_int(joaat(MPX() .. "H4LOOT_CASH_I"), sliderValue)
+				stats.set_int(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), sliderValue)
+			end
+		else
+			stats.set_int(joaat(MPX() .. "H4LOOT_CASH_I"), 0)
+			stats.set_int(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0)
+		end
+		
+		islandWeed, used = ImGui.Checkbox("Island Weed", islandWeed)
+		if islandWeed then
+			ImGui.SameLine()
+			ImGui.SetNextItemWidth(150)
+			weedSliderIsland, changed = ImGui.SliderInt("Scoped Weed Amount", weedSliderIsland, 0, #allowedValues)
+			if changed then
+				sliderValue = allowedValues[weedSliderIsland]
+				stats.set_int(joaat(MPX() .. "H4LOOT_WEED_I"), sliderValue)
+				stats.set_int(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), sliderValue)
+			end
+		else
+			stats.set_int(joaat(MPX() .. "H4LOOT_WEED_I"), 0)
+			stats.set_int(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0)
+		end
+		
+		islandCoke, used = ImGui.Checkbox("Island Coke", islandCoke)
+		if islandCoke then
+			ImGui.SameLine()
+			ImGui.SetNextItemWidth(150)
+			cokeSliderIsland, changed = ImGui.SliderInt("Scoped Coke Amount", cokeSliderIsland, 0, #allowedValues)
+			if changed then
+				sliderValue = allowedValues[cokeSliderIsland]
+				stats.set_int(joaat(MPX() .. "H4LOOT_COKE_I"), sliderValue)
+				stats.set_int(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), sliderValue)
+			end
+		else
+			stats.set_int(joaat(MPX() .. "H4LOOT_COKE_I"), 0)
+			stats.set_int(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0)
+		end
+		
+		islandGold, used = ImGui.Checkbox("Island Gold", islandGold)
+		if islandGold then
+			ImGui.SameLine()
+			ImGui.SetNextItemWidth(100)
+			goldSliderIsland, changed2 = ImGui.SliderInt("Scoped Gold Amount", goldSliderIsland, 0, #allowedValues)
+			if changed2 then
+				sliderValue = allowedValues[goldSliderIsland]
+				stats.set_int(joaat(MPX() .. "H4LOOT_GOLD_I"), sliderValue)
+				stats.set_int(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), sliderValue)
+			end
+		else
+			stats.set_int(joaat(MPX() .. "H4LOOT_GOLD_I"), 0)
+			stats.set_int(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0)
+		end
+	ImGui.TreePop()
+	end
+	ImGui.EndGroup()
+	ImGui.EndTabItem()
+	cayoTab = 1
+end
+if ImGui.BeginTabItem("Loadout") then 
+	ImGui.BeginGroup()
+            ImGui.Text("Select Loadout")
+            if ImGui.BeginListBox("##weaponList", 140, 145) then
+                for k, v in pairs(weapons) do
+                    local selected = weapon == k
+                    if ImGui.Selectable(v, selected) and not selected then
+                            stats.set_int(joaat(MPX() .. "H4CNF_WEAPONS"), k)
+                    end
+                    if weaponContents[k] ~= nil and ImGui.IsItemHovered() then
+                        ImGui.SetTooltip(weaponContents[k])
+                    end
+                end
+                ImGui.EndListBox()
+            end
+    ImGui.EndGroup()
+	ImGui.EndTabItem()
+	cayoTab = 2
+end 
+ImGui.EndTabBar()
 end)
 
-cayoHeist:add_sameline()
-
-cayoHeist:add_button("Diamond/Gold (L. Hard)", function()
-
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 3, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-        -- Island Loot // -1 shows all, 0 shows none
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-
-        -- Compound Loot // -1 shows all, 0 shows none
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-
-        -- These are what is set when you find loot throughout the island/compound
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-
-        -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 45375, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_V"), 10406, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_V"), 16875, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_V"), 25312, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_V"), 22500, true)
-        --globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-        globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-        --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-        --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-        --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Diamond Hard Mode (Legit) has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
-end)
-
-cayoHeist:add_sameline()
-
-cayoHeist:add_button("Bonds/Gold (L. Hard)", function()
-
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 2, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-        -- Island Loot // -1 shows all, 0 shows none
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-
-        -- Compound Loot // -1 shows all, 0 shows none
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-
-        -- These are what is set when you find loot throughout the island/compound
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-
-        -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 45375, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_V"), 10406, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_V"), 16875, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_V"), 25312, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_V"), 22500, true)
-        --globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-        --globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-        globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-        --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-        --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Bonds Hard Mode (Legit) has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
-end)
-
-cayoHeist:add_sameline()
-
-cayoHeist:add_button("Necklace/Gold (L. Hard)", function()
-
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 1, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-        -- Island Loot // -1 shows all, 0 shows none
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-
-        -- Compound Loot // -1 shows all, 0 shows none
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-
-        -- These are what is set when you find loot throughout the island/compound
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-
-        -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 45375, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_V"), 10406, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_V"), 16875, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_V"), 25312, true)
-        --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_V"), 22500, true)
-        --globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-        --globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-        --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-        globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-        --globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-        STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Necklace Hard Mode (Legit) has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
-end)
-
-cayoHeist:add_sameline()
-
-cayoHeist:add_button("Tequila/Gold (L. Hard)", function()
- 
-
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_GEN"), 131071, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ENTR"), 63, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_BS_ABIL"), 63, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEAPONS"), 5, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_WEP_DISRP"), 3, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_ARM_DISRP"), 3, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_HEL_DISRP"), 3, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TARGET"), 0, true) --Primary Target Values: 0. Tequila, 1. Necklace, 2. Bonds, 3. Diamond, 4. Medrazo Files, 5. Panther
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_TROJAN"), 2, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4CNF_APPROACH"), -1, true)
-    -- Island Loot // -1 shows all, 0 shows none
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I"), 0, true)
-
-    -- Compound Loot // -1 shows all, 0 shows none
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C"), -1, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4_PROGRESS"), 131055, true) -- 131055 // Hard Mode  -  130667 // Solo Normal??
-
-    -- These are what is set when you find loot throughout the island/compound
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_I_SCOPED"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_C_SCOPED"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_I_SCOPED"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_C_SCOPED"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_I_SCOPED"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_C_SCOPED"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_I_SCOPED"), 0, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_C_SCOPED"), -1, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_SCOPED"), 0, true)
-
-    -- Payout Values // Set to "Normal" values.  Each value is multiplied by 8, bc there are 8 locations for them.
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_GOLD_V"), 45375, true)
-    --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_CASH_V"), 10406, true)
-    --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_WEED_V"), 16875, true)
-    --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_COKE_V"), 25312, true)
-    --STATS.STAT_SET_INT(joaat(MPX() .. "H4LOOT_PAINT_V"), 22500, true)
-    --globals.set_int(262145 + 30264, 1900000) -- Panther Value -- 1900000 shows as 2,090,000 in-game on the board. 190,000 difference.
-    --globals.set_int(262145 + 30262, 1300000) -- Diamond Value  -- 1300000 shows as 1,430,000 in-game. 130,000 difference.
-    --globals.set_int(262145 + 30261, 770000) -- Bonds Value -- 770000 shows as 847,000 in-game.  77,000 difference.
-    --globals.set_int(262145 + 30260, 700000) -- Necklace Value -- 700000 shows as 770,000 in-game. 70,000 difference.
-    globals.set_int(262145 + 30259, 693000) -- Tequila Value -- 630000 shows as 693,000. 63,000 difference.
-
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4_MISSIONS"), 65535, true)
-    STATS.STAT_SET_INT(joaat(MPX() .. "H4_PLAYTHROUGH_STATUS"), 32, true)
-
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Tequila Hard Mode (Legit) has been set up!") end
-    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Reset the board to see the changes") end
-end)
-
-cayoHeist:add_separator()
 cayoHeist:add_text("Press this after clicking one of the above presets")
 cayoHeist:add_button("Reset Kosatka Board", function()
-        locals.set_int(HIP, 1546, 2)
+		stats.set_int(joaat(MPX() .. "H4CNF_BS_GEN"), -1)
+        stats.set_int(joaat(MPX() .. "H4CNF_BS_ENTR"), -1)
+        stats.set_int(joaat(MPX() .. "H4CNF_APPROACH"), -1)
+		 stats.set_int(joaat(MPX() .. "H4_MISSIONS"), -1)
+		locals.set_int(HIP, 1546, 2)
         if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Planning board has been reset!") end
 end)
 
@@ -7832,13 +7759,7 @@ cayoHeist:add_button("Remove All CCTV's", function()
         end
     end)
 end)
-CamList = {
-    joaat("prop_cctv_cam_01a"), joaat("prop_cctv_cam_01b"), joaat("prop_cctv_cam_02a"), joaat("prop_cctv_cam_03a"),
-    joaat("prop_cctv_cam_04a"), joaat("prop_cctv_cam_04c"), joaat("prop_cctv_cam_05a"), joaat("prop_cctv_cam_06a"),
-    joaat("prop_cctv_cam_07a"), joaat("prop_cs_cctv"), joaat("p_cctv_s"), joaat("hei_prop_bank_cctv_01"),
-    joaat("hei_prop_bank_cctv_02"), joaat("ch_prop_ch_cctv_cam_02a"), joaat("xm_prop_x17_server_farm_cctv_01"),
-    joaat("prop_cctv_pole_04"), joaat("prop_cctv_pole_03"), joaat("prop_cctv_pole_01a")
-}
+
 
 cayoHeist:add_sameline()
 cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX for the help on this
@@ -7873,30 +7794,17 @@ cayoHeist:add_button("Skip Cooldown", function()
     if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters") end
 end)
 
-properties = {
-    {name = "Drainage", x = 5051.645, y = -5822.677, z = -12.310},
-    {name = "Gold 1", x = 5080.300, y = -5757.000, z = 15.830},
-    {name = "Gold 2", x = 5029.567, y = -5735.856, z = 17.866},
-    {name = "Gold 3", x = 5007.990, y = -5786.492, z = 17.832},
-    {name = "Gold 4", x = 5000.770, y = -5748.700, z = 14.840},
-    {name = "Office", x = 5010.736, y = -5751.701, z = 28.845},
-    {name = "Vault", x = 5008.466, y = -5753.206, z = 15.484},
-    {name = "Main Gate", x = 4993.848, y = -5720.731, z = 19.880},
-    {name = "Kosatka", x = 4319.710, y = -3903.497, z = -35.609},
-    -- Add more locations as needed
-}
-
 -- Function to create buttons dynamically
 function createCayoButtons(cayoHeist)
     local buttonsPerRow = 10
     local buttonCount = 0
-    for _, property in ipairs(properties) do
+    for _, property in ipairs(cayoLocations) do
         cayoHeist:add_button(property.name, function()
             local ped = PLAYER.PLAYER_PED_ID()
             PED.SET_PED_COORDS_KEEP_VEHICLE(ped, property.x, property.y, property.z)
         end)
         buttonCount = buttonCount + 1
-        if buttonCount < buttonsPerRow and _ < #properties then
+        if buttonCount < buttonsPerRow and _ < #cayoLocations then
             cayoHeist:add_sameline() -- Add next button on the same line if there are more buttons and haven't reached the limit per row
         else
             buttonCount = 0 -- Reset button count for the new row
@@ -8579,7 +8487,7 @@ script.register_looped("detectModders", function(script)
                     for j = 0, 31 do
                         local targetPid = j
                         if not network.is_player_flagged_as_modder(targetPid) and targetPid ~= localPlayerID then
-                            network.send_chat_message_to_player(targetPid, "WARNING! " .. detectedModders[pid] .. " has been flagged as a modder in this session!")
+                            network.send_chat_message_to_player(targetPid, "WARNING! " .. detectedModders[pid] .. " has been flagged as a modder in this session for" ..reason.. "!")
                             detectedModders = {}
                             sleep(10)
                         end
