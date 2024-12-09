@@ -6464,16 +6464,18 @@ textSeparator("", "Business Tab")
 		local weedStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY2")
 		local methStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY3")
 		local cokeStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY4")
+		local acidStock = stats.get_int(MPX() .. "PRODTOTALFORFACTORY6")
 		
 		local cashSupply   = stats.get_int(MPX() .. "MATTOTALFORFACTORY0")
         local docSupply     = stats.get_int(MPX() .. "MATTOTALFORFACTORY1")
 		local weedSupply   = stats.get_int(MPX() .. "MATTOTALFORFACTORY2")
         local methSupply   = stats.get_int(MPX() .. "MATTOTALFORFACTORY3")
         local cokeSupply   = stats.get_int(MPX() .. "MATTOTALFORFACTORY4")
+		local acidSupply   = stats.get_int(MPX() .. "MATTOTALFORFACTORY6")
 		
 			resupplyAll, used = ImGui.Checkbox("Automate Business Supplies", resupplyAll)
 			toolTip("", "Resupplies all your business supplies.")
-			if cashStock == 40 and docStock == 60 and methStock == 20 and weedStock == 80 and cokeStock == 10 then 
+			if cashStock == 40 and docStock == 60 and methStock == 20 and weedStock == 80 and cokeStock == 10 and acidStock == 160 then 
 				resupplyAll = false
 			end
 			ImGui.SameLine()
@@ -6484,11 +6486,13 @@ textSeparator("", "Business Tab")
 					globals.set_int(262145 + 17292, 10) -- prod time for cocaine
 					globals.set_int(262145 + 17293, 10) -- prod time for document forge
 					globals.set_int(262145 + 17294, 10) -- prod time for cash
+					globals.set_int(262145 + 17295, 10) -- prod time for acid
 					globals.set_int(262145 + 17341, 0) -- Prod Time Delay Documents
 					globals.set_int(262145 + 17342, 0) -- Prod Time Delay Cash
 					globals.set_int(262145 + 17343, 0) -- Prod Time Delay Cocaine
 					globals.set_int(262145 + 17344, 0) -- Prod Time Delay Meth
 					globals.set_int(262145 + 17345, 0) -- Prod Time Delay Weed
+					globals.set_int(262145 + 17346, 0) -- Prod Time Delay Acid
 					if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed has been sped up for all businesses") end
 					if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar") end
 				end)
@@ -6501,13 +6505,16 @@ textSeparator("", "Business Tab")
 				globals.set_int(262145 + 17321, 100000) -- price for cocaine
 				globals.set_int(262145 + 17322, 60000) -- price for meth
 				globals.set_int(262145 + 17323, 15000) -- price for weed
-				globals.set_bool(262145 + 17347, false) -- Enables production during missions
+				globals.set_int(262145 + 17324, 18000) -- price for acid
 				if showNotifications:is_enabled() then gui.show_message("Production Value", "Production sale value has been increased for all businesses") end
 			end
 			toolTip("", "Raises prices for Weed/Meth/Coke/Documents/Cash businesses.")
 			ImGui.SameLine()
 			if ImGui.Button("Instant Sell") then
 				locals.set_int("gb_biker_contraband_sell", 704+122, 15)
+				locals.set_int("fm_content_acid_lab_sell", 5483 + 1358 + 2, 9)
+				locals.set_int("fm_content_acid_lab_sell", 5483 + 1358 + 3, 10)
+				locals.set_int("fm_content_acid_lab_sell", 5483 + 1293, 2)
 			end
 			toolTip("", "Instantly Sells your Weed/Cash/Coke/Meth/Documents while in the mission.")
 			if ImGui.TreeNode("MC Business Stock & Supplies") then
@@ -6525,6 +6532,9 @@ textSeparator("", "Business Tab")
 				
 				ImGui.Text("Cocaine Stock:"); ImGui.SameLine(); ImGui.Dummy(28, 1); ImGui.SameLine(); ImGui.ProgressBar((cokeStock / 10), ImGui.GetContentRegionAvail() - 5, 30)
 				ImGui.Text("Cocaine Supplies:"); ImGui.SameLine(); ImGui.Dummy(28, 1); ImGui.SameLine(); ImGui.ProgressBar((cokeSupply / 100), ImGui.GetContentRegionAvail() - 5, 30)
+				
+				ImGui.Text("Acid Stock:"); ImGui.SameLine(); ImGui.Dummy(28, 1); ImGui.SameLine(); ImGui.ProgressBar((acidStock / 160), ImGui.GetContentRegionAvail() - 5, 30)
+				ImGui.Text("Acid Supplies:"); ImGui.SameLine(); ImGui.Dummy(28, 1); ImGui.SameLine(); ImGui.ProgressBar((acidSupply / 100), ImGui.GetContentRegionAvail() - 5, 30)
 			end
 			toolTip("", "Expand to show all your MC businesses Stock and Supplies progress.")
 			ImGui.TreePop()
