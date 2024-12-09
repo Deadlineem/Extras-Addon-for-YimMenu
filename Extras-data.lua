@@ -4361,6 +4361,66 @@ sessions = {
     { name = "Invite Only", id = 11 },
 }
 
+primaryTargets = {
+	[0] = "Sinsimito Tequila [ $630K|$693K ]",
+	[1] = "Ruby Necklace [ $700K|$770K ]",
+	[2] = "Bearer Bonds [ $770K|$847 ]",
+	[4] = "Minimadrazzo Files [ $1,1M|1,21M ]",
+	[3] = "Pink Diamond [ $1,3M|1,43M ]",
+	[5] = "Panther Statue [ $1,9M|2,09M ]",
+}
+
+weapons = {
+	"Aggressor",
+	"Conspirator",
+	"Crackshot",
+	"Saboteur",
+	"Marksman",
+}
+
+weaponContents = {
+	"Assault SG + Machine Pistol + Machete + Grenade",
+	"Military Rifle + AP + Knuckles + Stickies",
+	"Sniper + AP + Knife + Molotov",
+	"SMG Mk2 + SNS Pistol + Knife + Pipe Bomb",
+	"AK-47? + Pistol .50? + Machete + Pipe Bomb"
+}
+
+allowedValues = {64, 130, 196, 204, 220, 252, 253, 255}
+allowedPaintValues = {64, 66, 69, 75, 115, 125, 127}
+
+cashSliderCompound = 0
+goldSliderCompound = 0
+weedSliderCompound = 0
+cokeSliderCompound = 0
+paintingSliderCompound = 0
+cashSliderIsland = 0
+goldSliderIsland = 0
+weedSliderIsland = 0
+cokeSliderIsland = 0
+paintingSliderIsland = 0
+
+CamList = {
+    joaat("prop_cctv_cam_01a"), joaat("prop_cctv_cam_01b"), joaat("prop_cctv_cam_02a"), joaat("prop_cctv_cam_03a"),
+    joaat("prop_cctv_cam_04a"), joaat("prop_cctv_cam_04c"), joaat("prop_cctv_cam_05a"), joaat("prop_cctv_cam_06a"),
+    joaat("prop_cctv_cam_07a"), joaat("prop_cs_cctv"), joaat("p_cctv_s"), joaat("hei_prop_bank_cctv_01"),
+    joaat("hei_prop_bank_cctv_02"), joaat("ch_prop_ch_cctv_cam_02a"), joaat("xm_prop_x17_server_farm_cctv_01"),
+    joaat("prop_cctv_pole_04"), joaat("prop_cctv_pole_03"), joaat("prop_cctv_pole_01a")
+}
+
+cayoLocations = {
+    {name = "Drainage", x = 5051.645, y = -5822.677, z = -12.310},
+    {name = "Gold 1", x = 5080.300, y = -5757.000, z = 15.830},
+    {name = "Gold 2", x = 5029.567, y = -5735.856, z = 17.866},
+    {name = "Gold 3", x = 5007.990, y = -5786.492, z = 17.832},
+    {name = "Gold 4", x = 5000.770, y = -5748.700, z = 14.840},
+    {name = "Office", x = 5010.736, y = -5751.701, z = 28.845},
+    {name = "Vault", x = 5008.466, y = -5753.206, z = 15.484},
+    {name = "Main Gate", x = 4993.848, y = -5720.731, z = 19.880},
+    {name = "Kosatka", x = 4319.710, y = -3903.497, z = -35.609},
+    -- Add more locations as needed
+}
+	
 function getUpdates(file1, file2, file3)
     local base_url = "https://raw.githubusercontent.com/Deadlineem/Extras_Addon/refs/heads/main/"
     local function downloadFile(filename)
