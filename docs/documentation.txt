@@ -5,6 +5,7 @@ There are several ease of access tools inside of Extras Addon that allow you to 
 
 toolTip(tab, "message") - Adds a tooltip to the button/checkbox in the tab relative to it, tooltip must be below your option.
 Example:  tab:add_button("Some Button", function() end)  toolTip(tab, "Some Button Tooltip info")
+NOTE: if toolTip is used in an imgui, the tab is blank, Example: toolTip("", "Text for the toolTip")
 
 showNotifications - used for gui.show_message portions to allow for disabling them.
 Example: if showNotifications:is_enabled() then gui.show_message("Title", "Message Text") end
