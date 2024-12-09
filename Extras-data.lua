@@ -4417,7 +4417,7 @@ cayoLocations = {
     {name = "Office", x = 5010.736, y = -5751.701, z = 28.845},
     {name = "Vault", x = 5008.466, y = -5753.206, z = 15.484},
     {name = "Main Gate", x = 4993.848, y = -5720.731, z = 19.880},
-    {name = "Kosatka", x = 4319.710, y = -3903.497, z = -35.609},
+    {name = "Kosatka", x = 4319.710, y = -3903.497, z = -35.609}
     -- Add more locations as needed
 }
 	
