@@ -15,8 +15,8 @@ ___________         __
   \____|__  /\____ \____ |\____/|___|  /
           \/      \/    \/           \/
 
-		 Extras Addon v1.69
-        Addon Version: 1.1.5
+		 Extras Addon v1.70
+        Addon Version: 1.1.6
 
         Credits:  DeadlineEm,
 		 USBMenus & Xesdoog
@@ -6630,7 +6630,7 @@ end)
 script.register_looped("acidSupplyLoop", function(script)
 	script:yield()
     if acidSupplyLoop then
-		globals.set_int(1663174 + 1 + 6, 1)
+		globals.set_int(1667995 + 1 + 6, 1)
         if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your acid lab stock, please wait...") end
         sleep(0.5)
     end
@@ -6642,8 +6642,8 @@ script.register_looped("autoFillBunker", function(script)
 		if showNotifications:is_enabled() then gui.show_message("Bunker", "Fast Tracking Production/Research and Refilling supplies.") end
 		globals.set_int(262145 + 21249, 1)
 		globals.set_int(262145 + 21265, 1)
-		globals.set_int(1663174 + 5 + 1, 1)
-		sleep(5)
+		globals.set_int(1667995 + 5 + 1, 1)
+		sleep(1)
 	end
 end)
 
@@ -6665,11 +6665,11 @@ script.register_looped("nightclubSafeLoop", function(script)
 		local ncSafeVal = stats.get_int(MPX() .. "CLUB_SAFE_CASH_VALUE")
 		if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying your nightclub safe with money and collecting it.") end
 		if ncSafeVal ~= 250000 then
-			globals.set_int(4537455, 0)
+			globals.set_int(4538090, 0)
 			STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_POPULARITY"), 1000, true)
 			STATS.STAT_SET_INT(joaat(MPX() .. "CLUB_PAY_TIME_LEFT"), -1, true)
 		else
-			globals.set_int(4537455, 0)
+			globals.set_int(4538090, 0)
 			locals.set_int("am_mp_nightclub", 181 + 32 + 1, 1)
 			sleep(2.5)
 		end
@@ -6679,19 +6679,19 @@ end)
 script.register_looped("resupplyAllMC", function(script)
 	script:yield()
 	if resupplyAll then 
-		globals.set_int(1663174 + 1 + 0, 1) -- Meth Lab Suplies
+		globals.set_int(1667995 + 1 + 0, 1) -- Meth Lab Suplies
 		if showNotifications:is_enabled() then gui.show_message("Meth Lab", "Resupplying your Meth Lab") end
-		globals.set_int(1663174 + 1 + 1, 1) -- Cocaine Lockup Supplies 
+		globals.set_int(1667995 + 1 + 1, 1) -- Cocaine Lockup Supplies 
 		if showNotifications:is_enabled() then gui.show_message("Cocaine Lockup", "Resupplying your Cocaine Lockup") end
-		globals.set_int(1663174 + 1 + 2, 1) -- Counterfeit Cash
+		globals.set_int(1667995 + 1 + 2, 1) -- Counterfeit Cash
 		if showNotifications:is_enabled() then gui.show_message("Counterfeit Cash Factory", "Resupplying your Counterfeit Cash Factory") end
-		globals.set_int(1663174 + 1 + 3, 1) -- Weed Farm Supplies
+		globals.set_int(1667995 + 1 + 3, 1) -- Weed Farm Supplies
 		if showNotifications:is_enabled() then gui.show_message("Weed Farm", "Resupplying your Weed Farm") end
-		globals.set_int(1663174 + 1 + 4, 1) -- Document Forge Supplies
+		globals.set_int(1667995 + 1 + 4, 1) -- Document Forge Supplies
 		if showNotifications:is_enabled() then gui.show_message("Document Forge", "Resupplying your Document Forge") end
-		globals.set_int(1663174 + 1 + 5, 1) -- Bunker Supplies
+		globals.set_int(1667995 + 1 + 5, 1) -- Bunker Supplies
 		if showNotifications:is_enabled() then gui.show_message("Bunker", "Resupplying your Bunker") end
-		globals.set_int(1663174 + 1 + 6, 1) -- Acid Lab Supplies
+		globals.set_int(1667995 + 1 + 6, 1) -- Acid Lab Supplies
 		if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Resupplying your Acid Lab") end
 		sleep(5)
 	end
