@@ -22,7 +22,7 @@ ___________         __
 		 USBMenus & Xesdoog
 ]]
 
-addonVersion = "1.1.5"
+addonVersion = "1.1.6"
 griefPlayerTab = gui.get_tab("")
 dropsPlayerTab = gui.get_tab("") -- For Selected Player Options
 giftPlayerTab = gui.get_tab("")
@@ -2817,47 +2817,33 @@ end)
 -- CasinoPacino - gir489returns
 casino_gui = Money:add_tab("Casino")
 
-local blackjack_cards              = 116
+local blackjack_cards              = 134
 local blackjack_decks              = 846
-local blackjack_table_players      = 1776
+local blackjack_table_players      = 1794
 local blackjack_table_players_size = 8
 
-local three_card_poker_table           = 749
+local three_card_poker_table           = 767
 local three_card_poker_table_size      = 9
-local three_card_poker_cards           = 116
+local three_card_poker_cards           = 134
 local three_card_poker_current_deck    = 168
-local three_card_poker_anti_cheat      = 1038
+local three_card_poker_anti_cheat      = 1056
 local three_card_poker_anti_cheat_deck = 799
 local three_card_poker_deck_size       = 55
 
-local roulette_master_table   = 124
+local roulette_master_table   = 142
 local roulette_outcomes_table = 1357
 local roulette_ball_table     = 153
 
-local slots_random_results_table = 1348
+local slots_random_results_table = 1366
 local slots_slot_machine_state   = 1638
 
-local prize_wheel_win_state   = 280
+local prize_wheel_win_state   = 298
 local prize_wheel_prize       = 14
 local prize_wheel_prize_state = 45
-
-local gb_casino_heist_planning            = 1964849
-local gb_casino_heist_planning_cut_offset = 1497 + 736 + 92
 
 local fm_mission_controller_cart_grab       = 10255
 local fm_mission_controller_cart_grab_speed = 14
 local fm_mission_controller_cart_autograb   = true
-
-local casino_heist_approach      = 0
-local casino_heist_target        = 0
-local casino_heist_last_approach = 0
-local casino_heist_hard          = 0
-local casino_heist_gunman        = 0
-local casino_heist_driver        = 0
-local casino_heist_hacker        = 0
-local casino_heist_weapons       = 0
-local casino_heist_cars          = 0
-local casino_heist_masks         = 0
 
 casino_gui:add_text("Lucky Wheel")
 casino_gui:add_button("Give Podium Vehicle", function ()
