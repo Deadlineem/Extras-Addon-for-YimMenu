@@ -4672,6 +4672,31 @@ function toolTip(tab, text, seperate)
     end
 end
 
+function unlock_packed_bools(from, to)
+    for i = from, to do
+        stats.set_packed_stat_bool(i, true)
+    end
+end
+
+function buy_weapon(weapon_joaat)
+    if NETSHOPPING.NET_GAMESERVER_BASKET_IS_ACTIVE() then
+        NETSHOPPING.NET_GAMESERVER_BASKET_END()
+    end
+    local started, transaction_id = NETSHOPPING.NET_GAMESERVER_BASKET_START(0, joaat('CATEGORY_WEAPON'), joaat('NET_SHOP_ACTION_SPEND'), 4)
+    local basket_item = memory.allocate(32) --It will crash if we deallocate this after calling, so we will just have to leak 32 bytes.
+    local basket_add_item = basket_item:get_address()
+    basket_item:set_qword(weapon_joaat)
+    basket_item = basket_item:add(8)
+    basket_item:set_qword(0)
+    basket_item = basket_item:add(8)
+    local price = NETSHOPPING.NET_GAMESERVER_GET_PRICE(weapon_joaat, joaat('CATEGORY_WEAPON'), 1)
+    basket_item:set_qword(price)
+    basket_item = basket_item:add(8)
+    basket_item:set_qword(1)
+    NETSHOPPING.NET_GAMESERVER_BASKET_ADD_ITEM(basket_add_item, 1)
+    NETSHOPPING.NET_GAMESERVER_CHECKOUT_START(transaction_id)
+end
+
 function newText(tab, text, size)
     size = size or 1
     tab:add_imgui(function()
