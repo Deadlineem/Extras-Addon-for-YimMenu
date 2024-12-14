@@ -766,19 +766,9 @@ toolTip(Stats, "Resets your skills to minimum values.")
 Stats:add_separator()
 Stats:add_text("Unlocker")
 
-function unlock_packed_bools(from, to)
-    for i = from, to do
-        stats.set_packed_stat_bool(i, true)
-    end
-end
-
--- Look for what reads DISABLE_DAILY_OBJECTIVES and then there should be a while loop that stops at 3.
-local current_objectives_global = 2359296
-local weekly_words_global = 2737992
-local objectives_state_global = 1574744
-
 Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
-    script.run_in_fiber(function (script)
+    script.run_in_fiber(function (wasabiwords_script)
+    script.execute_as_script("shop_controller", function ()
         local is_player_male = (ENTITY.GET_ENTITY_MODEL(PLAYER.PLAYER_PED_ID()) == joaat('mp_m_freemode_01'))
         unlock_packed_bools(110, 113) --Red Check Pajamas, Green Check Pajamas, Black Check Pajamas, I Heart LC T-shirt
         unlock_packed_bools(115, 115) --Roosevelt
@@ -905,7 +895,7 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         unlock_packed_bools(34262, 34361) --LD Organics
         unlock_packed_bools(32273, 32273) --White Born x Raised T-Shirt
         unlock_packed_bools(32275, 32275) --Circoloco T-Shirt
-        unlock_packed_bools(32287, 32287) --Dr. Dre
+        unlock_packed_bools(32287, 32291) --Dr. Dre, The Drive, The Putt, The Chip, The Birdie
         unlock_packed_bools(32295, 32311) --Orange Goldfish, Purple Goldfish, Bronze Goldfish, Clownfish, Juvenile Gull, Sooty Gull, Black-headed Gull, Herring Gull, Brown Sea Lion, Dark Sea Lion, Spotted Sea Lion, Gray Sea Lion, Green Festive T-Shirt, Red Festive T-Shirt, Orange DJ Pooh T-Shirt, White WCC DJ Pooh T-Shirt, Blue WCC DJ Pooh T-Shirt
         unlock_packed_bools(32315, 32316) --Navy Coveralls, Gray Coveralls, Marathon Hoodie
         unlock_packed_bools(32366, 32366) --Declasse Draugur (Trade Price)
@@ -947,9 +937,25 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         unlock_packed_bools(42280, 42284) --Unlock pizzaboy, poldominator10, poldorado, polimpaler5, polimpaler6 trade price.
         unlock_packed_bools(42257, 42268) --The Street Artist, Ghosts Exposed 2024, Ghosts Exposed Outfit
         unlock_packed_bools(42286, 42287) --Ludendorff Survivor, Pizza This... Forwards Cap, Pizza This... Backwards Cap, Pizza This... Outfit
-        unlock_packed_bools(51189, 51189) -- Spray Can
+        unlock_packed_bools(51189, 51189) --Spray Can
         unlock_packed_bools(51196, 51197) --The Shocker, Bottom Dollar Bail Enforcement tint for Stungun
         unlock_packed_bools(51215, 51258) --Alpine Outfit, Brown Alpine Hat, Pisswasser Good Time Tee, Gold Pisswasser Shorts, Mid Autumn Festival Shirt, Mid Autumn Festival Sundress (female), Día de Muertos Tee, Halloween Spooky Tee, Black Demon Goat Mask, Red Demon Goat Mask, Tan Demon Goat Mask, Black Creepy Cat Mask, Gray Creepy Cat Mask, Brown Creepy Cat Mask, Gray Hooded Skull Mask, Red Hooded Skull Mask, Blue Hooded Skull Mask, Red Flaming Skull Mask, Green Flaming Skull Mask, Orange Flaming Skull Mask, Orange Glow Skeleton Onesie, Purple Glow Skeleton Onesie, Green Glow Skeleton Onesie, Tan Turkey, Brown Turkey, Rockstar Red Logo Sweater, Silver Gun Necklace, Black Gun Necklace, Gold Gun Necklace, Rose Gun Necklace, Bronze Gun Necklace, Black Yeti Fall Sweater, White Yeti Fall Sweater, Red Yeti Fall Sweater, The Diamond Jackpot Tee, Cobalt Jackal Racing Jersey, Cobalt Jackal Racing Pants, Khaki 247 Chino Pants, Demon Biker Jacket, Purple Güffy Cardigan, SA Denim Biker Jacket, Green 247 Shirt, Barbed Wire Shirt, Ride or Die Gaiter, Pizza This... Tee
+        unlock_packed_bools(28272, 28272) -- Trade price for polcaracara, polterminus, polcoquette4, polfaction2
+        unlock_packed_bools(42288, 42289) -- Trade price for taco, polterminus
+        unlock_packed_bools(42016, 42016) -- Trade price for polfaction2
+        unlock_packed_bools(51283, 51283) -- Trade price for cargobob5
+        unlock_packed_bools(51285, 51285) -- Trade price for titan2
+        unlock_packed_bools(54637, 54638) -- Trade price for duster2, ratel
+        unlock_packed_bools(51273, 51275) -- Bronze Idol, Ornamental Egg, Tiki Statue
+        unlock_packed_bools(54569, 54569) -- Gold Snake Santo Capra Outfit
+        unlock_packed_bools(54651, 54651) -- Black Snake Yogarishima Outfit
+        unlock_packed_bools(54570, 54570) -- The Armored Merryweather
+        unlock_packed_bools(54572, 54579) -- Winter Highway Patrol, Winter Highway Patrol w/ Tie, Summer Highway Patrol w/ Tie, Summer Highway Patrol, NOOSE Outfit, Winter LSPD Officer w/ Tie, Winter LSPD Officer, Summer LSPD Officer w/ Tie, Summer LSPD Officer
+        unlock_packed_bools(54580, 54593) -- Gold 420 Pendant, Silver 420 Pendant, Rose Gold 420 Pendant, Snake Soul Pendant, Snake King Pendant, Gold Reindeer Pendant, Silver Reindeer Pendant, Red Snake Soul Forwards Cap, Gray Snake King Forwards Cap, Festive Penguin Onesie, Festive Reindeer Onesie, Festive Cluckin' Bell Onesie, White Ho Ho Ho Onesie, Gold Ho Ho Ho Onesie
+        unlock_packed_bools(54594, 54611) -- Green 420 Festival Outfit, Multicolor 420 Festival Outfit, Green 420 Festival Hat, Multicolor 420 Festival Hat, Bald Eagle Outfit, Champagne Pop Fitted, Gold Star Fitted, Champagne Pop Pants, Gold Star Pants, Krampus Sweater, Red Serpent Leather Jacket, Gong Xi Fa Cai Forwards Cap, Heartbreaker Robe, Heartbreaker Boxer Shorts, Heartbreaker Bustier, Carnival Feather Dress, Carnival Feather Shirt, Carnival Feather Shorts
+        unlock_packed_bools(32409, 32409) -- Pavel's Tank Top
+        unlock_packed_bools(42294, 42297) -- Pavel's Garrison Cap, McKenzie Field Cap, Navy Eberhard Bomber, The Arms Dealer
+        unlock_packed_bools(54615, 54634) -- Winter Park Ranger w/ Tie, Winter Park Ranger, Summer Park Ranger w/ Tie, Summer Park Ranger, Los Santos Tattoo Tee, Los Santos Tattoo Jeans, LS Panic Varsity Jacket, LS Panic Varsity Cap, Honkers Tie-Dye Hoodie, Honkers Tie-Dye Hat, Blue Two-Tone Denim Jacket (Closed), Worn Blue Denim Jeans, Blue Two-Tone Denim Dress, Blue Two-Tone Denim Cowboy Hat, LD Organics 420 Hockey Jersey, LD Organics 420 Forwards Cap, Strapz Patterned Sweatshirt, Strapz Patterned Jeans, Bigness Sketches Shirt, Bigness Sketches Jeans        
         if is_player_male then
             unlock_packed_bools(3483, 3492) --Death Defying T-Shirt (Male), For Hire T-Shirt (Male), Gimme That T-Shirt (Male), Asshole T-Shirt (Male), Can't Touch This T-Shirt (Male), Decorated T-Shirt (Male), Psycho Killer T-Shirt (Male), One Man Army T-Shirt (Male), Shot Caller T-Shirt (Male), Showroom T-Shirt (Male)
             unlock_packed_bools(6082, 6083) --Black Benny's T-Shirt, White Benny's T-Shirt
@@ -1019,6 +1025,8 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         stats.set_packed_stat_int(22058, 20) --Gold Business Battle Trophy (Nightclub)
         stats.set_packed_stat_int(22063, 20) --Dinka Go Go Monkey Blista
         stats.set_packed_stat_int(41237, 10) --Taxi Livery
+        stats.set_int('MPX_FM_CUT_DONE', -1) -- Skip Interior Tutorials
+        stats.set_int('MPX_FM_CUT_DONE_2', -1) -- Skip Interior Tutorials 2
         stats.set_int('MPPLY_CREW_NO_HEISTS_0', 2)
         stats.set_int('MPPLY_CREW_NO_HEISTS_1', 5)
         stats.set_int('MPPLY_CREW_NO_HEISTS_2', 5)
@@ -1069,6 +1077,15 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         stats.set_int('MPX_CHAR_FM_WEAP_UNLOCKED4', -1)
         stats.set_int('MPX_CHAR_FM_WEAP_UNLOCKED5', -1)
         stats.set_int('MPX_CHAR_FM_WEAP_UNLOCKED6', -1)
+        stats.set_int('MPX_GCLUB_FM_AMMO_BOUGHT', 1)
+        stats.set_int('MPX_CHAR_WEAP_EQUIPPED', -1)
+        stats.set_int('MPX_CHAR_WEAP_EQUIPPED', -1)
+        stats.set_int('MPX_CHAR_FM_WEAP_EQUIPPED', -1)
+        stats.set_int('MPX_CHAR_FM_WEAP_EQUIPPED2', -1)
+        stats.set_int('MPX_CHAR_FM_WEAP_EQUIPPED3', -1)
+        stats.set_int('MPX_CHAR_FM_WEAP_EQUIPPED4', -1)
+        stats.set_int('MPX_CHAR_FM_WEAP_EQUIPPED5', -1)
+        stats.set_int('MPX_CHAR_FM_WEAP_EQUIPPED6', -1)
         stats.set_int('MPX_CHAR_FM_WEAP_ADDON_1_UNLCK', -1)
         stats.set_int('MPX_CHAR_FM_WEAP_ADDON_2_UNLCK', -1)
         stats.set_int('MPX_CHAR_FM_WEAP_ADDON_3_UNLCK', -1)
@@ -1537,7 +1554,7 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         stats.set_int("MPX_FIXER_EARNINGS", 26340756)
         stats.set_int("MPX_PAYPHONE_BONUS_KILL_METHOD", -1)
         stats.set_int("MPX_FIXER_HQ_OWNED", 1) -- Trade Price for buffalo4
-        stats.set_int("MPX_FIXER_GENERAL_BS", -8577) -- Trade price for champion/baller7
+        stats.set_int("MPX_FIXER_GENERAL_BS", -1) -- Trade price for champion/baller7
         stats.set_int("MPX_FIXER_COMPLETED_BS", -1) -- Complete all The Contract missions.
         stats.set_bool("MPX_AWD_TEEING_OFF", true)
         stats.set_bool("MPX_AWD_PARTY_NIGHT", true)
@@ -1566,11 +1583,11 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         stats.set_bool("MPX_BS_IMANI_D_APP_HOOD", true)
         stats.set_bool("MPX_BS_IMANI_D_APP_HOOD_2", true)
         stats.set_bool("MPX_BS_IMANI_D_APP_HOOD_F", true)
-        unlock_packed_bools(32312, 32312)
+        unlock_packed_bools(32312, 32312) -- Agency Computer Tutorial
         stats.set_int('MPX_REV_NV_KILLS', 50) -- Navy Revolver Kills
         stats.set_int("MPX_XM22_FLOW", -1) -- Acid Lab Unlock
         stats.set_int("MPX_XM22_MISSIONS", -1) -- Acid Lab Unlock
-        stats.set_int("MPX_AWD_CALLME", tunables.get_int(654710993)) -- Acid Lab Equipment Unlock
+        stats.set_int("MPX_AWD_CALLME", tunables.get_int('ACID_LAB_UPGRADE_EQUIPMENT_NUM_MISSIONS_UNLOCK')) -- Acid Lab Equipment Unlock
         stats.set_int("MPX_H3_VEHICLESUSED", -1) -- Trade Price for Diamond Casino Heist Finale.
         stats.set_int("MPX_H4_H4_DJ_MISSIONS", -1) -- Trade Price for weevil
         stats.set_int("MPX_H4_PROGRESS", -1) -- Trade Price for winky
@@ -1670,13 +1687,46 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         stats.set_int("MPX_AWD_DISPATCHWORK", 5) --Trade price for polgreenwood.
         stats.set_packed_stat_int(7671, 100) --Plant on Desk, Plaque Trophy, Shield Trophy
         stats.set_int("MPX_PROG_HUB_BOUNTIES_ALIVE_BS", -1) --Cuff Trophy
-        for i = 0, 2 do --Unlock all daily rewards.
-            local objective = globals.get_int(current_objectives_global + (1 + (0 * 5570)) + 681 + 4244 + (1 + (i * 3)))
-            globals.set_int(objectives_state_global + 1 + (1 + (i * 1)), objective)
+        stats.set_int("MPX_TIMES_PREV_PLAY_AS_BOSS", 500) --VIP Variant
+        stats.set_int("MPX_GBTELTIMESPLAYEDGOONPREV", 500) --Bodyguard Varient
+        stats.set_int("MPX_LOW_FLOW_CURRENT_PROG", 9) --Skip the Lamar lowrider missions.
+        stats.set_int("MPX_LOW_FLOW_CURRENT_CALL", 9) --Skip the Lamar lowrider missions.
+        stats.set_int("MPX_HUB_SALES_COMPLETED", 10) --Trade price for mule4, pounder2.
+        stats.set_int("MPX_NIGHTCLUB_JOBS_DONE", 10) --Trade price for patriot2, blimp3.
+        stats.set_int("MPX_YACHT_MISSION_FLOW", -1) --Complete all A Superyacht Life missions so the Captain doesn't call you constantly.
+        stats.set_packed_stat_int(3032, 100) --Trade price for oppressor2.
+        stats.set_int("MPX_HACKER24_GEN_BS", -1) -- Trade price for predator and garment factory trophies
+        stats.set_int("MPX_AWD_DISPATCHWORK", 10) -- Trade price for polcoquette4
+        if (stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE3") & 0x80000000) == 0 then -- Buy the WM 29 Pistol. (We need this or else the user can't hide it from the weapons locker if they wish)
+            if NETSHOPPING.NET_GAMESERVER_USE_SERVER_TRANSACTIONS() then -- Check for FSL
+                buy_weapon(joaat("WP_WT_PISTOLXM3_t0_v0"))
+            else
+                stats.set_int("MPX_CHAR_WEAP_FM_PURCHASE3", stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE3") | 0x80000000)
+            end
+        end     
+        if (stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") & 1) == 0 then -- Buy the Candy Cane. (We need this or else the user can't hide it from the weapons locker if they wish)
+            if NETSHOPPING.NET_GAMESERVER_USE_SERVER_TRANSACTIONS() then -- Check for FSL
+                buy_weapon(joaat("WP_WT_CANDYCANE_t1_v0"))
+            else
+                stats.set_int("MPX_CHAR_WEAP_FM_PURCHASE4", stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") | 1)
+            end
+        end   
+        if (stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") & 0x10) == 0 then -- Buy the Snowball Launcher. (We need this or else the user can't hide it from the weapons locker if they wish)
+            if NETSHOPPING.NET_GAMESERVER_USE_SERVER_TRANSACTIONS() then -- Check for FSL
+                buy_weapon(joaat("WP_WT_SNOWLAUNCHER_t0_v0"))
+            else
+                stats.set_int("MPX_CHAR_WEAP_FM_PURCHASE4", stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") | 0x10)
+            end
         end
-        globals.set_int(objectives_state_global, 1)
-        globals.set_int(weekly_words_global + (1 + (0 * 6)) + 1, globals.get_int(weekly_words_global + (1 + (0 * 6)) + 2)) --Unlock Weekly Objective
+        if (stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") & 0x20) == 0 then -- Buy The Shocker. (We need this or else the user can't hide it from the weapons locker if they wish)
+            if NETSHOPPING.NET_GAMESERVER_USE_SERVER_TRANSACTIONS() then -- Check for FSL
+                buy_weapon(joaat("WP_WT_STUNROD_t1_v1"))
+            else
+                stats.set_int("MPX_CHAR_WEAP_FM_PURCHASE4", stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") | 0x20)
+            end
+        end
         if showNotifications:is_enabled() then gui.show_message('WasabiWordsTM', 'Clichés Subverted') end
+    end)
     end)
 end)
 toolTip(Stats, "Unlocks everything in the game, untouched script by ShinyWasabi")
