@@ -4682,7 +4682,7 @@ function newText(tab, text, size)
 end
 
 function SessionChanger(session)
-    globals.set_int(1575035, session)
+    globals.set_int(1575036, session)
         if session == -1 then
             globals.set_int(1574589 + 2, -1)
         end
