@@ -3214,13 +3214,13 @@ function TransactionManager:GetPrice(hash, category)
 end
 
 function TransactionManager:TriggerTransaction(hash, amount)
-    globals.set_int(4537311 + 1, 2147483646)
-    globals.set_int(4537311 + 7, 2147483647)
-    globals.set_int(4537311 + 6, 0)
-    globals.set_int(4537311 + 5, 0)
-    globals.set_int(4537311 + 3, hash)
-    globals.set_int(4537311 + 2, amount or self:GetPrice(hash, 0x57DE404E))
-    globals.set_int(4537311, 1)
+    globals.set_int(4537945 + 1, 2147483646)
+    globals.set_int(4537945 + 7, 2147483647)
+    globals.set_int(4537945 + 6, 0)
+    globals.set_int(4537945 + 5, 0)
+    globals.set_int(4537945 + 3, hash)
+    globals.set_int(4537945 + 2, amount or self:GetPrice(hash, 0x57DE404E))
+    globals.set_int(4537945, 1)
 end
 
 millLoop = Money:add_tab("Loops")
@@ -6107,7 +6107,7 @@ Business:add_sameline()
 Business:add_button("Register as CEO", function()
 -- -1 is off, 0 is on
     playerID = PLAYER.PLAYER_ID()
-    g = 1887305 + (playerID * 609) + 10
+    g = 1887549 + (playerID * 609) + 10
     gb1 = globals.get_int(g + 1)
     gb2 = globals.get_int(g + 430)
     if gb2 ~= -1 and gb1 == playerID then
@@ -6125,7 +6125,7 @@ Business:add_sameline()
 Business:add_button("Register as MC", function()
     -- -1 is off, 0 is on
     playerID = PLAYER.PLAYER_ID()
-    g = 1887305 + (playerID * 609) + 10
+    g = 1887549 + (playerID * 609) + 10
     gb1 = globals.get_int(g + 1)
     gb2 = globals.get_int(g + 430)
     if gb2 ~= -1 and gb1 == playerID then
@@ -6473,12 +6473,12 @@ textSeparator("", "Business Tab")
 					globals.set_int(262145 + 17293, 10) -- prod time for document forge
 					globals.set_int(262145 + 17294, 10) -- prod time for cash
 					globals.set_int(262145 + 17295, 10) -- prod time for acid
-					globals.set_int(262145 + 17341, 0) -- Prod Time Delay Documents
-					globals.set_int(262145 + 17342, 0) -- Prod Time Delay Cash
-					globals.set_int(262145 + 17343, 0) -- Prod Time Delay Cocaine
-					globals.set_int(262145 + 17344, 0) -- Prod Time Delay Meth
-					globals.set_int(262145 + 17345, 0) -- Prod Time Delay Weed
-					globals.set_int(262145 + 17346, 0) -- Prod Time Delay Acid
+					globals.set_int(262145 + 17341 * 279486, 0) -- Prod Time Delay Documents
+					globals.set_int(262145 + 17342 * 279487, 0) -- Prod Time Delay Cash
+					globals.set_int(262145 + 17343 * 279488, 0) -- Prod Time Delay Cocaine
+					globals.set_int(262145 + 17344 * 279489, 0) -- Prod Time Delay Meth
+					globals.set_int(262145 + 17345 * 279490, 0) -- Prod Time Delay Weed
+					globals.set_int(262145 + 17346 * 279491, 0) -- Prod Time Delay Acid
 					if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed has been sped up for all businesses") end
 					if showNotifications:is_enabled() then gui.show_message("Production Speed", "Production speed increase will not start until workers finish the first product, keep it supplied to fill the product bar") end
 				end)
@@ -6491,16 +6491,16 @@ textSeparator("", "Business Tab")
 				globals.set_int(262145 + 17321, 100000) -- price for cocaine
 				globals.set_int(262145 + 17322, 60000) -- price for meth
 				globals.set_int(262145 + 17323, 15000) -- price for weed
-				globals.set_int(262145 + 17324, 18000) -- price for acid
+				globals.set_int(262145 + 17324, 8000) -- price for acid
 				if showNotifications:is_enabled() then gui.show_message("Production Value", "Production sale value has been increased for all businesses") end
 			end
 			toolTip("", "Raises prices for Weed/Meth/Coke/Documents/Cash businesses.")
 			ImGui.SameLine()
 			if ImGui.Button("Instant Sell") then
-				locals.set_int("gb_biker_contraband_sell", 704+122, 15)
-				locals.set_int("fm_content_acid_lab_sell", 5483 + 1358 + 2, 9)
-				locals.set_int("fm_content_acid_lab_sell", 5483 + 1358 + 3, 10)
-				locals.set_int("fm_content_acid_lab_sell", 5483 + 1293, 2)
+				locals.set_int("gb_biker_contraband_sell", 725 + 122, 15)
+				locals.set_int("fm_content_acid_lab_sell", 5653 + 1374 + 2, 9)
+				locals.set_int("fm_content_acid_lab_sell", 5653 + 1374 + 3, 10)
+				locals.set_int("fm_content_acid_lab_sell", 5653 + 1308, 2)
 			end
 			toolTip("", "Instantly Sells your Weed/Cash/Coke/Meth/Documents while in the mission.")
 			if ImGui.TreeNode("MC Business Stock & Supplies") then
@@ -6846,25 +6846,25 @@ script.register_looped("yimceoloop", function(script)
         if showNotifications:is_enabled() then gui.show_message("YimCEO Enabled!", "Enjoy the bank roll!") end
             if locals.get_int("appsecuroserv", 2) == 1 then
                 script:sleep(500)
-                locals.set_int("appsecuroserv", 740, 1)
+                locals.set_int("appsecuroserv", 760, 1)
                 script:sleep(200)
-                locals.set_int("appsecuroserv", 739, 1)
+                locals.set_int("appsecuroserv", 759, 1)
                 script:sleep(200)
-                locals.set_int("appsecuroserv", 558, 3012)
+                locals.set_int("appsecuroserv", 578, 3012)
                 script:sleep(1000)
             end
             if locals.get_int("gb_contraband_sell", 2) == 1 then
-                locals.set_int("gb_contraband_sell", 543 + 595, 1)
-                locals.set_int("gb_contraband_sell", 543 + 55, 0)
-                locals.set_int("gb_contraband_sell", 543 + 584, 0)
-                locals.set_int("gb_contraband_sell", 543 + 7, 7)
+                locals.set_int("gb_contraband_sell", 563 + 595, 1)
+                locals.set_int("gb_contraband_sell", 563 + 55, 0)
+                locals.set_int("gb_contraband_sell", 563 + 584, 0)
+                locals.set_int("gb_contraband_sell", 563 + 7, 7)
                 script:sleep(500)
-                locals.set_int("gb_contraband_sell", 543 + 1, 99999)
+                locals.set_int("gb_contraband_sell", 563 + 1, 99999)
             end
             if locals.get_int("gb_contraband_buy", 2) == 1 then
-                locals.set_int("gb_contraband_buy", 601 + 5, 1)
-                locals.set_int("gb_contraband_buy", 601 + 191, 6)
-                locals.set_int("gb_contraband_buy", 601 + 192, 4)
+                locals.set_int("gb_contraband_buy", 621 + 5, 1)
+                locals.set_int("gb_contraband_buy", 621 + 191, 6)
+                locals.set_int("gb_contraband_buy", 621 + 192, 4)
                 if showNotifications:is_enabled() then gui.show_message("Warehouse full!") end
             end
         end
