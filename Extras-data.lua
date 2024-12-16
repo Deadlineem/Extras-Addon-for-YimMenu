@@ -5009,6 +5009,10 @@ function textSeparator(tab, text)
     end
 end
 
+function MPX()
+    return "MP".. stats.get_int("MPPLY_LAST_MP_CHAR").. "_"
+end
+
 -- GoldenGets
 function start_script(script_name, stack_size, script) -- Computer thread
 	if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat(script_name)) >= 1 then
