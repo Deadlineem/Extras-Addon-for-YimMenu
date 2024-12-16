@@ -554,7 +554,7 @@ Stats:add_text("Change Levels")
 Stats:add_button("Randomize RP", function()
     script.run_in_fiber(function (script)
          randomizeRP = math.random(1, 1787576850) -- 1 Rp to 1787576850 Rp (lvl 1 to 8000)
-        STATS.STAT_SET_INT(joaat("MPX_CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CHAR_SET_RP_GIFT_ADMIN"), randomizeRP, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your RP has been randomized to "..randomizeRP..", changing session and applying RP") end
         sleep(1)
         SessionChanger(sessionType)
@@ -565,7 +565,7 @@ Stats:add_sameline()
 Stats:add_button("Lvl 1", function()
     script.run_in_fiber(function (script)
          rpLevel = 1 -- Level 1 -- https://www.unknowncheats.me/forum/2458458-post691.html
-        STATS.STAT_SET_INT(joaat("MPX_CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 1, changing session and applying RP") end
         sleep(1)
         SessionChanger(sessionType)
@@ -576,7 +576,7 @@ Stats:add_sameline()
 Stats:add_button("Lvl 100", function()
     script.run_in_fiber(function (script)
          rpLevel = 1584350 -- Level 100 -- https://www.unknowncheats.me/forum/2458458-post691.html
-        STATS.STAT_SET_INT(joaat("MPX_CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 100, changing session and applying RP") end
         sleep(1)
         SessionChanger(sessionType)
@@ -587,7 +587,7 @@ Stats:add_sameline()
 Stats:add_button("Lvl 420", function()
     script.run_in_fiber(function (script)
          rpLevel = 13288350 -- Level 420 -- https://www.unknowncheats.me/forum/2458458-post691.html
-        STATS.STAT_SET_INT(joaat("MPX_CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 420, changing session and applying RP") end
         SessionChanger(sessionType)
     end)
@@ -597,7 +597,7 @@ Stats:add_sameline()
 Stats:add_button("Lvl 1337", function()
     script.run_in_fiber(function (script)
          rpLevel = 75185850 -- Level 1337 -- https://www.unknowncheats.me/forum/2458458-post691.html
-        STATS.STAT_SET_INT(joaat("MPX_CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 1337, changing session and applying RP") end
         sleep(1)
         SessionChanger(sessionType)
@@ -608,7 +608,7 @@ Stats:add_sameline()
 Stats:add_button("Lvl 8000", function()
     script.run_in_fiber(function (script)
          rpLevel = 1787576850 -- Level 8000 -- https://www.unknowncheats.me/forum/2458458-post691.html
-        STATS.STAT_SET_INT(joaat("MPX_CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to 8000, changing session and applying RP") end
         sleep(1)
         SessionChanger(sessionType)
@@ -619,7 +619,7 @@ levelInput = Stats:add_input_int("Level")
 toolTip(Stats, "Set your level to a value between 1 and 8000")
 --PlayerId = PLAYER.PLAYER_ID()
 --PlayerRp = network.get_player_rp(PlayerId)-- Not working properly, returns -1 when the PlayerId is yours
-levelInput:set_value(stats.get_int("MPX_CHAR_RANK_FM"))-- TODO: Set PlayerRank as default value
+levelInput:set_value(stats.get_int(MPX() .."CHAR_RANK_FM"))-- TODO: Set PlayerRank as default value
 Stats:add_sameline()
 Stats:add_button("Change level", function()
     script.run_in_fiber(function (script)
@@ -633,7 +633,7 @@ Stats:add_button("Change level", function()
         if rpLevel == nil then
             if showNotifications:is_enabled() then gui.show_message("Stats", "The chosen level must be between 1 and 8000!") end
         else
-            STATS.STAT_SET_INT(joaat("MPX_CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
+            STATS.STAT_SET_INT(joaat(MPX() .."CHAR_SET_RP_GIFT_ADMIN"), rpLevel, true)
             if showNotifications:is_enabled() then gui.show_message("Stats", "Your level was set to ".. tostring(chosenLevel) ..", changing session and applying RP") end
             sleep(1)
             SessionChanger(sessionType)
@@ -699,27 +699,27 @@ Stats:add_button("Reset Income/Spent Stats", function()
     script.run_in_fiber(function (script)
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_EVC"), 0, true)
         STATS.STAT_SET_INT(joaat("MPPLY_TOTAL_SVC"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_EARN_BETTING"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_EARN_JOBS"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_EARN_SHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_SPENT_SHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_EARN_JOBSHARED"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_EARN_SELLING_VEH"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_SPENT_WEAPON_ARMOR"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_SPENT_VEH_MAINTENANCE"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_SPENT_STYLE_ENT"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_SPENT_PROPERTY_UTIL"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_SPENT_JOB_ACTIVITY"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_SPENT_BETTING"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_EARN_VEHICLE_EXPORT"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_SPENT_VEHICLE_EXPORT"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_MONEY_EARN_CLUB_DANCING"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_CASINO_CHIPS_WON_GD"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_CASINO_CHIPS_WONTIM"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_CASINO_GMBLNG_GD"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_CASINO_BAN_TIME"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_CASINO_CHIPS_PURTIM"), 0, true)
-        STATS.STAT_SET_INT(joaat("MPX_CASINO_CHIPS_PUR_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_EARN_BETTING"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_EARN_JOBS"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_EARN_SHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_SPENT_SHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_EARN_JOBSHARED"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_EARN_SELLING_VEH"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_SPENT_WEAPON_ARMOR"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_SPENT_VEH_MAINTENANCE"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_SPENT_STYLE_ENT"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_SPENT_PROPERTY_UTIL"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_SPENT_JOB_ACTIVITY"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_SPENT_BETTING"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_EARN_VEHICLE_EXPORT"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_SPENT_VEHICLE_EXPORT"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."MONEY_EARN_CLUB_DANCING"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CASINO_CHIPS_WON_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CASINO_CHIPS_WONTIM"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CASINO_GMBLNG_GD"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CASINO_BAN_TIME"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CASINO_CHIPS_PURTIM"), 0, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."CASINO_CHIPS_PUR_GD"), 0, true)
         if PI == 0 then
             if showNotifications:is_enabled() then gui.show_message("Stats", "Income Stats for Player 1 have been reset to 0, changing sessions to apply.") end
         else
@@ -734,13 +734,13 @@ Stats:add_separator()
 Stats:add_text("Character Skills")
 Stats:add_button("Max All Skills", function()
     script.run_in_fiber(function (script)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_DRIV"), 1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_FLY"), 1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_LUNG"), 1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_SHO"), 1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_STAM"), 1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_STL"), 1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_STRN"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_DRIV"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_FLY"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_LUNG"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_SHO"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_STAM"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_STL"), 1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_STRN"), 1000, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been maxed. Changing sessions to apply.") end
         sleep(1)
         SessionChanger(sessionType)
@@ -751,13 +751,13 @@ Stats:add_sameline()
 Stats:add_button("Reset All Skills", function()
     script.run_in_fiber(function (script)
  
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_DRIV"), -1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_FLY"), -1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_LUNG"), -1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_SHO"), -1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_STAM"), -1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_STL"), -1000, true)
-        STATS.STAT_SET_INT(joaat("MPX_SCRIPT_INCREASE_STRN"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_DRIV"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_FLY"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_LUNG"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_SHO"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_STAM"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_STL"), -1000, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."SCRIPT_INCREASE_STRN"), -1000, true)
         if showNotifications:is_enabled() then gui.show_message("Stats", "Your character skills (Driving, Flying, etc.) have been zeroed. Changing sessions to apply.") end
         sleep(1)
         SessionChanger(sessionType)
@@ -1381,122 +1381,122 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         stats.set_bool('MPX_COMPLETE_H4_F_USING_ANNIH', true)
         stats.set_bool('MPX_COMPLETE_H4_F_USING_ALKONOS', true)
         stats.set_bool('MPX_COMPLETE_H4_F_USING_PATROLB', true)
-        stats.set_int("MPX_ARENAWARS_AP_LIFETIME", 5055000)
-        stats.set_int("MPX_ARENAWARS_AP_TIER", 1000)
-        stats.set_int("MPX_ARENAWARS_AP", 10040)
-        stats.set_int("MPX_ARENAWARS_SKILL_LEVEL", 20)
-        stats.set_int("MPX_ARENAWARS_SP", 210)
-        stats.set_int("MPX_ARENAWARS_SP_LIFETIME", 210)
-        stats.set_int("MPX_ARENAWARS_MATCHES_PLYD", 52500)
-        stats.set_int("MPX_ARENAWARS_MATCHES_PLYDT", 52500)
-        stats.set_int("MPX_ARENAWARS_CARRER_WINS", 72500)
-        stats.set_int("MPX_ARENAWARS_CARRER_WINT", 32500)
-        stats.set_int("MPX_ARN_LIFETIME_KILLS", 260000)
-        stats.set_int("MPX_ARN_LIFETIME_DEATHS", 20000)
-        stats.set_int("MPX_ARN_SPECTATOR_KILLS", 5000)
-        stats.set_int("MPX_ARN_W_PASS_THE_BOMB", 11000)
-        stats.set_int("MPX_ARN_W_DETONATION", 11000)
-        stats.set_int("MPX_ARN_W_ARCADE_RACE", 11000)
-        stats.set_int("MPX_ARN_W_CTF", 11000)
-        stats.set_int("MPX_ARN_W_TAG_TEAM", 11000)
-        stats.set_int("MPX_ARN_W_DESTR_DERBY", 11000)
-        stats.set_int("MPX_ARN_W_CARNAGE", 11000)
-        stats.set_int("MPX_ARN_W_MONSTER_JAM", 12000)
-        stats.set_int("MPX_ARN_W_GAMES_MASTERS", 11000)
-        stats.set_int("MPX_ARN_L_PASS_THE_BOMB", 100)
-        stats.set_int("MPX_ARN_L_DETONATION", 100)
-        stats.set_int("MPX_ARN_L_ARCADE_RACE", 100)
-        stats.set_int("MPX_ARN_L_CTF", 100)
-        stats.set_int("MPX_ARN_L_TAG_TEAM", 200)
-        stats.set_int("MPX_ARN_L_DESTR_DERBY", 100)
-        stats.set_int("MPX_ARN_L_CARNAGE", 100)
-        stats.set_int("MPX_ARN_L_MONSTER_JAM", 1005)
-        stats.set_int("MPX_ARN_L_GAMES_MASTERS", 100)
-        stats.set_int("MPX_ARN_VEH_MONSTER3", 90000)
-        stats.set_int("MPX_ARN_VEH_MONSTER4", 500)
-        stats.set_int("MPX_ARN_VEH_MONSTER5", 500)
-        stats.set_int("MPX_ARN_VEH_CERBERUS", 500)
-        stats.set_int("MPX_ARN_VEH_CERBERUS2", 500)
-        stats.set_int("MPX_ARN_VEH_CERBERUS3", 500)
-        stats.set_int("MPX_ARN_VEH_BRUISER", 500)
-        stats.set_int("MPX_ARN_VEH_BRUISER2", 500)
-        stats.set_int("MPX_ARN_VEH_BRUISER3", 500)
-        stats.set_int("MPX_ARN_VEH_SLAMVAN4", 500)
-        stats.set_int("MPX_ARN_VEH_SLAMVAN5", 500)
-        stats.set_int("MPX_ARN_VEH_SLAMVAN6", 500)
-        stats.set_int("MPX_ARN_VEH_BRUTUS", 500)
-        stats.set_int("MPX_ARN_VEH_BRUTUS2", 500)
-        stats.set_int("MPX_ARN_VEH_BRUTUS3", 500)
-        stats.set_int("MPX_ARN_VEH_SCARAB", 500)
-        stats.set_int("MPX_ARN_VEH_SCARAB2", 500)
-        stats.set_int("MPX_ARN_VEH_SCARAB3", 500)
-        stats.set_int("MPX_ARN_VEH_DOMINATOR4", 500)
-        stats.set_int("MPX_ARN_VEH_DOMINATOR5", 500)
-        stats.set_int("MPX_ARN_VEH_DOMINATOR6", 500)
-        stats.set_int("MPX_ARN_VEH_IMPALER2", 500)
-        stats.set_int("MPX_ARN_VEH_IMPALER3", 500)
-        stats.set_int("MPX_ARN_VEH_IMPALER4", 500)
-        stats.set_int("MPX_ARN_VEH_ISSI4", 500)
-        stats.set_int("MPX_ARN_VEH_ISSI5", 500)
-        stats.set_int("MPX_ARN_VEH_ISSI6", 500)
-        stats.set_int("MPX_ARN_VEH_IMPERATOR", 500)
-        stats.set_int("MPX_ARN_VEH_IMPERATOR2", 500)
-        stats.set_int("MPX_ARN_VEH_IMPERATOR3", 500)
-        stats.set_int("MPX_ARN_VEH_ZR380", 500)
-        stats.set_int("MPX_ARN_VEH_ZR3802", 500)
-        stats.set_int("MPX_ARN_VEH_ZR3803", 500)
-        stats.set_int("MPX_ARN_VEH_DEATHBIKE", 500)
-        stats.set_int("MPX_ARN_VEH_DEATHBIKE2", 400)
-        stats.set_int("MPX_ARN_VEH_DEATHBIKE3", 400)
-        stats.set_int("MPX_AWD_WATCH_YOUR_STEP", 20)
-        stats.set_int("MPX_AWD_TOWER_OFFENSE", 50)
-        stats.set_int("MPX_AWD_THROUGH_A_LENS", 60)
-        stats.set_int("MPX_AWD_SPINNER", 80)
-        stats.set_int("MPX_AWD_YOUMEANBOOBYTRAPS", 25)
-        stats.set_int("MPX_AWD_MASTER_BANDITO", 20)
-        stats.set_int("MPX_AWD_SITTING_DUCK", 30)
-        stats.set_int("MPX_AWD_CROWDPARTICIPATION", 80)
-        stats.set_int("MPX_AWD_KILL_OR_BE_KILLED", 60)
-        stats.set_int("MPX_AWD_MASSIVE_SHUNT", 60)
-        stats.set_int("MPX_AWD_YOURE_OUTTA_HERE", 220)
-        stats.set_int("MPX_AWD_ARENA_WAGEWORKER", 6785341)
-        stats.set_int("MPX_AWD_TIME_SERVED", 474020)
-        stats.set_int("MPX_AWD_CAREER_WINNER", 36340)
-        stats.set_int("MPX_ARN_SPECTATOR_DRONE", 60)
-        stats.set_int("MPX_ARN_SPECTATOR_CAMS", 60)
-        stats.set_int("MPX_ARN_SMOKE", 50)
-        stats.set_int("MPX_ARN_DRINK", 65)
-        stats.set_int("MPX_ARN_SPEC_BOX_TIME_MS", 10800000)
-        stats.set_int("MPX_AWD_TOP_SCORE", 1045020)
-        stats.set_int("MPX_AWD_READY_FOR_WAR", 50)
-        stats.set_int("MPX_AWD_WEVE_GOT_ONE", 60)
-        stats.set_int("MPX_ARN_W_THEME_SCIFI", 10)
-        stats.set_int("MPX_ARN_W_THEME_APOC", 10)
-        stats.set_int("MPX_ARN_W_THEME_CONS", 10)
-        stats.set_int("MPX_ARN_BS_TRINKET_SAVED", -1) -- Unlock trinket and stickers.
-        stats.set_bool("MPX_AWD_UNSTOPPABLE", true)
-        stats.set_bool("MPX_AWD_CONTACT_SPORT", true)
-        stats.set_bool("MPX_AWD_BEGINNER", true)
-        stats.set_bool("MPX_AWD_FIELD_FILLER", true)
-        stats.set_bool("MPX_AWD_ARMCHAIR_RACER", true)
-        stats.set_bool("MPX_AWD_LEARNER", true)
-        stats.set_bool("MPX_AWD_SUNDAY_DRIVER", true)
-        stats.set_bool("MPX_AWD_THE_ROOKIE", true)
-        stats.set_bool("MPX_AWD_BUMP_AND_RUN", true)
-        stats.set_bool("MPX_AWD_GEAR_HEAD", true)
-        stats.set_bool("MPX_AWD_DOOR_SLAMMER", true)
-        stats.set_bool("MPX_AWD_HOT_LAP", true)
-        stats.set_bool("MPX_AWD_ARENA_AMATEUR", true)
-        stats.set_bool("MPX_AWD_PAINT_TRADER", true)
-        stats.set_bool("MPX_AWD_SHUNTER", true)
-        stats.set_bool("MPX_AWD_JOCK", true)
-        stats.set_bool("MPX_AWD_WARRIOR", true)
-        stats.set_bool("MPX_AWD_T_BONE", true)
-        stats.set_bool("MPX_AWD_MAYHEM", true)
-        stats.set_bool("MPX_AWD_WRECKER", true)
-        stats.set_bool("MPX_AWD_CRASH_COURSE", true)
-        stats.set_bool("MPX_AWD_ARENA_LEGEND", true)
-        stats.set_bool("MPX_AWD_PEGASUS", true)
+        stats.set_int(MPX() .."ARENAWARS_AP_LIFETIME", 5055000)
+        stats.set_int(MPX() .."ARENAWARS_AP_TIER", 1000)
+        stats.set_int(MPX() .."ARENAWARS_AP", 10040)
+        stats.set_int(MPX() .."ARENAWARS_SKILL_LEVEL", 20)
+        stats.set_int(MPX() .."ARENAWARS_SP", 210)
+        stats.set_int(MPX() .."ARENAWARS_SP_LIFETIME", 210)
+        stats.set_int(MPX() .."ARENAWARS_MATCHES_PLYD", 52500)
+        stats.set_int(MPX() .."ARENAWARS_MATCHES_PLYDT", 52500)
+        stats.set_int(MPX() .."ARENAWARS_CARRER_WINS", 72500)
+        stats.set_int(MPX() .."ARENAWARS_CARRER_WINT", 32500)
+        stats.set_int(MPX() .."ARN_LIFETIME_KILLS", 260000)
+        stats.set_int(MPX() .."ARN_LIFETIME_DEATHS", 20000)
+        stats.set_int(MPX() .."ARN_SPECTATOR_KILLS", 5000)
+        stats.set_int(MPX() .."ARN_W_PASS_THE_BOMB", 11000)
+        stats.set_int(MPX() .."ARN_W_DETONATION", 11000)
+        stats.set_int(MPX() .."ARN_W_ARCADE_RACE", 11000)
+        stats.set_int(MPX() .."ARN_W_CTF", 11000)
+        stats.set_int(MPX() .."ARN_W_TAG_TEAM", 11000)
+        stats.set_int(MPX() .."ARN_W_DESTR_DERBY", 11000)
+        stats.set_int(MPX() .."ARN_W_CARNAGE", 11000)
+        stats.set_int(MPX() .."ARN_W_MONSTER_JAM", 12000)
+        stats.set_int(MPX() .."ARN_W_GAMES_MASTERS", 11000)
+        stats.set_int(MPX() .."ARN_L_PASS_THE_BOMB", 100)
+        stats.set_int(MPX() .."ARN_L_DETONATION", 100)
+        stats.set_int(MPX() .."ARN_L_ARCADE_RACE", 100)
+        stats.set_int(MPX() .."ARN_L_CTF", 100)
+        stats.set_int(MPX() .."ARN_L_TAG_TEAM", 200)
+        stats.set_int(MPX() .."ARN_L_DESTR_DERBY", 100)
+        stats.set_int(MPX() .."ARN_L_CARNAGE", 100)
+        stats.set_int(MPX() .."ARN_L_MONSTER_JAM", 1005)
+        stats.set_int(MPX() .."ARN_L_GAMES_MASTERS", 100)
+        stats.set_int(MPX() .."ARN_VEH_MONSTER3", 90000)
+        stats.set_int(MPX() .."ARN_VEH_MONSTER4", 500)
+        stats.set_int(MPX() .."ARN_VEH_MONSTER5", 500)
+        stats.set_int(MPX() .."ARN_VEH_CERBERUS", 500)
+        stats.set_int(MPX() .."ARN_VEH_CERBERUS2", 500)
+        stats.set_int(MPX() .."ARN_VEH_CERBERUS3", 500)
+        stats.set_int(MPX() .."ARN_VEH_BRUISER", 500)
+        stats.set_int(MPX() .."ARN_VEH_BRUISER2", 500)
+        stats.set_int(MPX() .."ARN_VEH_BRUISER3", 500)
+        stats.set_int(MPX() .."ARN_VEH_SLAMVAN4", 500)
+        stats.set_int(MPX() .."ARN_VEH_SLAMVAN5", 500)
+        stats.set_int(MPX() .."ARN_VEH_SLAMVAN6", 500)
+        stats.set_int(MPX() .."ARN_VEH_BRUTUS", 500)
+        stats.set_int(MPX() .."ARN_VEH_BRUTUS2", 500)
+        stats.set_int(MPX() .."ARN_VEH_BRUTUS3", 500)
+        stats.set_int(MPX() .."ARN_VEH_SCARAB", 500)
+        stats.set_int(MPX() .."ARN_VEH_SCARAB2", 500)
+        stats.set_int(MPX() .."ARN_VEH_SCARAB3", 500)
+        stats.set_int(MPX() .."ARN_VEH_DOMINATOR4", 500)
+        stats.set_int(MPX() .."ARN_VEH_DOMINATOR5", 500)
+        stats.set_int(MPX() .."ARN_VEH_DOMINATOR6", 500)
+        stats.set_int(MPX() .."ARN_VEH_IMPALER2", 500)
+        stats.set_int(MPX() .."ARN_VEH_IMPALER3", 500)
+        stats.set_int(MPX() .."ARN_VEH_IMPALER4", 500)
+        stats.set_int(MPX() .."ARN_VEH_ISSI4", 500)
+        stats.set_int(MPX() .."ARN_VEH_ISSI5", 500)
+        stats.set_int(MPX() .."ARN_VEH_ISSI6", 500)
+        stats.set_int(MPX() .."ARN_VEH_IMPERATOR", 500)
+        stats.set_int(MPX() .."ARN_VEH_IMPERATOR2", 500)
+        stats.set_int(MPX() .."ARN_VEH_IMPERATOR3", 500)
+        stats.set_int(MPX() .."ARN_VEH_ZR380", 500)
+        stats.set_int(MPX() .."ARN_VEH_ZR3802", 500)
+        stats.set_int(MPX() .."ARN_VEH_ZR3803", 500)
+        stats.set_int(MPX() .."ARN_VEH_DEATHBIKE", 500)
+        stats.set_int(MPX() .."ARN_VEH_DEATHBIKE2", 400)
+        stats.set_int(MPX() .."ARN_VEH_DEATHBIKE3", 400)
+        stats.set_int(MPX() .."AWD_WATCH_YOUR_STEP", 20)
+        stats.set_int(MPX() .."AWD_TOWER_OFFENSE", 50)
+        stats.set_int(MPX() .."AWD_THROUGH_A_LENS", 60)
+        stats.set_int(MPX() .."AWD_SPINNER", 80)
+        stats.set_int(MPX() .."AWD_YOUMEANBOOBYTRAPS", 25)
+        stats.set_int(MPX() .."AWD_MASTER_BANDITO", 20)
+        stats.set_int(MPX() .."AWD_SITTING_DUCK", 30)
+        stats.set_int(MPX() .."AWD_CROWDPARTICIPATION", 80)
+        stats.set_int(MPX() .."AWD_KILL_OR_BE_KILLED", 60)
+        stats.set_int(MPX() .."AWD_MASSIVE_SHUNT", 60)
+        stats.set_int(MPX() .."AWD_YOURE_OUTTA_HERE", 220)
+        stats.set_int(MPX() .."AWD_ARENA_WAGEWORKER", 6785341)
+        stats.set_int(MPX() .."AWD_TIME_SERVED", 474020)
+        stats.set_int(MPX() .."AWD_CAREER_WINNER", 36340)
+        stats.set_int(MPX() .."ARN_SPECTATOR_DRONE", 60)
+        stats.set_int(MPX() .."ARN_SPECTATOR_CAMS", 60)
+        stats.set_int(MPX() .."ARN_SMOKE", 50)
+        stats.set_int(MPX() .."ARN_DRINK", 65)
+        stats.set_int(MPX() .."ARN_SPEC_BOX_TIME_MS", 10800000)
+        stats.set_int(MPX() .."AWD_TOP_SCORE", 1045020)
+        stats.set_int(MPX() .."AWD_READY_FOR_WAR", 50)
+        stats.set_int(MPX() .."AWD_WEVE_GOT_ONE", 60)
+        stats.set_int(MPX() .."ARN_W_THEME_SCIFI", 10)
+        stats.set_int(MPX() .."ARN_W_THEME_APOC", 10)
+        stats.set_int(MPX() .."ARN_W_THEME_CONS", 10)
+        stats.set_int(MPX() .."ARN_BS_TRINKET_SAVED", -1) -- Unlock trinket and stickers.
+        stats.set_bool(MPX() .."AWD_UNSTOPPABLE", true)
+        stats.set_bool(MPX() .."AWD_CONTACT_SPORT", true)
+        stats.set_bool(MPX() .."AWD_BEGINNER", true)
+        stats.set_bool(MPX() .."AWD_FIELD_FILLER", true)
+        stats.set_bool(MPX() .."AWD_ARMCHAIR_RACER", true)
+        stats.set_bool(MPX() .."AWD_LEARNER", true)
+        stats.set_bool(MPX() .."AWD_SUNDAY_DRIVER", true)
+        stats.set_bool(MPX() .."AWD_THE_ROOKIE", true)
+        stats.set_bool(MPX() .."AWD_BUMP_AND_RUN", true)
+        stats.set_bool(MPX() .."AWD_GEAR_HEAD", true)
+        stats.set_bool(MPX() .."AWD_DOOR_SLAMMER", true)
+        stats.set_bool(MPX() .."AWD_HOT_LAP", true)
+        stats.set_bool(MPX() .."AWD_ARENA_AMATEUR", true)
+        stats.set_bool(MPX() .."AWD_PAINT_TRADER", true)
+        stats.set_bool(MPX() .."AWD_SHUNTER", true)
+        stats.set_bool(MPX() .."AWD_JOCK", true)
+        stats.set_bool(MPX() .."AWD_WARRIOR", true)
+        stats.set_bool(MPX() .."AWD_T_BONE", true)
+        stats.set_bool(MPX() .."AWD_MAYHEM", true)
+        stats.set_bool(MPX() .."AWD_WRECKER", true)
+        stats.set_bool(MPX() .."AWD_CRASH_COURSE", true)
+        stats.set_bool(MPX() .."AWD_ARENA_LEGEND", true)
+        stats.set_bool(MPX() .."AWD_PEGASUS", true)
         unlock_packed_bools(25010, 25010) -- Skip arena wall help.
         unlock_packed_bools(25014, 25014) -- Skip arena wall tutorial.
         stats.set_bool('MPX_AWD_DEADEYE', true) -- Badlands Revenge II -- Dead Eye
@@ -1542,188 +1542,188 @@ Stats:add_button("Unlock All", function() --Original script by ShinyWasabi
         stats.set_int('MPX_CH_ARC_CAB_CLAW_TROPHY', -1) -- Kitty Claw Trophy
         stats.set_int('MPX_CH_ARC_CAB_LOVE_TROPHY', -1) -- The Love Professor Trophy
         stats.set_int('MPX_AWD_FACES_OF_DEATH', 50) -- Camhedz -- Faces Of Death
-        stats.set_int("MPX_AWD_COLD_CALLER", 50)
-        stats.set_int("MPX_AWD_PRODUCER", 60)
-        stats.set_int("MPX_AWD_CONTRACTOR", 50)
-        stats.set_int("MPX_FIXER_SC_VEH_RECOVERED", 100)
-        stats.set_int("MPX_FIXER_SC_VAL_RECOVERED", 100)
-        stats.set_int("MPX_FIXER_SC_GANG_TERMINATED", 100)
-        stats.set_int("MPX_FIXER_SC_VIP_RESCUED", 100)
-        stats.set_int("MPX_FIXER_SC_ASSETS_PROTECTED", 100)
-        stats.set_int("MPX_FIXER_SC_EQ_DESTROYED", 100)
-        stats.set_int("MPX_FIXER_COUNT", 600)
-        stats.set_int("MPX_FIXER_EARNINGS", 26340756)
-        stats.set_int("MPX_PAYPHONE_BONUS_KILL_METHOD", -1)
-        stats.set_int("MPX_FIXER_HQ_OWNED", 1) -- Trade Price for buffalo4
-        stats.set_int("MPX_FIXER_GENERAL_BS", -1) -- Trade price for champion/baller7
-        stats.set_int("MPX_FIXER_COMPLETED_BS", -1) -- Complete all The Contract missions.
-        stats.set_bool("MPX_AWD_TEEING_OFF", true)
-        stats.set_bool("MPX_AWD_PARTY_NIGHT", true)
-        stats.set_bool("MPX_AWD_BILLIONAIRE_GAMES", true)
-        stats.set_bool("MPX_AWD_HOOD_PASS", true)
-        stats.set_bool("MPX_AWD_STUDIO_TOUR", true)
-        stats.set_bool("MPX_AWD_DONT_MESS_DRE", true)
-        stats.set_bool("MPX_AWD_BACKUP", true)
-        stats.set_bool("MPX_AWD_SHORTFRANK_1", true)
-        stats.set_bool("MPX_AWD_SHORTFRANK_2", true)
-        stats.set_bool("MPX_AWD_SHORTFRANK_3", true)
-        stats.set_bool("MPX_AWD_CONTR_KILLER", true)
-        stats.set_bool("MPX_AWD_DOGS_BEST_FRIEND", true)
-        stats.set_bool("MPX_AWD_MUSIC_STUDIO", true)
-        stats.set_bool("MPX_AWD_SHORTLAMAR_1", true)
-        stats.set_bool("MPX_AWD_SHORTLAMAR_2", true)
-        stats.set_bool("MPX_AWD_SHORTLAMAR_3", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_SETUP", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_STRAND", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_PARTY", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_PARTY_2", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_PARTY_F", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_BILL", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_BILL_2", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_BILL_F", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_HOOD", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_HOOD_2", true)
-        stats.set_bool("MPX_BS_IMANI_D_APP_HOOD_F", true)
+        stats.set_int(MPX() .."AWD_COLD_CALLER", 50)
+        stats.set_int(MPX() .."AWD_PRODUCER", 60)
+        stats.set_int(MPX() .."AWD_CONTRACTOR", 50)
+        stats.set_int(MPX() .."FIXER_SC_VEH_RECOVERED", 100)
+        stats.set_int(MPX() .."FIXER_SC_VAL_RECOVERED", 100)
+        stats.set_int(MPX() .."FIXER_SC_GANG_TERMINATED", 100)
+        stats.set_int(MPX() .."FIXER_SC_VIP_RESCUED", 100)
+        stats.set_int(MPX() .."FIXER_SC_ASSETS_PROTECTED", 100)
+        stats.set_int(MPX() .."FIXER_SC_EQ_DESTROYED", 100)
+        stats.set_int(MPX() .."FIXER_COUNT", 600)
+        stats.set_int(MPX() .."FIXER_EARNINGS", 26340756)
+        stats.set_int(MPX() .."PAYPHONE_BONUS_KILL_METHOD", -1)
+        stats.set_int(MPX() .."FIXER_HQ_OWNED", 1) -- Trade Price for buffalo4
+        stats.set_int(MPX() .."FIXER_GENERAL_BS", -1) -- Trade price for champion/baller7
+        stats.set_int(MPX() .."FIXER_COMPLETED_BS", -1) -- Complete all The Contract missions.
+        stats.set_bool(MPX() .."AWD_TEEING_OFF", true)
+        stats.set_bool(MPX() .."AWD_PARTY_NIGHT", true)
+        stats.set_bool(MPX() .."AWD_BILLIONAIRE_GAMES", true)
+        stats.set_bool(MPX() .."AWD_HOOD_PASS", true)
+        stats.set_bool(MPX() .."AWD_STUDIO_TOUR", true)
+        stats.set_bool(MPX() .."AWD_DONT_MESS_DRE", true)
+        stats.set_bool(MPX() .."AWD_BACKUP", true)
+        stats.set_bool(MPX() .."AWD_SHORTFRANK_1", true)
+        stats.set_bool(MPX() .."AWD_SHORTFRANK_2", true)
+        stats.set_bool(MPX() .."AWD_SHORTFRANK_3", true)
+        stats.set_bool(MPX() .."AWD_CONTR_KILLER", true)
+        stats.set_bool(MPX() .."AWD_DOGS_BEST_FRIEND", true)
+        stats.set_bool(MPX() .."AWD_MUSIC_STUDIO", true)
+        stats.set_bool(MPX() .."AWD_SHORTLAMAR_1", true)
+        stats.set_bool(MPX() .."AWD_SHORTLAMAR_2", true)
+        stats.set_bool(MPX() .."AWD_SHORTLAMAR_3", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_SETUP", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_STRAND", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_PARTY", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_PARTY_2", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_PARTY_F", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_BILL", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_BILL_2", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_BILL_F", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_HOOD", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_HOOD_2", true)
+        stats.set_bool(MPX() .."BS_IMANI_D_APP_HOOD_F", true)
         unlock_packed_bools(32312, 32312) -- Agency Computer Tutorial
         stats.set_int('MPX_REV_NV_KILLS', 50) -- Navy Revolver Kills
-        stats.set_int("MPX_XM22_FLOW", -1) -- Acid Lab Unlock
-        stats.set_int("MPX_XM22_MISSIONS", -1) -- Acid Lab Unlock
-        stats.set_int("MPX_AWD_CALLME", tunables.get_int('ACID_LAB_UPGRADE_EQUIPMENT_NUM_MISSIONS_UNLOCK')) -- Acid Lab Equipment Unlock
-        stats.set_int("MPX_H3_VEHICLESUSED", -1) -- Trade Price for Diamond Casino Heist Finale.
-        stats.set_int("MPX_H4_H4_DJ_MISSIONS", -1) -- Trade Price for weevil
-        stats.set_int("MPX_H4_PROGRESS", -1) -- Trade Price for winky
-        stats.set_int("MPX_TUNER_GEN_BS", -1) -- Trade Price for tailgater2
-        stats.set_int("MPX_ULP_MISSION_PROGRESS", -1) -- Trade Price greenwood/conada
-        stats.set_int("MPX_SUM23_AVOP_PROGRESS", -1) -- Trade Price Raiju
-        stats.set_int("MPX_GANGOPS_FLOW_BITSET_MISS0", -1) -- Trade Price for deluxo/akula/riot2/stromberg/chernobog/barrage/khanjali/volatol/thruster
-        stats.set_bool("MPX_AWD_TAXISTAR", true) -- Trade Price for taxi
+        stats.set_int(MPX() .."XM22_FLOW", -1) -- Acid Lab Unlock
+        stats.set_int(MPX() .."XM22_MISSIONS", -1) -- Acid Lab Unlock
+        stats.set_int(MPX() .."AWD_CALLME", tunables.get_int('ACID_LAB_UPGRADE_EQUIPMENT_NUM_MISSIONS_UNLOCK')) -- Acid Lab Equipment Unlock
+        stats.set_int(MPX() .."H3_VEHICLESUSED", -1) -- Trade Price for Diamond Casino Heist Finale.
+        stats.set_int(MPX() .."H4_H4_DJ_MISSIONS", -1) -- Trade Price for weevil
+        stats.set_int(MPX() .."H4_PROGRESS", -1) -- Trade Price for winky
+        stats.set_int(MPX() .."TUNER_GEN_BS", -1) -- Trade Price for tailgater2
+        stats.set_int(MPX() .."ULP_MISSION_PROGRESS", -1) -- Trade Price greenwood/conada
+        stats.set_int(MPX() .."SUM23_AVOP_PROGRESS", -1) -- Trade Price Raiju
+        stats.set_int(MPX() .."GANGOPS_FLOW_BITSET_MISS0", -1) -- Trade Price for deluxo/akula/riot2/stromberg/chernobog/barrage/khanjali/volatol/thruster
+        stats.set_bool(MPX() .."AWD_TAXISTAR", true) -- Trade Price for taxi
         stats.set_bool("MPPLY_AWD_HST_ORDER", true)
         stats.set_bool("MPPLY_AWD_HST_SAME_TEAM", true)
         stats.set_bool("MPPLY_AWD_HST_ULT_CHAL", true)
         stats.set_int("MPPLY_HEISTFLOWORDERPROGRESS", -1)
         stats.set_int("MPPLY_HEISTNODEATHPROGREITSET", -1)
         stats.set_int("MPPLY_HEISTTEAMPROGRESSBITSET", -1)
-        stats.set_int("MPX_AT_FLOW_VEHICLE_BS", -1) -- Trade price for dune4/dune5/wastelander/blazer5/phantom2/voltic2/technical2/boxville5/ruiner2
-        stats.set_int("MPX_LFETIME_HANGAR_BUY_COMPLET", 50) -- Trade price for microlight/rogue/alphaz1/havok/starling/molotok/tula/bombushka/howard/mogul/pyro/seabreeze/nokota/hunter
-        stats.set_int("MPX_SALV23_GEN_BS", -1) -- polgauntlet trade price
-        stats.set_int("MPX_SALV23_SCOPE_BS", -1) -- police5 trade price
-        stats.set_int("MPX_MOST_TIME_ON_3_PLUS_STARS", 300000) -- police4 trade price
-        stats.set_int("MPX_LOWRIDER_FLOW_COMPLETE", 1)
-        stats.set_int("MPX_AT_FLOW_MISSION_PROGRESS", 50)
-        stats.set_int("MPX_AT_FLOW_IMPEXP_NUM", 50)
-        stats.set_int("MPX_AT_FLOW_BITSET_MISSIONS0", -1)
-        stats.set_int("MPX_WVM_FLOW_MISSION_PROGRESS", 50)
-        stats.set_int("MPX_WVM_FLOW_IMPEXP_NUM", 50)
-        stats.set_int("MPX_WVM_FLOW_BITSET_MISSIONS0", -1)
-        stats.set_int("MPX_WVM_FLOW_VEHICLE_BS", -1)
-        stats.set_int("MPX_GANGOPS_FLOW_MISSION_PROG", -1)
-        stats.set_int("MPX_GANGOPS_FLOW_IMPEXP_NUM", 50)
-        stats.set_int("MPX_WAM_FLOW_VEHICLE_BS", -1)
-        stats.set_int("MPX_GANGOPS_FLOW_PASSED_BITSET", -1)
-        stats.set_int("MPX_VCM_FLOW_PROGRESS", -1)
-        stats.set_int("MPX_TUNER_FLOW_BS", -1)
-        stats.set_int("MPX_TUNER_MIS_BS", -1)
-        stats.set_int("MPX_TUNER_COMP_BS", -1)
-        stats.set_int("MPX_GANGOPS_FM_MISSION_PROG", -1)
-        stats.set_int("MPX_GANGOPS_FM_BITSET_MISS0", -1)
-        stats.set_bool("MPX_UNLOCKED_MESSAGE_FLEECA", true)
-        stats.set_bool("MPX_CARMEET_PV_CHLLGE_CMPLT", true)
+        stats.set_int(MPX() .."AT_FLOW_VEHICLE_BS", -1) -- Trade price for dune4/dune5/wastelander/blazer5/phantom2/voltic2/technical2/boxville5/ruiner2
+        stats.set_int(MPX() .."LFETIME_HANGAR_BUY_COMPLET", 50) -- Trade price for microlight/rogue/alphaz1/havok/starling/molotok/tula/bombushka/howard/mogul/pyro/seabreeze/nokota/hunter
+        stats.set_int(MPX() .."SALV23_GEN_BS", -1) -- polgauntlet trade price
+        stats.set_int(MPX() .."SALV23_SCOPE_BS", -1) -- police5 trade price
+        stats.set_int(MPX() .."MOST_TIME_ON_3_PLUS_STARS", 300000) -- police4 trade price
+        stats.set_int(MPX() .."LOWRIDER_FLOW_COMPLETE", 1)
+        stats.set_int(MPX() .."AT_FLOW_MISSION_PROGRESS", 50)
+        stats.set_int(MPX() .."AT_FLOW_IMPEXP_NUM", 50)
+        stats.set_int(MPX() .."AT_FLOW_BITSET_MISSIONS0", -1)
+        stats.set_int(MPX() .."WVM_FLOW_MISSION_PROGRESS", 50)
+        stats.set_int(MPX() .."WVM_FLOW_IMPEXP_NUM", 50)
+        stats.set_int(MPX() .."WVM_FLOW_BITSET_MISSIONS0", -1)
+        stats.set_int(MPX() .."WVM_FLOW_VEHICLE_BS", -1)
+        stats.set_int(MPX() .."GANGOPS_FLOW_MISSION_PROG", -1)
+        stats.set_int(MPX() .."GANGOPS_FLOW_IMPEXP_NUM", 50)
+        stats.set_int(MPX() .."WAM_FLOW_VEHICLE_BS", -1)
+        stats.set_int(MPX() .."GANGOPS_FLOW_PASSED_BITSET", -1)
+        stats.set_int(MPX() .."VCM_FLOW_PROGRESS", -1)
+        stats.set_int(MPX() .."TUNER_FLOW_BS", -1)
+        stats.set_int(MPX() .."TUNER_MIS_BS", -1)
+        stats.set_int(MPX() .."TUNER_COMP_BS", -1)
+        stats.set_int(MPX() .."GANGOPS_FM_MISSION_PROG", -1)
+        stats.set_int(MPX() .."GANGOPS_FM_BITSET_MISS0", -1)
+        stats.set_bool(MPX() .."UNLOCKED_MESSAGE_FLEECA", true)
+        stats.set_bool(MPX() .."CARMEET_PV_CHLLGE_CMPLT", true)
         --Make it think you've beat all the heists as leader.
-        stats.set_int("MPX_HEIST_SAVED_STRAND_0", tunables.get_int('ROOT_ID_HASH_THE_FLECCA_JOB'))
-        stats.set_int("MPX_HEIST_SAVED_STRAND_0_L", 5)
-        stats.set_int("MPX_HEIST_SAVED_STRAND_1", tunables.get_int('ROOT_ID_HASH_THE_PRISON_BREAK'))
-        stats.set_int("MPX_HEIST_SAVED_STRAND_1_L", 5)
-        stats.set_int("MPX_HEIST_SAVED_STRAND_2", tunables.get_int('ROOT_ID_HASH_THE_HUMANE_LABS_RAID'))
-        stats.set_int("MPX_HEIST_SAVED_STRAND_2_L", 5)
-        stats.set_int("MPX_HEIST_SAVED_STRAND_3", tunables.get_int('ROOT_ID_HASH_SERIES_A_FUNDING'))
-        stats.set_int("MPX_HEIST_SAVED_STRAND_3_L", 5)
-        stats.set_int("MPX_HEIST_SAVED_STRAND_4", tunables.get_int('ROOT_ID_HASH_THE_PACIFIC_STANDARD_JOB'))
-        stats.set_int("MPX_HEIST_SAVED_STRAND_4_L", 5)
-        stats.set_int("MPX_LIFETIME_BUY_COMPLETE", 1025)
-        stats.set_int("MPX_LIFETIME_BUY_UNDERTAKEN", 1025)
-        stats.set_int("MPX_LIFETIME_SELL_COMPLETE", 1025)
-        stats.set_int("MPX_LIFETIME_SELL_UNDERTAKEN", 1025)
-        stats.set_int("MPX_LIFETIME_CONTRA_EARNINGS", 25000000) --Contraband Earnings
-        stats.set_int("MPX_LFETIME_BIKER_BUY_COMPLET", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_UNDERTA", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_COMPLET", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_UNDERTA", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_COMPLET1", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_UNDERTA1", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_COMPLET1", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_UNDERTA1", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_COMPLET2", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_UNDERTA2", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_COMPLET2", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_UNDERTA2", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_COMPLET3", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_UNDERTA3", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_COMPLET3", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_UNDERTA3", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_COMPLET4", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_UNDERTA4", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_COMPLET4", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_UNDERTA4", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_COMPLET5", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_UNDERTA5", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_COMPLET5", 1025)
-        stats.set_int("MPX_LFETIME_BIKER_SELL_UNDERTA5", 1025)
-        stats.set_int("MPX_LIFETIME_BKR_SELL_EARNINGS0", 25000000)
-        stats.set_int("MPX_LIFETIME_BKR_SELL_EARNINGS1", 25000000)
-        stats.set_int("MPX_LIFETIME_BKR_SELL_EARNINGS2", 25000000)
-        stats.set_int("MPX_LIFETIME_BKR_SELL_EARNINGS3", 25000000)
-        stats.set_int("MPX_LIFETIME_BKR_SELL_EARNINGS4", 25000000)
-        stats.set_int("MPX_LFETIME_BIKER_BUY_COMPLET6", 10) --Allow buying of Stank Breath acid name.
-        stats.set_int("MPX_LFETIME_BIKER_SELL_COMPLET6", 10) --Allow buying of Squatch Bait acid name.
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_0", tunables.get_int('ROOT_ID_HASH_THE_FLECCA_JOB'))
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_0_L", 5)
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_1", tunables.get_int('ROOT_ID_HASH_THE_PRISON_BREAK'))
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_1_L", 5)
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_2", tunables.get_int('ROOT_ID_HASH_THE_HUMANE_LABS_RAID'))
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_2_L", 5)
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_3", tunables.get_int('ROOT_ID_HASH_SERIES_A_FUNDING'))
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_3_L", 5)
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_4", tunables.get_int('ROOT_ID_HASH_THE_PACIFIC_STANDARD_JOB'))
+        stats.set_int(MPX() .."HEIST_SAVED_STRAND_4_L", 5)
+        stats.set_int(MPX() .."LIFETIME_BUY_COMPLETE", 1025)
+        stats.set_int(MPX() .."LIFETIME_BUY_UNDERTAKEN", 1025)
+        stats.set_int(MPX() .."LIFETIME_SELL_COMPLETE", 1025)
+        stats.set_int(MPX() .."LIFETIME_SELL_UNDERTAKEN", 1025)
+        stats.set_int(MPX() .."LIFETIME_CONTRA_EARNINGS", 25000000) --Contraband Earnings
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_COMPLET", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_UNDERTA", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_COMPLET", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_UNDERTA", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_COMPLET1", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_UNDERTA1", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_COMPLET1", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_UNDERTA1", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_COMPLET2", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_UNDERTA2", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_COMPLET2", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_UNDERTA2", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_COMPLET3", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_UNDERTA3", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_COMPLET3", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_UNDERTA3", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_COMPLET4", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_UNDERTA4", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_COMPLET4", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_UNDERTA4", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_COMPLET5", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_UNDERTA5", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_COMPLET5", 1025)
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_UNDERTA5", 1025)
+        stats.set_int(MPX() .."LIFETIME_BKR_SELL_EARNINGS0", 25000000)
+        stats.set_int(MPX() .."LIFETIME_BKR_SELL_EARNINGS1", 25000000)
+        stats.set_int(MPX() .."LIFETIME_BKR_SELL_EARNINGS2", 25000000)
+        stats.set_int(MPX() .."LIFETIME_BKR_SELL_EARNINGS3", 25000000)
+        stats.set_int(MPX() .."LIFETIME_BKR_SELL_EARNINGS4", 25000000)
+        stats.set_int(MPX() .."LFETIME_BIKER_BUY_COMPLET6", 10) --Allow buying of Stank Breath acid name.
+        stats.set_int(MPX() .."LFETIME_BIKER_SELL_COMPLET6", 10) --Allow buying of Squatch Bait acid name.
         stats.set_packed_stat_int(41241, 5) --Allow buying of Chair Shot acid name.
-        stats.set_int("MPX_LIFETIME_BKR_SELL_EARNINGS6", 1000000) --Allow buying of Fck Your Sleep acid name.
+        stats.set_int(MPX() .."LIFETIME_BKR_SELL_EARNINGS6", 1000000) --Allow buying of Fck Your Sleep acid name.
         stats.set_packed_stat_int(7666, 25) --Fill CEO office with money
         unlock_packed_bools(7553, 7594) --Fill CEO office with junk
         stats.set_packed_stat_int(9357, 4) --Fill Clubhouse with money
         unlock_packed_bools(9400, 9414) --Fill Clubhouse with junk
-        stats.set_int("MPX_XMAS2023_ADV_MODE_WINS", 6) --Unlock Christmas 2023 liveries.
+        stats.set_int(MPX() .."XMAS2023_ADV_MODE_WINS", 6) --Unlock Christmas 2023 liveries.
         stats.set_int("MPPLY_XMAS23_PLATES0", 3) -- ECola & Sprunk Plates
-        stats.set_int("MPX_COUNT_HOTRING_RACE", 20) -- Liveries for hotring
-        stats.set_int("MPX_FINISHED_SASS_RACE_TOP_3", 20) -- Trade price for hotring/everon2
-        stats.set_int("MPX_AWD_DISPATCHWORK", 5) --Trade price for polgreenwood.
+        stats.set_int(MPX() .."COUNT_HOTRING_RACE", 20) -- Liveries for hotring
+        stats.set_int(MPX() .."FINISHED_SASS_RACE_TOP_3", 20) -- Trade price for hotring/everon2
+        stats.set_int(MPX() .."AWD_DISPATCHWORK", 5) --Trade price for polgreenwood.
         stats.set_packed_stat_int(7671, 100) --Plant on Desk, Plaque Trophy, Shield Trophy
-        stats.set_int("MPX_PROG_HUB_BOUNTIES_ALIVE_BS", -1) --Cuff Trophy
-        stats.set_int("MPX_TIMES_PREV_PLAY_AS_BOSS", 500) --VIP Variant
-        stats.set_int("MPX_GBTELTIMESPLAYEDGOONPREV", 500) --Bodyguard Varient
-        stats.set_int("MPX_LOW_FLOW_CURRENT_PROG", 9) --Skip the Lamar lowrider missions.
-        stats.set_int("MPX_LOW_FLOW_CURRENT_CALL", 9) --Skip the Lamar lowrider missions.
-        stats.set_int("MPX_HUB_SALES_COMPLETED", 10) --Trade price for mule4, pounder2.
-        stats.set_int("MPX_NIGHTCLUB_JOBS_DONE", 10) --Trade price for patriot2, blimp3.
-        stats.set_int("MPX_YACHT_MISSION_FLOW", -1) --Complete all A Superyacht Life missions so the Captain doesn't call you constantly.
+        stats.set_int(MPX() .."PROG_HUB_BOUNTIES_ALIVE_BS", -1) --Cuff Trophy
+        stats.set_int(MPX() .."TIMES_PREV_PLAY_AS_BOSS", 500) --VIP Variant
+        stats.set_int(MPX() .."GBTELTIMESPLAYEDGOONPREV", 500) --Bodyguard Varient
+        stats.set_int(MPX() .."LOW_FLOW_CURRENT_PROG", 9) --Skip the Lamar lowrider missions.
+        stats.set_int(MPX() .."LOW_FLOW_CURRENT_CALL", 9) --Skip the Lamar lowrider missions.
+        stats.set_int(MPX() .."HUB_SALES_COMPLETED", 10) --Trade price for mule4, pounder2.
+        stats.set_int(MPX() .."NIGHTCLUB_JOBS_DONE", 10) --Trade price for patriot2, blimp3.
+        stats.set_int(MPX() .."YACHT_MISSION_FLOW", -1) --Complete all A Superyacht Life missions so the Captain doesn't call you constantly.
         stats.set_packed_stat_int(3032, 100) --Trade price for oppressor2.
-        stats.set_int("MPX_HACKER24_GEN_BS", -1) -- Trade price for predator and garment factory trophies
-        stats.set_int("MPX_AWD_DISPATCHWORK", 10) -- Trade price for polcoquette4
-        if (stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE3") & 0x80000000) == 0 then -- Buy the WM 29 Pistol. (We need this or else the user can't hide it from the weapons locker if they wish)
+        stats.set_int(MPX() .."HACKER24_GEN_BS", -1) -- Trade price for predator and garment factory trophies
+        stats.set_int(MPX() .."AWD_DISPATCHWORK", 10) -- Trade price for polcoquette4
+        if (stats.get_int(MPX() .."CHAR_WEAP_FM_PURCHASE3") & 0x80000000) == 0 then -- Buy the WM 29 Pistol. (We need this or else the user can't hide it from the weapons locker if they wish)
             if NETSHOPPING.NET_GAMESERVER_USE_SERVER_TRANSACTIONS() then -- Check for FSL
                 buy_weapon(joaat("WP_WT_PISTOLXM3_t0_v0"))
             else
-                stats.set_int("MPX_CHAR_WEAP_FM_PURCHASE3", stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE3") | 0x80000000)
+                stats.set_int(MPX() .."CHAR_WEAP_FM_PURCHASE3", stats.get_int(MPX() .."CHAR_WEAP_FM_PURCHASE3") | 0x80000000)
             end
         end     
-        if (stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") & 1) == 0 then -- Buy the Candy Cane. (We need this or else the user can't hide it from the weapons locker if they wish)
+        if (stats.get_int(MPX() .."CHAR_WEAP_FM_PURCHASE4") & 1) == 0 then -- Buy the Candy Cane. (We need this or else the user can't hide it from the weapons locker if they wish)
             if NETSHOPPING.NET_GAMESERVER_USE_SERVER_TRANSACTIONS() then -- Check for FSL
                 buy_weapon(joaat("WP_WT_CANDYCANE_t1_v0"))
             else
-                stats.set_int("MPX_CHAR_WEAP_FM_PURCHASE4", stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") | 1)
+                stats.set_int(MPX() .."CHAR_WEAP_FM_PURCHASE4", stats.get_int(MPX() .."CHAR_WEAP_FM_PURCHASE4") | 1)
             end
         end   
-        if (stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") & 0x10) == 0 then -- Buy the Snowball Launcher. (We need this or else the user can't hide it from the weapons locker if they wish)
+        if (stats.get_int(MPX() .."CHAR_WEAP_FM_PURCHASE4") & 0x10) == 0 then -- Buy the Snowball Launcher. (We need this or else the user can't hide it from the weapons locker if they wish)
             if NETSHOPPING.NET_GAMESERVER_USE_SERVER_TRANSACTIONS() then -- Check for FSL
                 buy_weapon(joaat("WP_WT_SNOWLAUNCHER_t0_v0"))
             else
-                stats.set_int("MPX_CHAR_WEAP_FM_PURCHASE4", stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") | 0x10)
+                stats.set_int(MPX() .."CHAR_WEAP_FM_PURCHASE4", stats.get_int(MPX() .."CHAR_WEAP_FM_PURCHASE4") | 0x10)
             end
         end
-        if (stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") & 0x20) == 0 then -- Buy The Shocker. (We need this or else the user can't hide it from the weapons locker if they wish)
+        if (stats.get_int(MPX() .."CHAR_WEAP_FM_PURCHASE4") & 0x20) == 0 then -- Buy The Shocker. (We need this or else the user can't hide it from the weapons locker if they wish)
             if NETSHOPPING.NET_GAMESERVER_USE_SERVER_TRANSACTIONS() then -- Check for FSL
                 buy_weapon(joaat("WP_WT_STUNROD_t1_v1"))
             else
-                stats.set_int("MPX_CHAR_WEAP_FM_PURCHASE4", stats.get_int("MPX_CHAR_WEAP_FM_PURCHASE4") | 0x20)
+                stats.set_int(MPX() .."CHAR_WEAP_FM_PURCHASE4", stats.get_int(MPX() .."CHAR_WEAP_FM_PURCHASE4") | 0x20)
             end
         end
         if showNotifications:is_enabled() then gui.show_message('WasabiWordsTM', 'Clichés Subverted') end
@@ -1737,9 +1737,9 @@ genderChange = Stats:add_checkbox("Unlock Gender Change")
 script.register_looped("UnlockGenderChange", function(script)
 	script:yield()
 	if genderChange:is_enabled() then
-		stats.set_int("MPX_ALLOW_GENDER_CHANGE", 52)
+		stats.set_int(MPX() .."ALLOW_GENDER_CHANGE", 52)
 	else
-		stats.set_int("MPX_ALLOW_GENDER_CHANGE", 52)
+		stats.set_int(MPX() .."ALLOW_GENDER_CHANGE", 52)
 	end
 end)
 toolTip(Stats, "Allows you to change your gender from Male to Female and vice versa")
@@ -3152,16 +3152,16 @@ script.register_looped("Casino Pacino Thread", function (script)
         STATS.STAT_SET_INT(joaat("MPPLY_CASINO_CHIPS_WON_GD"), 0, true)
     end
     if gui.is_open() and casino_gui:is_selected() then
-        casino_heist_approach = stats.get_int("MPX_H3OPT_APPROACH")
-        casino_heist_target = stats.get_int("MPX_H3OPT_TARGET")
-        casino_heist_last_approach = stats.get_int("MPX_H3_LAST_APPROACH")
-        casino_heist_hard = stats.get_int("MPX_H3_HARD_APPROACH")
-        casino_heist_gunman = stats.get_int("MPX_H3OPT_CREWWEAP")
-        casino_heist_driver = stats.get_int("MPX_H3OPT_CREWDRIVER")
-        casino_heist_hacker = stats.get_int("MPX_H3OPT_CREWHACKER")
-        casino_heist_weapons = stats.get_int("MPX_H3OPT_WEAPS")
-        casino_heist_cars = stats.get_int("MPX_H3OPT_VEHS")
-        casino_heist_masks = stats.get_int("MPX_H3OPT_MASKS")
+        casino_heist_approach = stats.get_int(MPX() .."H3OPT_APPROACH")
+        casino_heist_target = stats.get_int(MPX() .."H3OPT_TARGET")
+        casino_heist_last_approach = stats.get_int(MPX() .."H3_LAST_APPROACH")
+        casino_heist_hard = stats.get_int(MPX() .."H3_HARD_APPROACH")
+        casino_heist_gunman = stats.get_int(MPX() .."H3OPT_CREWWEAP")
+        casino_heist_driver = stats.get_int(MPX() .."H3OPT_CREWDRIVER")
+        casino_heist_hacker = stats.get_int(MPX() .."H3OPT_CREWHACKER")
+        casino_heist_weapons = stats.get_int(MPX() .."H3OPT_WEAPS")
+        casino_heist_cars = stats.get_int(MPX() .."H3OPT_VEHS")
+        casino_heist_masks = stats.get_int(MPX() .."H3OPT_MASKS")
     end
     if HUD.IS_PAUSE_MENU_ACTIVE() then
         PAD.DISABLE_CONTROL_ACTION(0, 348, true)
@@ -6231,7 +6231,7 @@ textSeparator("", "Business Tab")
 					local contractToUse = contracts[selectedContractIndex + 1]
 					
 					if contractToUse and contractToUse.id then  -- Ensure contractToUse is not nil and has a valid id
-						STATS.STAT_SET_INT(joaat("MPX_FIXER_STORY_BS"), contractToUse.id, true)
+						STATS.STAT_SET_INT(joaat(MPX() .."FIXER_STORY_BS"), contractToUse.id, true)
 						if showNotifications:is_enabled() then gui.show_message("Agency", "Contract: " .. contractToUse.name .. " ID: " .. contractToUse.id .. " Selected") end
 					else
 						if showNotifications:is_enabled() then gui.show_message("Error", "Invalid Contract ID") end
@@ -6243,9 +6243,9 @@ textSeparator("", "Business Tab")
 			if ImGui.Button("Complete Preps") then
 				script.run_in_fiber(function(script)
 					if showNotifications:is_enabled() then gui.show_message("Agency", "Completed Mission Preps") end
-					STATS.STAT_SET_INT(joaat("MPX_FIXER_GENERAL_BS"), -1, true)
-					STATS.STAT_SET_INT(joaat("MPX_FIXER_COMPLETED_BS"), -1, true)
-					STATS.STAT_SET_INT(joaat("MPX_FIXER_STORY_COOLDOWN_POSIX"), -1, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."FIXER_GENERAL_BS"), -1, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."FIXER_COMPLETED_BS"), -1, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."FIXER_STORY_COOLDOWN_POSIX"), -1, true)
 					script:yield()
 				end)
 			end
@@ -6255,7 +6255,7 @@ textSeparator("", "Business Tab")
 			if ImGui.Button("Skip Cooldown") then
 				script.run_in_fiber(function(script)
 					if showNotifications:is_enabled() then gui.show_message("Agency", "Skipped cooldown between missions.") end
-					STATS.STAT_SET_INT(joaat("MPX_FIXER_STORY_COOLDOWN"), -1, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."FIXER_STORY_COOLDOWN"), -1, true)
 					script:yield()
 				end)
 			end
@@ -6297,8 +6297,8 @@ textSeparator("", "Business Tab")
 			if ImGui.Button("Skip Missions") then 
 				script.run_in_fiber(function(script)
 					if showNotifications:is_enabled() then gui.show_message("Acid Lab", "Skipped all Acid Lab missions, you can now purchase the Acid Lab from warstock.") end
-					if stats.get_int("MPX_AWD_CALLME") < 10 then -- Job Finished
-						stats.set_int("MPX_AWD_CALLME", 10)
+					if stats.get_int(MPX() .."AWD_CALLME") < 10 then -- Job Finished
+						stats.set_int(MPX() .."AWD_CALLME", 10)
 					end
 				end)
 			end
@@ -6330,17 +6330,17 @@ textSeparator("", "Business Tab")
 		textSeparator("", "Bunker Controls")
 			if ImGui.Button("Unlock Shooting Range") then 
 				script.run_in_fiber(function(script)
-					STATS.STAT_SET_INT(joaat("MPX_SR_HIGHSCORE_1"), 690, true)
-					STATS.STAT_SET_INT(joaat("MPX_SR_HIGHSCORE_2"), 1860, true)
-					STATS.STAT_SET_INT(joaat("MPX_SR_HIGHSCORE_3"), 2690, true)
-					STATS.STAT_SET_INT(joaat("MPX_SR_HIGHSCORE_4"), 2660, true)
-					STATS.STAT_SET_INT(joaat("MPX_SR_HIGHSCORE_5"), 2650, true)
-					STATS.STAT_SET_INT(joaat("MPX_SR_HIGHSCORE_6"), 450, true)
-					STATS.STAT_SET_INT(joaat("MPX_SR_TARGETS_HIT"), 269, true)
-					STATS.STAT_SET_INT(joaat("MPX_SR_WEAPON_BIT_SET"), -1, true)
-					STATS.STAT_SET_BOOL(joaat("MPX_SR_TIER_1_REWARD"), true, true)
-					STATS.STAT_SET_BOOL(joaat("MPX_SR_TIER_3_REWARD"), true, true)
-					STATS.STAT_SET_BOOL(joaat("MPX_SR_INCREASE_THROW_CAP"), true, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."SR_HIGHSCORE_1"), 690, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."SR_HIGHSCORE_2"), 1860, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."SR_HIGHSCORE_3"), 2690, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."SR_HIGHSCORE_4"), 2660, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."SR_HIGHSCORE_5"), 2650, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."SR_HIGHSCORE_6"), 450, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."SR_TARGETS_HIT"), 269, true)
+					STATS.STAT_SET_INT(joaat(MPX() .."SR_WEAPON_BIT_SET"), -1, true)
+					STATS.STAT_SET_BOOL(joaat(MPX() .."SR_TIER_1_REWARD"), true, true)
+					STATS.STAT_SET_BOOL(joaat(MPX() .."SR_TIER_3_REWARD"), true, true)
+					STATS.STAT_SET_BOOL(joaat(MPX() .."SR_INCREASE_THROW_CAP"), true, true)
 					if showNotifications:is_enabled() then gui.show_message("Bunker", "Completed All Shooting Range missions with 3 Stars.") end
 				end)
 			end
@@ -6398,9 +6398,9 @@ textSeparator("", "Business Tab")
 				toolTip("", "Teleports you to the computer if you're inside.")
 			end
 			
-			local bunkerSupply = stats.get_int("MPX_MATTOTALFORFACTORY5")
-			local bunkerStock = stats.get_int("MPX_PRODTOTALFORFACTORY5")
-			if stats.get_int("MPX_PROP_FAC_SLOT5") ~= 0 then
+			local bunkerSupply = stats.get_int(MPX() .."MATTOTALFORFACTORY5")
+			local bunkerStock = stats.get_int(MPX() .."PRODTOTALFORFACTORY5")
+			if stats.get_int(MPX() .."PROP_FAC_SLOT5") ~= 0 then
 				bunkerOwned = true
 			else
 				bunkerOwned = false
@@ -6432,8 +6432,8 @@ textSeparator("", "Business Tab")
 	
 		if ImGui.BeginTabItem("Hangar") then
 			textSeparator("", "Hangar Controls")
-			local hangarStock = stats.get_int("MPX_HANGAR_CONTRABAND_TOTAL")
-			if stats.get_int("MPX_PROP_HANGAR") ~= 0 then
+			local hangarStock = stats.get_int(MPX() .."HANGAR_CONTRABAND_TOTAL")
+			if stats.get_int(MPX() .."PROP_HANGAR") ~= 0 then
 				hangarOwned = true
 			else
 				hangarOwned = false
@@ -6502,19 +6502,19 @@ textSeparator("", "Business Tab")
 	--if ImGui.BeginTabBar("##SecondaryTab") then	
 		if ImGui.BeginTabItem("Motorcycle Club") then
 		textSeparator("", "Motorcycle Club Controls")
-		local cashStock = stats.get_int("MPX_PRODTOTALFORFACTORY0")
-		local docStock = stats.get_int("MPX_PRODTOTALFORFACTORY1")
-		local weedStock = stats.get_int("MPX_PRODTOTALFORFACTORY2")
-		local methStock = stats.get_int("MPX_PRODTOTALFORFACTORY3")
-		local cokeStock = stats.get_int("MPX_PRODTOTALFORFACTORY4")
-		local acidStock = stats.get_int("MPX_PRODTOTALFORFACTORY6")
+		local cashStock = stats.get_int(MPX() .."PRODTOTALFORFACTORY0")
+		local docStock = stats.get_int(MPX() .."PRODTOTALFORFACTORY1")
+		local weedStock = stats.get_int(MPX() .."PRODTOTALFORFACTORY2")
+		local methStock = stats.get_int(MPX() .."PRODTOTALFORFACTORY3")
+		local cokeStock = stats.get_int(MPX() .."PRODTOTALFORFACTORY4")
+		local acidStock = stats.get_int(MPX() .."PRODTOTALFORFACTORY6")
 		
-		local cashSupply   = stats.get_int("MPX_MATTOTALFORFACTORY0")
-        local docSupply     = stats.get_int("MPX_MATTOTALFORFACTORY1")
-		local weedSupply   = stats.get_int("MPX_MATTOTALFORFACTORY2")
-        local methSupply   = stats.get_int("MPX_MATTOTALFORFACTORY3")
-        local cokeSupply   = stats.get_int("MPX_MATTOTALFORFACTORY4")
-		local acidSupply   = stats.get_int("MPX_MATTOTALFORFACTORY6")
+		local cashSupply   = stats.get_int(MPX() .."MATTOTALFORFACTORY0")
+        local docSupply     = stats.get_int(MPX() .."MATTOTALFORFACTORY1")
+		local weedSupply   = stats.get_int(MPX() .."MATTOTALFORFACTORY2")
+        local methSupply   = stats.get_int(MPX() .."MATTOTALFORFACTORY3")
+        local cokeSupply   = stats.get_int(MPX() .."MATTOTALFORFACTORY4")
+		local acidSupply   = stats.get_int(MPX() .."MATTOTALFORFACTORY6")
 		
 			resupplyAll, used = ImGui.Checkbox("Automate Business Supplies", resupplyAll)
 			toolTip("", "Resupplies all your business supplies.")
@@ -6605,7 +6605,7 @@ textSeparator("", "Business Tab")
 			toolTip("", "Skips all of the Setups and Preps for setting up your nightclub.  Requires a session change.")
 			ImGui.SameLine()
 			if ImGui.Button("Max Popularity") then 
-				STATS.STAT_SET_INT(joaat("MPX_CLUB_POPULARITY"), 1000, true)
+				STATS.STAT_SET_INT(joaat(MPX() .."CLUB_POPULARITY"), 1000, true)
 				if showNotifications:is_enabled() then gui.show_message("Nightclub", "Popularity Maxed") end
 			end
 			toolTip("", "Max your Nightclub's Popularity.")
@@ -6614,8 +6614,8 @@ textSeparator("", "Business Tab")
 				tunables.set_int("BB_CLUB_MANAGEMENT_CLUB_MANAGEMENT_MISSION_COOLDOWN", 0)
 				tunables.set_int("BB_SELL_MISSIONS_MISSION_COOLDOWN", 0)
 				tunables.set_int("BB_SELL_MISSIONS_DELIVERY_VEHICLE_COOLDOWN_AFTER_SELL_MISSION", 0)
-				stats.set_int("MPX_SOURCE_GOODS_CDTIMER", -1)
-				stats.set_int("MPX_SOURCE_RESEARCH_CDTIMER", -1)
+				stats.set_int(MPX() .."SOURCE_GOODS_CDTIMER", -1)
+				stats.set_int(MPX() .."SOURCE_RESEARCH_CDTIMER", -1)
 				tunables.set_int("EXPORT_CARGO_LAUNCH_CD_TIME", 0)
 				tunables.set_int("NC_SOURCE_TRUCK_COOLDOWN", 0)
 				tunables.set_int("NIGHTCLUB_SOURCE_GOODS_CD_TIME", 0)
@@ -6672,8 +6672,8 @@ script.register_looped("agencySafeloop", function(script)
 	script:yield()
 	if agencySafeLoop then
 		if showNotifications:is_enabled() then gui.show_message("Agency", "Supplying Agency Safe with money every 5 seconds.") end
-		STATS.STAT_SET_INT(joaat("MPX_FIXER_COUNT"), 500, true)
-		STATS.STAT_SET_INT(joaat("MPX_FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
+		STATS.STAT_SET_INT(joaat(MPX() .."FIXER_COUNT"), 500, true)
+		STATS.STAT_SET_INT(joaat(MPX() .."FIXER_PASSIVE_PAY_TIME_LEFT"), -1, true)
 		sleep(0.5)
 	end
 end)
@@ -6703,7 +6703,7 @@ script.register_looped("autoFillHangar", function(script)
     if fillHangar then
         autoGetHangarCargo = not autoGetHangarCargo
         if autoGetHangarCargo then
-            stats.set_bool_masked("MPX_DLC22022PSTAT_BOOL3", true, 9)
+            stats.set_bool_masked(MPX() .."DLC22022PSTAT_BOOL3", true, 9)
             if showNotifications:is_enabled() then gui.show_message("Hangar", "Restocking hangar cargo, please wait...") end
             sleep(0.5)
         end
@@ -6713,12 +6713,12 @@ end)
 script.register_looped("nightclubSafeLoop", function(script)
     script:yield()
     if nightclubSafe then
-		local ncSafeVal = stats.get_int("MPX_CLUB_SAFE_CASH_VALUE")
+		local ncSafeVal = stats.get_int(MPX() .."CLUB_SAFE_CASH_VALUE")
 		if showNotifications:is_enabled() then gui.show_message("Business Manager", "Supplying your nightclub safe with money and collecting it.") end
 		if ncSafeVal ~= 250000 then
 			globals.set_int(4538090, 0)
-			STATS.STAT_SET_INT(joaat("MPX_CLUB_POPULARITY"), 1000, true)
-			STATS.STAT_SET_INT(joaat("MPX_CLUB_PAY_TIME_LEFT"), -1, true)
+			STATS.STAT_SET_INT(joaat(MPX() .."CLUB_POPULARITY"), 1000, true)
+			STATS.STAT_SET_INT(joaat(MPX() .."CLUB_PAY_TIME_LEFT"), -1, true)
 		else
 			globals.set_int(4538090, 0)
 			locals.set_int("am_mp_nightclub", 181 + 32 + 1, 1)
@@ -6783,25 +6783,25 @@ mcBus:add_button("Change MC Name", function()
         for i, checkBox in ipairs(checkBoxes) do
             if checkBox:is_enabled() then
                 if labels[i] == "Copyright" then
-                    STATS.STAT_SET_STRING(joaat("MPX_MC_GANG_NAME"), values[i].. " ", true)
-                    STATS.STAT_SET_STRING(joaat("MPX_MC_GANG_NAME2"), mcName, true)
-                     MCnTwo = STATS.STAT_GET_STRING(joaat("MPX_MC_GANG_NAME2"), -1)
+                    STATS.STAT_SET_STRING(joaat(MPX() .."MC_GANG_NAME"), values[i].. " ", true)
+                    STATS.STAT_SET_STRING(joaat(MPX() .."MC_GANG_NAME2"), mcName, true)
+                     MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .."MC_GANG_NAME2"), -1)
                     if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply") end
                     SessionChanger(sessionType)
                     return
                 else
-                    STATS.STAT_SET_STRING(joaat("MPX_MC_GANG_NAME"), mcName, true)
-                    STATS.STAT_SET_STRING(joaat("MPX_MC_GANG_NAME2"), values[i].. " ", true)
-                     MCnOne = STATS.STAT_GET_STRING(joaat("MPX_MC_GANG_NAME"), -1)
+                    STATS.STAT_SET_STRING(joaat(MPX() .."MC_GANG_NAME"), mcName, true)
+                    STATS.STAT_SET_STRING(joaat(MPX() .."MC_GANG_NAME2"), values[i].. " ", true)
+                     MCnOne = STATS.STAT_GET_STRING(joaat(MPX() .."MC_GANG_NAME"), -1)
                     if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply") end
                     SessionChanger(sessionType)
                     return
                 end
             end
         end
-        STATS.STAT_SET_STRING(joaat("MPX_MC_GANG_NAME"), "", true)
-        STATS.STAT_SET_STRING(joaat("MPX_MC_GANG_NAME2"), mcName, true)
-         MCnTwo = STATS.STAT_GET_STRING(joaat("MPX_MC_GANG_NAME2"), -1)
+        STATS.STAT_SET_STRING(joaat(MPX() .."MC_GANG_NAME"), "", true)
+        STATS.STAT_SET_STRING(joaat(MPX() .."MC_GANG_NAME2"), mcName, true)
+         MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .."MC_GANG_NAME2"), -1)
         if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your MC name has been changed to ".. mcName .. " game returns "..MCnTwo..". Changing sessions to apply") end
         SessionChanger(sessionType)
     end)
@@ -6856,25 +6856,25 @@ CEO:add_button("Change CEO Name", function()
         for i, checkBox in ipairs(checkBoxes) do
             if checkBox:is_enabled() then
                 if labels[i] == "Copyright" then
-                    STATS.STAT_SET_STRING(joaat("MPX_GB_OFFICE_NAME"), values[i].. " ", true)
-                    STATS.STAT_SET_STRING(joaat("MPX_GB_OFFICE_NAME2"), setName, true)
-                     MCnTwo = STATS.STAT_GET_STRING(joaat("MPX_GB_OFFICE_NAME2"), -1)
+                    STATS.STAT_SET_STRING(joaat(MPX() .."GB_OFFICE_NAME"), values[i].. " ", true)
+                    STATS.STAT_SET_STRING(joaat(MPX() .."GB_OFFICE_NAME2"), setName, true)
+                     MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .."GB_OFFICE_NAME2"), -1)
                     if showNotifications:is_enabled() then gui.show_message("Motorcycle Club", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " ".. MCnTwo.. ". Changing sessions to apply") end
                     SessionChanger(sessionType)
                     return
                 else
-                    STATS.STAT_SET_STRING(joaat("MPX_GB_OFFICE_NAME"), setName, true)
-                    STATS.STAT_SET_STRING(joaat("MPX_GB_OFFICE_NAME2"), values[i].. " ", true)
-                     MCnOne = STATS.STAT_GET_STRING(joaat("MPX_GB_OFFICE_NAME"), -1)
+                    STATS.STAT_SET_STRING(joaat(MPX() .."GB_OFFICE_NAME"), setName, true)
+                    STATS.STAT_SET_STRING(joaat(MPX() .."GB_OFFICE_NAME2"), values[i].. " ", true)
+                     MCnOne = STATS.STAT_GET_STRING(joaat(MPX() .."GB_OFFICE_NAME"), -1)
                     if showNotifications:is_enabled() then gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns ".. labels[i].. " - ".. MCnOne.. ". Changing sessions to apply") end
                     SessionChanger(sessionType)
                     return
                 end
             end
         end
-        STATS.STAT_SET_STRING(joaat("MPX_GB_OFFICE_NAME"), "", true)
-        STATS.STAT_SET_STRING(joaat("MPX_GB_OFFICE_NAME2"), setName, true)
-         MCnTwo = STATS.STAT_GET_STRING(joaat("MPX_GB_OFFICE_NAME2"), -1)
+        STATS.STAT_SET_STRING(joaat(MPX() .."GB_OFFICE_NAME"), "", true)
+        STATS.STAT_SET_STRING(joaat(MPX() .."GB_OFFICE_NAME2"), setName, true)
+         MCnTwo = STATS.STAT_GET_STRING(joaat(MPX() .."GB_OFFICE_NAME2"), -1)
         if showNotifications:is_enabled() then gui.show_message("CEO", "Your CEO name has been changed to ".. setName .. " game returns "..MCnTwo..". Changing sessions to apply") end
         SessionChanger(sessionType)
     end)
@@ -7029,7 +7029,7 @@ end)
 toolTip("", "Lets you play the grayed-out heists on apartment planning screen")
 
 heistTab:add_button("Complete All Setups", function()
-    stats.set_int("MPX_HEIST_PLANNING_STAGE", -1)
+    stats.set_int(MPX() .."HEIST_PLANNING_STAGE", -1)
 end)
 toolTip(heistTab, "Complete setups for current heist")
 
@@ -7264,71 +7264,71 @@ DCDVDl1 = 10109 + 7 -- diamond casino drill vault door local 1
 DCDVDl2 = 10109 + 37 -- diamond casino drill vault door local 2
 
 casinoHeist:add_button("Silent & Sneaky", function()
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_APPROACH"), 1, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3_LAST_APPROACH"), 0, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_TARGET"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_BITSET1"), 127, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_DISRUPTSHIP"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_KEYLEVELS"), 2, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_CREWWEAP"), 4, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_CREWDRIVER"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_CREWHACKER"), 4, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_VEHS"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_WEAPS"), 1, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_BITSET0"), 262270, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_MASKS"), 9, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3_COMPLETEDPOSIX"), -1, true)
-	STATS.STAT_SET_INT(joaat("MPX_CAS_HEIST_FLOW"), -1, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3_HARD_APPROACH"), 0, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3OPT_POI"), 1023, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3OPT_ACCESSPOINTS"), 2047, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3OPT_BODYARMORLVL"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_APPROACH"), 1, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3_LAST_APPROACH"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_TARGET"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_BITSET1"), 127, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_DISRUPTSHIP"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_KEYLEVELS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_CREWWEAP"), 4, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_CREWDRIVER"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_CREWHACKER"), 4, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_VEHS"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_WEAPS"), 1, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_BITSET0"), 262270, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_MASKS"), 9, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3_COMPLETEDPOSIX"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."CAS_HEIST_FLOW"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3_HARD_APPROACH"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_POI"), 1023, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_ACCESSPOINTS"), 2047, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_BODYARMORLVL"), -1, true)
     if showNotifications:is_enabled() then gui.show_message("Casino Heist", "Setup Silent & Sneaky applied") end
 end)
 casinoHeist:add_sameline()
 casinoHeist:add_button("Big Con", function()
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_APPROACH"), 2, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3_LAST_APPROACH"), 0, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_TARGET"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_BITSET1"), 159, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_DISRUPTSHIP"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_KEYLEVELS"), 2, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_CREWWEAP"), 4, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_CREWDRIVER"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_CREWHACKER"), 4, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_VEHS"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_WEAPS"), 1, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_BITSET0"), 524118, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_MASKS"), 9, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3_COMPLETEDPOSIX"), -1, true)
-	STATS.STAT_SET_INT(joaat("MPX_CAS_HEIST_FLOW"), -1, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3_HARD_APPROACH"), 0, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3OPT_POI"), 1023, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3OPT_ACCESSPOINTS"), 2047, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3OPT_BODYARMORLVL"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_APPROACH"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3_LAST_APPROACH"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_TARGET"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_BITSET1"), 159, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_DISRUPTSHIP"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_KEYLEVELS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_CREWWEAP"), 4, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_CREWDRIVER"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_CREWHACKER"), 4, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_VEHS"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_WEAPS"), 1, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_BITSET0"), 524118, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_MASKS"), 9, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3_COMPLETEDPOSIX"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."CAS_HEIST_FLOW"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3_HARD_APPROACH"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_POI"), 1023, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_ACCESSPOINTS"), 2047, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_BODYARMORLVL"), -1, true)
     if showNotifications:is_enabled() then gui.show_message("Casino Heist", "Setup Big Con applied") end
 end)
 casinoHeist:add_sameline()
 casinoHeist:add_button("Aggressive", function()
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_APPROACH"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3_LAST_APPROACH"), 0, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_TARGET"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_BITSET1"), 799, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_DISRUPTSHIP"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_KEYLEVELS"), 2, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_CREWWEAP"), 4, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_CREWDRIVER"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_CREWHACKER"), 4, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_VEHS"), 3, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_WEAPS"), 1, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_BITSET0"), 3670102, true)
-    STATS.STAT_SET_INT(joaat("MPX_H3OPT_MASKS"), 9, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3_COMPLETEDPOSIX"), -1, true)
-	STATS.STAT_SET_INT(joaat("MPX_CAS_HEIST_FLOW"), -1, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3_HARD_APPROACH"), 0, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3OPT_POI"), 1023, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3OPT_ACCESSPOINTS"), 2047, true)
-	STATS.STAT_SET_INT(joaat("MPX_H3OPT_BODYARMORLVL"), -1, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_APPROACH"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3_LAST_APPROACH"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_TARGET"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_BITSET1"), 799, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_DISRUPTSHIP"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_KEYLEVELS"), 2, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_CREWWEAP"), 4, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_CREWDRIVER"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_CREWHACKER"), 4, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_VEHS"), 3, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_WEAPS"), 1, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_BITSET0"), 3670102, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_MASKS"), 9, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3_COMPLETEDPOSIX"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."CAS_HEIST_FLOW"), -1, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3_HARD_APPROACH"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_POI"), 1023, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_ACCESSPOINTS"), 2047, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H3OPT_BODYARMORLVL"), -1, true)
     if showNotifications:is_enabled() then gui.show_message("Casino Heist", "Setup Aggressive applied") end
 end)
 
@@ -7396,7 +7396,7 @@ if ImGui.BeginTabItem("Loot") then
                 for k, v in pairs(primaryTargets) do
                     local selected = primaryTarget == k + 1
 					if ImGui.Selectable(v, selected) and not selected then
-						stats.set_int("MPX_H4CNF_TARGET", k)
+						stats.set_int(MPX() .."H4CNF_TARGET", k)
 					end
 				end
 			ImGui.EndListBox()
@@ -7411,12 +7411,12 @@ if ImGui.BeginTabItem("Loot") then
 			cashSliderCompound, changed = ImGui.SliderInt("Scoped Cash Amount", cashSliderCompound, 1, #allowedValues)
 			if changed then
 				sliderValue = allowedValues[cashSliderCompound]
-				stats.set_int(joaat("MPX_H4LOOT_CASH_C"), sliderValue)
-				stats.set_int(joaat("MPX_H4LOOT_CASH_C_SCOPED"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_CASH_C"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_CASH_C_SCOPED"), sliderValue)
 			end
 		else
-			stats.set_int(joaat("MPX_H4LOOT_CASH_C"), 0)
-			stats.set_int(joaat("MPX_H4LOOT_CASH_C_SCOPED"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_CASH_C"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_CASH_C_SCOPED"), 0)
 		end
 		
 		compoundWeed, used = ImGui.Checkbox("Compound Weed", compoundWeed)
@@ -7426,12 +7426,12 @@ if ImGui.BeginTabItem("Loot") then
 			weedSliderCompound, changed = ImGui.SliderInt("Scoped Weed Amount", weedSliderCompound, 0, #allowedValues)
 			if changed then
 				sliderValue = allowedValues[weedSliderCompound]
-				stats.set_int(joaat("MPX_H4LOOT_WEED_C"), sliderValue)
-				stats.set_int(joaat("MPX_H4LOOT_WEED_C_SCOPED"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_WEED_C"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_WEED_C_SCOPED"), sliderValue)
 			end
 		else
-			stats.set_int(joaat("MPX_H4LOOT_WEED_C"), 0)
-			stats.set_int(joaat("MPX_H4LOOT_WEED_C_SCOPED"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_WEED_C"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_WEED_C_SCOPED"), 0)
 		end
 		
 		compoundCoke, used = ImGui.Checkbox("Compound Coke", compoundCoke)
@@ -7441,12 +7441,12 @@ if ImGui.BeginTabItem("Loot") then
 			cokeSliderCompound, changed = ImGui.SliderInt("Scoped Coke Amount", cokeSliderCompound, 0, #allowedValues)
 			if changed then
 				sliderValue = allowedValues[cokeSliderCompound]
-				stats.set_int(joaat("MPX_H4LOOT_COKE_C"), sliderValue)
-				stats.set_int(joaat("MPX_H4LOOT_COKE_C_SCOPED"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_COKE_C"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_COKE_C_SCOPED"), sliderValue)
 			end
 		else
-			stats.set_int(joaat("MPX_H4LOOT_COKE_C"), 0)
-			stats.set_int(joaat("MPX_H4LOOT_COKE_C_SCOPED"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_COKE_C"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_COKE_C_SCOPED"), 0)
 		end
 		
 		compoundGold, used = ImGui.Checkbox("Compound Gold", compoundGold)
@@ -7456,12 +7456,12 @@ if ImGui.BeginTabItem("Loot") then
 			goldSliderCompound, changed2 = ImGui.SliderInt("Scoped Gold Amount", goldSliderCompound, 0, #allowedValues)
 			if changed2 then
 				sliderValue = allowedValues[goldSliderCompound]
-				stats.set_int(joaat("MPX_H4LOOT_GOLD_C"), sliderValue)
-				stats.set_int(joaat("MPX_H4LOOT_GOLD_C_SCOPED"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_GOLD_C"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_GOLD_C_SCOPED"), sliderValue)
 			end
 		else
-			stats.set_int(joaat("MPX_H4LOOT_GOLD_C"), 0)
-			stats.set_int(joaat("MPX_H4LOOT_GOLD_C_SCOPED"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_GOLD_C"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_GOLD_C_SCOPED"), 0)
 		end
 		
 		compoundPaintings, used = ImGui.Checkbox("Compound Paintings", compoundPaintings)
@@ -7471,12 +7471,12 @@ if ImGui.BeginTabItem("Loot") then
 			paintingSliderCompound, changed = ImGui.SliderInt("Scoped Paintings Amount", paintingSliderCompound, 0, #allowedPaintValues)
 			if changed then
 				sliderValue = allowedPaintValues[paintingSliderCompound]
-				stats.set_int(joaat("MPX_H4LOOT_PAINT"), sliderValue)
-				stats.set_int(joaat("MPX_H4LOOT_PAINT_SCOPED"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_PAINT"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_PAINT_SCOPED"), sliderValue)
 			end
 		else
-			stats.set_int(joaat("MPX_H4LOOT_PAINT"), 0)
-			stats.set_int(joaat("MPX_H4LOOT_PAINT_SCOPED"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_PAINT"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_PAINT_SCOPED"), 0)
 		end
 		ImGui.TreePop()
 	end
@@ -7488,12 +7488,12 @@ if ImGui.BeginTabItem("Loot") then
 			cashSliderIsland, changed = ImGui.SliderInt("Scoped Cash Amount", cashSliderIsland, 1, #allowedValues)
 			if changed then
 				sliderValue = allowedValues[cashSliderIsland]
-				stats.set_int(joaat("MPX_H4LOOT_CASH_I"), sliderValue)
-				stats.set_int(joaat("MPX_H4LOOT_CASH_I_SCOPED"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_CASH_I"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_CASH_I_SCOPED"), sliderValue)
 			end
 		else
-			stats.set_int(joaat("MPX_H4LOOT_CASH_I"), 0)
-			stats.set_int(joaat("MPX_H4LOOT_CASH_I_SCOPED"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_CASH_I"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_CASH_I_SCOPED"), 0)
 		end
 		
 		islandWeed, used = ImGui.Checkbox("Island Weed", islandWeed)
@@ -7503,12 +7503,12 @@ if ImGui.BeginTabItem("Loot") then
 			weedSliderIsland, changed = ImGui.SliderInt("Scoped Weed Amount", weedSliderIsland, 0, #allowedValues)
 			if changed then
 				sliderValue = allowedValues[weedSliderIsland]
-				stats.set_int(joaat("MPX_H4LOOT_WEED_I"), sliderValue)
-				stats.set_int(joaat("MPX_H4LOOT_WEED_I_SCOPED"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_WEED_I"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_WEED_I_SCOPED"), sliderValue)
 			end
 		else
-			stats.set_int(joaat("MPX_H4LOOT_WEED_I"), 0)
-			stats.set_int(joaat("MPX_H4LOOT_WEED_I_SCOPED"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_WEED_I"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_WEED_I_SCOPED"), 0)
 		end
 		
 		islandCoke, used = ImGui.Checkbox("Island Coke", islandCoke)
@@ -7518,12 +7518,12 @@ if ImGui.BeginTabItem("Loot") then
 			cokeSliderIsland, changed = ImGui.SliderInt("Scoped Coke Amount", cokeSliderIsland, 0, #allowedValues)
 			if changed then
 				sliderValue = allowedValues[cokeSliderIsland]
-				stats.set_int(joaat("MPX_H4LOOT_COKE_I"), sliderValue)
-				stats.set_int(joaat("MPX_H4LOOT_COKE_I_SCOPED"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_COKE_I"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_COKE_I_SCOPED"), sliderValue)
 			end
 		else
-			stats.set_int(joaat("MPX_H4LOOT_COKE_I"), 0)
-			stats.set_int(joaat("MPX_H4LOOT_COKE_I_SCOPED"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_COKE_I"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_COKE_I_SCOPED"), 0)
 		end
 		
 		islandGold, used = ImGui.Checkbox("Island Gold", islandGold)
@@ -7533,12 +7533,12 @@ if ImGui.BeginTabItem("Loot") then
 			goldSliderIsland, changed2 = ImGui.SliderInt("Scoped Gold Amount", goldSliderIsland, 0, #allowedValues)
 			if changed2 then
 				sliderValue = allowedValues[goldSliderIsland]
-				stats.set_int(joaat("MPX_H4LOOT_GOLD_I"), sliderValue)
-				stats.set_int(joaat("MPX_H4LOOT_GOLD_I_SCOPED"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_GOLD_I"), sliderValue)
+				stats.set_int(joaat(MPX() .."H4LOOT_GOLD_I_SCOPED"), sliderValue)
 			end
 		else
-			stats.set_int(joaat("MPX_H4LOOT_GOLD_I"), 0)
-			stats.set_int(joaat("MPX_H4LOOT_GOLD_I_SCOPED"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_GOLD_I"), 0)
+			stats.set_int(joaat(MPX() .."H4LOOT_GOLD_I_SCOPED"), 0)
 		end
 	ImGui.TreePop()
 	end
@@ -7553,7 +7553,7 @@ if ImGui.BeginTabItem("Loadout") then
                 for k, v in pairs(weapons) do
                     local selected = weapon == k
                     if ImGui.Selectable(v, selected) and not selected then
-                            stats.set_int(joaat("MPX_H4CNF_WEAPONS"), k)
+                            stats.set_int(joaat(MPX() .."H4CNF_WEAPONS"), k)
                     end
                     if weaponContents[k] ~= nil and ImGui.IsItemHovered() then
                         ImGui.SetTooltip(weaponContents[k])
@@ -7570,10 +7570,10 @@ end)
 
 cayoHeist:add_text("Press this after clicking one of the above presets")
 cayoHeist:add_button("Reset Kosatka Board", function()
-		stats.set_int(joaat("MPX_H4CNF_BS_GEN"), -1)
-        stats.set_int(joaat("MPX_H4CNF_BS_ENTR"), -1)
-        stats.set_int(joaat("MPX_H4CNF_APPROACH"), -1)
-        stats.set_int(joaat("MPX_H4_MISSIONS"), -1)
+		stats.set_int(joaat(MPX() .."H4CNF_BS_GEN"), -1)
+        stats.set_int(joaat(MPX() .."H4CNF_BS_ENTR"), -1)
+        stats.set_int(joaat(MPX() .."H4CNF_APPROACH"), -1)
+        stats.set_int(joaat(MPX() .."H4_MISSIONS"), -1)
 		locals.set_int(HIP, 1564, 2) -- .?Local_1....? != .?Param0
         if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Planning board has been reset!") end
 end)
@@ -7622,15 +7622,15 @@ cayoHeist:add_text("After Heist")
 cayoHeist:add_button("Skip Cooldown", function()
 	current_time = os.time()
     -- Solo Skip
-    STATS.STAT_SET_INT(joaat("MPX_H4_TARGET_WEIGHTING_POSIX_TIME"), current_time, true)
-    STATS.STAT_SET_INT(joaat("MPX_H4_COOLDOWN_TIME"), 0, true)
-    STATS.STAT_SET_INT(joaat("MPX_H4_COOLDOWN_HARD_TIME"), 0, true)
-	STATS.STAT_SET_INT(joaat("MPX_H4_SOLO_COOLDOWN"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H4_TARGET_WEIGHTING_POSIX_TIME"), current_time, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H4_COOLDOWN_TIME"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H4_COOLDOWN_HARD_TIME"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H4_SOLO_COOLDOWN"), 0, true)
     -- Multiplayer Skip
-    STATS.STAT_SET_INT(joaat("MPX_H4_TARGET_WEIGHTING_POSIX_TIME"), current_time, true)
-    STATS.STAT_SET_INT(joaat("MPX_H4_COOLDOWN_TIME"), 0, true)
-    STATS.STAT_SET_INT(joaat("MPX_H4_COOLDOWN_HARD_TIME"), 0, true)
-	STATS.STAT_SET_INT(joaat("MPX_H4_SOLO_COOLDOWN"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H4_TARGET_WEIGHTING_POSIX_TIME"), current_time, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H4_COOLDOWN_TIME"), 0, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."H4_COOLDOWN_HARD_TIME"), 0, true)
+	STATS.STAT_SET_INT(joaat(MPX() .."H4_SOLO_COOLDOWN"), 0, true)
 
     if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters") end
 end)
@@ -7756,7 +7756,7 @@ goldSizeVal, used = ImGui.SliderInt("Gold Value", goldSizeVal, 45375, 181500) --
 
     if used then
     
-        STATS.STAT_SET_INT(joaat("MPX_H4LOOT_GOLD_V"), goldSizeVal, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."H4LOOT_GOLD_V"), goldSizeVal, true)
         if showNotifications:is_enabled() then gui.show_message('Gold Value Modified!', out) end
     end
 end)
@@ -7768,7 +7768,7 @@ cokeSizeVal, used = ImGui.SliderInt("Coke Value", cokeSizeVal, 25312, 101248) --
 
     if used then
     
-        STATS.STAT_SET_INT(joaat("MPX_H4LOOT_COKE_V"), cokeSizeVal, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."H4LOOT_COKE_V"), cokeSizeVal, true)
         if showNotifications:is_enabled() then gui.show_message('Coke Value Modified!', out) end
     end
 end)
@@ -7780,7 +7780,7 @@ paintSizeVal, used = ImGui.SliderInt("Paintings Value", paintSizeVal, 22500, 900
 
     if used then
     
-        STATS.STAT_SET_INT(joaat("MPX_H4LOOT_PAINT_V"), paintSizeVal, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."H4LOOT_PAINT_V"), paintSizeVal, true)
         if showNotifications:is_enabled() then gui.show_message('Paintings Value Modified!', out) end
     end
 end)
@@ -7792,7 +7792,7 @@ weedSizeVal, used = ImGui.SliderInt("Weed Value", weedSizeVal, 16875, 67500) -- 
 
     if used then
     
-        STATS.STAT_SET_INT(joaat("MPX_H4LOOT_WEED_V"), weedSizeVal, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."H4LOOT_WEED_V"), weedSizeVal, true)
         if showNotifications:is_enabled() then gui.show_message('Weed Value Modified!', out) end
     end
 end)
@@ -7804,7 +7804,7 @@ cashSizeVal, used = ImGui.SliderInt("Cash Value", cashSizeVal, 10406, 41624) -- 
 
     if used then
     
-        STATS.STAT_SET_INT(joaat("MPX_H4LOOT_WEED_V"), cashSizeVal, true)
+        STATS.STAT_SET_INT(joaat(MPX() .."H4LOOT_WEED_V"), cashSizeVal, true)
         if showNotifications:is_enabled() then gui.show_message('Cash Value Modified!', out) end
     end
 end)
@@ -7832,9 +7832,9 @@ a48 = 1
 DP:add_text("Doomsday Act Selection")
 
  function DoomsdayActSetter(progress, status)
-    STATS.STAT_SET_INT(joaat("MPX_GANGOPS_FLOW_MISSION_PROG"), progress, true)
-    STATS.STAT_SET_INT(joaat("MPX_GANGOPS_HEIST_STATUS"), status, true)
-   STATS.STAT_SET_INT(joaat("MPX_GANGOPS_FLOW_NOTIFICATIONS"), 1557, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."GANGOPS_FLOW_MISSION_PROG"), progress, true)
+    STATS.STAT_SET_INT(joaat(MPX() .."GANGOPS_HEIST_STATUS"), status, true)
+   STATS.STAT_SET_INT(joaat(MPX() .."GANGOPS_FLOW_NOTIFICATIONS"), 1557, true)
 end
 
 DP:add_imgui(function()
@@ -7855,7 +7855,7 @@ DP:add_imgui(function()
 end)
 
 DP:add_sameline()
-DP:add_button("Complete Preps", function() STATS.STAT_SET_INT("MPX_GANGOPS_FM_MISSION_PROG", -1, true) end)
+DP:add_button("Complete Preps", function() STATS.STAT_SET_INT(MPX() .."GANGOPS_FM_MISSION_PROG", -1, true) end)
 DP:add_sameline()
 DP:add_button("Reset Preps", function() DoomsdayActSetter(240, 0) end)
 
@@ -7907,19 +7907,19 @@ cluckinHeist:add_imgui(function()
 
     if ImGui.Button("Set Mission") then
         if salvageMissionID == 1 then
-            STATS.STAT_SET_INT(joaat("MPX_SALV23_INST_PROG"), 0, true) -- Slush Fund
+            STATS.STAT_SET_INT(joaat(MPX() .."SALV23_INST_PROG"), 0, true) -- Slush Fund
         elseif salvageMissionID == 2 then
-            STATS.STAT_SET_INT(joaat("MPX_SALV23_INST_PROG"), 1, true) -- Breaking and Entering
+            STATS.STAT_SET_INT(joaat(MPX() .."SALV23_INST_PROG"), 1, true) -- Breaking and Entering
         elseif salvageMissionID == 3 then
-            STATS.STAT_SET_INT(joaat("MPX_SALV23_INST_PROG"), 3, true) -- Concealed Weapons
+            STATS.STAT_SET_INT(joaat(MPX() .."SALV23_INST_PROG"), 3, true) -- Concealed Weapons
         elseif salvageMissionID == 4 then
-            STATS.STAT_SET_INT(joaat("MPX_SALV23_INST_PROG"), 7, true) -- Hit and Run
+            STATS.STAT_SET_INT(joaat(MPX() .."SALV23_INST_PROG"), 7, true) -- Hit and Run
         elseif salvageMissionID == 5 then
-            STATS.STAT_SET_INT(joaat("MPX_SALV23_INST_PROG"), 15, true) -- Disorganized Crime
+            STATS.STAT_SET_INT(joaat(MPX() .."SALV23_INST_PROG"), 15, true) -- Disorganized Crime
         elseif salvageMissionID == 6 then
-            STATS.STAT_SET_INT(joaat("MPX_SALV23_INST_PROG"), 31, true) -- Scene of The Crime
+            STATS.STAT_SET_INT(joaat(MPX() .."SALV23_INST_PROG"), 31, true) -- Scene of The Crime
         end
-        STATS.STAT_SET_INT(joaat("MPX_SALV23_CFR_COOLDOWN"), -1, true) -- Removes the cooldown
+        STATS.STAT_SET_INT(joaat(MPX() .."SALV23_CFR_COOLDOWN"), -1, true) -- Removes the cooldown
     end
 end)
 toolTip(cluckinHeist, "Applies the selected Mission")
@@ -9338,13 +9338,13 @@ function CreateVehicle(Hash, Pos, Heading, Invincible)
 end
 
 function MCprintspl()
-    log.info("可卡因 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY0").."%")
-    log.info("大麻 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY1").."%")
-    log.info("冰毒 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY2").."%")
-    log.info("假钞 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY3").."%")
-    log.info("假证 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY4").."%")
-    log.info("地堡 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY5").."%")
-    log.info("致幻剂 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY6").."%")
+    log.info("可卡因 原材料库存: "..stats.get_int(MPX() .."MATTOTALFORFACTORY0").."%")
+    log.info("大麻 原材料库存: "..stats.get_int(MPX() .."MATTOTALFORFACTORY1").."%")
+    log.info("冰毒 原材料库存: "..stats.get_int(MPX() .."MATTOTALFORFACTORY2").."%")
+    log.info("假钞 原材料库存: "..stats.get_int(MPX() .."MATTOTALFORFACTORY3").."%")
+    log.info("假证 原材料库存: "..stats.get_int(MPX() .."MATTOTALFORFACTORY4").."%")
+    log.info("地堡 原材料库存: "..stats.get_int(MPX() .."MATTOTALFORFACTORY5").."%")
+    log.info("致幻剂 原材料库存: "..stats.get_int(MPX() .."MATTOTALFORFACTORY6").."%")
 end
 
 function delete_entity(ent)  --discord@rostal315
