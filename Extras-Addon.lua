@@ -7568,7 +7568,21 @@ end
 ImGui.EndTabBar()
 end)
 
-cayoHeist:add_text("Press this after clicking one of the above presets")
+textSeparator(cayoHeist, "Setup Options")
+cayoHeist:add_button("Skip Cooldown", function()
+	globals.set_int(262145 + 29380, 0) -- H4_COOLDOWN_TIME
+	globals.set_int(262145 + 29381, 0) -- H4_COOLDOWN_HARD_TIME
+	globals.set_int(262145 + 29382, 0) -- H4_SOLO_COOLDOWN
+	stats.set_packed_stat_bool(30521, 0)
+    if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Skipped Cayo Perico Cooldown for all characters") end
+end)
+toolTip(cayoHeist, "Skips the cooldown between heists, it is recommended to do this outside the kosatka before entering, else you will need to re-enter it.")
+cayoHeist:add_sameline()
+cayoHeist:add_button("Remove Setup Cost", function()
+	globals.set_int(262145 + 29406, 0)
+end)
+toolTip(cayoHeist, "Sets the setup cost to $0.")
+cayoHeist:add_sameline()
 cayoHeist:add_button("Reset Kosatka Board", function()
 		stats.set_int("MPX_H4CNF_BS_GEN", -1)
         stats.set_int("MPX_H4CNF_BS_ENTR", -1)
@@ -7577,9 +7591,8 @@ cayoHeist:add_button("Reset Kosatka Board", function()
 		locals.set_int(HIP, 1564, 2) -- .?Local_1....? != .?Param0
         if showNotifications:is_enabled() then gui.show_message("Cayo Heist", "Planning board has been reset!") end
 end)
-
-cayoHeist:add_separator()
-cayoHeist:add_text("During Heist")
+toolTip(cayoHeist, "Resets the planning board after you have selected your Primary/Secondary Loot/Loadouts/Etc.")
+textSeparator(cayoHeist, "Heist Options")
 cayoHeist:add_button("Skip All Hacks", function()
     minigame_hack()
 end)
@@ -7615,28 +7628,7 @@ cayoHeist:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX
     end)
 end)
 
-cayoHeist:add_separator()
-
-
--- Function to create buttons dynamically
-function createCayoButtons(cayoHeist)
-    local buttonsPerRow = 10
-    local buttonCount = 0
-    for _, property in ipairs(cayoLocations) do
-        cayoHeist:add_button(property.name, function()
-            local ped = PLAYER.PLAYER_PED_ID()
-            PED.SET_PED_COORDS_KEEP_VEHICLE(ped, property.x, property.y, property.z)
-        end)
-        buttonCount = buttonCount + 1
-        if buttonCount < buttonsPerRow and _ < #cayoLocations then
-            cayoHeist:add_sameline() -- Add next button on the same line if there are more buttons and haven't reached the limit per row
-        else
-            buttonCount = 0 -- Reset button count for the new row
-        end
-    end
-end
-cayoHeist:add_separator()
-cayoHeist:add_text("Teleports")
+textSeparator(cayoHeist, "Teleport Options")
 cayoHeist:add_button("Bring Everyone", function()
     script.run_in_fiber(function()
         p = PLAYER.PLAYER_PED_ID()
@@ -7653,10 +7645,14 @@ cayoHeist:add_button("Bring Everyone", function()
 end)
 toolTip(cayoHeist, "Bring everyone further than 50 meters to you")
 createCayoButtons(cayoHeist)
-cayoHeist:add_separator()
-cayoHeist:add_text("How to Set Up or Bypass Cooldown:")
-cayoHeist:add_text("Make sure you have completed the heist and you are standing in front of the planning screen")
-cayoHeist:add_text("Click Skip Cooldown, then click on your Preset and click Reset Kosatka Board")
+cayoHeist:add_imgui(function()
+	if ImGui.TreeNode("How To Setup") then
+		ImGui.Text("To set up the cayo heist, select your primary/secondary loot and then press Reset Kosatka Board.")
+		ImGui.Text("If your heist is on cooldown and you are inside your kosatka, press Skip Cooldowns and then leave & re-enter the kosatka.")
+		ImGui.Text("If you do not want to pay the setup fees, simply remove setup costs and access the board, the price will be $0.")
+	end
+	ImGui.TreePop()
+end)
 
 -- Cayo Bag Size & Value Editor
  cayoSizeEditor = cayoHeist:add_tab("Size/Value Editor")
