@@ -5013,6 +5013,23 @@ function MPX()
     return "MP".. stats.get_int("MPPLY_LAST_MP_CHAR").. "_"
 end
 
+function createCayoButtons(cayoHeist)
+    local buttonsPerRow = 10
+    local buttonCount = 0
+    for _, property in ipairs(cayoLocations) do
+        cayoHeist:add_button(property.name, function()
+            local ped = PLAYER.PLAYER_PED_ID()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(ped, property.x, property.y, property.z)
+        end)
+        buttonCount = buttonCount + 1
+        if buttonCount < buttonsPerRow and _ < #cayoLocations then
+            cayoHeist:add_sameline() -- Add next button on the same line if there are more buttons and haven't reached the limit per row
+        else
+            buttonCount = 0 -- Reset button count for the new row
+        end
+    end
+end
+
 -- GoldenGets
 function start_script(script_name, stack_size, script) -- Computer thread
 	if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat(script_name)) >= 1 then
