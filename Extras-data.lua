@@ -5013,6 +5013,1449 @@ function MPX()
     return "MP".. stats.get_int("MPPLY_LAST_MP_CHAR").. "_"
 end
 
+-- SCH-Lua Functions
+function globals_set_int(intglobal, intval) --当游戏版本不受支持时拒绝修改globals避免损坏线上存档
+    if verchkok == 1 then
+        globals.set_int(intglobal, intval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
+    end
+end
+
+function globals_set_float(floatglobal, floatval) --当游戏版本不受支持时拒绝修改globals避免损坏线上存档
+    if verchkok == 1 then
+        globals.set_float(floatglobal, floatval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
+    end
+end
+
+function locals_set_int(scriptname, intlocal, intlocalval) --当游戏版本不受支持时拒绝修改locals避免损坏线上存档
+    if verchkok == 1 then
+        locals.set_int(scriptname, intlocal, intlocalval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
+    end
+end
+
+function locals_set_float(scriptname, flocal, flocalval) --当游戏版本不受支持时拒绝修改locals避免损坏线上存档
+    if verchkok == 1 then
+        locals.set_float(scriptname, flocal, flocalval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
+    end
+end
+
+function packed_stat_set_bool(boolindex, boolval) --当游戏版本不受支持时拒绝修改globals避免损坏线上存档
+    if verchkok == 1 then
+        stats.set_packed_stat_bool(boolindex, boolval)
+    else
+        log.warning("游戏版本不受支持,为了您的线上存档安全,已停止数据修改")
+    end
+end
+
+function get_closest_veh(entity) -- 获取最近的载具
+    local coords = ENTITY.GET_ENTITY_COORDS(entity, true)
+    local vehicles = entities.get_all_vehicles_as_handles()
+    local closestdist = 1000000
+    local closestveh = 0
+    for k, veh in pairs(vehicles) do
+        if veh ~= PED.GET_VEHICLE_PED_IS_IN(PLAYER.PLAYER_PED_ID(), false) and ENTITY.GET_ENTITY_HEALTH(veh) ~= 0 then
+            local vehcoord = ENTITY.GET_ENTITY_COORDS(veh, true)
+            local dist = MISC.GET_DISTANCE_BETWEEN_COORDS(coords['x'], coords['y'], coords['z'], vehcoord['x'], vehcoord['y'], vehcoord['z'], true)
+            if dist < closestdist then
+                closestdist = dist
+                closestveh = veh
+            end
+        end
+    end
+    return closestveh
+end
+
+function upgrade_vehicle(vehicle)
+    for i = 0, 49 do
+        local num = VEHICLE.GET_NUM_VEHICLE_MODS(vehicle, i)
+        VEHICLE.SET_VEHICLE_MOD(vehicle, i, num - 1, true)
+    end
+end
+
+function run_script(scriptName, stackSize) --启动脚本线程
+    script.run_in_fiber(function (runscript)
+        if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(MISC.GET_HASH_KEY(scriptName)) >= 1 then
+        gui.show_error("Warning","Do not start script threads repeatedly!")
+        else
+        SCRIPT.REQUEST_SCRIPT(scriptName)
+        repeat runscript:yield() until SCRIPT.HAS_SCRIPT_LOADED(scriptName)
+        SYSTEM.START_NEW_SCRIPT(scriptName, stackSize)
+        SCRIPT.SET_SCRIPT_AS_NO_LONGER_NEEDED(scriptName)
+        end
+    end)
+end
+
+function screen_draw_text(text, x, y, p0 , size) --在屏幕上绘制文字
+    HUD.BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING") --The following were found in the decompiled script files: STRING, TWOSTRINGS, NUMBER, PERCENTAGE, FO_TWO_NUM, ESMINDOLLA, ESDOLLA, MTPHPER_XPNO, AHD_DIST, CMOD_STAT_0, CMOD_STAT_1, CMOD_STAT_2, CMOD_STAT_3, DFLT_MNU_OPT, F3A_TRAFDEST, ES_HELP_SOC3
+    HUD.SET_TEXT_FONT(0)
+    HUD.SET_TEXT_SCALE(p0, size) --Size range : 0F to 1.0F --p0 is unknown and doesn't seem to have an effect, yet in the game scripts it changes to 1.0F sometimes.
+    HUD.SET_TEXT_DROP_SHADOW()
+    HUD.SET_TEXT_WRAP(0.0, 1.0) --限定行宽，超出自动换行 start - left boundry on screen position (0.0 - 1.0)  end - right boundry on screen position (0.0 - 1.0)
+    HUD.SET_TEXT_DROPSHADOW(1, 0, 0, 0, 0) --distance - shadow distance in pixels, both horizontal and vertical    -- r, g, b, a - color
+    HUD.SET_TEXT_OUTLINE()
+    HUD.SET_TEXT_EDGE(1, 0, 0, 0, 0)
+    HUD.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text)
+    HUD.END_TEXT_COMMAND_DISPLAY_TEXT(x, y, 0) --占坐标轴的比例
+end
+
+function CreatePed(index, Hash, Pos, Heading)
+    script.run_in_fiber(function (ctped)
+    STREAMING.REQUEST_MODEL(Hash)
+    while not STREAMING.HAS_MODEL_LOADED(Hash) do ctped:yield() end
+    local Spawnedp = PED.CREATE_PED(index, Hash, Pos.x, Pos.y, Pos.z, Heading, true, true)
+    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(Hash)
+    return Spawnedp
+    end)
+end
+
+function create_object(hash, pos)
+    script.run_in_fiber(function (ctobjS)
+        STREAMING.REQUEST_MODEL(hash)
+        while not STREAMING.HAS_MODEL_LOADED(hash) do ctobjS:yield() end
+        local obj = OBJECT.CREATE_OBJECT(hash, pos.x, pos.y, pos.z, true, false, false)
+        return obj
+    end)
+end
+
+function request_model(hash)
+    script.run_in_fiber(function (rqmd)
+        STREAMING.REQUEST_MODEL(hash)
+        while not STREAMING.HAS_MODEL_LOADED(hash) do
+            rqmd:yield()
+        end
+        return STREAMING.HAS_MODEL_LOADED(hash)
+    end)
+end
+
+function CreateVehicle(Hash, Pos, Heading, Invincible)
+    script.run_in_fiber(function (ctveh)
+        STREAMING.REQUEST_MODEL(Hash)
+        while not STREAMING.HAS_MODEL_LOADED(Hash) do ctveh:yield() end
+        CreateVehicle_rlt = VEHICLE.CREATE_VEHICLE(Hash, Pos.x,Pos.y,Pos.z, Heading , true, true, true)
+        STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(Hash)
+        if Invincible then
+            ENTITY.SET_ENTITY_INVINCIBLE(SpawnedVehicle, true)
+        end
+        return CreateVehicle_rlt
+    end)
+end
+
+function MCprintspl()
+    log.info("可卡因 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY0").."%")
+    log.info("大麻 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY1").."%")
+    log.info("冰毒 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY2").."%")
+    log.info("假钞 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY3").."%")
+    log.info("假证 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY4").."%")
+    log.info("地堡 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY5").."%")
+    log.info("致幻剂 原材料库存: "..stats.get_int("MPX_MATTOTALFORFACTORY6").."%")
+end
+
+function delete_entity(ent)  --discord@rostal315
+    if ENTITY.DOES_ENTITY_EXIST(ent) then
+        ENTITY.DETACH_ENTITY(ent, true, true)
+        ENTITY.SET_ENTITY_VISIBLE(ent, false, false)
+        NETWORK.NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true)
+        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ent, 0.0, 0.0, -1000.0, false, false, false)
+        ENTITY.SET_ENTITY_COLLISION(ent, false, false)
+        ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ent, true, true)
+        ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(ent)
+        ENTITY.DELETE_ENTITY(ent)
+    end
+end
+
+allbodyguardtable = {} --保镖NPC表
+
+function npc2bodyguard(peds_func) --将NPC设置为自己的保镖
+    if math.random(0, 100) > 50 then
+        WEAPON.GIVE_WEAPON_TO_PED(peds_func, joaat("WEAPON_MICROSMG"), 9999, false, true)
+    else
+    --WEAPON.GIVE_WEAPON_TO_PED(peds_func, joaat("WEAPON_CARBINERIFLE_MK2"), 9999, false, true)
+    WEAPON.GIVE_WEAPON_TO_PED(peds_func, joaat("WEAPON_RAILGUNXM3"), 1, false, true)
+    end
+    WEAPON.SET_PED_INFINITE_AMMO(peds_func, true, joaat("WEAPON_RAILGUNXM3"))
+    PED.SET_PED_AS_GROUP_MEMBER(peds_func, PED.GET_PED_GROUP_INDEX(PLAYER.PLAYER_PED_ID()))
+    PED.SET_PED_RELATIONSHIP_GROUP_HASH(peds_func, PED.GET_PED_RELATIONSHIP_GROUP_HASH(PLAYER.PLAYER_PED_ID()))
+    PED.SET_PED_NEVER_LEAVES_GROUP(peds_func, true)
+    PED.SET_CAN_ATTACK_FRIENDLY(peds_func, false, true)
+    PED.SET_PED_COMBAT_ABILITY(peds_func, 2)
+    PED.SET_PED_CAN_TELEPORT_TO_GROUP_LEADER(peds_func, PED.GET_PED_GROUP_INDEX(PLAYER.PLAYER_PED_ID()), true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 512, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 1024, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 2048, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 16384, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 131072, true)
+    PED.SET_PED_FLEE_ATTRIBUTES(peds_func, 262144, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 5, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 12, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 13, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 21, false)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 27, true)
+    PED.SET_PED_COMBAT_ATTRIBUTES(peds_func, 58, true)
+    PED.SET_PED_CONFIG_FLAG(peds_func, 394, true)
+    PED.SET_PED_CONFIG_FLAG(peds_func, 400, true)
+    PED.SET_PED_CONFIG_FLAG(peds_func, 134, true)
+    PED.SET_PED_CAN_RAGDOLL(peds_func, false)
+    PED.SET_PED_SHOOT_RATE(peds_func, 1000)
+    PED.SET_PED_ACCURACY(peds_func,100)
+    TASK.TASK_COMBAT_HATED_TARGETS_AROUND_PED(peds_func, 100, 67108864)
+    ENTITY.SET_ENTITY_HEALTH(peds_func,1000,0,0)
+    HUD.SET_PED_HAS_AI_BLIP_WITH_COLOUR(peds_func, true, 3)
+    HUD.SET_PED_AI_BLIP_SPRITE(peds_func, 270)
+    table.insert(allbodyguardtable,peds_func)
+end
+
+function writebodyguardtable()
+    NPCguardTableTab:clear()
+    NPCguardTableTab:add_button("Refresh Bodyguard NPC List", function()
+        writebodyguardtable()
+    end)
+    NPCguardTableTab:add_sameline()
+    NPCguardTableTab:add_button("Empty the bodyguard NPC list", function()
+        allbodyguardtable = {}
+    end)
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+
+    local npcguard_list_index = 1
+    for _, guard_ped_id in pairs(allbodyguardtable) do
+        NPCguardTableTab:add_text(guard_ped_id)
+        NPCguardTableTab:add_sameline()
+        local ped_pos = ENTITY.GET_ENTITY_COORDS(guard_ped_id, true)
+        local npcdist = calcDistance(selfpos,ped_pos)
+        formattednpcDistance = string.format("%.1f", npcdist)
+        local npc_t_health = ENTITY.GET_ENTITY_HEALTH(guard_ped_id)
+        NPCguardTableTab:add_text(guard_ped_id.." distance: "..formattednpcDistance.." HP: "..npc_t_health)
+        NPCguardTableTab:add_sameline()
+        NPCguardTableTab:add_button("Teleport to "..npcguard_list_index, function()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), ENTITY.GET_ENTITY_COORDS(guard_ped_id, true).x, ENTITY.GET_ENTITY_COORDS(guard_ped_id, true).y, ENTITY.GET_ENTITY_COORDS(guard_ped_id, true).z)
+        end)
+        NPCguardTableTab:add_sameline()
+        NPCguardTableTab:add_button("Delete "..npcguard_list_index, function()
+            request_control(guard_ped_id, 300)
+            delete_entity(guard_ped_id)
+        end)
+        NPCguardTableTab:add_sameline()
+        NPCguardTableTab:add_button("Heal "..npcguard_list_index, function()
+            request_control(guard_ped_id, 300)
+            ENTITY.SET_ENTITY_HEALTH(guard_ped_id,1000,0,0)
+        end)
+        NPCguardTableTab:add_sameline()
+        NPCguardTableTab:add_button("Clone "..npcguard_list_index, function()
+            request_control(guard_ped_id, 300)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(guard_ped_id, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).x, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).y, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).z, false, false, false)
+        end)
+        npcguard_list_index = npcguard_list_index + 1
+    end
+end
+
+function writebodyguardhelitable()
+    HeliTableTab:clear()
+    HeliTableTab:add_button("Refresh Bodyguard Helicopter list", function()
+        writebodyguardhelitable()
+    end)
+    HeliTableTab:add_sameline()
+    HeliTableTab:add_button("Empty Bodyguard Helicopter list", function()
+        heli_sp_table = {}
+    end)
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+    local npcguardheli_list_index = 1
+    for _, guard_veh_hd in pairs(heli_sp_table) do
+        HeliTableTab:add_text(guard_veh_hd)
+        HeliTableTab:add_sameline()
+        local heli_pos = ENTITY.GET_ENTITY_COORDS(guard_veh_hd, true)
+        local npcdist = calcDistance(selfpos,heli_pos)
+        formattednpcDistance = string.format("%.1f", npcdist)
+        HeliTableTab:add_text(guard_veh_hd.." distance: "..formattednpcDistance)
+        HeliTableTab:add_sameline()
+        HeliTableTab:add_button("Teleport to "..npcguardheli_list_index, function()
+            if not VEHICLE.IS_VEHICLE_SEAT_FREE(guarddrvped, -1, 0) then
+                guarddrvped = VEHICLE.GET_PED_IN_VEHICLE_SEAT(guard_veh_hd, -1, false)
+                TASK.CLEAR_PED_TASKS_IMMEDIATELY(guarddrvped)
+            end
+            PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), guard_veh_hd, -1)
+        end)
+        HeliTableTab:add_sameline()
+        HeliTableTab:add_button("Delete "..npcguardheli_list_index, function()
+            request_control(guard_veh_hd, 300)
+            delete_entity(guard_veh_hd)
+        end)
+        HeliTableTab:add_sameline()
+        HeliTableTab:add_button("Clone "..npcguardheli_list_index, function()
+            request_control(guard_veh_hd, 300)
+            ENTITY.SET_ENTITY_COORDS_NO_OFFSET(guard_veh_hd, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).x, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).y, ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true).z + 20, false, false, false)
+        end)
+        npcguardheli_list_index = npcguardheli_list_index + 1
+    end
+end
+
+function createplayertable()  --获取当前玩家表，由于yimmenu没有像stand那样的API，只能自己模仿一个，这是玩家瞄准自动反击的基础
+    player_Index_table = {}
+    for i = 0, 32 do
+        if PLAYER.GET_PLAYER_PED(i) ~= 0 then
+            table.insert(player_Index_table,i)
+        end
+    end
+end
+
+function writeplayertable()
+    PlayerTableTab:clear()
+    PlayerTableTab:add_button("Refresh Player list", function()
+        writeplayertable()
+    end)
+    PlayerTableTab:add_text("The player list is for the players reaction")
+
+    createplayertable()
+    for _, sg_player_id in pairs(player_Index_table) do
+        PlayerTableTab:add_text(sg_player_id.." "..PLAYER.GET_PLAYER_NAME(sg_player_id))
+        PlayerTableTab:add_sameline()
+        PlayerTableTab:add_button("Place holder"..sg_player_id, function()
+        end)
+    end
+end
+
+function createobjtable()
+    obj_handle_table = {}
+    local objtable = entities.get_all_objects_as_handles()
+    for _, objs in pairs(objtable) do
+        local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+        local obj_pos = ENTITY.GET_ENTITY_COORDS(objs, true)
+        if calcDistance(selfpos, obj_pos) <= 200 then
+            table.insert(obj_handle_table,objs)
+        end
+    end
+end
+
+function writeobjtable()
+    ObjTableTab:clear()
+    ObjTableTab:add_button("Refresh object list", function()
+        writeobjtable()
+    end)
+    createobjtable()
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+    local obj_list_index = 1
+    for _, obj_id in pairs(obj_handle_table) do
+        local obj_pos = ENTITY.GET_ENTITY_COORDS(obj_id, true)
+        local objdist = calcDistance(selfpos,obj_pos)
+        formattedobjdistance = string.format("%.1f", objdist)
+        local objmod = ENTITY.GET_ENTITY_MODEL(obj_id)
+        if objmod == 2202227855 or objmod == 3105373629 then
+            ObjTableTab:add_text(obj_id.." Model: "..objmod.." Distance: "..formattedobjdistance.." Potential task entities")
+        else
+            ObjTableTab:add_text(obj_id.." Model: "..objmod.." Distance: "..formattedobjdistance)
+        end
+        ObjTableTab:add_sameline()
+        ObjTableTab:add_button("Send"..obj_list_index, function()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), ENTITY.GET_ENTITY_COORDS(obj_id, true).x, ENTITY.GET_ENTITY_COORDS(obj_id, true).y, ENTITY.GET_ENTITY_COORDS(obj_id, true).z)
+        end)
+        ObjTableTab:add_sameline()
+        ObjTableTab:add_button("Delete"..obj_list_index, function()
+            request_control(obj_id, 300)
+            delete_entity(obj_id, 300)
+        end)
+        obj_list_index = obj_list_index + 1
+    end
+end
+
+function createpedtable()
+    ped_handle_table = {}
+    local pedtable = entities.get_all_peds_as_handles()
+    for _, peds in pairs(pedtable) do
+        local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+        local ped_pos = ENTITY.GET_ENTITY_COORDS(peds, false)
+        if calcDistance(selfpos, ped_pos) <= 200 and peds ~= PLAYER.PLAYER_PED_ID() and PED.IS_PED_A_PLAYER(peds) == false and ENTITY.GET_ENTITY_HEALTH(peds) > 0 then
+            table.insert(ped_handle_table,peds)
+        end
+    end
+end
+
+function writepedtable()
+    NPCTableTab:clear()
+    NPCTableTab:add_button("Refresh NPC List", function()
+        writepedtable()
+    end)
+    createpedtable()
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+    local ped_list_index = 1
+    for _, ped_id in pairs(ped_handle_table) do
+        local ped_pos = ENTITY.GET_ENTITY_COORDS(ped_id, true)
+        local npcdist = calcDistance(selfpos,ped_pos)
+        formattednpcDistance = string.format("%.1f", npcdist)
+        local npcblipsprite = HUD.GET_BLIP_SPRITE(HUD.GET_BLIP_FROM_ENTITY(ped_id))
+        local npcblipcolor = HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(ped_id))
+        local npc_t_health = ENTITY.GET_ENTITY_HEALTH(ped_id)
+        NPCTableTab:add_text(ped_id.." Distance: "..formattednpcDistance.." Blip: "..npcblipsprite.." Color: "..npcblipcolor.." HP: "..npc_t_health)
+        NPCTableTab:add_sameline()
+        NPCTableTab:add_button("Teleport to "..ped_list_index, function()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), ENTITY.GET_ENTITY_COORDS(ped_id, true).x, ENTITY.GET_ENTITY_COORDS(ped_id, true).y, ENTITY.GET_ENTITY_COORDS(ped_id, true).z)
+        end)
+        NPCTableTab:add_sameline()
+        NPCTableTab:add_button("Delete "..ped_list_index, function()
+            request_control(ped_id, 300)
+            delete_entity(ped_id, 300)
+        end)
+        NPCTableTab:add_sameline()
+        NPCTableTab:add_button("Heal "..ped_list_index, function()
+            request_control(ped_id, 300)
+            ENTITY.SET_ENTITY_HEALTH(ped_id,1000,0,0)
+        end)
+        ped_list_index = ped_list_index + 1
+    end
+end
+
+function createvehtable()
+    veh_handle_table = {}
+    local vehtable = entities.get_all_vehicles_as_handles()
+    for _, vehs in pairs(vehtable) do
+        local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+        local veh_pos = ENTITY.GET_ENTITY_COORDS(vehs, true)
+        if calcDistance(selfpos, veh_pos) <= npcctrlr:get_value() then
+            table.insert(veh_handle_table,vehs)
+        end
+    end
+end
+
+function writevehtable()
+    VehicleTableTab:clear()
+    VehicleTableTab:add_button("Refresh vehicle List", function()
+        writevehtable()
+    end)
+    createvehtable()
+    local selfpos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID(), true)
+    local Veh_list_index = 1
+    for _, t_veh_hd in pairs(veh_handle_table) do
+        local veh_pos = ENTITY.GET_ENTITY_COORDS(t_veh_hd, true)
+        local vehdist = calcDistance(selfpos,veh_pos)
+        formattedvehDistance = string.format("%.1f", vehdist)
+        local vehblipsprite = HUD.GET_BLIP_SPRITE(HUD.GET_BLIP_FROM_ENTITY(t_veh_hd))
+        local vehblipcolor = HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(t_veh_hd))
+        local veh_t_health = ENTITY.GET_ENTITY_HEALTH(t_veh_hd)
+        local veh_mod_name = VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(t_veh_hd))
+        local veh_disp_name = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(veh_mod_name)
+        VehicleTableTab:add_text("Handle:"..t_veh_hd.." model:"..veh_mod_name.." name:"..veh_disp_name.." distance:"..formattedvehDistance.." Blip:"..vehblipsprite.." Color:"..vehblipcolor.." HP:"..veh_t_health)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Delete "..Veh_list_index, function()
+            request_control(t_veh_hd, 300)
+            delete_entity(t_veh_hd)
+        end)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Teleport into "..Veh_list_index, function()
+            request_control(t_veh_hd, 300)
+            PED.SET_PED_INTO_VEHICLE(PLAYER.PLAYER_PED_ID(), t_veh_hd, -1)
+        end)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Teleport to"..Veh_list_index, function()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), ENTITY.GET_ENTITY_COORDS(t_veh_hd, true).x, ENTITY.GET_ENTITY_COORDS(t_veh_hd, true).y, ENTITY.GET_ENTITY_COORDS(t_veh_hd, true).z)
+        end)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Destroy the engine"..Veh_list_index, function()
+            request_control(t_veh_hd, 300)
+            VEHICLE.SET_VEHICLE_ENGINE_HEALTH(t_veh_hd, -4000)
+        end)
+        VehicleTableTab:add_sameline()
+        VehicleTableTab:add_button("Throw "..Veh_list_index, function()
+            request_control(t_veh_hd, 300)
+            ENTITY.APPLY_FORCE_TO_ENTITY(t_veh_hd, 1, math.random(0, 3), math.random(0, 3), math.random(-10, 10), 0.0, 0.0, 0.0, 0, true, false, true, false, true)
+        end)
+        Veh_list_index = Veh_list_index + 1
+    end
+end
+
+plyaimkarma = {}
+
+function Is_Player_Aimming_Me()
+    for _, playerPid in pairs(player_Index_table) do
+        if PLAYER.IS_PLAYER_TARGETTING_ENTITY(playerPid, PLAYER.PLAYER_PED_ID()) or PLAYER.IS_PLAYER_FREE_AIMING_AT_ENTITY(playerPid, PLAYER.PLAYER_PED_ID()) then
+            plyaimkarma = {karmaped = PLAYER.GET_PLAYER_PED(playerPid), karmaplyindex = playerPid}
+            return true
+        end
+    end
+    plyaimkarma = nil
+    return false
+end
+
+function Is_NPC_H(peds)
+   if (PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 3 or PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 4 or PED.GET_RELATIONSHIP_BETWEEN_PEDS(peds, PLAYER.PLAYER_PED_ID()) == 5 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 1 or HUD.GET_BLIP_COLOUR(HUD.GET_BLIP_FROM_ENTITY(peds)) == 49 or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Swat_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Cop_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_M_Y_Sheriff_01") or ENTITY.GET_ENTITY_MODEL(peds) == joaat("S_F_Y_Sheriff_01")) then
+        return true
+    else
+        return false
+    end
+end
+--End SCH-Lua functions
+
+ soundIndex = 0
+ isPlaying = false
+
+ searchQuery = ""
+ filteredSoundNames = {}
+ selectedFilteredSoundIndex = 0
+
+ function updateFilteredSoundNames()
+    filteredSoundNames = {}
+    for _, sound in ipairs(sounds) do
+        if string.find(string.lower(sound.SoundName), string.lower(searchQuery)) then
+            table.insert(filteredSoundNames, sound.SoundName)
+        end
+    end
+end
+
+ function displaySoundNamesList()
+    updateFilteredSoundNames()
+    if selectedFilteredSoundIndex > #filteredSoundNames then
+        selectedFilteredSoundIndex = 0
+    end
+    selectedFilteredSoundIndex, _ = ImGui.Combo("Select Sound", selectedFilteredSoundIndex, filteredSoundNames, #filteredSoundNames)
+end
+
+function max_vehicle(veh)
+    script.run_in_fiber(function(maxM)
+        if request_control(veh, 1) then
+            VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+            VEHICLE.TOGGLE_VEHICLE_MOD(veh, 18, true) -- MOD_TURBO
+            VEHICLE.TOGGLE_VEHICLE_MOD(veh, 23, true) -- MOD_TYRE_SMOKE
+            VEHICLE.TOGGLE_VEHICLE_MOD(veh, 22, true) -- MOD_XENON_LIGHTS
+            VEHICLE.SET_VEHICLE_WINDOW_TINT(veh, 1)
+            VEHICLE.SET_VEHICLE_TYRES_CAN_BURST(veh, false)
+
+            for slot = 0, 20 do
+                if slot ~= 48 and slot ~= customWheelsSlot then -- Exclude custom wheels slot
+                    local count = VEHICLE.GET_NUM_VEHICLE_MODS(veh, slot)
+                    if count > 0 then
+                        local selected_mod = -1
+                        for mod = count - 1, -1, -1 do
+                            if not VEHICLE.IS_VEHICLE_MOD_GEN9_EXCLUSIVE(veh, slot, mod) then
+                                selected_mod = mod
+                                break
+                            end
+                        end
+
+                        if selected_mod ~= -1 then
+                            VEHICLE.SET_VEHICLE_MOD(veh, slot, selected_mod, true)
+                        end
+                    end
+                end
+            end
+        end
+        maxM:yield()
+    end)
+end
+
+
+function max_vehicle_performance(veh)
+    script.run_in_fiber(function(maxP)
+        if request_control(veh, 1) then
+            local performance_mods = {11, 12, 13, 15, 16, 18, 20} -- MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO
+            VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+
+            for _, mod_slot in ipairs(performance_mods) do
+                if mod_slot ~= 18 and mod_slot ~= 20 then -- Exclude MOD_NITROUS and MOD_TURBO
+                    VEHICLE.SET_VEHICLE_MOD(veh, mod_slot, VEHICLE.GET_NUM_VEHICLE_MODS(veh, mod_slot) - 1, true)
+                else
+                    VEHICLE.TOGGLE_VEHICLE_MOD(veh, mod_slot, true)
+                end
+            end
+        end
+        maxP:yield()
+    end)
+end
+
+function open_wheel(veh, wheelType, wheelStyle)
+    script.run_in_fiber(function(openW)
+        if request_control(veh, 1) then
+            VEHICLE.SET_VEHICLE_MOD_KIT(veh, 0)
+            local customWheelsSlot = 23
+            -- 23 = Front Wheels, 24 = Rear Wheels (Used only for motorcycles)
+                VEHICLE.TOGGLE_VEHICLE_MOD(veh, customWheelsSlot, true)
+                VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, wheelType)
+                VEHICLE.SET_VEHICLE_MOD(veh, customWheelsSlot, wheelStyle, true)
+                VEHICLE.TOGGLE_VEHICLE_MOD(veh, 24, true)
+                VEHICLE.SET_VEHICLE_WHEEL_TYPE(veh, 6)
+                VEHICLE.SET_VEHICLE_MOD(veh, 24, wheelStyle, true)
+        end
+        openW:yield()
+    end)
+end
+
+searchQuery = ""
+filteredTimecycleModifiers = {}
+
+function updateFilteredTimecycleModifiers()
+    filteredTimecycleModifiers = {}
+    for _, modifier in ipairs(timeCycles) do
+        if string.find(string.lower(modifier), string.lower(searchQuery)) then
+            table.insert(filteredTimecycleModifiers, modifier)
+        end
+    end
+end
+
+selectedModifierIndex = 0 -- initialize selected modifier index
+
+function displayTimecycleModifierSelection()
+    updateFilteredTimecycleModifiers()
+    timecycleNames = {}
+    for _, modifier in ipairs(filteredTimecycleModifiers) do
+        table.insert(timecycleNames, modifier)
+    end
+    selectedModifierIndex = ImGui.ListBox("Timecycle List", selectedModifierIndex, timecycleNames, #timecycleNames)
+end
+
+function load_fireworks()
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_indep_firework")
+
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("proj_indep_firework") then
+        return false
+    end
+
+
+    return true
+end
+
+function random_color()
+    return math.random(0, 255), math.random(0, 255), math.random(0, 255)
+end
+
+function load_smoke()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_sum2_hal")
+
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_sum2_hal") then
+        return false
+    end
+
+    return true
+end
+
+function load_flame()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("scr_bike_adversary")
+
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("scr_bike_adversary") then
+        return false
+    end
+
+    return true
+end
+
+function newTimer()
+    local self = {
+        start = os.clock(), -- Start time in seconds
+        m_enabled = false,
+    }
+
+     function reset()
+        self.start = os.clock()
+        self.m_enabled = true
+    end
+
+     function elapsed()
+        return (os.clock() - self.start) * 1000 -- Convert seconds to milliseconds
+    end
+
+     function disable() self.m_enabled = false end
+     function isEnabled() return self.m_enabled end
+
+    return {
+        isEnabled = isEnabled,
+        reset = reset,
+        elapsed = elapsed,
+        disable = disable,
+    }
+end
+ 
+  properties = {
+    {name = "Safehouse", id = 40}, {name = "Office", id = 475}, {name = "Arena", id = 643}, {name = "Bunker", id = 557}, {name = "Arcade", id = 740},
+    {name = "Auto Shop", id = 779}, {name = "Agency", id = 826}, {name = "Clubhouse", id = 492}, {name = "Hangar", id = 569}, {name = "Facility", id = 590},
+    {name = "Night Club", id = 614}, {name = "Freakshop", id = 847}, {name = "Salvage Yard", id = 867}, {name = "Eclipse Garage", id = 856}, {name = "Yacht", id = 455},
+    {name = "Kosatka", id = 760},
+    -- Add more properties as needed
+    -- Cayo Drainage = 768
+}
+
+ function findNearestBlip(propertyId)
+     ped = PLAYER.PLAYER_PED_ID()
+     minDistanceSquared = math.huge
+     nearestBlipId = nil
+     iterator = propertyId
+     blipId = HUD.GET_FIRST_BLIP_INFO_ID(iterator)
+    while blipId ~= 0 do
+         blipCoords = HUD.GET_BLIP_COORDS(blipId)
+         distanceSquared = MISC.GET_DISTANCE_BETWEEN_COORDS(ped, blipCoords.x, blipCoords.y, blipCoords.z, 1, 0, false)
+        if distanceSquared < minDistanceSquared and blipId ~= propertyId then
+            minDistanceSquared = distanceSquared
+            nearestBlipId = blipId
+        end
+        blipId = HUD.GET_NEXT_BLIP_INFO_ID(iterator)
+    end
+    return nearestBlipId
+end
+
+
+ function addBlips(array)
+    for k in pairs(array) do
+        array[k] = nil
+    end
+    for _, property in ipairs(properties) do
+         ped = PLAYER.PLAYER_PED_ID()
+         nearestBlipId = findNearestBlip(property.id)
+        if nearestBlipId then
+             blipCoords = HUD.GET_BLIP_COORDS(nearestBlipId)
+            if property.id == 760 then
+                table.insert(array, {property.name, blipCoords.x, blipCoords.y, blipCoords.z + 8})
+            elseif property.id == 740 then
+                table.insert(array, {property.name, blipCoords.x + 10, blipCoords.y - 5, blipCoords.z})
+            else
+                table.insert(array, {property.name, blipCoords.x, blipCoords.y, blipCoords.z})
+            end
+        end
+    end
+end
+
+ locationIndex = 0
+ locationTypeIndex = 0
+
+locationTypes = {"Custom", "Owned"}
+
+customCoords = {
+    {"Eclipse Towers Front Door", -774.77, 312.19, 85.70},
+    {"Casino", 922.223938, 49.779373, 80.764793},
+    {"LS Customs", -370.269958, -129.910370, 38.681633},
+    {"Eclipse Towers", -773.640869, 305.234619, 85.705841},
+    {"Record A Studios", -835.250427, -226.589691, 37.267345},
+    {"Luxury Autos", -796.260986, -245.412369, 37.079193},
+    {"Suburban", -1208.171387, -782.429016, 17.157467},
+    {"Mask Shop", -1339.069946, -1279.114502, 4.866990},
+    {"Poisonby's", -719.559692, -157.998932, 36.998993},
+    {"Benny's", -205.040863, -1305.484009, 31.369892},
+    {"Maze Bank Top", -75.28475189209, -819.13195800781, 326.17520141602},
+    {"Mount Chiliad", 501.7590637207, 5604.4399414062, 797.91009521484},
+    {"Grand Senora Desert", 1720.8128662109, 3255.1586914062, 41.146816253662},
+    {"LS International Airport", -1749.7110595703, -2910.0192871094, 13.944265365601}
+}
+
+ownedCoords = {}
+
+locations = {customCoords, ownedCoords}
+
+function updatefilteredAnims()
+    filteredAnims = {}
+    for _, anim in ipairs(animlist) do
+        if string.find(string.lower(anim.name), string.lower(searchQuery)) then
+            table.insert(filteredAnims, anim)
+        end
+    end
+    table.sort(animlist, function(a, b)
+        return a.name < b.name
+    end)
+end
+
+ function displayFilteredAnims()
+    updatefilteredAnims()
+     animNames = {}
+    for _, anim in ipairs(filteredAnims) do
+        table.insert(animNames, anim.name)
+    end
+    anim_index, used = ImGui.ListBox("##animlistbox", anim_index, animNames, #filteredAnims)
+end
+
+ function updateNpcs()
+    filteredNpcs = {}
+    for _, npc in ipairs(npcList) do
+            table.insert(filteredNpcs, npc)
+    end
+    table.sort(filteredNpcs, function(a, b)
+        return a.name < b.name
+    end)
+end
+
+ function displayNpcs()
+    updateNpcs()
+     npcNames = {}
+    for _, npc in ipairs(filteredNpcs) do
+        table.insert(npcNames, npc.name)
+    end
+    npc_index, used = ImGui.Combo("##npcList", npc_index, npcNames, #filteredNpcs)
+end
+
+ function setmanualflag()
+    if looped then
+        flag_loop = 1
+    else
+        flag_loop = 0
+    end
+    if freeze then
+        flag_freeze = 2
+    else
+        flag_freeze = 0
+    end
+    if upperbody then
+        flag_upperbody = 16
+    else
+        flag_upperbody = 0
+    end
+    if controllable then
+        flag_control = 32
+    else
+        flag_control = 0
+    end
+    flag = flag_loop + flag_freeze + flag_upperbody + flag_control
+end
+
+ function setdrunk()
+    script.run_in_fiber(function()
+        while not STREAMING.HAS_CLIP_SET_LOADED("MOVE_M@DRUNK@VERYDRUNK") do
+            STREAMING.REQUEST_CLIP_SET("MOVE_M@DRUNK@VERYDRUNK")
+            coroutine.yield()
+        end
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "MOVE_M@DRUNK@VERYDRUNK", 1.0)
+    end)
+end
+
+ function sethoe()
+    script.run_in_fiber(function()
+        while not STREAMING.HAS_CLIP_SET_LOADED("move_f@maneater") do
+            STREAMING.REQUEST_CLIP_SET("move_f@maneater")
+            coroutine.yield()
+        end
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "move_f@maneater", 1.0)
+    end)
+end
+
+ function setcrouched()
+    script.run_in_fiber(function()
+        while not STREAMING.HAS_CLIP_SET_LOADED("move_ped_crouched") do
+            STREAMING.REQUEST_CLIP_SET("move_ped_crouched")
+            coroutine.yield()
+        end
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "move_ped_crouched", 0.3)
+    end)
+end
+
+ function setlester()
+    script.run_in_fiber(function()
+        while not STREAMING.HAS_CLIP_SET_LOADED("move_heist_lester") do
+            STREAMING.REQUEST_CLIP_SET("move_heist_lester")
+            coroutine.yield()
+        end
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "move_heist_lester", 0.4)
+    end)
+end
+
+ function setballistic()
+    script.run_in_fiber(function()
+        while not STREAMING.HAS_CLIP_SET_LOADED("anim_group_move_ballistic") do
+            STREAMING.REQUEST_CLIP_SET("anim_group_move_ballistic")
+            coroutine.yield()
+        end
+        PED.SET_PED_MOVEMENT_CLIPSET(PLAYER.PLAYER_PED_ID(), "anim_group_move_ballistic", 1)
+    end)
+end
+
+function resetCheckBoxes()
+    disableTooltips = false
+    phoneAnim = false
+    lockPick = false
+    sprintInside = false
+    clumsy = false
+    rod = false
+    disableProps = false
+    manualFlags = false
+    controllable = false
+    looped = false
+    upperbody = false
+    freeze = false
+    usePlayKey = false
+end
+
+function cleanup()
+            script.run_in_fiber(function()
+                TASK.CLEAR_PED_TASKS(PLAYER.PLAYER_PED_ID())
+                STREAMING.REMOVE_ANIM_DICT(info.dict)
+                STREAMING.REMOVE_NAMED_PTFX_ASSET(info.ptfxdict)
+                if plyrProps[1] ~= nil then
+                    for k, v in ipairs(plyrProps) do
+                        script.run_in_fiber(function(script)
+                            if ENTITY.DOES_ENTITY_EXIST(v) then
+                                PED.DELETE_PED(v)
+                            end
+                            if ENTITY.DOES_ENTITY_EXIST(v) then
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(v)
+                                script:sleep(100)
+                                ENTITY.DELETE_ENTITY(v)
+                            end
+                        end)
+                        table.remove(plyrProps, k)
+                    end
+                end
+                if selfPTFX[1] ~= nil then
+                    for k, v in ipairs(selfPTFX) do
+                        script.run_in_fiber(function()
+                            GRAPHICS.STOP_PARTICLE_FX_LOOPED(v)
+                        end)
+                        table.remove(selfPTFX, k)
+                    end
+                end
+            end)
+end
+
+function cleanupNPC()
+            script.run_in_fiber(function()
+                for _, v in ipairs(spawned_npcs) do
+                    TASK.CLEAR_PED_TASKS(v)
+                    PED.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(v, true)
+                end
+                if npcProps[1] ~= nil then
+                    for k, v in ipairs(npcProps) do
+                        script.run_in_fiber(function(script)
+                            if ENTITY.DOES_ENTITY_EXIST(v) then
+                                PED.DELETE_PED(v)
+                            end
+                            if ENTITY.DOES_ENTITY_EXIST(v) then
+                                ENTITY.SET_ENTITY_AS_MISSION_ENTITY(v)
+                                script:sleep(100)
+                                ENTITY.DELETE_ENTITY(v)
+                            end
+                        end)
+                        table.remove(npcProps, k)
+                    end
+                end
+                if ENTITY.DOES_ENTITY_EXIST(npcSexPed) then
+                    PED.DELETE_PED(npcSexPed)
+                end
+                if npcPTFX[1] ~= nil then
+                    for key, value in ipairs(npcPTFX) do
+                        script.run_in_fiber(function()
+                            GRAPHICS.STOP_PARTICLE_FX_LOOPED(value)
+                        end)
+                        table.remove(npcPTFX, key)
+                    end
+                end
+                STREAMING.REMOVE_ANIM_DICT(info.dict)
+                STREAMING.REMOVE_NAMED_PTFX_ASSET(info.ptfxdict)
+            end)
+end
+
+function updatefilteredScenarios()
+            filteredScenarios = {}
+            for _, scene in ipairs(ped_scenarios) do
+                if string.find(string.lower(scene.name), string.lower(searchQuery)) then
+                    table.insert(filteredScenarios, scene)
+                end
+            end
+        end
+         function displayFilteredScenarios()
+            updatefilteredScenarios()
+             scenarioNames = {}
+            for _, scene in ipairs(filteredScenarios) do
+                table.insert(scenarioNames, scene.name)
+            end
+            scenario_index, used = ImGui.ListBox("##scenarioList", scenario_index, scenarioNames, #filteredScenarios)
+        end
+		
+function progressBar()
+        x = x + 0.01
+        if x > 1 then
+            x = 1
+            progessMessage = "Settings Successfully Reset."
+        else
+            progessMessage = "Please Wait..."
+        end
+    end
+     function displayProgressBar()
+        ImGui.Text(progessMessage)
+        progressBar()
+        ImGui.ProgressBar(x, 250, 25)
+    end
+	
+function get_cardname_from_index(card_index)
+    if card_index == 0 then
+        return "Rolling"
+    end
+
+     card_number = math.fmod(card_index, 13)
+     cardName = ""
+     cardSuit = ""
+
+    if card_number == 1 then
+        cardName = "Ace"
+    elseif card_number == 11 then
+        cardName = "Jack"
+    elseif card_number == 12 then
+        cardName = "Queen"
+    elseif card_number == 13 then
+        cardName = "King"
+    else
+        cardName = tostring(card_number)
+    end
+
+    if card_index >= 1 and card_index <= 13 then
+        cardSuit = "Clubs"
+    elseif card_index >= 14 and card_index <= 26 then
+        cardSuit = "Diamonds"
+    elseif card_index >= 27 and card_index <= 39 then
+        cardSuit = "Hearts"
+    elseif card_index >= 40 and card_index <= 52 then
+        cardSuit = "Spades"
+    end
+
+    return cardName .. " of " .. cardSuit
+end
+
+local TransactionManager <const> = {};
+TransactionManager.__index = TransactionManager
+
+function TransactionManager:New()
+    local self = setmetatable({}, TransactionManager);
+-- hashes for other loops in case you wanted to change the ones I added, or add more options.
+    self.m_transactions = {
+        {label = "15M (Bend Job Limited)", hash = 0x176D9D54},
+        {label = "15M (Bend Bonus Limited)", hash = 0xA174F633},
+        {label = "7M (Gang Money Limited)", hash = 0xED97AFC1},
+        {label = "3.6M (Casino Heist Money Limited)", hash = 0xB703ED29},
+        {label = "2.5M (Gang Money Limited)", hash = 0x46521174},
+        {label = "2.5M (Island Heist Money Limited)", hash = 0xDBF39508},
+        {label = "2M (Heist Awards Money Limited)", hash = 0x8107BB89},
+        {label = "2M (Tuner Robbery Money Limited)", hash = 0x921FCF3C},
+        {label = "2M (Business Hub Money Limited)", hash = 0x4B6A869C},
+        {label = "1M (Avenger Operations Money Limited)", hash = 0xE9BBC247},
+        {label = "1M (Daily Objective Event Money Limited)", hash = 0x314FB8B0},
+        {label = "1M (Daily Objective Money Limited)", hash = 0xBFCBE6B6},
+        {label = "680K (Betting Money Limited)", hash = 0xACA75AAE},
+        {label = "500K (Juggalo Story Money Limited)", hash = 0x05F2B7EE},
+        {label = "310K (Vehicle Export Money Limited)", hash = 0xEE884170},
+        {label = "200K (DoomsDay Finale Bonus Money Limited)", hash = 0xBA16F44B},
+        {label = "200K (Action Figures Money Limited)",  hash = 0x9145F938},
+        {label = "200K (Collectibles Money Limited)",    hash = 0xCDCF2380},
+        {label = "190K (Vehicle Sales Money Limited)",   hash = 0xFD389995}
+    }
+
+    return self;
+end
+
+function TransactionManager:GetPrice(hash, category)
+    return tonumber(NETSHOPPING.NET_GAMESERVER_GET_PRICE(hash, category, true))
+end
+
+function TransactionManager:TriggerTransaction(hash, amount)
+    globals.set_int(4537945 + 1, 2147483646)
+    globals.set_int(4537945 + 7, 2147483647)
+    globals.set_int(4537945 + 6, 0)
+    globals.set_int(4537945 + 5, 0)
+    globals.set_int(4537945 + 3, hash)
+    globals.set_int(4537945 + 2, amount or self:GetPrice(hash, 0x57DE404E))
+    globals.set_int(4537945, 1)
+end
+
+ function getObjectHashes(names)
+     hashes = {}
+    for _, name in ipairs(names) do
+         hash = joaat(name)
+        table.insert(hashes, hash)
+    end
+    return hashes
+end
+
+ function resetSliders()
+    orientationPitch = defaultOrientationPitch
+    orientationYaw = defaultOrientationYaw
+    orientationRoll = defaultOrientationRoll
+    spawnDistance.x = defaultSpawnDistance.x
+    spawnDistance.y = defaultSpawnDistance.y
+    spawnDistance.z = defaultSpawnDistance.z
+    objSpawnDistance = defaultObjSpawnDistance
+    previewAlpha = defaultPreviewAlpha
+end
+
+ filteredItems = {}
+
+-- Function to update filtered items based on search query
+ function updateFilteredItems()
+    filteredItems = {}
+    for _, item in ipairs(adultesItems) do
+        if string.find(string.lower(item.nom), string.lower(searchQuery)) then
+            table.insert(filteredItems, item)
+        end
+    end
+end
+
+-- Function to display the filtered list
+ function displayFilteredList()
+    updateFilteredItems()
+
+     itemNames = {}
+    for _, item in ipairs(filteredItems) do
+        table.insert(itemNames, item.nom)
+    end
+    selectedObjectIndex, used = ImGui.ListBox("", selectedObjectIndex, itemNames, #filteredItems)
+end
+
+function resettokyodrift()
+    DriftTires       = false
+    driftMode        = false
+    speedBoost       = false
+    sfx              = false
+    ptfx             = false
+    purge_started    = false
+    nos_started      = false
+    hornLight        = false
+    autobrklight     = false
+    launchCtrl       = false
+    popsNbangs       = false
+    nosPurge         = false
+    has_xenon        = false
+    rgbLights        = false
+    loud_radio       = false
+    DriftIntensity   = 0
+    defaultXenon     = 0
+    lightSpeed       = 1
+    if nosptfx_t[1] ~= nil then
+        for _, n in ipairs(nosptfx_t) do
+            if GRAPHICS.DOES_PARTICLE_FX_LOOPED_EXIST(n) then
+                GRAPHICS.STOP_PARTICLE_FX_LOOPED(n)
+                GRAPHICS.REMOVE_PARTICLE_FX(n)
+            end
+        end
+    end
+    if purgePtfx_t[1] ~= nil then
+        for _, p in ipairs(purgePtfx_t) do
+            if GRAPHICS.DOES_PARTICLE_FX_LOOPED_EXIST(p) then
+                GRAPHICS.STOP_PARTICLE_FX_LOOPED(p)
+                GRAPHICS.REMOVE_PARTICLE_FX(p)
+            end
+        end
+    end
+    nosptfx_t   = {}
+    purgePtfx_t = {}
+end
+
+function filterVehNames()
+    filteredNames = {}
+    for _, veh in ipairs(gta_vehicles) do
+        if VEHICLE.IS_THIS_MODEL_A_CAR(joaat(veh)) or VEHICLE.IS_THIS_MODEL_A_BIKE(joaat(veh)) or VEHICLE.IS_THIS_MODEL_A_QUADBIKE(joaat(veh)) then
+            valid_veh = veh
+            if string.find(string.lower(valid_veh), string.lower(search_term)) then
+                table.insert(filteredNames, valid_veh)
+            end
+        end
+    end
+end
+
+function displayVehNames()
+    filterVehNames()
+    local vehNames = {}
+    for _, veh in ipairs(filteredNames) do
+        local vehName = vehicles.get_vehicle_display_name(joaat(veh))
+        table.insert(vehNames, vehName)
+    end
+    vehSound_index, used = ImGui.ListBox("##Vehicle Names", vehSound_index, vehNames, #filteredNames)
+end
+
+function helpmarker(colorFlag, text, color)
+    if not disableTooltips then
+        ImGui.SameLine()
+        ImGui.TextDisabled("(?)")
+        if ImGui.IsItemHovered() then
+            ImGui.SetNextWindowBgAlpha(0.85)
+            ImGui.BeginTooltip()
+            if colorFlag == true then
+                coloredText(text, color)
+            else
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 20)
+                ImGui.TextWrapped(text)
+                ImGui.PopTextWrapPos()
+            end
+            ImGui.EndTooltip()
+        end
+    end
+end
+
+function widgetToolTip(colorFlag, text, color)
+    if not disableTooltips then
+        if ImGui.IsItemHovered() then
+            ImGui.SetNextWindowBgAlpha(0.85)
+            ImGui.BeginTooltip()
+            if colorFlag == true then
+                coloredText(text, color)
+            else
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 20)
+                ImGui.TextWrapped(text)
+                ImGui.PopTextWrapPos()
+            end
+            ImGui.EndTooltip()
+        end
+    end
+end
+
+function resetLastVehState()
+    -- placeholder func
+end
+
+function onVehEnter()
+    lastVeh         = PLAYER.GET_PLAYERS_LAST_VEHICLE()
+    current_vehicle = PED.GET_VEHICLE_PED_IS_USING(PLAYER.PLAYER_PED_ID())
+    lastVehPtr      = memory.handle_to_ptr(lastVeh)
+    currentVehPtr   = memory.handle_to_ptr(current_vehicle)
+    if current_vehicle ~= lastVeh then
+        resetLastVehState()
+    end
+    return lastVeh, lastVehPtr, current_vehicle, currentVehPtr
+end
+
+function isDriving()
+    local retBool
+    if PED.IS_PED_SITTING_IN_ANY_VEHICLE(PLAYER.PLAYER_PED_ID()) then
+        if VEHICLE.GET_PED_IN_VEHICLE_SEAT(current_vehicle, -1, true) == PLAYER.PLAYER_PED_ID() then
+            retBool = true
+        else
+            retBool = false
+        end
+    else
+        retBool = false
+    end
+    return retBool
+end
+
+function load_ptfx(ptfxName)
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET(ptfxName)
+	
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(ptfxName) then
+        return false
+    end
+
+    return true
+end
+
+function load_lightning()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("des_tv_smash")
+
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("des_tv_smash") then
+        return false
+    end
+
+    return true
+end
+
+function load_snow()
+
+    STREAMING.REQUEST_NAMED_PTFX_ASSET("proj_xmas_snowball")
+
+    if not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED("proj_xmas_snowball") then
+        return false
+    end
+
+    return true
+end
+
+function tp(x, y, z, pitch, yaw, roll)
+    player = PLAYER.PLAYER_PED_ID()
+    ENTITY.SET_ENTITY_COORDS(player, x, y, z - 1, true, false, false, false)
+    ENTITY.SET_ENTITY_ROTATION(player, pitch, yaw, roll, 0, true)
+end
+
+function cuts(cut)
+    script.run_in_fiber(function(cuts)
+        control = 2
+        enter = 201 --enter
+        cancel = 202 --cancel
+        globals.set_int(1929317 + 1 + 1, 100 - (cut * 4)) -- Global_19.....?\.f_....?\[.*?0\] = Global_19.....?\.f_7\[.*?0\]
+        globals.set_int(1929317 + 1 + 2, cut)
+        globals.set_int(1929317 + 1 + 3, cut)
+        globals.set_int(1929317 + 1 + 4, cut)
+        PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, enter, 1)
+        cuts:sleep(1000)
+        PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, cancel, 1)
+        cuts:sleep(1000)
+        globals.set_int(1931285 + 3008 + 1, cut) -- Global_19.....?\.f_....?\[.*?0\] = Global_19.....?\.f_7\[.*?0\]
+    end)
+end
+
+function fleecaCut()
+    script.run_in_fiber(function(fleecaCuts)
+        control = 2
+        enter = 201 --enter
+        cancel = 202 --cancel
+        globals.set_int(1929317 + 1 + 1, 100 - (7453 * 2))
+        globals.set_int(1929317 + 1 + 2, 7453)
+        PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, enter, 1)
+        fleecaCuts:sleep(1000)
+        PAD.SET_CONTROL_VALUE_NEXT_FRAME(control, cancel, 1)
+        fleecaCuts:sleep(1000)
+        globals.set_int(1931285 + 3008 + 1, 7453)
+    end)
+end
+
+function bringTeam()
+    script.run_in_fiber(function(bringteam)
+        for i = 1, 3 do
+            player = PLAYER.PLAYER_PED_ID()
+            if (ENTITY.DOES_ENTITY_EXIST(PLAYER.GET_PLAYER_PED(i)) and calcDistance(player, PLAYER.GET_PLAYER_PED(i)) >= 20 and PLAYER.GET_PLAYER_TEAM(i) == PLAYER.GET_PLAYER_TEAM(PLAYER.PLAYER_ID())) then
+                command.call( "bring", {i})
+                bringteam:yield()
+            end
+        end
+    end)
+end
+
+function DoomsdayActSetter(progress, status)
+    stats.set_int("MPX_GANGOPS_FLOW_MISSION_PROG", progress)
+    stats.set_int("MPX_GANGOPS_HEIST_STATUS", status)
+   stats.set_int("MPX_GANGOPS_FLOW_NOTIFICATIONS", 1557)
+end
+
+function applyBlackHole(playerCoords, blackHoleRadius, magnitude) -- Include magnitude parameter
+     vehicles = entities.get_all_vehicles_as_handles()
+     peds = entities.get_all_peds_as_handles()
+     blackHoleRadiusSquared = blackHoleRadius * blackHoleRadius
+    for _, entity in ipairs(vehicles) do
+        --if PED.IS_PED_A_PLAYER(entity) == false then
+            --if entities.take_control_of(entity) then
+                 entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                 distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                if distanceSquared <= blackHoleRadiusSquared then
+                     forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
+                     forceY = (playerCoords.y - entityCoord.y) * magnitude
+                     forceZ = (playerCoords.z - entityCoord.z) * magnitude
+                    RequestControl(entity)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                end
+            --end
+        --end
+    end
+
+    for _, entity in ipairs(peds) do
+        --if PED.IS_PED_A_PLAYER(entity) == false then
+            --if entities.take_control_of(entity) then
+                 entityCoord = ENTITY.GET_ENTITY_COORDS(entity, false)
+                 distanceSquared = V3_DISTANCE_SQUARED(playerCoords, entityCoord)
+                if distanceSquared <= blackHoleRadiusSquared then
+                     forceX = (playerCoords.x - entityCoord.x) * magnitude -- Apply magnitude
+                     forceY = (playerCoords.y - entityCoord.y) * magnitude
+                     forceZ = (playerCoords.z - entityCoord.z) * magnitude
+                    RequestControl(entity)
+                    ENTITY.APPLY_FORCE_TO_ENTITY(entity, 2, forceX, forceY, forceZ, 0.0, 0.0, 0.0, 0, false, true, true, false, false)
+                end
+            --end
+        --end
+    end
+end
+
+function V3_DISTANCE_SQUARED(v1, v2)
+     dx = v1.x - v2.x
+     dy = v1.y - v2.y
+     dz = v1.z - v2.z
+    return dx * dx + dy * dy + dz * dz
+end
+
+function request_model(model)
+    script.run_in_fiber(function(script)
+        while not STREAMING.HAS_MODEL_LOADED(model) do
+            STREAMING.REQUEST_MODEL(model)
+            script:yield()
+        end
+    end)
+end
+
+---@param entity Entity
+---@param minDistance number
+---@param maxDistance number
+---@return v3
+function get_random_offset_from_entity(entity, minDistance, maxDistance)
+     pos = ENTITY.GET_ENTITY_COORDS(entity, false)
+    return get_random_offset_in_range(pos, minDistance, maxDistance)
+end
+
+
+---@param coords v3
+---@param minDistance number
+---@param maxDistance number
+---@return v3
+function get_random_offset_in_range(coords, minDistance, maxDistance)
+     radius = random_float(minDistance, maxDistance)
+     angle = random_float(0, 2 * math.pi)
+     delta = vec3.new(math.cos(angle), math.sin(angle), 0.0)
+     offsetX = delta.x * radius
+     offsetY = delta.y * radius
+     offsetZ = delta.z * radius
+     newX = coords.x + offsetX
+     newY = coords.y + offsetY
+     newZ = coords.z + offsetZ
+    return vec3.new(newX, newY, newZ)
+end
+
+---@param min number
+---@param max number
+---@return number
+function random_float(min, max)
+    return min + math.random() * (max - min)
+end
+
+function request_fx_asset(asset)
+    script.run_in_fiber(function(script)
+        STREAMING.REQUEST_NAMED_PTFX_ASSET(asset)
+        while not STREAMING.HAS_NAMED_PTFX_ASSET_LOADED(asset) do script:yield() end
+    end)
+end
+
+---@param entity Entity
+---@return boolean
+function request_control_once(entity)
+    return entities.take_control_of(entity, 300)
+end
+
+function atan2(y, x)
+    return math.atan(y / x)
+end
+
+function set_entity_face_entity(entity, target, usePitch)
+     pos1 = ENTITY.GET_ENTITY_COORDS(entity, false)
+     pos2 = ENTITY.GET_ENTITY_COORDS(target, false)
+     relX = pos2.x - pos1.x
+     relY = pos2.y - pos1.y
+     relZ = pos2.z - pos1.z
+
+     heading = atan2(relY, relX) * 180.0 / math.pi
+    if heading < 0 then
+        heading = heading + 360.0
+    end
+
+    ENTITY.SET_ENTITY_HEADING(entity, heading)
+
+    if usePitch then
+         distXY = math.sqrt(relX * relX + relY * relY)
+         pitch = math.atan2(-relZ, distXY) * 180.0 / math.pi
+        ENTITY.SET_ENTITY_ROTATION(entity, pitch, 0, heading, 2, false)
+    end
+end
+
+function randomColors(veh)
+    script.run_in_fiber(function(script)
+        if request_control(veh, 300) then
+            colors = {27, 28, 29, 150, 30, 31, 32, 33, 34, 143, 35, 135, 137, 136, 36, 38, 138, 99, 90, 88, 89, 91, 49, 50, 51, 52, 53, 54, 92, 141, 61, 62, 63, 64, 65, 66, 67, 68, 69, 73, 70, 74, 96, 101, 95, 94, 97, 103, 104, 98, 100, 102, 99, 105, 106, 71, 72, 142, 145, 107, 111, 112,}
+            primaryColor = colors[math.random(#colors)]
+            secondaryColor = colors[math.random(#colors)]
+            VEHICLE.SET_VEHICLE_COLOURS(veh, primaryColor, secondaryColor)
+        end
+        script:yield()
+    end)
+end
+
+function presistEntry(tableEntry, value)
+    configTable[tableEntry] = value
+end
+
+function setEntry(tableEntry, value)
+    if value ~= configTable[tableEntry] then
+        configTable[tableEntry] = value
+        saveConfig = true
+    end
+end
+		
 function createCayoButtons(cayoHeist)
     local buttonsPerRow = 10
     local buttonCount = 0
